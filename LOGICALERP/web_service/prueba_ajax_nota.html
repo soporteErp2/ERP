@@ -1,0 +1,53 @@
+<script>
+    ajaxinserNota();
+    function ajaxinserNota(){
+        var xhr       = new XMLHttpRequest()
+        ,   data      = {
+                            apiVersion: "2",
+                            nit_empresa: "123456",
+                            codigo_sucursal: "1",
+                            username: "usuario.administracion",
+                            password: "123456789",
+                            documento: {
+                                consecutivo: "18",
+                                codigo_tipo_nota: "6",
+                                fecha_documento: "2015-04-21",
+                                nit_tercero: "7300000",
+                                cuentas: {
+                                    1: {
+                                        cuenta_colgaap: "110505",
+                                        naturaleza: "debito",
+                                        nit_tercero_cuenta: "7200000",              //OPCIONAL
+                                        saldo: "200"
+                                    },
+                                    2: {
+                                        cuenta_colgaap: "413595",
+                                        centro_costo: "20",                         //OBLIGATORIO SI LA CUENTA REQUIERE CENTRO DE COSTO
+                                        naturaleza: "credito",
+                                        // nit_tercero_cuenta: "7300000",           //OPCIONAL
+                                        saldo: "200"
+                                    }
+                                }
+                            }
+                        }
+
+        ,   jsonString = JSON.stringify(data);
+
+        xhr.open('POST','http://logicalsoft-erp.com/LOGICALERP/web_service/register.php', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded", true);
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+
+                var response = xhr.responseText;
+                if(response != ''){
+                    var objResponse = JSON.parse(response);
+                    if (objResponse['estado']=='true') { alert('Web service se ejecuto sactisfactoriamente el consecutivo de la nota es '+objResponse['consecutivo']); }     //SE EJECUTO CORRECTAMENTE
+                    else{ alert('Error.\n'+objResponse['msj']); }               //MENSAJE ERROR EN PROCESOS DE SINCRONIZACION
+                }
+                else{ alert('Problema en la conexion'); }
+            }
+            else return;
+        }
+        xhr.send("dataJsonNota="+jsonString);
+    }
+</script>

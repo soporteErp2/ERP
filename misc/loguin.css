@@ -1,0 +1,85 @@
+#wrap
+	{
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+	}
+#main
+	{
+		width: 600px;
+		height: 300px;
+		padding-top:130px;
+		z-index: 2;
+	}
+#loguin-box-main
+	{
+		width: 339px;
+		height: 161px;
+		background-image: url(../images/loguin-box-main-background.png);
+		padding-top: 30px;
+		z-index: 3;
+	}
+#loguin-box-userinfo-main
+	{
+		width: 272px;
+		height:90px;
+		z-index: 4;
+	}
+#loguin-box-userinfo-foto
+	{
+		width: 67px;
+		height: 90px;
+		float: left;
+		z-index: 5;
+	}
+#loguin-box-userinfo-data
+	{
+		width: 205px;
+		height: 60px;
+		float: right;
+		margin-top:0px;
+		z-index: 5;
+		color:#333;
+	}
+#formulario
+	{
+		width: 272px;
+		text-align: left;
+		margin-top: 10px;
+		z-index: 4;
+		color:#333;
+	}
+.loguin-form
+	{
+		width: 272px;
+		border: 0px;
+		font-size: 18px;
+	}
+#label_error{
+
+		color:#990000;
+
+}
+
+#mayuscula{		
+		margin-top:10px;
+		visibility:hidden;
+
+}
+#reflejo
+	{
+		width: 339px;
+		height: 190px;
+		background-image: url(../images/reflejo-background.png);
+		background-repeat: no-repeat;
+		padding-top: 45px;
+		z-index: 4;
+	}
+
+body
+	{
+		background-color: #06c;
+		color: #fff;
+		font-family: Arial;
+		font-size: 11px;
+	}

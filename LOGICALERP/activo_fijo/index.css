@@ -1,0 +1,688 @@
+.divBtnBuscarPuc{
+	margin-left      : 2px;
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	overflow         : hidden;
+	cursor           : pointer;
+	border-radius    : 3px;
+	border           : 1px solid #999;
+	background-color : #FFF;
+	box-shadow       : 1px 1px 3px #999;
+}
+
+.renglon, .subRenglon, .label, .campo, .btnCopyAbono, .labelNotaGeneral, .campoNotaGeneral, .labelGrilla, .campoGrilla, .labelGrillaDocCruce{ float:left; height: 18px;}
+.renglon{ width:100%; margin:0; overflow:hidden; }
+
+.label{
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+	width         : calc((100% - 31px - 12% - 30% - 96px) / 5);
+}
+
+.labelTotal{
+	float         : right;
+	height        : auto;
+	border-left   : none !important;
+	margin-right  : 5px;
+	text-align    : right;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	width         : calc(100% - 176px - 20px) !important;
+}
+
+.labelGrilla,.labelReciboCaja, .labelGrillaDocCruce{
+	height        : 100%;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campoGrilla, .campoReciboCaja{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.renglonTop{ float : left; margin: 7px 5px 0 0; min-width: 135px; min-height: 41px; border: 1px solid #d4d4d4;  overflow: hidden;}
+.campoTop{  float: left; height: 22px; width: 100%; }
+
+.labelTop{
+	font-weight      : bold;
+	text-align       : center;
+	width            : 100%;
+	height           : 15px;
+	padding-top      : 2px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+
+.bodyTop{
+	width            : 100%;
+	float            : left;
+	background-color : #FFF;
+}
+
+.renderFilasArticulo{
+	float : left;
+	width : 100%;
+}
+
+.contTopFila{
+	overflow : hidden;
+	width    : 98%;
+	margin   : 0px auto 10px auto;
+}
+
+.campoTop input[type=text]{ text-indent: 5px; }
+.campoTop input[type=text], .campoTop select{
+	cursor : pointer;
+	width  : 100%;
+	height : 100%;
+	border : none;
+}
+
+.iconBuscarProveedor{
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	cursor           : pointer;
+	margin           : 1px 0 0 -22px;
+	border           : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarProveedor > img, .iconBuscarArticulo > img{
+	margin-top  : 2px;
+	margin-left : 1px;
+	height      : 16px;
+	width       : 16px;
+}
+
+.bodyArticulos{
+	background : #FFF;
+	width      : 100%;
+	float      : left;
+}
+
+.contenedorGrilla{
+	height             : 300px;
+	width              : 98%;
+	margin             : 10px auto 0 auto;
+	overflow-x         : auto !important;
+	overflow-y         : hidden !important;
+	background-color   : #ECECEC;
+	border             : 1px solid #D4D4D4;
+
+}
+
+.contenedorHeadArticulos{
+	overflow         : hidden;
+	float            : left;
+	width            : 100%;
+	min-width        : 700px;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.bodyDivArticulosDepreciaciones input[type=text],.bodyDivArticulosDepreciacionesNiif input[type=text],.bodyDivArticulosDeterioro input[type=text],.bodyDivArticulosTraslados input[type=text],.bodyDivArticulosBaja input[type=text]{
+	width       : 100%;
+	height      : 100%;
+	border      : none;
+	font-size   : 11px;
+	text-align  : right;
+	padding 	: 0 3px 0 3px;
+}
+
+textarea{ width : 100%; border: none; height: 52px; }
+
+.bodyDivArticulosDepreciaciones,.bodyDivArticulosDepreciacionesNiif,.bodyDivArticulosDeterioro,.bodyDivArticulosTraslados,.bodyDivArticulosBaja,.contenedorObservacionGeneral > div{
+	padding          : 0;
+	height           : 22px;
+	font-weight      : normal;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color :#F3F3F3;
+}
+
+.bodyDivArticulosDepreciaciones > div,.bodyDivArticulosDepreciacionesNiif > div,.bodyDivArticulosDeterioro > div,.bodyDivArticulosTraslados > div,.bodyDivArticulosBaja > div,.contenedorObservacionGeneral > div{ font-weight : bolder; }
+
+.DivArticulos{
+	width            : calc(100% - 1px);
+	height           : calc(100% - 21px);
+	float            : left;
+	min-width        : 700px;
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	background-color : #FFF;
+}
+
+.campo{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+	width        : calc((100% - 30px - 12% - 30% - 107px) / 5);
+}
+
+.labelNombreArticulo{
+	text-indent   : 1px;
+	float         : left;
+	height        : 18px;
+	width         : calc(30% + 5px);
+	font-weight   : bold;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campoNombreArticulo{
+	float        : left;
+	height       : 18px;
+	width        : 30%;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.iconBuscarArticulo{
+	width            : 20px;
+	height           : 100%;
+	float            : left;
+	cursor           : pointer;
+	margin-left      : -22px;
+	border-left      : 1px solid #d4d4d4;
+	background-color:#F3F3F3;
+}
+
+@media screen and (min-width:0px) and (max-width:550px) {
+	.contenedorObservacionGeneral{
+		width : calc(100% - 2px) !important;
+	}
+
+	.contenedorDetalleTotales{
+		width      : calc(100% - 2px) !important;
+		margin-top : 20px
+	}
+}
+
+@media screen and (min-width:551px) and (max-width:650px) {
+	.contenedorObservacionGeneral{ width: 40% !important; }
+}
+
+.contenedorObservacionGeneral{ width: 50%; float: left; height: 80px; min-width: 150px; }
+
+.contenedorObservacionGeneral,.contenedorDetalleTotales{
+	background    : #FFF;
+	border        : 1px solid #D4D4D4;
+	overflow      : hidden;
+}
+
+.contenedor_totales{
+	width      : 98%;
+	margin     : 20 auto 20px auto;
+	overflow-y : hidden;
+}
+
+.contenedorDetalleTotales {
+	width: 33%;
+	float: right;
+	min-width: 300px;
+}
+
+.renglonTotal{ height: 20px; border-top: 1px solid #d4d4d4; background-color: #F3F3F3; }
+.renglonTotal > div{ height: 100%; margin-top: 4px; }
+
+.labelSimbolo{
+	height      : auto;
+	overflow    : visible;
+	font-weight : bold;
+	float       : left;
+	width       : 10px;
+}
+
+/*TOOLBAR DE LA BUSQUEDA DE LA GRILLA MANUAL*/
+.toolbar_grilla_manual{
+	overflow          : hidden;
+	width             : 98%;
+	height            : 30px;
+	margin            : 5px auto 0 auto;
+	background-repeat : no-repeat;
+}
+
+.div_input_busqueda_grilla_manual{
+	height                 : 100%;
+	padding-top            : 1px;
+	padding-left           : 4px;
+	border-top-left-radius : 5;
+	float                  : left;
+	background-color       : #F3F3F3;
+	border                 : 1px solid #D4D4D4;
+	width                  : 220px;
+}
+
+.div_input_busqueda_grilla_manual>input{
+	border            : 1px solid #D4D4D4;
+	background-image  : url(../../temas/clasico/images/BotonesTabs/buscar16.png);
+	background-repeat : no-repeat;
+	padding           : 0 0 0 27px;
+	border-radius     : 3px;
+	font-size         : 12px;
+	min-height        : 22px;
+	width             : 215px;
+	height            : 20px;
+	margin-top        : 3px;
+}
+
+.div_img_actualizar_datos_grilla_manual{
+	float                   : left;
+	width                   : 35px;
+	height                  : 100%;
+	border                  : 1px solid #D4D4D4;
+	border-left             : none;
+	border-top-right-radius : 10px;
+	background-color        : #F3F3F3;
+}
+
+.div_img_actualizar_datos_grilla_manual>img{
+	padding : 4px;
+	cursor  : pointer;
+	margin  : 3px;
+}
+
+.contenedorPaginacion{
+	float                      : left;
+	width                      : 100%;
+	background-color           : #F3F3F3;
+	/*border                     : 1px solid #D4D4D4;*/
+	border-top                 : 1px solid #D4D4D4;
+	/*border-bottom-right-radius : 4px;
+	border-bottom-left-radius  : 4px;
+	webkit-box-shadow          : 2px 2px 4px #666;
+	-moz-box-shadow            : 2px 2px 2px #666;
+	box-shadow                 : 2px 2px 2px #666;*/
+}
+
+.fondo_modal{
+    z-index          : 100;
+    top              : 0px;
+    width            : 100%;
+    height           : 100%;
+    display          : table;
+    left             : 0px;
+    position         : fixed !important;
+    background-color : rgba(0,0,0,0.6);       /* Color de fondo */
+}
+
+
+.fondo_modal_upload_file{
+	display          : none;
+	top              : 0px;
+	left             : 0px;
+	width            : 100%;
+	height           : 100%;
+	z-index          : 10000;
+	position         : fixed;
+	background-color : rgba(0,0,0,0.6);
+}
+
+.fondo_modal_upload_file > div{
+    position : absolute;
+    display  : table;
+    height   : 100%;
+    width    : 100%;
+    top      : 0;
+    left     : 0;
+}
+
+.fondo_modal_upload_file > div > div{
+    display        : table-cell;
+    vertical-align : middle;
+    width          : 100%;
+}
+
+.fondo_modal_upload_file > div > div > div{
+    width  : 400px;
+    height : 300px;
+    margin : 0px auto;
+}
+
+
+#div_upload_file{
+    width         : 400px;
+    height        : 300px;
+    background    : #FFF;
+    overflow      : hidden;
+    position      : fixed;
+    border        : 3px dashed #bcbcbc;
+}
+
+#div_upload_file:hover{ border : 3px dashed #9e9e9e; }
+
+#div_upload_file > div{
+    font-size: 23px;
+    margin-top: 130px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
+.btn_div_upload_file1{
+    width            : 26px;
+    height           : 26px;
+    position         : fixed;
+    margin-top       : -10px;
+    margin-left      : 390px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #bcbcbc;
+    border-radius    : 12px;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2{
+    color            : #9e9e9e;
+    width            : 22px;
+    height           : 22px;
+    position         : fixed;
+    margin-top       : 6px;
+    margin-left      : 375px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #fff;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2:hover{
+	color : #32B1D9;
+	border: 1px solid #32B1D9;
+}
+
+#btn_cancel_doc_upload{
+    cursor           : pointer;
+    display          : none;
+    float            : left;
+    margin           : 7px -35px;
+    height           : 23px;
+    width            : 25px;
+    border           : 1px solid;
+    border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius    : 2px;
+    padding-top      : 2px;
+    text-align       : center;
+    font-weight      : bold;
+    font-size        : 23px;
+    color            : #32B1D9;
+    background-color : #f3f3f3;
+}
+
+#div_upload_file > div {  margin: 0px !important;  }
+#div_upload_file:before {
+    content    : 'Arrastre el archivo excel o csv.';
+    width      : 100%;
+    float      : left;
+    font-size  : 23px;
+    margin-top : 130px;
+    text-align : center;
+    color      : #bcbcbc;
+}
+.qq-uploader { position:relative; width: 100%; height:100%; }
+.qq-upload-button { display:block; position:fixed !important; width:100px; height:34px; margin:5px; background-image:url(../contabilidad/img/uploading.png); background-size: 100px; }
+.qq-upload-button-hover { background-image:url(../contabilidad/img/uploading_blue.png) }
+.qq-upload-button-focus { }
+.qq-upload-drop-area { position:absolute; top:40; left:0; width:100%; height:100%; min-height: 70px; background:none; text-align:center; display:none;  }
+.qq-upload-drop-area span {  display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px; }
+.qq-upload-drop-area-active { background:#FF0000; opacity: 0.3; filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; }
+.qq-upload-list { height:100%; list-style:none; color:#333; text-align:center; }
+.qq-upload-list li {  margin:0; padding:0; line-height:15px; font-size:12px; }
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {  margin-right: 7px; }
+.qq-upload-file {  }
+.qq-upload-spinner {
+    display             : inline-block;
+    background-image    : url("../contabilidad/img/loading.gif");
+    width               : 400px;
+    height              : 400px;
+    vertical-align      : text-bottom;
+    position            : absolute;
+    top                 : 0;
+    left                : 0;
+    background-repeat   : no-repeat;
+    background-position : 50% 30%;
+    background-color    : #fff;
+}
+.qq-upload-size,.qq-upload-cancel { font-size:11px; }
+.qq-upload-failed-text { display:none; }
+.qq-upload-fail .qq-upload-failed-text { display:inline; }
+
+/* ========== ESTILOS FICHA TECNICA DE ACTIVOS ==========*/
+.content{
+	width            : 100%;
+	height           : 100%;
+	background-color : #FFF;
+	overflow         : auto;
+}
+
+.employeer-content{
+
+}
+
+.content-tab{
+	float            : left;
+	width            : 100%;
+	height           : 33px;
+	overflow         : visible;
+	border-bottom    : 1px solid #2A80B9;
+	background-color : #2A80B9;
+}
+
+.content-tab > div{
+	font-weight      : bolder;
+	text-align       : left;
+	display          : block;
+	float            : left;
+	color            : #FFFFFF;
+	padding          : 7.5px;
+	border           : 1px solid #2A80B9;
+	border-left      : none;
+	cursor           : pointer;
+	margin-top       : 3px;
+	background-color : #80C3EF;
+	font-size        : 12px;
+	box-sizing       : border-box;
+	font-family      : arial,sans-serif;
+}
+
+.content-tab > .disabled{
+	background-color: rgb(107, 155, 187) !important;
+}
+
+.content-tab-content{
+	float   : left;
+	width   : 100%;
+	height  : calc(100% - 40px - 44px);
+	overflow: auto;
+}
+
+.tab-content{
+	width    : 100%;
+	height   : 100%;
+	overflow : auto;
+	display  : none;
+}
+
+/*#panel1{
+	display: -webkit-flex !important;
+}*/
+
+.separator{
+	text-align       : left;
+	font-size        : 18px !important;
+	color            : #FFF;
+	margin           : 0 !important;
+	padding          : 10px 20px !important;
+	background-color : #2A80B9;
+}
+
+.separator-body{
+	text-align       : left;
+	color            : #FFF;
+	float            : left;
+	width            : calc(100% - 30px);
+	margin-top       : 20px;
+	margin-bottom    : 10px;
+	font-size        : 15px;
+	padding          : 8px;
+	background-color : #2E3641;
+}
+
+.close{
+	float             : right;
+	height            : 32px;
+	width             : 32px;
+	margin-top        : -6px;
+	margin-right      : -15px;
+	background-image  : url('../personal/images/close.png');
+	background-repeat : no-repeat;
+	background-size   : contain;
+	cursor            : pointer;
+}
+
+/*============ ESTILO DE LOS FORMULARIOS ===========*/
+
+.table-form{
+	font-family     : arial,sans-serif;
+	margin-top      : 20px;
+	font-size       : 12px;
+	margin-left     : 10px;
+	display         : inline-flex;
+	border-collapse : collapse;
+}
+
+.table-form img{
+	cursor : pointer;
+	right  : -180px !important;
+}
+
+.table-form .thead{
+	background-color : #2E3641;
+	color            : #fff;
+}
+
+.table-form .thead td{
+	padding   : 6px;
+	font-size : 14px;
+}
+
+.table-form td{
+	padding : 2px 2px 2px 15px;
+}
+
+.table-form tr:first-child td{
+	width   : 190px;
+}
+
+.table-form input, .table-form textarea, .table-form select{
+	line-height      : 1.42857143;
+	color            : #555;
+	background-color : #fff;
+	border           : 1px solid #ccc;
+	max-height       : 100px !important;
+	height           : 30px;
+	width            : 180px;
+	padding-left     : 5px;
+}
+
+.table-form textarea{
+	height: 50px;
+}
+
+.table-form input[data-requiere="true"], select[data-requiere="true"]{
+	background-color:#FFE0E0;
+}
+
+.buttom-content{
+	width         : 98%;
+	border-bottom : 1px solid;
+}
+
+.button{
+	cursor            : pointer;
+	background        : none;
+	border            :none;
+	width             : 53px;
+	height            : 64px;
+	padding-top       : 46px;
+	background-repeat : no-repeat;
+	color             : #757575;
+	font-size         : 12px;
+	text-align        : center;
+}
+
+.button:hover{
+	opacity: 0.5;
+}
+
+.button[data-value="save"]{
+	background-image: url('images/save.png');
+}
+
+.button[data-value="default_acount"]{
+	background-image      : url('images/default_acount.png');
+	width                 : 100px;
+	height                : 74px;
+	background-position-x : center;
+}
+
+.button[data-value="delete"]{
+	background-image: url('images/delete_grilla.png');
+}
+
+.button[data-value="new"]{
+	background-image: url('images/agregar.png');
+}
+
+/*======== ESTILO DE LA GRILLA MANUAL ==========*/
+.table-grilla{
+	font-family     : arial,sans-serif;
+	margin-top      : 20px;
+	font-size       : 12px;
+	float           : left;
+	margin-left     : 10px;
+	width           : 95%;
+	border-collapse : collapse;
+}
+
+.table-grilla .thead{
+	background-color : #2A80B9;
+	color            : #fff;
+}
+
+.table-grilla .thead td{
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-grilla .tbody td{
+	padding   : 5px;
+	cursor: pointer;
+}
+
+.table-grilla .tbody tr:hover{
+	background-color: #C8E2F2 !important;
+}
+
+.x-window-body {
+	position: relative;
+}

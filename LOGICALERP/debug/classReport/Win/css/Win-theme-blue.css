@@ -1,0 +1,74 @@
+/**
+ * win - Libreria para web aplicaciones RIA
+ * @version v0.0.1
+ * @link    https://github.com/jhon3rick/Win.js#readme
+ * @author  Jhon Marroquin (Twitter @jhon3rick || email jhon3rick@gmail.com)
+ * @license (MIT)
+ */
+.win-marco {
+  background-color: #fff;
+}
+.win-title {
+  background-color: #2a80b9;
+  color: #fff;
+}
+.win-title-btn {
+  background-image: url("../img/window/close.png");
+  background-size: 15px;
+}
+.win-tbar {
+  background-color: #c0ddf0;
+  color: #636363;
+}
+.win-btn:hover {
+  background-color: #86bee3;
+}
+.win-btn:active {
+  background-color: $BgBtnActive;
+}
+.win-separator {
+  color: #2a80b9;
+}
+.win-separatorHeight {
+  border-color: #2a80b9;
+}
+.win-calendar,
+.win-calendar-year {
+  background: #2a80b9;
+  color: #fff;
+}
+.win-calendar .calendar-change:hover,
+.win-calendar-year .calendar-change:hover {
+  background: #ddd;
+  color: #333;
+}
+.win-calendar .calendar-header:hover,
+.win-calendar-year .calendar-header:hover {
+  background: #ddd;
+  color: #333;
+}
+.win-calendar .weekDaysCell:hover,
+.win-calendar-year .weekDaysCell:hover {
+  background: #ddd;
+  color: #333;
+  font-weight: bold;
+}
+.win-calendar select,
+.win-calendar-year select,
+.win-calendar input,
+.win-calendar-year input {
+  background: #2a80b9;
+  color: #fff;
+}
+input[type=button] {
+  background: #2a80b9;
+  color: #fff;
+}
+input[type=button]:hover {
+  background-color: #ddd;
+  color: #333;
+}
+input[type=button]:active {
+  background-color: $BgBtnActive;
+  color: #333;
+}

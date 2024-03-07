@@ -1,0 +1,291 @@
+@charset "ISO8859-1";
+
+    body{
+        height				: 100%;
+		width				: 100%;
+		margin				: 0px;
+		/*background			: #EEE url(images/fondo.png);
+		background-repeat	: no-repeat;
+		background-position	:center bottom;
+		background-size		: 100%;*/
+		/*background			: #EEE;*/
+		/*background          : rgba(143,201,255,1);
+        background          : -moz-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(143,201,255,1)), color-stop(100%, rgba(32,124,229,1)));
+        background          : -webkit-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : -o-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : -ms-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : radial-gradient(ellipse at center, rgba(176,225,187,1) 0%, rgba(63,169,87,1) 100%);
+        filter              : progid:DXImageTransform.Microsoft.gradient( startColorstr='#8fc9ff', endColorstr='#207ce5', GradientType=1 );*/
+        font-family         : Verdana,sans-serif,Tahoma;
+    }
+
+    .DivNotify {
+        width: 100%;
+        text-align: center;
+    } 
+          
+    .mytext{
+        color               : #333;
+        font-weight         : bold;
+        text-shadow         : 1px 1px 1px #FFF;
+        font-family         : Verdana,sans-serif,Tahoma;        
+    }    
+            
+    .DivLogin{
+        width               : 300px;
+	    height              : 220px;
+	    position            : absolute;
+	    left                : 50%;
+	    top                 : 50%;
+        background          : #CCC;
+        padding             : 130px 0 10px 10px ;
+	    margin              : -185px 0 0 -150px;
+        font-size           : 14px;
+        border-radius       : 5px;
+        -webkit-box-shadow  : inset 0 1px 4px #FFF, 1px 1px 3px #333;
+        box-shadow          : inset 0 1px 4px #FFF, 1px 1px 3px #333;
+        /*webkit-box-shadow  	: 1px 1px 3px #333;
+        box-shadow          : 1px 1px 3px #333;*/
+		/*border				: 1px solid #BBB;    		                    */
+    }
+	
+    .LogoLogin{
+        width               : 280px;
+	    height              : 80px;
+	    position            : absolute;
+	    left                : 50%;
+	    top                 : 50%;
+	    margin              : -160px 0 0 -135px;
+        font-size           : 14px;
+        text-align          : center;
+        color               : #FFF;
+        font-weight         : bold;		
+        text-shadow         : 1px 1px 1px #333;
+        font-family         : Verdana,sans-serif,Tahoma; 
+        background          : url("images/LogicalERP.png?v16") ;
+        background-repeat   : no-repeat;
+        background-size     : 100% auto;
+		z-index				: 100;          
+    }	
+    
+    .ContentField {
+        position            : relative;                
+        float               : left;
+        width               : 100%;
+        height              : 50px;
+    }
+                       
+    .FieldImage{              
+        position            : absolute;
+        top                 : 0;
+        left                : 0;
+        width               : 25px;
+        height              : 35px; 
+        padding             : 5px 15px 0 5px;
+        background          : #DDD;
+        border              : 0;
+        border-radius       : 5px 0 0 5px;
+        -webkit-box-shadow  : inset 0 1 4px #333, 0 1px #999;
+        box-shadow          : inset 0 1px 4px #999, 0 1px #999;                 
+    } 
+    
+    .FieldDiv{
+        position            : absolute;
+        top                 : 0;
+        left                : 40px;
+        width               : 250px;
+        height              : 40px;              
+    } 
+            
+    input[type=text],
+    input[type=password]{
+        padding             : 0 10px 0 10px;
+        width               : 230px;
+        height              : 40px;
+        background          : #DDD;
+        font-size           : 14px;    
+        border              : 0;
+        border-radius       : 0px 5px 5px 0;
+        -webkit-box-shadow  : inset 0 1px 4px #333, 0 1px #999;
+        box-shadow          : inset 0 1px 4px #999, 0 1px #999;                  
+    }
+
+    input[type=text]:focus,
+    input[type=password]:focus{
+        border              : 0px #333; 
+        background          : #EEE;    
+        padding             : 0 10px 0 10px;
+        width               : 230px;                    
+    }
+    
+    .FieldDiv2{
+        padding             : 0 16px 0 4px;
+        position            : absolute;    
+        top                 : 0;
+        left                : 40px;
+        width               : 230px;
+        height              : 40px;
+        background          : #DDD;
+        border              : 0;
+        border-radius       : 0px 5px 5px 0;
+        -webkit-box-shadow  : inset 0 1px 4px #333, 0 1px #999;
+        box-shadow          : inset 0 1px 4px #999, 0 1px #999;           
+    }       
+            
+    select{                
+        position            : relative;
+        width               : 240px;
+        margin              : 0;
+        padding             : 10px 5px 6px 0px;
+        height              : 40px;
+        line-height         : 14px;
+        font-size           : 14px;   
+        background          : #f2f2f2; /* Fallback for IE 8 */   
+        background          : rgba(0, 0, 0, 0) !important;/* "transparent" doesn't work with Opera */
+        border              : 0;
+        border-radius       : 0;
+        -webkit-appearance  :none;
+        -moz-appearance     :none;                     
+    } 
+          
+    select:focus {
+        z-index             : 3;
+        border              : 0px #333; 
+        background          : #EEE;        
+    }  
+                        
+    option {
+        height              : 20%;      
+        margin              : 3px;
+        padding             : 3px 3px;
+        font-size           : 11px;
+        border-radius       : 5px;
+        color               : #333;
+        cursor              : pointer; 
+        -webkit-appearance  :none;
+        -moz-appearance     :none;       
+    } 
+	            
+    @-moz-document url-prefix() {/* Dirty fix for Firefox adding padding where it shouldn't. */
+      select {
+        padding-left: 6px;
+      }
+    } 
+                                     
+    .DivBoton{
+        position            : absolute;
+        top                 : 212px;
+        left                : 278px;
+        width               : 45px;
+        height              : 45px;
+        padding             : 11px;
+        background          : #CCC;
+        border-radius       : 50%;
+        -webkit-box-shadow  : inset 0 1px 4px #FFF, 1px 1px 3px #333;
+        box-shadow          : inset 0 1px 4px #FFF, 1px 1px 3px #333; 
+ 
+    } 
+    
+    .login-button {
+        position            : relative;
+        z-index             : 2;
+        width               : 45px;
+        height              : 45px;
+        padding             : 0px ;
+        background          : #09C url("images/flecha.png") ;
+        background-repeat   : no-repeat;
+        background-position : 7px 7px;
+        background-size     : 32px 32px;
+        text-indent         : 120%; /*Fix wrong positioning in Firefox 9 & older (bug 450418)*/
+        white-space         : nowrap;
+        overflow            : hidden;
+        border              : 0;
+        border-radius       : 24px;
+        cursor              : pointer;
+        -webkit-box-shadow  : inset 1px 1px 2px #FFF, 1px 1px 2px #333;
+        box-shadow          : inset 1px 1px 2px #FFF, 1px 1px 2px #333;
+    }
+    
+    .CuadritoBlanco1{
+        background          : #999;
+        border              : 0;
+        width               : 0px;
+        height              : 0px;
+        position            : absolute;
+        top                 : 70px;
+        left                : 300px;
+        z-index             : 5;   
+    }
+    
+    .CuadritoBlanco2{
+        background          : #999;
+        border              : 0;
+        width               : 0px;
+        height              : 0px;
+        position            : absolute;
+        top                 : 101px;
+        left                : 260px;
+        z-index             : 5;    
+    }
+    
+    .CuadritoBlanco3{
+        background          : #999;
+        border              : 0;
+        width               : 0px;
+        height              : 0px;
+        position            : absolute;
+        top                 : 151px;
+        left                : 280px;
+        z-index             : 5;  
+    }
+    
+    .CuadritoBlanco4{
+        background          : #999;
+        border              : 0;
+        width               : 0px;
+        height              : 0px;
+        position            : absolute;
+        top                 : 135px;
+        left                : 300px;
+        z-index             : 5;   
+    }
+    
+    .DivRecordar{
+        font-size           : 11px;
+        padding             : 0 10px 0 0;
+		color: #FFF;         
+    }
+
+    .loguin-error{
+        width               : 290px;
+	    height              : 60px;
+	    position            : absolute;
+	    left                : 50%;
+	    top                 : 50%;
+        padding             : 10px 0px 10px 10px ;
+	    margin              : 120px 0 0 -150px;
+        font-size           : 14px;
+        text-align          : center;
+        color               : #FFF;
+        font-weight         : bold;
+        text-shadow         : 1px 1px 1px #333;
+        font-family         : Verdana,sans-serif,Tahoma;             
+    }
+
+
+	.ribete{
+		position            : absolute;
+		width				: 100%;
+		height				: 390px;
+		top					: 50%;
+		left				: 0px;
+		margin				: -200px 0 0 0;
+		opacity				: 0.7;
+		background-color	: #000;	
+		/*filter: blur(6px);*/
+	}
+
+
+          
+         

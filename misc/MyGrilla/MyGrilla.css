@@ -1,0 +1,272 @@
+/* CSS Document */
+	.reload{
+		background-image:url(reload.png?v4.0.0.12-05-2013);
+	}
+
+	.my_grilla_filters{
+		float					:	left;
+		margin					:	8px 0 0 6px;
+		overflow				:	hidden;
+		border					: 	1px solid #BBB;
+		-moz-border-radius		: 	5px;
+  		-webkit-border-radius	: 	5px;
+		border-radius			: 	5px;
+		-webkit-box-shadow		:	2px 2px 2px #666;
+		-moz-box-shadow			:	2px 2px 2px #666;
+		box-shadow				:	2px 2px 2px #666;
+		background				:	#FFF;
+	}
+
+	.TituloBarraFilters{
+		float					:	left;
+		width					:	200px;
+		/*height					:	28px;*/
+		text-align				: 	left;
+		margin					: 	0 0 0 0;
+		padding					:	6px 0 6px 0;
+		border-bottom			:	1px solid #BBB;
+		background				:	-webkit-linear-gradient(top,  #ddd 0%,#eee 50%,#ddd 100%);
+		background				:	linear-gradient(to top,  #ddd 0%,#eee 50%,#ddd 100% );
+	}
+	.IconoFiltro{
+		background-image		:	url(filter.png);
+		background-repeat		:	no-repeat;
+	}
+	.IconoAtras{
+		background-image		:	url(prev.png);
+		background-repeat		:	no-repeat;
+	}
+
+	.BarraFiltersDespliegue{
+		float					:	left;
+		width					:	20px;
+		height					:	100%;
+		background				:	-webkit-linear-gradient(left,  #ddd 0%,#eee 50%,#ddd 100%);
+		background				:	linear-gradient(to left,  #ddd 0%,#eee 50%,#ddd 100% );
+	}
+
+	.BarraFiltersDespliegueDisabled{
+		float					:	left;
+		width					:	20px;
+		height					:	100%;
+		background				:	#333;
+		margin					:	0 20px 0 -20px;
+
+	}
+
+	.BarraFiltersVerticalText{
+		position				:	relative;
+		background-image		:	url(text_filtro_busqueda.png);
+		background-repeat		:	no-repeat;
+		top						:	50%;
+		margin					:	-75px 0 0 4px;
+		width					:	12px;
+		height					:	120px;
+	}
+
+	.ListadoFilters{
+		float:left;
+		width:180px;
+		height:91%;
+		overflow:auto;
+		overflow-X:hidden;
+		/*border:1px solid;*/
+
+	}
+
+	.LineaFiltroTitulo{
+		float					:	left;
+		width					:	160px;
+		height					:	16px;
+		text-align				: 	left;
+		margin					: 	10px 0 4px 0;
+		padding					:	0 0 0 0;
+		font-weight				:	bold;
+		/*border-bottom			:	1px solid #CCC;*/
+		-webkit-box-shadow		:	1px 1px 3px #666;
+		-moz-box-shadow			:	1px 1px 2px #666;
+		box-shadow				:	1px 1px 3px #666;
+	}
+
+	.LineaFiltro{
+		float					:	left;
+		height					:	16px;
+		width					:	150px;
+		text-align				: 	left;
+		margin					: 	3px 0 0 0;
+		padding					:	0 0 0 10px;
+		cursor					:	pointer;
+		white-space             :	nowrap;
+        overflow                :	hidden;
+        text-overflow           : 	ellipsis;		
+	}
+
+	.LineaFiltroDisabled{
+		color					:	#CCC
+	}
+
+	.LineaFiltroEnabled{
+		color					:	#000;
+		background-color		:	#EEE;
+		-moz-border-radius		: 	2px;
+  		-webkit-border-radius	: 	2px;
+		border-radius			: 	2px;
+		-webkit-box-shadow		:	1px 1px 3px #666;
+		-moz-box-shadow			:	1px 1px 2px #666;
+		box-shadow				:	1px 1px 3px #666;
+		padding					:	0 0 0 4px;
+		font-weight				:	bold;
+		background-image		:	url(delete.png);
+		background-position		:	right;
+		background-repeat		:	no-repeat;
+
+	}
+
+	.my_grilla_toolbar{
+		float:left;
+		width:260px;
+		height:35px;
+		margin:5px 0 -11px 6px;
+		overflow:hidden;
+		/*background-color:#FFFFFF;*/
+		/*border: 1px solid #BBB;*/
+		-moz-border-radius: 5px;
+  		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		/*-webkit-box-shadow: 2px 2px 4px #666;*/
+		/*-moz-box-shadow: 1px 1px 2px #666; */
+		background-image:url(toolbar.png?v4.0.0.12-05-2013);
+		background-repeat:no-repeat
+	}
+
+	.my_grilla_contenedor{
+		float:left;
+		margin:10px;
+		overflow:hidden;
+		background-color:#FFFFFF;
+		border: 1px solid #BBB;
+		-moz-border-radius: 5px;
+  		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		-webkit-box-shadow: 2px 2px 4px #666;
+		-moz-box-shadow: 2px 2px 2px #666;
+		box-shadow: 2px 2px 2px #666;
+	}
+
+	.my_grilla_cabezera{
+		background-color: #EEE;
+		border-bottom:1px solid #CCC;
+		border-right:1px solid #CCC;
+		padding:2px 0 0 3px;
+		height:19px;
+		font-size:10.5px;
+		font-weight:bolder;
+		background-image:url(MyGrillaFondo.png?v4.0.0.12-05-2013);
+		cursor:default;
+	}
+
+	.my_grilla_columna{
+		background-color: #EEE;
+		border-right:1px solid #CCC;
+		padding:2px 0 0 3px;
+		height:19px;
+		font-size:11px;
+		background-image:url(MyGrillaFondo.png?v4.0.0.12-05-2013);
+		cursor:default;
+	}
+
+	.my_grilla_columna_update{
+		background-color: #EEE;
+		border-right:1px solid #CCC;
+		padding:2px 0 0 3px;
+		height:19px;
+		font-size:11px;
+		background-image:url(MyGrillaFondoUpdate.png?v4.0.0.12-05-2013);
+		cursor:default;
+	}
+
+	.my_grilla_columna_delete{
+		background-color: #EEE;
+		border-right:1px solid #CCC;
+		padding:2px 0 0 3px;
+		height:19px;
+		font-size:11px;
+		background-image:url(MyGrillaFondoDelete.png?v4.0.0.12-05-2013);
+		cursor:default;
+	}
+
+	.my_grilla_columna_insert{
+		background-color: #EEE;
+		border-right:1px solid #CCC;
+		padding:2px 0 0 3px;
+		height:19px;
+		font-size:11px;
+		background-image:url(MyGrillaFondoInsert.png?v4.0.0.12-05-2013);
+		cursor:default;
+	}
+
+	.my_grilla_celdas{
+		min-height: 17px;
+		padding:2px 0 2px 3px;
+		font-size:11px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor:default;
+	}
+
+	.my_grilla_celdas_delete{
+		padding:2px 0 2px 3px;
+		font-size:11px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor:default;
+		color:#F00;
+	}
+
+	.my_grilla_celdas2{
+		border-bottom:1px solid #DDD;
+		cursor:default;
+	}
+
+	.my_grilla_celdas2:hover{
+		background-color:#FFECEC;
+	}
+	
+	.my_first{
+		width:16px;
+		float:left;
+		height:16px;
+		margin:0px 4px 0 4px;
+		background-image:url(first.png?v4.0.0.12-05-2013-);
+		cursor:pointer;
+	}
+	
+	.my_last{
+		width:16px;
+		float:left;
+		height:16px;
+		margin:0px 4px 0 4px;
+		background-image:url(last.png?v4.0.0.12-05-2013-);
+		cursor:pointer;
+	}
+
+	.my_next{
+		width:16px;
+		float:left;
+		height:16px;
+		margin:0px 4px 0 4px;
+		background-image:url(next.png?v4.0.0.12-05-2013-);
+		cursor:pointer;
+	}
+	
+	.my_prev{
+		width:16px;
+		float:left;
+		height:16px;
+		margin:0px 4px 0 4px;
+		background-image:url(prev.png?v4.0.0.12-05-2013-);
+		cursor:pointer;
+	}
+	

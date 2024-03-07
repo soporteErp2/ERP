@@ -1,0 +1,3 @@
+/opt/lampp/bin/php -f /SIIP/SIIP4/SIIP/notificaciones/notificacion_coope.php
+
+C:/xampp/php/php.exe -a C:/PROYECTOS/LOGICALERP/LOGICALERP/notificaciones/jobs.php

@@ -1,0 +1,46 @@
+.content{
+  height: 100%;  
+}
+
+.table-form{
+  font-family : arial,sans-serif;
+  margin-top  : 20px;
+  font-size   : 12px;
+  float       : left;
+  margin-left : 18px;
+  border-collapse: collapse;
+
+}
+
+.table-form .thead{
+  background-color : #2A80B9;
+  color            : #fff;
+}
+
+.table-form .thead td{
+  padding   : 5px;
+  font-size : 14px;
+}
+
+.table-form td{
+  padding: 8px 8px 8px 15px;
+  font-size: 12px;
+}
+
+.table-form input, .table-form textarea, .table-form select{
+    line-height      : 1.42857143;
+    color            : #555;
+    background-color : #fff;
+    border           : 1px solid #ccc;
+    height           : 25px;
+    width            : 150px;
+    padding-left     : 5px;
+  }
+
+.table-form textarea{
+  height: 50px;
+}
+
+.table-form input[data-requiere="true"], select[data-requiere="true"]{
+  background-color:#FFE0E0;
+}

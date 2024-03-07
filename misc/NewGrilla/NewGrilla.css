@@ -1,0 +1,191 @@
+.newGrilla {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+  padding-top: 0px;
+  font-family: Tahoma, Geneva, sans-serif;
+}
+.newGrilla .toolbar {
+  overflow: hidden;
+  width: 260;
+  height: 34px;
+  margin-top: 5px;
+  border-top: 1px solid #bbb;
+  border-right: 1px solid #bbb;
+  border-left: 1px solid #bbb;
+  background-color: #f3f3f3;
+  border-radius: radiusGrilla;
+  -webkit-border-radius: radiusGrilla;
+  -webkit-box-shadow: 2px 2px 2px #666;
+  -moz-box-shadow: 2px 2px 2px #666;
+  box-shadow: 2px 2px 2px #666;
+}
+.newGrilla .div_render_fila {
+  float: left;
+  margin-left: -21px;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+}
+.newGrilla .div_input_busqueda {
+  height: 28px;
+  padding-top: 5px;
+  padding: 5 0 0 6;
+  border-top-left-radius: 5;
+  float: left;
+}
+.newGrilla .div_input_busqueda>input {
+  border: 1px solid #d4d4d4;
+  background-image: url("../../temas/clasico/images/BotonesTabs/buscar16.png");
+  background-repeat: no-repeat;
+  padding: 0 0 0 27px;
+  border-radius: 3px;
+  font-size: 12px;
+  min-height: 22px;
+  width: 215px;
+  height: 20px;
+  margin-top: 3px;
+}
+.newGrilla .div_img_actualizar_datos {
+  float: left;
+  width: 35px;
+  height: 40px;
+}
+.newGrilla .div_img_actualizar_datos>img {
+  padding: 7 0 0 7;
+  cursor: pointer;
+  margin: 3px;
+}
+.newGrilla .contenedorNewGrilla {
+  overflow: hidden;
+  width: calc(100% - 2px - 4%);
+  height: calc(100% - 41px - 4%);
+  border: 1px solid #bbb;
+  border-radius: radiusGrilla;
+  -webkit-border-radius: radiusGrilla;
+  -webkit-box-shadow: 2px 2px 2px #666;
+  -moz-box-shadow: 2px 2px 2px #666;
+  box-shadow: 2px 2px 2px #666;
+  background-color: #f3f3f3;
+}
+.newGrilla .fila_formulario {
+  min-height: 30px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+.newGrilla .divLabelFormulario {
+  float: left;
+  width: 100px;
+}
+.newGrilla .divInputFormulario {
+  float: left;
+  width: calc(100% - 100px - 20px - 10px);
+  margin-left: 5px;
+}
+.newGrilla .divInputFormulario input,
+.newGrilla .divInputFormulario select,
+.newGrilla .divInputFormulario textarea {
+  min-height: 22px;
+  width: 100%;
+  border: 0px solid #999;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 0px 3px #666;
+  -moz-box-shadow: 1px 1px 3px #999;
+  box-shadow: 1px 1px 3px #999;
+}
+.newGrilla .loadSaveFormulario {
+  overflow: hidden;
+  width: 100%;
+  height: 20px;
+}
+.newGrilla .divLoadCedula,
+.divLoadNewGrilla {
+  float: left;
+  width: 20px;
+}
+.newGrilla .headNewGrilla {
+  overflow: hidden;
+  font-weight: bold;
+  width: 100%;
+  border-bottom: 1px solid #bbb;
+  height: 22px;
+}
+.newGrilla .headNewGrilla div {
+  background-color: #f3f3f3;
+  height: 22px;
+  padding-top: 3;
+  font-size: 10.5px;
+}
+.newGrilla .bodyNewGrilla {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  height: calc(100% - 46px);
+  background-color: #fff;
+}
+.newGrilla .bodyNewGrilla > div {
+  overflow: hidden;
+  height: 22px;
+  border-bottom: 1px solid #d4d4d4;
+}
+.newGrilla .bodyNewGrilla > div > div {
+  height: 100%;
+}
+.newGrilla .bodyNewGrilla > divhover {
+  background-color: #e3ebfc;
+}
+.newGrilla .filaGrilla cursor hand,
+.newGrilla .filaGrilla input[type=text] {
+  border: 0px;
+  width: 90%;
+  height: 100%;
+}
+.newGrilla .filaGrilla input[type=text]focus {
+  background: #fff;
+}
+.newGrilla .headNewGrilla .colGrilla {
+  border-right: 1px solid #d4d4d4;
+}
+.newGrilla .colCont,
+.newGrilla .colGrilla {
+  height: 100%;
+  box-sizing: border-box;
+  float: left;
+  text-indent: 5px;
+  border-right: 1px solid #d4d4d4;
+}
+.newGrilla .colCont {
+  width: 28px;
+  background-color: #f3f3f3;
+}
+.newGrilla .colGrilla {
+  width: 100px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-right: none;
+}
+.grilla_first,
+.grilla_last,
+.grilla_next,
+.grilla_prev {
+  width: 16px;
+  float: left;
+  height: 16px;
+  cursor: pointer;
+  margin: 0px 4px 0 4px;
+}
+.grilla_first {
+  background-image: url("images/first.png");
+}
+.grilla_last {
+  background-image: url("images/last.png");
+}
+.grilla_next {
+  background-image: url("images/next.png");
+}
+.grilla_prev {
+  background-image: url("images/prev.png");
+}

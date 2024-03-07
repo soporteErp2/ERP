@@ -1,0 +1,831 @@
+.renglon, .subRenglon, .label, .campo, .btnCopyAbono, .labelNotaGeneral, .campoNotaGeneral, .labelGrilla, .campoGrilla, .labelGrillaDocCruce{ float:left; height: 18px;}
+.renglon{ width:100%; margin:0; overflow:hidden; }
+
+.label{
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+	width         : calc((100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+.labelTotal{
+	float         : right;
+	height        : auto;
+	border-left   : none !important;
+	margin-right  : 5px;
+	text-align    : right;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	width         : calc(100% - 176px - 20px) !important;
+}
+
+.btnsGrilla > div{
+	width      : 20px;
+	float      : left;
+	margin-top : 3px;
+	cursor     : pointer;
+}
+
+.labelGrilla,.labelReciboCaja, .labelGrillaDocCruce{
+	height        : 100%;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campoGrilla, .campoReciboCaja{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.renglonTop{ float : left; margin: 7px 5px 0 0; min-width: 135px; min-height: 41px; border: 1px solid #d4d4d4;  overflow: hidden;}
+.campoTop{  float: left; height: 22px; width: 100%; }
+
+.labelTop{
+	font-weight      : bold;
+	text-align       : center;
+	width            : 100%;
+	height           : 15px;
+	padding-top      : 2px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+
+.bodyLeft{
+	width : 100%;
+	float : left;
+}
+
+.bodyArticulos{
+	background : #FFF;
+	width      : 100%;
+	float      : left;
+}
+
+.contenedorGrilla{
+	height             : 300px;
+	width              : 98%;
+	margin             : 10px auto 0 auto;
+	overflow-x         : auto !important;
+	overflow-y         : hidden !important;
+	background-color   : #ECECEC;
+	border             : 1px solid #D4D4D4;
+
+}
+
+.titleGrilla{
+	height           : 25px;
+	padding-top      : 5px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+	text-align       : center;
+	float            : left;
+	width            : 100%;
+	display          : none;
+}
+
+.contenedor_totales{
+	width      : 98%;
+	margin     : 20 auto 20px auto;
+	overflow-y : hidden;
+}
+
+.DivArticulos{
+	width            : calc(100% - 1px);
+	height           : calc(100% - 21px);
+	float            : left;
+	min-width        : 700px;
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	background-color : #FFF;
+}
+
+/* STYLE SCROLL GRILLA*/
+/*.contenedorGrilla ::-webkit-scrollbar {
+	width: 8px;
+}
+.contenedorGrilla ::-webkit-scrollbar-track {
+	-webkit-box-shadow: #eceded;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.contenedorGrilla ::-webkit-scrollbar-track-piece {
+	background-color: #eceded;
+}
+
+.contenedorGrilla ::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #bcc0c2;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.contenedorGrilla ::-webkit-scrollbar-thumb:window-inactive {
+	display: none;
+}
+*/
+
+
+.contInfoFact{
+	width         : 100%;
+	overflow      : auto;
+	background    : #FFF;
+	float         : left;
+	margin-bottom : 5px;
+	background    : #FDFEFF;
+}
+
+.contInfoFact > div:first-child {
+	width    : 20px;
+	height   : 20px;
+	position : fixed;
+	margin   : 5px 10px;
+	overflow : hidden;
+}
+
+.contInfoFact input{ font-size  : 11px; }
+.bodyArticulos, .bodyTop{ font-size: 11px; }
+
+@media screen and (min-width:0px) and (max-width:550px) {
+	.contenedorObservacionGeneral{
+		width : calc(100% - 2px) !important;
+	}
+
+	.contenedorDetalleTotales{
+		width      : calc(100% - 2px) !important;
+		margin-top : 20px
+	}
+}
+
+@media screen and (min-width:551px) and (max-width:650px) {
+	.contenedorObservacionGeneral{ width: 40% !important; }
+}
+
+.campoNombreArticulo{
+	float        : left;
+	height       : 18px;
+	width        : 30%;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.campoDocumentoCruzado{
+	float        : left;
+	height       : 18px;
+	width        : 5px;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.labelNombreArticulo{
+	text-indent   : 1px;
+	float         : left;
+	height        : 18px;
+	width         : 30%;
+	font-weight   : bold;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	border-right  : 1px solid #d4d4d4;
+}
+
+/* DIV IZQUIERDO */
+.bodyTop{
+	width            : 100%;
+	float            : left;
+	background-color : #d4d4d4;
+}
+
+.renderFilasArticulo{
+	float : left;
+	width : 100%;
+}
+
+.contTopFila{
+	overflow : hidden;
+	width    : 98%;
+	margin   : 0px auto 10px auto;
+}
+
+/* CAMPOS CHECK*/
+.campoCheck{
+	width       : 131px;
+	/*height      : 23px;*/
+	float       : left;
+	margin-left : 8px;
+	display     : table;
+}
+
+.campoCheck > input, .campoCheck > div, .campoCheck > label{ display: table-cell; vertical-align: middle; }
+
+.campoCheck input[type=checkbox]{
+	cursor     : pointer;
+	margin-top : 5px;
+}
+
+.contenedorHeadArticulos{
+	overflow         : hidden;
+	float            : left;
+	width            : 100%;
+	min-width        : 700px;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.headArticulos{
+	width : calc(100% - 1px);;
+	float : left;
+	height: 20px;
+}
+
+.contenedorCheckbox{ float: left; }
+
+.contenedorOrdenCompra input[type=text]:focus{ background: #eef5f6; }
+.contenedorOrdenCompra input[type=text]:hover{ background: #eef5f6; }
+
+.contenedorReciboCajaCuentas input[type=text]:focus{ background: #eef5f6; }
+.contenedorReciboCajaCuentas input[type=text]:hover{ background: #eef5f6; }
+
+.contenedorReciboCajaDocumentos input[type=text]:focus{ background: #eef5f6; }
+.contenedorReciboCajaDocumentos input[type=text]:hover{ background: #eef5f6; }
+
+.campoTop input[type=text]:hover{ background : #eef5f6; }
+
+.campoTop input[type=text]{ text-indent: 5px; }
+.campoTop input[type=text], .campoTop select{
+	cursor : pointer;
+	width  : 100%;
+	height : 100%;
+	border : none;
+}
+
+.bodyDivArticulos input[type=text],
+.bodyDivArticulosFactura input[type=text],
+.bodyDivArticulosFvCuentas input[type=text],
+.bodyDivArticulosFacturaVenta input[type=text],
+.bodyDivArticulosCotizacionVenta input[type=text],
+.bodyDivArticulosReciboCaja input[type=text],
+.bodyDivArticulosPedidoVenta input[type=text],
+.bodyDivArticulosRemisionesVenta input[type=text]{
+	width       : 100%;
+	height      : 100%;
+	border      : none;
+	font-size   : 11px;
+	text-align  : right;
+	padding 	: 0 3px 0 3px;
+}
+
+textarea{ width : 100%; border: none; height: 52px; }
+
+.bodyDivArticulos,
+.bodyDivArticulosFactura,
+.bodyDivArticulosFvCuentas,
+.bodyDivArticulosFacturaVenta,
+.bodyDivArticulosCotizacionVenta,
+.bodyDivArticulosPedidoVenta,
+.bodyDivArticulosRemisionesVenta,
+.bodyDivArticulosReciboCaja,
+.contenedorObservacionGeneral > div{
+	padding          : 0;
+	height           : 22px;
+	font-weight      : normal;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color :#F3F3F3;
+}
+
+.bodyDivArticulos > div,
+.bodyDivArticulosFactura > div,
+.bodyDivArticulosFvCuentas > div,
+.bodyDivArticulosFacturaVenta > div,
+.bodyDivArticulosCotizacionVenta> div,
+.bodyDivArticulosPedidoVenta > div,
+.bodyDivArticulosRemisionesVenta > div,
+.bodyDivArticulosReciboCaja > div,
+ .contenedorObservacionGeneral > div{ font-weight : bolder; }
+
+.campo{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+	width        : calc((100% - 40px - 12% - 30% - 95px) / 5);
+	width        : -moz-calc(100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+.campoComprobante{
+	height      : 100%;
+	border-left : 1px solid #d4d4d4;
+}
+
+.btnCopyAbono{
+	height      : 100%;
+	border-left : 1px solid #d4d4d4;
+	margin-left : -22px;
+	cursor      : pointer;
+}
+
+.campoAbono input{ width : calc(100% - 20px) !important; }
+
+.contenedorOrdenCompra .campoComprobante{ width : calc((100% - 40px - 95px) / 8); }
+
+/*estilo para  el contenedor de los totales de la factura/orden de compra*/
+.contenedorDetalleTotales{ width: 33%; float: right; min-width: 300px; }
+.contenedorObservacionGeneral{ width: 50%; float: left; height: 80px; min-width: 150px; }
+
+.contenedorObservacionGeneral,.contenedorDetalleTotales{
+	background    : #FFF;
+	border        : 1px solid #D4D4D4;
+	overflow      : hidden;
+}
+
+.icono{
+	width      : 20px;
+	float      : left;
+	margin-top : 3px;
+	cursor     : pointer;
+}
+
+.iconBuscarArticulo{
+	width            : 20px;
+	height           : 100%;
+	float            : left;
+	cursor           : pointer;
+	margin-left      : -22px;
+	border-left      : 1px solid #d4d4d4;
+	background-color:#F3F3F3;
+}
+
+.iconBuscarProveedor{
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	cursor           : pointer;
+	margin           : 1px 0 0 -22px;
+	border           : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarProveedor > img, .iconBuscarArticulo > img{
+	margin-top  : 2px;
+	margin-left : 1px;
+	height      : 16px;
+	width       : 16px;
+}
+
+
+.campoCheck label{
+	height   : 20px;
+	overflow : hidden;
+	width    : calc(100% - 18px);
+}
+
+.labelNombreRetencion{
+	float         : left;
+	overflow      : hidden;
+	max-width     : calc(100% - 53px);
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	margin-right  : 2px;
+}
+
+.labelValorRetencion{
+	width : 40px;
+	float : left;
+}
+
+.renderCheck{
+	margin-top  : -3;
+	width       : 20px;
+	margin-left : -20px;
+	overflow    : hidden;
+	height      : 20px;
+	float       : left;
+}
+
+.renglonTotal{ height: 20px; border-top: 1px solid #d4d4d4; background-color: #F3F3F3; }
+.renglonTotal > div{ height: 100%; margin-top: 4px; }
+.headArticulos div { height: 100%; padding-top: 2px; }
+
+.btnCargarAgregarDocumento{
+	margin-left           : 2px;
+	float                 : left;
+	width                 : 20px;
+	height                : 20px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #d4d4d4;
+	padding               : 2px 0px 0px 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+}
+
+.btnCargarAgregarDocumento:hover{
+	border             : 1px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+
+.btnCargarAgregarDocumento:active {
+	border             : 2px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+
+.btnCargarAgregarDocumento > img { margin: 1px; }
+
+/*BOTON RESTAURAR UNA REMISION O UNA FACTURA*/
+.btnRestaurarDocumento{
+	float                 : right;
+	width                 : 55px;
+	height                : 60px;
+	margin                : 5px 0 31px 10px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #d4d4d4;
+	padding               : 2px 0px 0px 2px;
+	border-radius         : 2px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+}
+
+.btnRestaurarDocumento > img{ margin-left: 5px; }
+.btnRestaurarDocumento:hover { border:1px solid #777; }
+.btnRestaurarDocumento:active { border:1px solid #0846af; }
+
+.contenedorInputDocReferenciaFactura{
+	float        : left;
+	width        : 134px;
+	height       : 100%;
+	/*border-left  : 1px solid #d4d4d4;*/
+	border-right : 1px solid #d4d4d4;
+}
+
+.inputDocReferenciaFactura { height:100%; width:100%; }
+
+/*CAMPO DESCUENTO EN GRILLA*/
+.campoDescuento > div{
+	height       : 100%;
+	width        : 17px;
+	float        : left;
+	cursor       : pointer;
+	border-right : 1px solid #d4d4d4;
+}
+.campoDescuento > div > img{
+	margin : 6px 3px;
+	height : 11px;
+}
+
+.campoDescuento > input{
+	float : right;
+	width : calc(100% - 18px) !important;
+}
+
+/*ESTILOS COMPROBANTE RECIBO DE CAJA POR CUENTAS*/
+.contenedorReciboCajaCuentas .labelGrilla{ width : calc((100% - 35% - 40px - 95px - 92px) / 3); }
+.contenedorReciboCajaCuentas .campoGrilla{ width : calc((100% - 35% - 40px - 95px - 92px) / 3); }
+
+.contenedorReciboCajaCuentas .labelGrillaDocCruce{ width : calc((100% - 20% - 40px - 95px - 87px) / 3) ; }
+.contenedorReciboCajaCuentas{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+
+.contenedorReciboCajaCuentas input[type=text]:focus{ background: #eef5f6; }
+
+/*ESTILOS COMPROBANTE RECIBO DE CAJA POR DOCUMENTOS*/
+.contenedorReciboCajaDocumentos .labelReciboCaja{ width : calc((100% - 5% - -20%  - 40px - 75px) / 8); }
+.contenedorReciboCajaDocumentos .campoReciboCaja{ width : calc((100% - 5% - -20%  - 40px - 75px) / 8); }
+.contenedorReciboCajaDocumentos{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+
+.contenedorReciboCajaDocumentos input[type=text]:focus{ background: #eef5f6; }
+
+.inputPrefijoFacturaReciboCaja{
+	text-align : left !important;
+	width      : calc(40% - 10px) !important;
+}
+
+.inputNumeroFacturaReciboCaja{
+	text-align : right;
+	width      : calc(60% - 10px - 11px) !important;
+}
+
+/*ESTILOS DE ALIGN TEXTO*/
+.left{ text-align: left !important; }
+
+.labelSimbolo{
+	height      : auto;
+	overflow    : visible;
+	font-weight : bold;
+	float       : left;
+	width       : 10px;
+}
+
+.myFieldGrilla{
+	height        : 24px;
+	width         : 120px;
+	font-size     : 11px;
+	border-radius : 2px;
+	border        : 1px solid #d4d4d4;
+}
+
+.myFieldGrilla:focus {
+	border             : 1px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+
+.div_hover{
+	text-align     : left;
+	display        : table-cell;
+	vertical-align : middle;
+	cursor         : pointer;
+}
+
+/*============ ESTILO DE LOS FORMULARIOS ===========*/
+
+.table-form{
+	font-family : arial,sans-serif;
+	margin-top  : 20px;
+	font-size   : 12px;
+	float       : left;
+	margin-left : 10px;
+	/*width       : 400px;*/
+}
+
+.table-form .thead{
+	background-color : #2A80B9;
+	color            : #fff;
+}
+
+.table-form .thead td{
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-form td{
+	padding: 2px 2px 2px 15px;
+}
+
+.table-form input, .table-form textarea, .table-form select{
+	line-height      : 1.42857143;
+	color            : #555;
+	background-color : #fff;
+	border           : 1px solid #ccc;
+	height           : 30px;
+	width            : 200px;
+	padding-left     : 5px;
+}
+
+.table-form textarea{
+	height: 50px;
+}
+
+.table-form input[data-requiere="true"], select[data-requiere="true"]{
+	background-color:#FFE0E0;
+}
+
+.buttom-content{
+	width         : 96%;
+	border-bottom : 1px solid;
+	margin-left   : 15px;
+}
+
+.button{
+	cursor                : pointer;
+	background            : none;
+	border                : none;
+	width                 : 53px;
+	height                : 64px;
+	padding-top           : 46px;
+	background-repeat     : no-repeat;
+	color                 : #757575;
+	font-size             : 12px;
+	text-align            : center;
+	background-position-x : center;
+	margin                : 10px;
+}
+
+.button:hover{
+	opacity: 0.5;
+}
+
+.button[data-value="save"]{
+	background-image: url('../../personal/images/save.png');
+}
+
+.button[data-value="save_white"]{
+	background-image: url('../../personal/images/save_blanco.png');
+}
+
+.button[data-value="delete"]{
+	background-image: url('../../personal/images/delete_grilla.png');
+}
+
+.button[data-value="new"]{
+	background-image: url('../../personal/images/agregar.png');
+}
+
+.button[data-value="edit"]{
+	background-image: url('../img/editar.png');
+}
+
+.button[data-value="cancel"]{
+	background-image: url('../img/cancelar.png');
+}
+
+.button[data-value="restore"]{
+	background-image: url('../img/restaurar.png');
+}
+
+.button[data-value="excel"]{
+	background-image: url('../img/excel_deterioro.png');
+}
+
+.button[data-value="load"]{
+	background-image: url('../img/load.png');
+	background-position-x: 50%;
+	background-position-y: 22%;
+}
+
+/*ESTILOS GEMERALES DEL WIZARD*/
+.main-content{
+    width            : 100%;
+    height           : 100%;
+    background-color : #FFF;
+}
+.sub-content{
+    height       : 100%;
+    float        : left;
+    border-right : 1px solid #ddd;
+}
+
+.sub-content .title{
+    text-align       : left;
+    font-size        : 11px;
+    color            : #1e82c4;
+    border-top       : 1px solid #ddd;
+    border-bottom    : 1px solid #ddd;
+    margin           : 0;
+    padding          : 6px;
+    background-color : #F9F9F9;
+}
+
+.sub-content p{
+    text-align : center;
+    padding    : 15px;
+}
+
+.sub-content input[type="text"]{
+    display               : block;
+    line-height           : 1.42857143;
+    color                 : #555;
+    background-color      : #fff;
+    background-image      : none;
+    border                : 1px solid #ccc;
+    height                : 25px;
+}
+
+.sub-content table td{
+    padding     : 5px;
+    font-family : Verdana,sans-serif,Tahoma;
+    font-size   : 11px;
+}
+
+.sub-content [data-icon="btn-search"]{
+    width               : 9px;
+    background-image    : url(img/buscar20New.png);
+    background-repeat   : no-repeat;
+    background-position : center;
+    cursor              : pointer;
+}
+
+/*ESTILOS DE LA GRILLA DEL WIZARD*/
+.content-grilla-filtro{
+    width  : 95%;
+    height : 85%;
+    border : 1px solid #ddd;
+    margin : 7px;
+}
+
+.content-grilla-filtro .head{
+    background-color : #F9F9F9;
+    width            : 100%;
+    height           : 30px;
+    border-bottom    : 1px solid #ddd;
+    font-size        : 13px;
+}
+
+.content-grilla-filtro .body{
+    width  : 100%;
+    height : calc(100% - 31px);
+    overflow: auto;
+}
+
+.content-grilla-filtro .row{
+    float         : left;
+    width         : 100%;
+    border-bottom : 1px solid #ddd;
+    height        : 25px;
+}
+.content-grilla-filtro .cell{
+	height        : calc(100% - 9px);
+	float         : left;
+	border-right  : 1px solid #ddd;
+	padding       : 5px;
+	overflow      :hidden;
+	white-space   :nowrap;
+	text-overflow : ellipsis;
+}
+
+.content-grilla-filtro .cell[data-icon="search"]{
+    width               : 22px;
+    background-image    : url('../informes/img/buscar20New.png');
+    background-repeat   : no-repeat;
+    background-position : center;
+    cursor              : pointer;
+}
+
+.content-grilla-filtro .cell[data-icon="sinc"]{
+    width               : 22px;
+    background-image    : url('img/sinc.png');
+    background-repeat   : no-repeat;
+    background-position : center;
+    cursor              : pointer;
+}
+
+.content-grilla-filtro .cell[data-icon="check"]{
+	background-size       : 17px;
+	background-image      : url('img/checked.png');
+	background-repeat     : no-repeat;
+	background-position-x : 6px;
+	background-position-y : center;
+	cursor                : pointer;
+}
+
+.content-grilla-filtro .cell[data-icon="un_checked"]{
+	background-size       : 17px;
+	background-image      : url('img/un_checked.png');
+	background-repeat     : no-repeat;
+	background-position-x : 6px;
+	background-position-y : center;
+	cursor                : pointer;
+}
+
+.content-grilla-filtro .cell[data-icon="delete"]{
+	    width               : 22px;
+	    background-image    : url('img/delete.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+.divIngredientes{
+	max-height         : 0px;
+	overflow           : hidden;
+	/*transition         : max-height 1s;*/
+	/*-moz-transition    : max-height 1s;*/
+	/*-webkit-transition : max-height 1s;*/
+	/*-o-transition      : max-height 1s;*/
+
+	/*max-height: 0;*/
+    /*overflow: hidden; */
+    /*-webkit-transition: max-height 2s;*/
+    /*-moz-transition: max-height 2s;*/
+    /*transition: max-height 2s;*/
+}
+
+.showIngredients{
+	max-height         : 10000px;
+	transition         : max-height 15s;
+	-moz-transition    : max-height 15s;
+	-webkit-transition : max-height 15s;
+	-o-transition      : max-height 15s;
+	border-bottom      : dashed 1px #0f9ce8;
+}
+
+.x-window-body {
+		position: relative;
+	}
+
+/*.divIngredientes .show{
+	transition: all 2s linear;
+  display: block;
+}

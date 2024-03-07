@@ -1,0 +1,17 @@
+# Ignorar archivos temporales generados por el sistema
+*~
+
+# directorios a ignorar
+ARCHIVOS_PROPIOS/
+BOLETAS/
+COMUN/
+soporte/
+source/
+SQL/
+
+#ignorar el archivo de configuracion
+configuracion/conexion.php
+
+#ignorar la configuracion para el pos
+LOGICALERP/pos/frontend/POS/pos/config.js
+

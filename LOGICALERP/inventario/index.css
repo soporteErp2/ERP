@@ -1,0 +1,597 @@
+.renglon,.subRenglon,.label,.campo{ float:left; height: 18px;}
+.renglon{ width:100%; margin:0; overflow:hidden; }
+.labelTotal{ float:right; height: 18px; border-left: none !important; margin-right: 5px; width: 31% !important; text-align: right;}
+
+.label{
+	text-indent   : 1px;
+	font-size     : 11px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+	width         : calc((100% - 40px - 12% - 30% - 95px) / 5);
+	width         : -moz-calc(100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+.labelSimbolo {
+	height      : auto;
+	overflow    : visible;
+	font-weight : bold;
+	float       : left;
+	width       : 10px;
+}
+
+.labelTotal{
+	text-indent   : 1px;
+	font-size     : 11px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	width         : calc((100% - 40px - 12% - 30% - 95px) / 5);
+	width         : -moz-calc(100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+.renglonTop{ float : left; margin: 7px 5px 0 0; min-width: 135px; min-height: 41px; border: 1px solid #d4d4d4; }
+.labelTop{
+	font-weight      : bold;
+	text-align       : center;
+	width            : 100%;
+	height           : 15px;
+	padding-top      : 2px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+}
+.campoTop{ float: left; height: 22px; width: 100%; }
+
+.contenedorOrdenCompra{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+
+.bodyLeft{
+	width : 100%;
+	float : left;
+}
+
+.bodyArticulos{
+	background : #FFF;
+	width      : 100%;
+	float      : left;
+}
+
+.contenedorGrilla{
+	height             : 300px;
+	width              : 98%;
+	margin             : 10px auto 0 auto;
+	overflow-x         : auto !important;
+	overflow-y         : auto !important;
+	background-color   : #FFFFFF;
+	border             : 1px solid #BBB;
+	-webkit-box-shadow : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow    : 1px 1px 1px #d4d4d4;
+	box-shadow         : 1px 1px 1px #d4d4d4;
+}
+
+.titleGrilla{
+	height           : 25px;
+	padding-top      : 5px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+	text-align       : center;
+	float            : left;
+	width            : 100%;
+	display          : none;
+}
+
+.contenedor_totales{
+	width      : 98%;
+	margin     : 20 auto 20px auto;
+	overflow-y : hidden;
+}
+
+.DivArticulos{
+	width      : 100%;
+	float      : left;
+	min-width  : 700px;
+	/*height     : 131px !important;*/
+	/*overflow-y : scroll;*/
+	height     : calc(100% - 21px);
+	height     : -moz-calc(100% - 21px);
+}
+
+.contInfoFact{
+	width              : 100%;
+	overflow           : auto;
+	font-size          : 12px;
+	background         : #FFF;
+	float              : left;
+	margin             : 2px 0 5px 0;
+	background 		   : #FDFEFF;
+	font-family        : "Trebuchet MS", Verdana, Arial, sans-serif, "Lucida Grande";
+}
+
+.contInfoFact input{
+	font-size  : 11px;
+}
+
+@media screen and (min-width:0px) and (max-width:550px) {
+	.contenedorObservacionGeneral{
+		width : -moz-calc(100% - 17px);
+		width : calc(100% - 2px) !important;
+	}
+
+	.contenedorDetalleTotales{
+		width      : -moz-calc(100% - 17px);
+		width      : calc(100% - 2px) !important;
+		margin-top : 20px
+	}
+}
+
+@media screen and (min-width:551px) and (max-width:650px) {
+	.contenedorObservacionGeneral{ width: 40% !important; }
+}
+
+.campoNombreArticulo{
+	float        : left;
+	height       : 18px;
+	width        : 30%;
+	font-size    : 12px;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.labelNombreArticulo{
+	text-indent   : 1px;
+	float         : left;
+	height        : 18px;
+	width         : 30%;
+	font-weight   : bold;
+	font-size     : 11px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	border-right  : 1px solid #d4d4d4;
+}
+
+/* DIV IZQUIERDO */
+.bodyTop{
+	width            : 100%;
+	float            : left;
+	background-color : #d4d4d4;
+}
+
+.renderFilasArticulo{
+	float : left;
+	width : 100%;
+}
+
+.contTopFila{
+	overflow : hidden;
+	width    : 98%;
+	margin   : 0px auto 10px auto;
+}
+
+
+/* CAMPOS CHECK*/
+.campoCheck{
+	width  : 131px;
+	float  : left;
+	margin : 2px 0 0 8px;
+}
+
+.campoCheck input[type=checkbox]{
+	cursor  : pointer;
+	float   : left;
+	margin  : 2px 5px 0 0;
+}
+
+.contenedorHeadArticulos{
+	overflow         : hidden;
+	float            : left;
+	width            : 100%;
+	min-width        : 750px;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.headArticulos{
+	width  : calc(100% - 1px);
+	float  : left;
+	height : 20px;
+}
+
+.contenedorCheckbox{ float: left; }
+
+.contenedorOrdenCompra input[type=text]:focus { background: #eef5f6; }
+.campoTop input[type=text]:focus { background: #eef5f6; }
+.campoTop input[type=text]:hover { background: #eef5f6; }
+
+.campoTop input[type=text]{ padding-left:5px; }
+.campoTop input[type=text], .campoTop select{
+	cursor                : pointer;
+	width                 : 100%;
+	height                : 100%;
+	border                : none;
+	/*-moz-border-radius    : 3px 3px 3px 3px;
+	-webkit-border-radius : 3px 3px 3px 3px;
+	border-radius         : 3px 3px 3px 3px;*/
+}
+
+.campoTop select{
+	webkit-box-shadow : none !important;
+	box-shadow        : none !important;
+	font-size         : 11px;
+}
+
+.bodyDivArticulos input[type=text], .bodyDivArticulosAjusteInventario input[type=text], .bodyDivArticulosTraslados input[type=text]{
+	width       : 100%;
+	height      : 100%;
+	border      : none;
+	font-size   : 12px;
+	text-align  : right;
+	padding 	: 0 3px 0 3px;
+	font-family : "Trebuchet MS", Verdana, Arial, sans-serif, "Lucida Grande";
+
+}
+
+textarea{ width : 100%; border: none; height: 52px; }
+
+.bodyDivArticulos, .bodyDivArticulosAjusteInventario, .bodyDivArticulosTraslados, .contenedorObservacionGeneral > div{
+	padding          : 0;
+	height           : 22px;
+	font-size        : 12px;
+	font-weight      : normal;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+	font-family      : "Trebuchet MS", Verdana, Arial, sans-serif, "Lucida Grande";
+}
+
+.bodyDivArticulos > div, .bodyDivArticulosAjusteInventario > div, .bodyDivArticulosTraslados > div, .contenedorObservacionGeneral > div{ font-weight : bolder; }
+
+.campo{
+	height       : 100%;
+	font-size    : 11px;
+	border-right : 1px solid #d4d4d4;
+	width        : calc((100% - 40px - 12% - 30% - 95px) / 5);
+	width        : -moz-calc(100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+/*estilo para  el contenedor de los totales de la factura/orden de compra*/
+.contenedorDetalleTotales{ width: 33%; float: right; min-width: 300px; }
+.contenedorObservacionGeneral{ width: 50%; float: left; height: 80px; min-width: 150px; }
+
+.contenedorObservacionGeneral,.contenedorDetalleTotales{
+	background         : #FFF;
+	border             : 1px solid #BBB;
+	-webkit-box-shadow : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow    : 1px 1px 1px #d4d4d4;
+	box-shadow         : 1px 1px 1px #d4d4d4;
+}
+
+.icono{
+	width      : 20px;
+	float      : left;
+	margin-top : 3px;
+	cursor     : pointer;
+}
+
+.iconBuscarArticulo{
+	width            : 20px;
+	height           : 100%;
+	float            : left;
+	cursor           : pointer;
+	margin-left      : -22px;
+	border-left      : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarProveedor{
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	cursor           : pointer;
+	margin           : 1px 0 0 -21px;
+	border           : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.campoCheck label{
+	height   : 20px;
+	float    : left;
+	overflow : hidden;
+	width    : calc(100% - 18px);
+	width    : -moz-calc(100% - 18px);
+}
+
+.labelNombreRetencion{
+	float         : left;
+	overflow      : hidden;
+	max-width     : calc(100% - 43px);
+	max-width     : -moz-calc(100% - 43px);
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	margin-right  : 2px;
+	font-size     : 11px;
+}
+
+.labelValorRetencion{
+	width : 40px;
+	float : left;
+}
+
+.renderCheck{
+	margin-top  : -3;
+	width       : 20px;
+	margin-left : -20px;
+	overflow    : hidden;
+	height      : 20px;
+	float       : left;
+}
+
+.renglonTotal{ height: 20px; border-top: 1px solid #d4d4d4;  background-color: #F3F3F3;}
+.renglonTotal > div{ height: 100%; margin-top: 4px; }
+.headArticulos div { height: 100%; padding-top: 2px; }
+
+.contenedorTraslados .labelComprobante{ width: calc((100% - 5% - -20% - 40px - 75px) / 8); }
+.contenedorTraslados .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
+.contenedorTrasladosBloqueada .label{ width : calc((100% - 80px) / 10); }
+
+
+.contenedorTraslados .labelNombreArticulo, .contenedorTraslados .campoNombreArticulo{ width : calc((100% - 40px - 95px) / 8 * 3); }
+.contenedorTrasladosBloqueada .labelNombreArticulo, .contenedorTrasladosBloqueada .campoNombreArticulo{ width : calc((100% - 80px) / 10 * 3); }
+
+
+.contenedorTraslados .campo, .contenedorTraslados .label{ width : calc((100% - 40px - 95px) / 5); }//*CON LOS CAMPOS ELIMINADOS */
+.contenedorTraslados .campoComprobante, .contenedorTraslados .labelComprobante{ width: calc((100% - 5% - -20% - 40px - 75px) / 8); }
+.contenedorTrasladosBloqueada .campo, .contenedorTrasladosBloqueada .label{ width : calc((100% - 80px) / 5); } /*CON LOS CAMPOS ELIMINADOS */
+.contenedorTraslados .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
+
+
+.btnCargarAgregarDocumento{
+	margin-left           : 2px;
+	float                 : left;
+	width                 : 18px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #777;
+	height                : 18px;
+	padding               : 2px 0px 0px 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+}
+
+.btnCargarAgregarDocumento:hover{ border:1px solid #333; }
+.btnCargarAgregarDocumento:active { border:2px solid #333; }
+
+/*BOTON RESTAURAR UNA REMISION O UNA FACTURA*/
+.btnRestaurarDocumento{
+	float                 : right;
+	width                 : 55px;
+	height                : 60px;
+	margin                : 5px 0 31px 10px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #d4d4d4;
+	padding               : 2px 0px 0px 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+}
+
+.btnRestaurarDocumento > img{ margin-left: 5px; }
+.btnRestaurarDocumento:hover { border:1px solid #777; }
+.btnRestaurarDocumento:active { border:1px solid #0846af; }
+
+.contenedorInputDocReferenciaFactura{
+	float        : left;
+	width        : 134px;
+	height       : 100%;
+	border-left  : 1px solid #d4d4d4;
+	border-right : 1px solid #d4d4d4;
+}
+
+.inputDocReferenciaFactura { height:100%; width:100%; }
+
+/*CAMPO DESCUENTO EN GRILLA*/
+.campoDescuento > div{
+	height       : 100%;
+	width        : 17px;
+	float        : left;
+	cursor       : pointer;
+	border-right : 1px solid #d4d4d4;
+}
+.campoDescuento > div > img{
+	margin: 6px 3px;
+	height: 11px;
+}
+
+.campoDescuento > input{
+	float : right;
+	width : calc(100% - 18px) !important;
+	width : -moz-calc(100% - 18px) !important;
+}
+
+.InventarioTotales_cantidad_stock, .InventarioTotales_min_stock, .InventarioTotales_max_stock{
+	float         : left;
+	width         : 100%;
+	overflow      : hidden;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	font-weight   : bold;
+	text-align    : center;
+	text-align    : right;
+}
+
+.fondo_modal{
+    z-index          : 100;
+    top              : 0px;
+    width            : 100%;
+    height           : 100%;
+    display          : table;
+    left             : 0px;
+    position         : fixed !important;
+    background-color : rgba(0,0,0,0.6);       /* Color de fondo */
+}
+
+/* MODAL UPLOAD FILE */
+
+.fondo_modal_upload_file{
+	display          : none;
+	top              : 0px;
+	left             : 0px;
+	width            : 100%;
+	height           : 100%;
+	z-index          : 10000;
+	position         : fixed;
+	background-color : rgba(0,0,0,0.6);
+}
+
+.fondo_modal_upload_file > div{
+    position : absolute;
+    display  : table;
+    height   : 100%;
+    width    : 100%;
+    top      : 0;
+    left     : 0;
+}
+
+.fondo_modal_upload_file > div > div{
+    display        : table-cell;
+    vertical-align : middle;
+    width          : 100%;
+}
+
+.fondo_modal_upload_file > div > div > div{
+    width  : 400px;
+    height : 300px;
+    margin : 0px auto;
+}
+
+
+#div_upload_file{
+    width         : 400px;
+    height        : 300px;
+    background    : #FFF;
+    overflow      : hidden;
+    position      : fixed;
+    border        : 3px dashed #bcbcbc;
+}
+
+#div_upload_file:hover{ border : 3px dashed #9e9e9e; }
+
+#div_upload_file > div{
+    font-size: 23px;
+    margin-top: 130px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
+.btn_div_upload_file1{
+    width            : 26px;
+    height           : 26px;
+    position         : fixed;
+    margin-top       : -10px;
+    margin-left      : 390px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #bcbcbc;
+    border-radius    : 12px;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2{
+    color            : #9e9e9e;
+    width            : 22px;
+    height           : 22px;
+    position         : fixed;
+    margin-top       : 6px;
+    margin-left      : 375px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #fff;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2:hover{
+	color : #32B1D9;
+	border: 1px solid #32B1D9;
+}
+
+#btn_cancel_doc_upload{
+    cursor           : pointer;
+    display          : none;
+    float            : left;
+    margin           : 7px -35px;
+    height           : 23px;
+    width            : 25px;
+    border           : 1px solid;
+    border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius    : 2px;
+    padding-top      : 2px;
+    text-align       : center;
+    font-weight      : bold;
+    font-size        : 23px;
+    color            : #32B1D9;
+    background-color : #f3f3f3;
+}
+
+#div_upload_file > div {  margin: 0px !important;  }
+#div_upload_file:before {
+    content    : 'Arrastre el archivo excel o csv.';
+    width      : 100%;
+    float      : left;
+    font-size  : 23px;
+    margin-top : 130px;
+    text-align : center;
+    color      : #bcbcbc;
+}
+.qq-uploader { position:relative; width: 100%; height:100%; }
+.qq-upload-button { display:block; position:fixed !important; width:100px; height:34px; margin:5px; background-image:url(img/uploading.png); background-size: 100px; }
+.qq-upload-button-hover { background-image:url(img/uploading_blue.png) }
+.qq-upload-button-focus { }
+.qq-upload-drop-area { position:absolute; top:40; left:0; width:100%; height:100%; min-height: 70px; background:none; text-align:center; display:none;  }
+.qq-upload-drop-area span {  display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px; }
+.qq-upload-drop-area-active { background:#FF0000; opacity: 0.3; filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; }
+.qq-upload-list { height:100%; list-style:none; color:#333; text-align:center; }
+.qq-upload-list li {  margin:0; padding:0; line-height:15px; font-size:12px; }
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {  margin-right: 7px; }
+.qq-upload-file {  }
+.qq-upload-spinner {
+    display             : inline-block;
+    background-image    : url("img/loading.gif");
+    width               : 400px;
+    height              : 400px;
+    vertical-align      : text-bottom;
+    position            : absolute;
+    top                 : 0;
+    left                : 0;
+    background-repeat   : no-repeat;
+    background-position : 100px 50px;
+    background-color    : #fff;
+}
+.qq-upload-size,.qq-upload-cancel { font-size:11px; }
+.qq-upload-failed-text { display:none; }
+.qq-upload-fail .qq-upload-failed-text { display:inline; }
+
+.fondoImgHelp{
+	z-index  : 99999;
+	top      : 0px;
+	width    : 100%;
+	height   : 100%;
+	display  : table;
+	left     : 0px;
+	position : absolute !important;
+}
+
+.fondoImgHelp #modal{
+	display        : table-cell;
+	vertical-align : middle;
+ }
+
+ .x-window-body {
+		position: relative;
+	}

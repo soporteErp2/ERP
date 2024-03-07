@@ -1,0 +1,26 @@
+	/*************************************************************************************************************************/
+	/**                  					         	   I N F O R M E S													**/
+	/*************************************************************************************************************************/
+	
+	
+	.my_informe_Contenedor_Titulo_informe{
+		float				:	left; 
+		width				:	100%; 
+		border-bottom		:	1px solid #CCC; 
+		margin				:	0 0 10px 0;
+		font-size			:	11px;
+		font-family			:	Arial, Helvetica, sans-serif;	
+	}
+	.my_informe_Contenedor_Titulo_informe_label{
+		float				:	left;
+		width				:	110px; 
+		font-weight			:	bold;
+		/*margin				:	0 0 1px 0;*/		
+	}
+	.my_informe_Contenedor_Titulo_informe_detalle{
+		float				:	left;
+		width				:	350px; 
+		/*margin				:	0 0 1px 0;*/
+		padding				:	0 0 0 5px;	
+	}
+

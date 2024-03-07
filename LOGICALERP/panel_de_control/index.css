@@ -1,0 +1,587 @@
+.contenedorHeadInfoPuc{
+	float            : left;
+	width            : 100%;
+	font-weight      : bold;
+	border-bottom    : 1px solid #d4d4d4;
+	background-image : url(img/MyGrillaFondo.png);
+}
+
+.contenedorInfoCuentaPuc{
+	background-color   : #FFF;
+	width              : 98%;
+	overflow           : hidden;
+	text-align         : left;
+	margin             : 0 auto 0 auto;
+	border             : 1px solid #BBB;
+	-webkit-box-shadow : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow    : 1px 1px 1px #d4d4d4;
+	box-shadow         : 1px 1px 1px #d4d4d4;
+}
+
+.contenedorInfoCuentaPuc > div{
+	border-bottom: 1px solid #d4d4d4;
+}
+
+.divInfoPuc{
+	float      : left;
+	margin-top : 2px;
+	width      : 100%;
+	height     : 18px;
+}
+
+.divInfoPuc > div, .contenedorHeadInfoPuc > div{
+	display       : inline-block !important;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+}
+
+.contenedorHeadInfoPuc div{ height: 20px; padding-top: 2px; }
+
+.divBtnBuscarPuc{
+	margin-left      : 2px;
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	overflow         : hidden;
+	cursor           : pointer;
+	border-radius    : 3px;
+	border           : 1px solid #999;
+	background-color : #FFF;
+	box-shadow       : 1px 1px 3px #999;
+}
+
+.divBtnBuscarPuc:hover{ border:1px solid #333; }
+.divBtnBuscarPuc:active { border:1px solid #333; }
+
+/*======================== ESTILOS DE LA GRILLA MANUAL =====================*/
+#contenedor_grilla_manual{
+	overflow   : hidden;
+	width      : calc(100% - 400px);
+	margin     : 15px;
+	margin-top : 0px;
+}
+
+#contenedor_tabla_boletas{
+	overflow              : hidden;
+	width                 : calc(100% - 2px);
+	height                : 552px;
+	border                : 1px solid #D4D4D4 	;
+	border-radius         : 4px;
+	-webkit-border-radius : 4px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+	background-color      : #F3F3F3;
+}
+
+.toolbar_grilla_manual{
+	overflow   : hidden;
+	width      : 100%;
+	height     : 34px;
+	margin-top : 5px;
+}
+
+.div_img_actualizar_datos_grilla_manual{
+	float                   : left;
+	width                   : 35px;
+	height                  : 40px;
+	background-color        : #F3F3F3;
+	border-top-right-radius : 5;
+	border-top              : 1px solid #D4D4D4;
+	border-right            : 1px solid #d4d4d4;
+}
+
+.div_img_actualizar_datos_grilla_manual>img{
+	padding : 7 0 0 7;
+	cursor  : pointer;
+}
+
+.div_input_busqueda_grilla_manual{
+	width                  : 170px;
+	background-color       : #FFF;
+	height                 : 28px;
+	padding-top            : 5px;
+	padding                : 5 0 0 6;
+	background-color       : #F3F3F3;
+	border-top-left-radius : 5;
+	border                 : 1px solid #D4D4D4;
+	float                  : left;
+}
+
+.div_input_busqueda_grilla_manual>input{
+	background-image  : url(../../temas/clasico/images/BotonesTabs/buscar16.png);
+	background-repeat : no-repeat;
+	padding           : 0 0 0 27px;
+	border-radius     : 3px;
+	font-size         : 12px;
+	min-height        : 22px;
+	border            : 1px solid #D4D4D4;
+}
+
+.fila_formulario{
+	min-height : 30px;
+	margin-top : 5px;
+	overflow   : hidden;
+}
+
+.divLabelFormulario{
+	float : left;
+	width : 100px;
+}
+
+.divInputFormulario{
+	float       : left;
+	width       : calc(100% - 100px - 20px - 10px);
+	margin-left : 5px;
+}
+
+.divInputFormulario input, .divInputFormulario select, .divInputFormulario textarea{
+	min-height            : 22px;
+	width                 : 100%;
+	border                : 0px solid #999;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+	-webkit-box-shadow    : 0px 0px 3px #666;
+	-moz-box-shadow       : 1px 1px 3px #999;
+	box-shadow            : 1px 1px 3px #999;
+}
+
+.divLoadCedula, .divLoadBoleta{
+	float : left;
+	width : 20px;
+}
+
+.headTablaBoletas{
+	overflow      : hidden;
+	font-weight   : bold;
+	width         : 100%;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas, #bodyTablaBoletasFlujoEfectivo, #bodyTablaBoletasEstadoIntegral{
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	width            : 100%;
+	height           : 500px;
+	background-color : #FFF;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas > div , #bodyTablaBoletasFlujoEfectivo > div, #bodyTablaBoletasEstadoIntegral > div{
+	overflow      : hidden;
+	height        : 22px;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas> div > div, #bodyTablaBoletasFlujoEfectivo> div > div, #bodyTablaBoletasEstadoIntegral > div > div { height: 18px; padding-top: 4px; }
+#bodyTablaBoletas>  div:hover, #bodyTablaBoletasFlujoEfectivo>  div:hover, #bodyTablaBoletasEstadoIntegral >  div:hover {background-color: #E3EBFC;}
+
+.headTablaBoletas div{ background-color:#F3F3F3; }
+
+.headTablaBoletas div{
+	height      : 22px;
+	padding-top : 4px;
+	text-align  : left;
+}
+
+.filaBoleta{ cursor: hand; }
+
+.filaBoleta input[type=text]{
+	border : 0px;
+	width  : 90%;
+	height : 100%;
+}
+
+.filaBoleta input[type=text]:focus { background: #FFF; }
+
+.campo0,.campo1,.campo2,.campo3,.campo4{ font-size: 11px;}
+
+.campo0{
+	float            : left;
+	width            : 28px;
+	text-indent      : 5px;
+	border-right     : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.campo1{
+	float         : left;
+	width         : 100px;
+	text-indent   : 5px;
+	border-right  : 1px solid #d4d4d4;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	overflow      : hidden;
+}
+
+.campo2{
+	float         : left;
+	width         : 280px;
+	text-indent   : 5px;
+	overflow      : hidden;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campo3{
+	float         : left;
+	width         : 100px;
+	text-indent   : 5px;
+	text-align    : right;
+	padding-right : 3px;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campo4{
+	float        : left;
+	width        : 70px;
+	text-indent  : 5px;
+	text-align   : center;
+	border-right : 1px solid #d4d4d4;
+}
+
+/*==================================================================================*/
+/*============== ESTILOS PARA EL WIZARD DE LOS INFORMES (INCLUYE GRILLA) ===========*/
+/*==================================================================================*/
+
+	/*ESTILOS GEMERALES DEL WIZARD*/
+	.main-content{
+	    width            : 100%;
+	    height           : 100%;
+	    background-color : #FFF;
+	}
+	.sub-content{
+	    height       : 100%;
+	    float        : left;
+	    border-right : 1px solid #ddd;
+	}
+
+	.sub-content .title{
+	    text-align       : left;
+	    font-size        : 11px;
+	    color            : #1e82c4;
+	    border-top       : 1px solid #ddd;
+	    border-bottom    : 1px solid #ddd;
+	    margin           : 0;
+	    padding          : 6px;
+	    background-color : #F9F9F9;
+	}
+
+	.sub-content p{
+	    text-align : center;
+	    padding    : 15px;
+	}
+
+	.sub-content input[type="text"]{
+	    display               : block;
+	    line-height           : 1.42857143;
+	    color                 : #555;
+	    background-color      : #fff;
+	    background-image      : none;
+	    border                : 1px solid #ccc;
+	    height                : 25px;
+	}
+
+	.sub-content table td{
+	    padding     : 5px;
+	    font-family : Verdana,sans-serif,Tahoma;
+	    font-size   : 11px;
+	}
+
+	.sub-content [data-icon="btn-search"]{
+        width               : 9px;
+        background-image    : url(img/buscar20New.png);
+        background-repeat   : no-repeat;
+        background-position : center;
+        cursor              : pointer;
+    }
+
+	/*ESTILOS DE LA GRILLA DEL WIZARD*/
+	.content-grilla-filtro{
+	    width  : 95%;
+	    height : 85%;
+	    border : 1px solid #ddd;
+	    margin : 7px;
+	}
+
+	.content-grilla-filtro .head{
+	    background-color : #F9F9F9;
+	    width            : 100%;
+	    height           : 30px;
+	    border-bottom    : 1px solid #ddd;
+	    font-size        : 13px;
+	}
+
+	.content-grilla-filtro .body{
+	    width  : 100%;
+	    height : calc(100% - 31px);
+	    overflow: auto;
+	}
+
+	.content-grilla-filtro .row{
+	    float         : left;
+	    width         : 100%;
+	    border-bottom : 1px solid #ddd;
+	    height        : 25px;
+	}
+	.content-grilla-filtro .cell{
+		height        : calc(100% - 9px);
+		float         : left;
+		border-right  : 1px solid #ddd;
+		padding       : 5px;
+		overflow      :hidden;
+		white-space   :nowrap;
+		text-overflow : ellipsis;
+	}
+
+	.content-grilla-filtro .cell[data-icon="search"]{
+	    width               : 22px;
+	    background-image    : url('../informes/img/buscar20New.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="sinc"]{
+	    width               : 22px;
+	    background-image    : url('img/sinc.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="check"]{
+		background-size       : 17px;
+		background-image      : url('img/checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="un_checked"]{
+		background-size       : 17px;
+		background-image      : url('img/un_checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+/*============ ESTILO DE LOS FORMULARIOS ===========*/
+.content{
+	width            : 100%;
+	height           : 100%;
+	background-color : #FFF;
+	overflow         : auto;
+}
+
+.table-form{
+	font-family : arial,sans-serif;
+	margin-top  : 20px;
+	font-size   : 12px;
+	float       : left;
+	margin-left : 10px;
+	/*width       : 400px;*/
+}
+
+.table-form .thead{
+	background-color : #2A80B9;
+	color            : #fff;
+}
+
+.table-form .thead td{
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-form td{
+	padding: 2px 2px 2px 15px;
+}
+
+.table-form input, .table-form textarea, .table-form select{
+	line-height      : 1.42857143;
+	color            : #555;
+	background-color : #fff;
+	border           : 1px solid #ccc;
+	height           : 30px;
+	width            : 200px;
+	padding-left     : 5px;
+}
+
+.table-form textarea{
+	height: 50px;
+}
+
+.table-form input[data-requiere="true"], select[data-requiere="true"]{
+	background-color:#FFE0E0;
+}
+
+/*=======================// MODAL UPLOAD FILE  //=======================*/
+.fondo_modal{
+    z-index          : 20000;
+    top              : 0px;
+    width            : 100%;
+    height           : 100%;
+    display          : table;
+    left             : 0px;
+    position         : fixed !important;
+    background-color : rgba(0,0,0,0.6);       /* Color de fondo */
+}
+
+.image_loading{
+    width    : 90px;
+    height   : 90px;
+    position : absolute;
+    left     : 60%;
+    top      : 50%;
+    margin   : -75px 0 0 -135px;
+}
+
+/* MODAL UPLOAD FILE */
+
+.fondo_modal_upload_file{
+	display          : none;
+	top              : 0px;
+	left             : 0px;
+	width            : 100%;
+	height           : 100%;
+	z-index          : 10000;
+	position         : fixed;
+	background-color : rgba(0,0,0,0.6);
+}
+
+.fondo_modal_upload_file > div{
+    position : absolute;
+    display  : table;
+    height   : 100%;
+    width    : 100%;
+    top      : 0;
+    left     : 0;
+}
+
+.fondo_modal_upload_file > div > div{
+    display        : table-cell;
+    vertical-align : middle;
+    width          : 100%;
+}
+
+.fondo_modal_upload_file > div > div > div{
+    width  : 400px;
+    height : 300px;
+    margin : 0px auto;
+}
+
+
+#div_upload_file{
+    width         : 400px;
+    height        : 300px;
+    background    : #FFF;
+    overflow      : hidden;
+    position      : fixed;
+    border        : 3px dashed #bcbcbc;
+}
+
+#div_upload_file:hover{ border : 3px dashed #9e9e9e; }
+
+#div_upload_file > div{
+    font-size: 23px;
+    margin-top: 130px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
+.btn_div_upload_file1{
+    width            : 26px;
+    height           : 26px;
+    position         : fixed;
+    margin-top       : -10px;
+    margin-left      : 390px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #bcbcbc;
+    border-radius    : 12px;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2{
+    color            : #9e9e9e;
+    width            : 22px;
+    height           : 22px;
+    position         : fixed;
+    margin-top       : 6px;
+    margin-left      : 375px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #fff;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2:hover{
+	color : #32B1D9;
+	border: 1px solid #32B1D9;
+}
+
+#btn_cancel_doc_upload{
+    cursor           : pointer;
+    display          : none;
+    float            : left;
+    margin           : 7px -35px;
+    height           : 23px;
+    width            : 25px;
+    border           : 1px solid;
+    border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius    : 2px;
+    padding-top      : 2px;
+    text-align       : center;
+    font-weight      : bold;
+    font-size        : 23px;
+    color            : #32B1D9;
+    background-color : #f3f3f3;
+}
+
+#div_upload_file > div {  margin: 0px !important;  }
+#div_upload_file:before {
+    content    : 'Arrastre el archivo excel';
+    width      : 100%;
+    float      : left;
+    font-size  : 23px;
+    margin-top : 130px;
+    text-align : center;
+    color      : #bcbcbc;
+}
+.qq-uploader { position:relative; width: 100%; height:100%; }
+.qq-upload-button { display:block; position:fixed !important; width:100px; height:34px; margin:5px; background-image:url(img/uploading.png); background-size: 100px; }
+.qq-upload-button-hover { background-image:url(img/uploading_blue.png) }
+.qq-upload-button-focus { }
+.qq-upload-drop-area { position:absolute; top:40; left:0; width:100%; height:100%; min-height: 70px; background:none; text-align:center; display:none;  }
+.qq-upload-drop-area span {  display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px; }
+.qq-upload-drop-area-active { background:#FF0000; opacity: 0.3; filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; }
+.qq-upload-list { height:100%; list-style:none; color:#333; text-align:center; }
+.qq-upload-list li {  margin:0; padding:0; line-height:15px; font-size:12px; }
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {  margin-right: 7px; }
+.qq-upload-file {  }
+.qq-upload-spinner {
+    display             : inline-block;
+    background-image    : url("img/loading.gif");
+    width               : 400px;
+    height              : 400px;
+    vertical-align      : text-bottom;
+    position            : absolute;
+    top                 : 0;
+    left                : 0;
+    background-repeat   : no-repeat;
+    background-position : 100px 50px;
+    background-color    : #fff;
+}
+.qq-upload-size,.qq-upload-cancel { font-size:11px; }
+.qq-upload-failed-text { display:none; }
+.qq-upload-fail .qq-upload-failed-text { display:inline; }
+
+.x-window-body {
+		position: relative;
+	}

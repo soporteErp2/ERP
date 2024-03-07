@@ -1,0 +1,407 @@
+.tableInforme {
+	font-size       : 12px;
+	width           : 100%;
+	margin-top      : 20px;
+	border-collapse : collapse;
+}
+
+.tableInforme td{
+	padding-left: 5px;
+}
+
+.tableInforme .thead {
+	height       : 25px;
+	background   : #999;
+	padding-left : 10px;
+	height       : 25px;
+	font-size    : 12px;
+	color        : #FFF;
+	font-weight : bold;
+}
+
+.tableInforme .total {
+	height      : 25px;
+	background  : #EEE;
+	font-weight : bold;
+	color       : #8E8E8E;
+}
+
+.tableInforme .total td{
+	border-top    : 1px solid #999;
+	border-bottom : 1px solid #999;
+}
+
+#contenedor_formulario_configuracion{
+	overflow   : hidden;
+	width      : 100%;
+	height     : 100%;
+	margin     : 0px;
+	margin-top : 0px;
+}
+
+#contenedor_tabla_configuracion{
+	overflow              : hidden;
+	width                 : calc(100% - 2px);
+	height                : 99%;
+	border                : 1px solid #BBB;
+	/*border-radius         : 4px;
+	-webkit-border-radius : 4px;*/
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+	background-color      : #F3F3F3;
+}
+
+#contenedor_tabla_boletas{
+	overflow              : hidden;
+	width                 : calc(100% - 2px);
+	height                : calc(100% - 20px);
+	/*border              : 1px solid #d4d4d4;*/
+	border                : 1px solid #D4D4D4 	;
+	border-radius         : 4px;
+	-webkit-border-radius : 4px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+	background-color      :#F3F3F3;
+}
+#bodyTablaBoletas{
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	width            : 100%;
+	height           : calc(100% - 70px);
+	background-color : #FFF;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas > div{
+	overflow      : hidden;
+	height        : 22px;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas > div > div { height: 18px; /*background-color : #FFF;*/ padding-top: 4px; }
+#bodyTablaBoletas > div:hover {background-color: #E3EBFC;}
+
+.headTablaBoletas div{ background-color:#F3F3F3; }
+
+.filaBoleta{ /*background-color:#F3F3F3;*/ cursor: hand; }
+
+.filaBoleta input[type=text]{
+	border:0px;
+	width: 90%;
+	height: 100%;
+}
+
+.filaBoleta input[type=text]:focus { background: #FFF; }
+
+#bodyTablaConfiguracion{
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	width            : 100%;
+	height           : calc(100% - 40px);
+	background-color : #FFF;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+#bodyTablaConfiguracion > div{
+	overflow      : hidden;
+	height        : 22px;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaConfiguracion > div > div { height: 18px;  padding-top: 4px; }
+
+.headTablaBoletas div{
+	height      : 22px;
+	padding-top : 4px;
+	text-align  : left;
+	font-weight: bolder;
+}
+
+#informeFacturasPorPagar #bodyTablaConfiguracion{ height : 285px; }
+#informeBalancePrueba #bodyTablaConfiguracion{ height : 165px; }
+
+
+#bodyTablaConfiguracionVendedores, #bodyTablaConfiguracionCentroCostos, #bodyTablaConfiguracionCategorias,#bodyTablaConfiguracionFuncionarios,#bodyTablaConfiguracionTerceros{
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	width            : 100%;
+	height           : 285px;
+	background-color : #FFF;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+#bodyTablaConfiguracionVendedores > div, #bodyTablaConfiguracionCentroCostos > div, #bodyTablaConfiguracionCategorias > div,#bodyTablaConfiguracionFuncionarios > div,#bodyTablaConfiguracionTerceros > div {
+	overflow      : hidden;
+	height        : 22px;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaConfiguracionVendedores > div > div, #bodyTablaConfiguracionCentroCostos > div > div, #bodyTablaConfiguracionCategorias > div > div,#bodyTablaConfiguracionFuncionarios > div > div,#bodyTablaConfiguracionTerceros > div > div  { height: 18px;  padding-top: 4px; }
+
+.campo0{
+	float            : left;
+	width            : 28px;
+	text-indent      : 5px;
+	border-right     : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.campo1{
+	float         : left;
+	width         : 100px;
+	text-indent   : 5px;
+	border-right  : 1px solid #d4d4d4;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	overflow      : hidden;
+}
+
+.campo2{
+	float         : left;
+	width         : 280px;
+	text-indent   : 5px;
+	overflow      : hidden;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campo3{
+	float         : left;
+	width         : 100px;
+	text-indent   : 5px;
+	text-align    : right;
+	padding-right : 3px;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campo4{
+	float        : left;
+	width        : 70px;
+	text-indent  : 5px;
+	text-align   : center;
+	border-right : 1px solid #d4d4d4;
+}
+
+.toolbar_grilla_manual{
+	overflow   : hidden;
+	width      : 100%;
+	height     : 34px;
+	margin-top : 5px;
+}
+.div_input_busqueda_grilla_manual{
+	width                  : 170px;
+	background-color       : #FFF;
+	height                 : 28px;
+	padding-top            : 5px;
+	padding                : 5 0 0 6;
+	background-color       : #F3F3F3;
+	border-top-left-radius : 5;
+	border                 : 1px solid #D4D4D4;
+	float                  : left;
+}
+
+.div_input_busqueda_grilla_manual>input{
+	background-image  : url(../../temas/clasico/images/BotonesTabs/buscar16.png);
+	background-repeat : no-repeat;
+	padding           : 0 0 0 27px;
+	border-radius     : 3px;
+	font-size         : 12px;
+	min-height        : 22px;
+	border: 1px solid #D4D4D4;
+}
+
+/*.div_input_busqueda_grilla_manual>input:hover,:focus{
+ 	background-color: #FFFFFF;
+}*/
+
+.div_img_actualizar_datos_grilla_manual{
+	float                   : left;
+	width                   : 35px;
+	height                  : 40px;
+	background-color        : #F3F3F3;
+	border-top-right-radius : 5;
+	border-top              : 1px solid #D4D4D4;
+	border-right            : 1px solid #d4d4d4;
+}
+
+.div_img_actualizar_datos_grilla_manual>img{
+	padding: 7 0 0 7;
+	cursor: pointer;
+}
+
+/*==================================================================================*/
+/*============== ESTILOS PARA EL WIZARD DE LOS INFORMES (INCLUYE GRILLA) ===========*/
+/*==================================================================================*/
+
+	/*ESTILOS GEMERALES DEL WIZARD*/
+	.main-content{
+	    width            : 100%;
+	    height           : 100%;
+	    background-color : #FFF;
+	}
+	.sub-content{
+	    height       : 100%;
+	    float        : left;
+	    border-right : 1px solid #ddd;
+	}
+
+	.sub-content .title{
+	    text-align       : left;
+	    font-size        : 11px;
+	    color            : #1e82c4;
+	    border-top       : 1px solid #ddd;
+	    border-bottom    : 1px solid #ddd;
+	    margin           : 0;
+	    padding          : 6px;
+	    background-color : #F9F9F9;
+	}
+
+	.sub-content p{
+	    text-align : center;
+	    padding    : 15px;
+	}
+
+	.sub-content input[type="text"]{
+	    display               : block;
+	    line-height           : 1.42857143;
+	    color                 : #555;
+	    background-color      : #fff;
+	    background-image      : none;
+	    border                : 1px solid #ccc;
+	    height                : 25px;
+	}
+
+	.sub-content table td{
+	    padding     : 5px;
+	    font-family : Verdana,sans-serif,Tahoma;
+	    font-size   : 11px;
+	}
+
+	.sub-content [data-icon="btn-search"]{
+        width               : 9px;
+        background-image    : url(img/buscar20New.png);
+        background-repeat   : no-repeat;
+        background-position : center;
+        cursor              : pointer;
+    }
+
+	/*ESTILOS DE LA GRILLA DEL WIZARD*/
+	.content-grilla-filtro{
+	    width  : 95%;
+	    height : 85%;
+	    border : 1px solid #ddd;
+	    margin : 7px;
+	}
+
+	.content-grilla-filtro .head{
+	    background-color : #F9F9F9;
+	    width            : 100%;
+	    height           : 30px;
+	    border-bottom    : 1px solid #ddd;
+	    font-size        : 13px;
+	}
+
+	.content-grilla-filtro .body{
+	    width  : 100%;
+	    height : calc(100% - 31px);
+	    overflow: auto;
+	}
+
+	.content-grilla-filtro .row{
+	    float         : left;
+	    width         : 100%;
+	    border-bottom : 1px solid #ddd;
+	    height        : 25px;
+	}
+	.content-grilla-filtro .cell{
+		height        : calc(100% - 9px);
+		float         : left;
+		border-right  : 1px solid #ddd;
+		padding       : 5px;
+		overflow      :hidden;
+		white-space   :nowrap;
+		text-overflow : ellipsis;
+	}
+
+	.content-grilla-filtro .cell[data-icon="search"]{
+	    width               : 22px;
+	    background-image    : url('img/buscar20New.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="delete"]{
+	    width               : 22px;
+	    background-image    : url('img/delete.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="check"]{
+		background-size       : 17px;
+		background-image      : url('img/checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="un_checked"]{
+		background-size       : 17px;
+		background-image      : url('img/un_checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+/*============ ESTILO DE LOS FORMULARIOS ===========*/
+.table-form{
+	font-family : arial,sans-serif;
+	margin-top  : 20px;
+	font-size   : 12px;
+	float       : left;
+	margin-left : 10px;
+	/*width       : 400px;*/
+}
+
+.table-form .thead{
+	background-color : #2A80B9;
+	color            : #fff;
+}
+
+.table-form .thead td{
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-form td{
+	padding: 2px 2px 2px 15px;
+}
+
+.table-form input, .table-form textarea, .table-form select{
+	line-height      : 1.42857143;
+	color            : #555;
+	background-color : #fff;
+	border           : 1px solid #ccc;
+	height           : 30px;
+	width            : 200px;
+	padding-left     : 5px;
+}
+
+.table-form textarea{
+	height: 50px;
+}
+
+.table-form input[data-requiere="true"], select[data-requiere="true"]{
+	background-color:#FFE0E0;
+}
+
+.x-window-body {
+		position: relative;
+	}

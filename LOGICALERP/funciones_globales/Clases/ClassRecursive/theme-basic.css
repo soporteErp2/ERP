@@ -1,0 +1,73 @@
+.tree{
+		margin-left: 10px;
+	}
+
+ol.tree {
+	padding : 0 0 0 30px;
+	width   : auto;
+}
+li {
+	position    : relative;
+	margin-left : -15px;
+	list-style  : none;
+}
+li i {
+	cursor: pointer;
+}
+li input {
+	position    : absolute;
+	left        : 0;
+	margin-left : 0;
+	opacity     : 0;
+	z-index     : 2;
+	cursor      : pointer;
+	/*height      : 1em !important;*/
+	width       : 3em !important;
+	/*top         : 0;*/
+}
+li input + ol {
+	/*background      : url(img/expand_more.png) 40px 0 repeat;*/
+	/*background-size : 30px 30px;*/
+	margin          : -1.600em 0px 8px -44px;
+	height          : 1.5em;
+	/*border: 1px solid;*/
+    background-image: url(../funciones_globales/Clases/ClassRecursive/img/expand_more.png) !important;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    /*background-position: 1% 0%;*/
+    background-position: 0 0%;
+}
+li input + ol > li {
+	display      : none;
+	margin-left  : -14px !important;
+	padding-left : 1px;
+}
+li label {
+	/*background   : url(img/folder.png) 15px 1px repeat;*/
+	/*cursor       : pointer;*/
+	/*display      : block;*/
+	padding-left : 37px;
+	font-size: 14px;
+}
+li input:checked + ol {
+	/*background      : url(img/expand_less.png) 40px 5px repeat;*/
+	/*background-size : 30px 30px;*/
+	margin          : -1.96em 0 0 -44px;
+	padding         : 1.563em 0 0 80px;
+	/*height          : 40px;*/
+	height          : auto;
+	/*border: 1px solid;*/
+    background-image: url(../funciones_globales/Clases/ClassRecursive/img/expand_less.png) !important;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: 50 0%;
+    /*background-position: 0 0%;*/
+    /*background-position: 32% 17%;*/
+}
+li input:checked + ol > li {
+	display : block;
+	margin  : 8px 0px 0px 0.125em;
+}
+li input:checked + ol > li:last-child {
+	margin: 8px 0 0.063em;
+}

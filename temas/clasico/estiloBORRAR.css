@@ -1,0 +1,388 @@
+	.myfield{
+		border:1px solid #999;
+		font-size:12px;
+		min-height:19px;
+		margin:0 0 0 0;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-webkit-box-shadow: 0px 0px 3px #ccc;
+		-moz-box-shadow: 1px 1px 3px #ccc;
+	}
+
+	.myfieldObligatorio{
+		border:1px solid #999;
+		font-size:12px;
+		min-height:19px;
+		margin:0 0 0 0;
+		/*background-color:#FFE5E5;*/
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-webkit-box-shadow: 0px 0px 3px #ccc;
+		-moz-box-shadow: 1px 1px 3px #ccc;
+		background-image:url(images/BotonesTabs/buscar16.png);
+		background-repeat:no-repeat;
+		background-position:right;
+	}
+
+	.myfieldBusqueda{
+		border:1px solid #999;
+		font-size:12px;
+		min-height:19px;
+		margin:0 0 0 0;
+		background-image:url(images/BotonesTabs/buscar16.png);
+		background-repeat:no-repeat;
+		padding:0 0 0 27px;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-webkit-box-shadow: 0px 0px 3px #ccc;
+		-moz-box-shadow: 1px 1px 3px #ccc;
+	}
+
+	.myfield:focus, .myfieldObligatorio:focus, .myfieldBusqueda:focus{
+		-webkit-box-shadow: 0px 0px 3px #F00;
+		-moz-box-shadow: 0px 0px 3px #F00;
+	}
+
+
+
+	body{
+        color               : #333;
+        width               : 100%;
+        height              : 100%;
+        font-family         : Verdana,sans-serif,Tahoma;
+        font-size           : 11px;
+    }
+
+    #preloading0{
+        background          : rgba(143,201,255,1);
+        background          : -moz-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(143,201,255,1)), color-stop(100%, rgba(32,124,229,1)));
+        background          : -webkit-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : -o-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : -ms-radial-gradient(center, ellipse cover, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        background          : radial-gradient(ellipse at center, rgba(143,201,255,1) 0%, rgba(32,124,229,1) 100%);
+        filter              : progid:DXImageTransform.Microsoft.gradient( startColorstr='#8fc9ff', endColorstr='#207ce5', GradientType=1 );
+    }
+
+    .LogoLoginPreloading{
+        width               : 350px;
+	    height              : 111px;
+	    position            : absolute;
+	    left                : 50%;
+	    top                 : 50%;
+	    margin              : -200px 0 0 -170px;
+        font-size           : 14px;
+        text-align          : center;
+        color               : #FFF;
+        font-weight         : bold;
+        text-shadow         : 1px 1px 1px #333;
+        font-family         : Verdana,sans-serif,Tahoma;
+        background          : url("../../login/images/logo.png?v1") ;
+        background-repeat   : no-repeat;
+        background-size     : 100% auto ;
+    }
+
+	#logo 		{position:absolute; left:712px; top:20px;	width:289px; height:291px; z-index:1;}
+	#foto 		{position:absolute; left:2px; top:-94px; width:41px; height:50px;	z-index:1000002;}
+	a:link 		{color: #000000;	text-decoration: none;}
+	a:visited 	{text-decoration: none; color: #000000;}
+	a:hover 	{text-decoration: none; color: #006699;}
+	a:active 	{text-decoration: none; color: #000000;}
+	.guardar 	{background-image: url(temas/clasico/images/formularios/guardar2.png) !important;}
+	.cerrar		{background-image: url(temas/clasico/images/formularios/no.png)!important;}
+	.coneccion	{background-image: url(temas/clasico/images/formularios/coneccion.png)!important;}
+
+    .BOTON1{
+	    font-family: "Trebuchet MS", Verdana, Arial, sans-serif, "Lucida Grande";
+	    font-size: 11px;
+	    color: #FFFFFF;
+	    background-color:#315675;
+    }
+
+    .FUENTE11NEGRILLA {
+	    font-family         : Verdana,sans-serif,Tahoma;
+	    font-size           : 11px;
+	    font-weight         : bold;
+        color               : #333;
+
+    }
+    .FUENTE11NEGRILLABL {
+	    font-family         : Verdana,sans-serif,Tahoma;
+	    font-size           : 11px;
+	    font-weight         : bold;
+	    color               : #FFFFFF;
+    }
+    .FUENTE11 {
+	    font-family         : Verdana,sans-serif,Tahoma;
+	    font-size           : 11px;
+	    font-weight         : normal;
+        color               : #333;
+        text-shadow         : 1px 1px 1px #FFF;
+    }
+    .FUENTE11BL {
+	    font-family         : Verdana,sans-serif,Tahoma;
+	    font-size           : 11px;
+	    font-weight         : normal;
+        color               : #FFF;
+        text-shadow         : 1px 1px 1px #333;
+    }
+    .IMPRESORA {
+	    font-family: Courier;
+	    font-size: 10px;
+	    font-weight:normal;
+	    color: #000000;
+    }
+
+    .BOTON{
+	    font-family: "Trebuchet MS", Verdana, Arial, sans-serif, "Lucida Grande";
+	    font-size: 14px;
+	    font-weight:normal;
+	    color: #000000;
+	    border:1px #003366;
+	    border-style: 1px solid #003366;
+	    background-image:url(images/hover_celda.png);
+	    min-width:120px;
+	    /*height:14px ;*/
+    }
+    .BOTON100{
+	    font-family: "Trebuchet MS", Verdana, Arial, sans-serif, "Lucida Grande";
+	    font-size: 14px;
+	    font-weight:normal;
+	    color: #000000;
+	    border:1px solid #003366;
+	    background-image:url(images/hover_celda.png);
+	    width:100px;
+	    text-align:center
+    }
+
+/*************************************************************************************************************************/
+/**																														**/
+/**																														**/
+/**                  			    V E N T A N A S    Y     E S C R I T O R I O										**/
+/**																														**/
+/**																														**/
+/*************************************************************************************************************************/
+
+.BOTON_BARRA_TAREAS{ /* ESTILO DE LOS BOTONES DE LAS VENTANAS EN LA BARRA DE TAREAS */
+	border:1px solid #666;
+	text-align:center;
+	color:#fff;
+	background-image:url(images/barra_tareas/boton-barra-tareas.png);
+}
+
+.ICONO_VENTANA{
+	margin-top:3px;
+	float:left;
+	width:35px;
+}
+
+#inicio, #barra{
+    background              : rgba(0,0,0,.80);
+    -webkit-box-shadow      : 1px 1px 3px #333;
+    box-shadow              : 1px 1px 3px #333;
+}
+
+#menu{
+    background              : rgba(0,0,0,.80);
+    position                : absolute;
+    left                    : 167px;
+    top                     : 2123px;
+    width                   : 350px;
+    height                  : 100%;
+    z-index                 : 800000;
+    -webkit-box-shadow      : 1px 1px 3px #333;
+    box-shadow              : 1px 1px 3px #333;
+}
+/*************************************************************************************************************************/
+/**																														**/
+/**																														**/
+/**                  						   L I S T A D O S   D E  D A T O S 										**/
+/**																														**/
+/**																														**/
+/*************************************************************************************************************************/
+
+
+/*************************************************************************************************************************/
+/**																														**/
+/**																														**/
+/**                  						   M O D U L O   L O G I S T I C O											**/
+/**																														**/
+/**																														**/
+/*************************************************************************************************************************/
+
+
+/*************************************************************************************************************************/
+/**																														**/
+/**																														**/
+/**                  					         	  L E N G U E T A S 												**/
+/**																														**/
+/**																														**/
+/*************************************************************************************************************************/
+    .TabbedPanels {
+	    margin: 0px;
+	    padding: 0px;
+	    float: left;
+	    clear:both;
+	    width: 100%;
+	    /*-moz-border-radius-topleft;*/
+    }
+    .TabbedPanelsTabGroup {
+	    margin: 0px;
+	    padding: 0px;
+    }
+    /*FICHA INACTIVA ***********************************************************************************************************/
+    .TabbedPanelsTab {
+	    position: relative;
+	    top: 1px;
+	    float: left;
+	    padding-top:4px;
+	    margin: 0px 1px 0px 0px;
+	    font: bold 12px sans-serif;
+	    list-style: none;
+	    cursor: pointer;
+	    background-image:url(SpryAssets/inactivo.png);
+	    background-repeat:no-repeat;
+	    width:130px;
+	    height:26px;
+	    text-align:center;
+    }
+    /*COLOR AL PASAR EL MOUSE SOBRE LA FICHA ************************************************************************************/
+    .TabbedPanelsTabHover {
+	    background-image:url(SpryAssets/mouse.png);
+    }
+    /*FICHA SELECCIONADA***************************************************************************************************/
+    .TabbedPanelsTabSelected {
+	    background-image:url(SpryAssets/activo.png);
+	    background-repeat:no-repeat;
+	    width:130px;
+	    height:26px;
+	    text-align:center;
+    }
+    .TabbedPanelsTab a {
+	    color: black;
+	    text-decoration: none;
+    }
+/*PANEL SELECCIONADO ***********************************************************************************************************/
+    .TabbedPanelsContentGroup {
+	    clear: both;
+	    padding: 1px 1px; /*(SUPERIOR INFERIOR) (IZQUIERDA DERECHA)*/
+    }
+    .TabbedPanelsContent {
+	    padding: 1px;
+    }
+    .TabbedPanelsContentVisible {
+    }
+    .VTabbedPanels {
+	    margin: 0px;
+	    margin-top:0px;
+	    padding: 0px;
+	    float: left;
+	    clear:both;
+	    width: 100%;
+    }
+    .VTabbedPanels .TabbedPanelsTabGroup {
+	    margin: 0px;
+	    padding: 0px;
+	    float:right;
+    }
+    .VTabbedPanels .TabbedPanelsTab {
+	    float: none;
+	    padding: 0px;
+	    margin:  -1px;
+	    list-style: none;
+        cursor: pointer;
+	    background-image:url(SpryAssets/Vinactivo.png?v1.2);
+	    background-repeat:no-repeat;
+	    width:100px;
+	    height:29px;
+	    text-align:center;
+	    color:#90abd0
+
+    }
+    .VTabbedPanels .TabbedPanelsTabSelected {
+	    background-image:url(SpryAssets/Vactivo.png?v1.2);
+	    color:#15428b;
+	    padding: 0px;
+	    margin:  -1px;
+
+    }
+    .VTabbedPanels .TabbedPanelsContentGroup {
+	    clear: none;
+	    float:right;
+	    padding: 5px;
+	    width: auto;
+	    height: auto;
+	    border:1px solid #8db2e3;
+    }
+    .VTabbedPanels .TabbedPanelsTabHover {
+        /*background-image:url(SpryAssets/Vmouse.png);*/
+        color: #15428b;
+        padding: 0px;
+        margin: -1px;
+    }
+
+/*************************************************************************************************************************/
+/**																														**/
+/**																														**/
+/**                  					            ANIMACION LOADING 	    											**/
+/**																														**/
+/**																														**/
+/*************************************************************************************************************************/
+    .loadingdiv span{
+        display: inline-block;
+        vertical-align: middle;
+        width: 10px;
+        height: 10px;
+        margin: 50px auto;
+        background: #FFFFFF;
+        border-radius: 5px;
+        -webkit-animation: loading 0.9s infinite alternate;
+        -moz-animation: loading 0.9s infinite alternate;
+        box-shadow:1px 1px 1px #444444;
+    }
+
+    .loadingdiv span:nth-of-type(2) {
+        background: #FFF;
+        -webkit-animation-delay: 0.2s;
+        -moz-animation-delay: 0.2s;
+    }
+    .loadingdiv span:nth-of-type(3) {
+        background: #FFF;
+        -webkit-animation-delay: 0.4s;
+        -moz-animation-delay: 0.4s;
+    }
+    .loadingdiv span:nth-of-type(4) {
+        background: #FFF;
+        -webkit-animation-delay: 0.6s;
+        -moz-animation-delay: 0.6s;
+    }
+    .loadingdiv span:nth-of-type(5) {
+        background: #FFF;
+        -webkit-animation-delay: 0.8s;
+        -moz-animation-delay: 0.8s;
+    }
+
+    @-webkit-keyframes loading {
+        0% {
+            width: 10px;
+            height: 10px;
+            -webkit-transform: translateY(0);
+        }
+        100% {
+            width: 24px;
+            height: 24px;
+            -webkit-transform: translateY(-21px);
+        }
+    }
+    @-moz-keyframes loading {
+        0% {
+            width: 10px;
+            height: 10px;
+            -moz-transform: translateY(0);
+        }
+        100% {
+            width: 24px;
+            height: 24px;
+            -moz-transform: translateY(-21px);
+        }
+    }

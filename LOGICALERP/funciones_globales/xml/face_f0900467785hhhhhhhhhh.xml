@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fe:Invoice xmlns:fe="http://www.dian.gov.co/contratos/facturaelectronica/v1" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes2.0.xsd">
+  <ext:UBLExtensions>
+    <ext:UBLExtension>
+      <ext:ExtensionContent>
+        <sts:DianExtensions>
+          <sts:InvoiceControl>
+            <sts:InvoiceAuthorization>18762000326371</sts:InvoiceAuthorization>
+            <sts:AuthorizationPeriod>
+              <cbc:StartDate>2016-09-01</cbc:StartDate>
+              <cbc:EndDate>2018-09-01</cbc:EndDate>
+            </sts:AuthorizationPeriod>
+            <sts:AuthorizedInvoices>
+              <sts:Prefix/>
+              <stsFrom>1001</stsFrom>
+              <sts:To>2000</sts:To>
+            </sts:AuthorizedInvoices>
+          </sts:InvoiceControl>
+          <sts:InvoiceSource>
+            <cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode2.0">CO</cbc:IdentificationCode>
+          </sts:InvoiceSource>
+          <sts:SoftwareProvider>
+            <sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">900467785</sts:ProviderID>
+            <sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">69d4f0b6-4924-4479-bdc6-26ef726eaee3</sts:SoftwareID>
+          </sts:SoftwareProvider>
+          <sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">db5af267-2d41-4ccc-9e6b-9ee251f26483</sts:SoftwareSecurityCode>
+        </sts:DianExtensions>
+      </ext:ExtensionContent>
+    </ext:UBLExtension>
+    <ext:UBLExtension>
+      <ext:ExtensionContent>
+        <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+          <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <ds:Reference Id="xmldsig-79c270e3-50bb-4fcf-b9bc-3a95bcf2466d-ref0" URI="">
+              <ds:Transforms>
+                <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+              </ds:Transforms>
+              <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+            </ds:Reference>
+          </ds:SignedInfo>
+        </ds:Signature>
+      </ext:ExtensionContent>
+    </ext:UBLExtension>
+  </ext:UBLExtensions>
+  <cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>
+  <cbc:ProfileID>DIAN 1.0</cbc:ProfileID>
+  <cbc:ID>1325</cbc:ID>
+  <cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">bf968d42ec6fe9036ff1f2ec32e7bfd21620aa19</cbc:UUID>
+  <cbc:IssueDate>2017-06-28</cbc:IssueDate>
+  <cbc:IssueTime>15:16:52</cbc:IssueTime>
+  <cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>
+  <fe:AccountingSupplierParty>
+    <cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>
+    <fe:Party>
+      <cac:PartyIdentification>
+        <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">900467785</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>LOGICALSOFT S.A.S</cbc:Name>
+      </cac:PartyName>
+      <fe:PhysicalLocation>
+        <fe:Address>
+          <cbc:Department>Valle Del Cauca</cbc:Department>
+          <cbc:CitySubdivisionName>Sur</cbc:CitySubdivisionName>
+          <cbc:CityName>Cali</cbc:CityName>
+          <cac:AddressLine>
+            <cbc:Line>Calle 3 #60-29</cbc:Line>
+          </cac:AddressLine>
+          <cac:Country>
+            <cbc:IdentificationCode>CO</cbc:IdentificationCode>
+          </cac:Country>
+        </fe:Address>
+      </fe:PhysicalLocation>
+      <fe:PartyTaxScheme>
+        <cbc:TaxLevelCode>2</cbc:TaxLevelCode>
+        <cac:TaxScheme/>
+      </fe:PartyTaxScheme>
+      <fe:PartyLegalEntity>
+        <cbc:RegistrationName>LOGICALSOFT S.A.S</cbc:RegistrationName>
+      </fe:PartyLegalEntity>
+    </fe:Party>
+  </fe:AccountingSupplierParty>
+  <fe:AccountingCustomerParty>
+    <cbc:AdditionalAccountID/>
+    <fe:Party>
+      <cac:PartyIdentification>
+        <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="22">900467785</cbc:ID>
+      </cac:PartyIdentification>
+      <fe:PhysicalLocation>
+        <fe:Address>
+          <cbc:Department>Valle</cbc:Department>
+          <cbc:CitySubdivisionName>LOGICALSOFT S.A.S</cbc:CitySubdivisionName>
+          <cbc:CityName>Cali</cbc:CityName>
+          <cac:AddressLine>
+            <cbc:Line>CALLE 41 #60 -00 casa 63 Condominio Santa ana del Parque</cbc:Line>
+          </cac:AddressLine>
+          <cac:Country>
+            <cbc:IdentificationCode>CO</cbc:IdentificationCode>
+          </cac:Country>
+        </fe:Address>
+      </fe:PhysicalLocation>
+      <fe:PartyTaxScheme>
+        <cbc:TaxLevelCode>2</cbc:TaxLevelCode>
+        <cac:TaxScheme/>
+      </fe:PartyTaxScheme>
+    </fe:Party>
+  </fe:AccountingCustomerParty>
+  <fe:TaxTotal>
+    <cbc:TaxAmount currencyID="COP">19200</cbc:TaxAmount>
+    <cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>
+    <fe:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="COP">120000</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="COP">19200</cbc:TaxAmount>
+      <cbc:Percent>16.00</cbc:Percent>
+      <cac:TaxCategory>
+        <cac:TaxScheme>
+          <cbc:ID>01</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </fe:TaxSubtotal>
+  </fe:TaxTotal>
+  <fe:TaxTotal>
+    <cbc:TaxAmount currencyID="COP">4750</cbc:TaxAmount>
+    <cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>
+    <fe:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="COP">25000</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="COP">4750</cbc:TaxAmount>
+      <cbc:Percent>19.00</cbc:Percent>
+      <cac:TaxCategory>
+        <cac:TaxScheme>
+          <cbc:ID>01</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </fe:TaxSubtotal>
+  </fe:TaxTotal>
+  <fe:TaxTotal>
+    <cbc:TaxAmount currencyID="COP">8950</cbc:TaxAmount>
+    <cbc:TaxEvidenceIndicator>true</cbc:TaxEvidenceIndicator>
+    <fe:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="COP">895000</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="COP">8950</cbc:TaxAmount>
+      <cbc:Percent>1</cbc:Percent>
+      <cac:TaxCategory>
+        <cac:TaxScheme>
+          <cbc:ID>03</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </fe:TaxSubtotal>
+  </fe:TaxTotal>
+  <fe:TaxTotal>
+    <cbc:TaxAmount currencyID="COP">35800</cbc:TaxAmount>
+    <cbc:TaxEvidenceIndicator>true</cbc:TaxEvidenceIndicator>
+    <fe:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="COP">895000</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="COP">35800</cbc:TaxAmount>
+      <cbc:Percent>4</cbc:Percent>
+      <cac:TaxCategory>
+        <cac:TaxScheme>
+          <cbc:ID/>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </fe:TaxSubtotal>
+  </fe:TaxTotal>
+  <fe:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="COP">895000</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="COP">23950</cbc:TaxExclusiveAmount>
+    <cbc:PayableAmount currencyID="COP">874200</cbc:PayableAmount>
+  </fe:LegalMonetaryTotal>
+  <fe:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity>3.00</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="COP">120000</cbc:LineExtensionAmount>
+    <fe:Item>
+      <cbc:Description>ALQUILER COMPUTADOR DE ESCRITORIO                                               </cbc:Description>
+    </fe:Item>
+    <fe:Price>
+      <cbc:PriceAmount currencyID="COP">80000.00</cbc:PriceAmount>
+    </fe:Price>
+  </fe:InvoiceLine>
+  <fe:InvoiceLine>
+    <cbc:ID>2</cbc:ID>
+    <cbc:InvoicedQuantity>5.00</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="COP">750000</cbc:LineExtensionAmount>
+    <fe:Item>
+      <cbc:Description>SERVICIO DE SOFTWARE EN LA NUBE LOGICALSOFTERP</cbc:Description>
+    </fe:Item>
+    <fe:Price>
+      <cbc:PriceAmount currencyID="COP">150000.00</cbc:PriceAmount>
+    </fe:Price>
+  </fe:InvoiceLine>
+  <fe:InvoiceLine>
+    <cbc:ID>3</cbc:ID>
+    <cbc:InvoicedQuantity>1.00</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="COP">25000</cbc:LineExtensionAmount>
+    <fe:Item>
+      <cbc:Description>DISEÑO MATERIAL POP</cbc:Description>
+    </fe:Item>
+    <fe:Price>
+      <cbc:PriceAmount currencyID="COP">25000.00</cbc:PriceAmount>
+    </fe:Price>
+  </fe:InvoiceLine>
+</fe:Invoice>

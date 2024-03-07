@@ -1,0 +1,72 @@
+.minimal .venscrollbar-scrollarea {
+	right: 10px;
+}
+.minimal .venscrollbar-track {
+	width: 100%;
+}
+.minimal .venscrollbar-track-top {
+	background-image: url("minimal-sprite.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	width: 100%;
+}
+.minimal .venscrollbar-track-active .venscrollbar-track-top {
+	background-position: -28px 0 !important;
+}
+.minimal .venscrollbar-track-middle {
+	background-image: url("minimal-middle.png");
+	background-repeat: repeat-y;
+	background-position: 0 0;
+	width: 100%;
+}
+.minimal .venscrollbar-track-active .venscrollbar-track-middle {
+	background-position: -28px 0 !important;
+}
+.minimal .venscrollbar-track-bottom {
+	background-image: url("minimal-sprite.png");
+	background-repeat: no-repeat;
+	background-position: 0 -10px;
+	width: 100%;
+}
+.minimal .venscrollbar-track-active .venscrollbar-track-bottom {
+	background-position: -28px -10px !important;
+}
+.minimal .venscrollbar-bar {
+	width: 100%;
+}
+.minimal .venscrollbar-bar-top {
+	background-image: url("minimal-sprite.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	width: 100%;
+}
+.minimal .venscrollbar-bar:hover .venscrollbar-bar-top {
+	background-position: -14px 0;
+}
+.minimal .venscrollbar-bar-active .venscrollbar-bar-top {
+	background-position: -28px 0 !important;
+}
+.minimal .venscrollbar-bar-middle {
+	background-image: url("minimal-middle.png");
+	background-repeat: repeat-y;
+	background-position: 0 0;
+	width: 100%;
+}
+.minimal .venscrollbar-bar:hover .venscrollbar-bar-middle {
+	background-position: -14px 0;
+}
+.minimal .venscrollbar-bar-active .venscrollbar-bar-middle {
+	background-position: -28px 0 !important;
+}
+.minimal .venscrollbar-bar-bottom {
+	background-image: url("minimal-sprite.png");
+	background-repeat: no-repeat;
+	background-position: 0 -10px;
+	width: 100%;
+}
+.minimal .venscrollbar-bar:hover .venscrollbar-bar-bottom {
+	background-position: -14px -10px;
+}
+.minimal .venscrollbar-bar-active .venscrollbar-bar-bottom {
+	background-position: -28px -10px !important;
+}

@@ -1,0 +1,53 @@
+<script>
+    ajaxinsertUpdateTercero();
+    function ajaxinsertUpdateTercero(){
+        var xhr       = new XMLHttpRequest()
+        ,   data      = {
+                apiVersion: "2",
+                nit_empresa: "123456",
+                username: "usuario.administracion",
+                password: "123456789",
+                tercero: {
+                    codigo_tipo_identificacion: "1",
+                    codigo_ciudad_identificacion: "7",
+                    numero_identificacion: "7300000",
+                    dv: "6",
+                    nombre: "JHON ERICK SAS",
+                    nombre_comercial: "JHON ERICK SAS",
+                    direccion: "calle 81",
+                    telefono1: "telefono 1",
+                    telefono2: "telefono 2",
+                    celular1: "celular 1",
+                    celular2: "celular 2",
+                    codigo_ciudad: "6",
+                    codigo_regimen: "3",
+                    cliente: "si",
+                    proveedor: "si",
+                    exento_iva: "no",
+                    nombre1: "JHON",
+                    nombre2: "",
+                    apellido1: "MARROQUIN",
+                    apellido2: ""
+                }
+            }
+
+        ,   jsonString = JSON.stringify(data);
+
+        xhr.open('POST','http://logicalsoft-erp.com/LOGICALERP/web_service/register.php', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded", true);
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+
+                var response = xhr.responseText;
+                if(response != ''){
+                    var objResponse = JSON.parse(response);
+                    if (objResponse['estado']=='true') { alert('Web service se ejecuto sactisfactoriamente'); }     //SE EJECUTO CORRECTAMENTE
+                    else{ alert('Error.\n'+objResponse['msj']); }               //MENSAJE ERROR EN PROCESOS DE SINCRONIZACION
+                }
+                else{ alert('Problema en la conexion'); }
+            }
+            else return;
+        }
+        xhr.send("dataJsonTerceros="+jsonString);
+    }
+</script>

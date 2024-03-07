@@ -1,0 +1,47 @@
+.content{
+	overflow: auto;
+    height: 100%;
+}
+
+.table-form-contrato{
+	font-family : arial,sans-serif;
+	margin-top  : 20px;
+	font-size   : 12px;
+	float       : left;
+	margin-left : 10px;
+	/*width       : 400px;*/
+}
+
+/*.table-form-contrato .thead{*/
+	/*background-color : #2a80b9;*/
+	/*color            : #fff;*/
+/*}*/
+
+.table-form-contrato .thead td{
+	background-color : #2a80b9;
+	color            : #fff;
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-form-contrato td{
+	padding: 2px 2px 2px 15px;
+}
+
+.table-form-contrato input, .table-form-contrato textarea, .table-form-contrato select{
+	line-height      : 1.42857143;
+	color            : #555;
+	background-color : #fff;
+	border           : 1px solid #ccc;
+	height           : 30px;
+	width            : 170px;
+	padding-left     : 5px;
+}
+
+.table-form-contrato textarea{
+	height: 50px;
+}
+
+.table-form-contrato input[data-requiere="true"], select[data-requiere="true"]{
+	background-color:#FFE0E0;
+}

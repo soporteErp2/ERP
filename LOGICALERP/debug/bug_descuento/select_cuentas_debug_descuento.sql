@@ -1,0 +1,12 @@
+SELECT * FROM asientos_colgaap WHERE tipo_documento='FV' AND (
+id_documento='2139'
+OR id_documento='3059'
+OR id_documento='4022'
+OR id_documento='7630'
+OR id_documento='8385'
+OR id_documento='9490'
+OR id_documento='9940'
+OR id_documento='10845'
+OR id_documento='10850'
+OR id_documento='11223'
+OR id_documento='12093')

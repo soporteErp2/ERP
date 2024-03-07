@@ -1,0 +1,160 @@
+var json = {
+    "Credencial": {
+        "ClientToken": "",
+        "AccessToken": ""
+    },
+    "Documento": {
+        "OrigenDocumento": "",
+        "TipoDocumento": "102",
+        "Prefijo": "NETX",
+        "Consecutivo": "",
+        "Fecha": `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}T00:00:00`,
+        "PeriodoNominaCodigo": "4",
+        "FechaLiquidacionInicio": `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`,
+        "FechaLiquidacionFin": `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`,
+        "Pais": "Colombia",
+        "PaisCodigo": "CO",
+        "Departamento": "Valle del Cauca",
+        "DepartamentoCodigo": "76",
+        "Ciudad": "Cali",
+        "CiudadCodigo": "76001",
+        "Idioma": "es",
+        "Moneda": "COP",
+        "Trm": 0,
+        "Redondeo": 0,
+        "DevengadosTotal": 1000000,
+        "DeduccionesTotal": 80000,
+        "ComprobanteTotal": 920000,
+        "PeriodoNominaCodigo": 4,
+        "Notas": "-",
+        "Usuario": "FACSE",
+        "TipoNotaAjuste": 0,
+        "NumeroNotaAjuste": ""
+    },
+    "Empleador": {
+        "Sucursal": "PRIN",
+        "Identificacion": "901189244",
+        "DigitoVerificador": 0,
+        "RazonSocial": "EMPRESA TEST",
+        "PrimerApellido": "",
+        "SegundoApellido": "",
+        "PrimerNombre": "",
+        "OtrosNombres": "",
+        "Pais": "Colombia",
+        "PaisCodigo": "CO",
+        "Departamento": "Meta",
+        "DepartamentoCodigo": "50",
+        "Ciudad": "VILLAVICENCIO",
+        "CiudadCodigo": "50001",
+        "Direccion": "PRUEBA"
+    },
+    "Trabajador": {
+        "TipoIdentificacion": 13,
+        "Identificacion": "29119443",
+        "CodigoTrabajador": "1",
+        "PrimerApellido": "AGUIRRE",
+        "SegundoApellido": "EDNA",
+        "PrimerNombre": "ROSA",
+        "OtrosNombres": "",
+        "Pais": "Colombia",
+        "PaisCodigo": "CO",
+        "Departamento": "Valle del Cauca",
+        "DepartamentoCodigo": "76",
+        "Ciudad": "Cali",
+        "CiudadCodigo": "76001",
+        "Direccion": "CR 42 5C 95",
+        "Email": "eaguirre@widexcolombia.com",
+        "TipoContrato": 2,
+        "TipoTrabajador": "01",
+        "SubTipoTrabajador": "00",
+        "AltoRiesgoPension": false,
+        "SalarioIntegral": false,
+        "FechaIngreso": "2020-12-05",
+        "FechaRetiro": "",
+        "TiempoLaborado": 370,
+        "Sueldo": 1000000,
+        "FormaPago": 1,
+        "MedioPago": 31,
+        "Banco": "Bancolombia",
+        "TipoCuenta": "1",
+        "NumeroCuenta": "7783303587"
+    },
+    "FechasPagos": [
+        {
+            "FechaPago": `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`
+        }
+    ],
+    "Devengados": {
+    "DiasTrabajados": 15,
+    "SueldoTrabajado": 1000000,
+    "AuxilioTransporte": 0,
+    "ViaticoManutAlojS": 0,
+    "ViaticoManutAlojNS": 0,
+    "HEDs": null,
+    "HENs": null,
+    "HRNs": null,
+    "HEDDFs": null,
+    "HRDDFs": null,
+    "HENDFs": null,
+    "HRNDFs": null,
+    "Vacaciones": null,
+    "Primas": null,
+    "Cesantias": null,
+    "Incapacidades": null,
+    "Licencias": null,
+    "Bonificaciones": null,
+    "Auxilios": null,
+    "HuelgasLegales": null,
+    "OtrosConceptos": null,
+    "Compensaciones": null,
+    "BonoEPCTVs": null,
+    "Comision": 0,
+    "PagosTercero": 0,
+    "Anticipo": 0,
+    "Dotacion": 0,
+    "ApoyoSost": 0,
+    "Teletrabajo": 0,
+    "BonifRetiro": 0,
+    "Indemnizacion": 0,
+    "Reintegro": 0
+  },
+  "Deducciones": {
+    "Salud": {
+      "Porcentaje": 4,
+      "Deduccion": 40000
+    },
+    "FondoPension": {
+      "Porcentaje": 4,
+      "Deduccion": 40000
+    },
+    "FondoSP": {
+      "Porcentaje": 0,
+      "Deduccion": 0,
+      "PorcentajeSub": null,
+      "DeduccionSub": null
+    },
+    "Sindicatos": null,
+    "Sanciones": null,
+    "Libranzas": {
+      "Libranza": [
+        {
+          "Descripcion": "",
+          "Deduccion": 0
+        }
+      ]
+    },
+    "PagosTerceros": 0,
+    "Anticipos": 0,
+    "OtrasDeducciones": 0,
+    "PensionVoluntaria": 0,
+    "RetencionFuente": 0,
+    "AFC": 0,
+    "Cooperativa": 0,
+    "EmbargoFiscal": 0,
+    "PlanComplementarios": 0,
+    "Educacion": 0,
+    "Reintegro": 0,
+    "Deuda": 0
+  },
+  "DocumentoAdicional": []
+};

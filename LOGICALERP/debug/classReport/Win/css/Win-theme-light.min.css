@@ -1,0 +1,8 @@
+/**
+ * win - Libreria para web aplicaciones RIA
+ * @version v0.0.1
+ * @link    https://github.com/jhon3rick/Win.js#readme
+ * @author  Jhon Marroquin (Twitter @jhon3rick || email jhon3rick@gmail.com)
+ * @license (MIT)
+ */
+.win-marco{background-color:#fff;}.win-title{background-color:#c4c4c4;color:#636363;}.win-title-btn{background-image:url("../img/window/close.png");background-size:15px}.win-tbar{background-color:#f1f1f1;color:#636363;}.win-btn:hover{background-color:#c4c4c4;border:1px solid #999}.win-btn:active{border:1px solid #8dabd3}.win-separator{color:#636363}

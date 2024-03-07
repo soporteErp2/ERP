@@ -1,0 +1,91 @@
+.blue .venscrollbar-scrollarea {
+	right: 0;
+}
+.blue .venscrollbar-arrowup {
+	background-image: url("blue-sprite.png");
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	width: 100%;
+}
+.blue .venscrollbar-arrowup:hover {
+	background-position: -18px 0;
+}
+.blue .venscrollbar-arrowup:active {
+	background-position: -36px 0;
+}
+.blue .venscrollbar-arrowdown {
+	background-image: url("blue-sprite.png");
+	background-position: 0 -40px;
+	background-repeat: no-repeat;
+	width: 100%;
+}
+.blue .venscrollbar-arrowdown:hover {
+	background-position: -18px -40px;
+}
+.blue .venscrollbar-arrowdown:active {
+	background-position: -36px -40px;
+}
+.blue .venscrollbar-track {
+	width: 100%;
+}
+.blue .venscrollbar-track-top {
+	width: 100%;
+}
+.blue .venscrollbar-track-middle {
+	width: 100%;
+}
+.blue .venscrollbar-track-bottom {
+	width: 100%;
+}
+.blue .venscrollbar-bar {
+	width: 100%;
+}
+.blue .venscrollbar-bar-top {
+	background-image: url("blue-sprite.png");
+	background-position: 0 -20px;
+	background-repeat: no-repeat;
+	width: 100%;
+}
+.blue .venscrollbar-bar:hover .venscrollbar-bar-top {
+	background-position: -18px -20px;
+}
+.blue .venscrollbar-bar-active .venscrollbar-bar-top {
+	background-position: -36px -20px !important;
+}
+.blue .venscrollbar-bar-middle {
+	background-image: url("blue-middle.png");
+	background-position: 0 0;
+	background-repeat: repeat-y;
+	width: 100%;
+}
+.blue .venscrollbar-bar:hover .venscrollbar-bar-middle {
+	background-position: -18px 0;
+}
+.blue .venscrollbar-bar-active .venscrollbar-bar-middle {
+	background-position: -36px 0 !important;
+}
+.blue .venscrollbar-bar-bottom {
+	background-image: url("blue-sprite.png");
+	background-position: 0 -35px;
+	background-repeat: no-repeat;
+	width: 100%;
+}
+.blue .venscrollbar-bar:hover .venscrollbar-bar-bottom {
+	background-position: -18px -35px;
+}
+.blue .venscrollbar-bar-active .venscrollbar-bar-bottom {
+	background-position: -36px -35px !important;
+}
+.blue .venscrollbar-bar-decoration {
+	background-image: url("blue-sprite.png");
+	background-position: -3px -23px;
+	background-repeat: no-repeat;
+	width: 12px;
+	margin: 0 3px;
+}
+.blue .venscrollbar-bar:hover .venscrollbar-bar-decoration {
+	background-position: -21px -23px;
+}
+.blue .venscrollbar-bar-active .venscrollbar-bar-decoration {
+	background-position: -39px -23px !important;
+}

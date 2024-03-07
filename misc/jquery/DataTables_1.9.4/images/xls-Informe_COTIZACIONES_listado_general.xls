@@ -1,0 +1,130 @@
+
+<table width="540" border="0" cellpadding="0" cellspacing="0" style="font-size:11px" bgcolor="#f0f0f0">
+  <tr>
+    <td width="480">
+        <table width="480" border="0" cellpadding="0" cellspacing="0" style="font-size:11px">
+          <tr>
+            <td width="150">Nombre del Informe :</td>
+            <td width="330" style="font-size:14px"><b>Informe General de Cotizaciones</b></td>
+          </tr>
+                    <tr>
+            <td width="150">Rango de Fecha :</td>
+            <td width="330" style="font-size:12px">
+				<b>Mier 07 May 2014</b> - <b>Lun 12 May 2014</b>            </td>
+          </tr>
+                               <tr>
+            <td width="150">Metodo de Liquidacion :</td>
+            <td width="330" style="font-size:12px"><b>Por Fecha de Elaboraci&oacute;n de la Cotizaci&oacute;n</b></td>
+          </tr>
+                              <tr>
+            <td width="150">Opcion de Calculo:</td>
+            <td width="330" style="font-size:12px"><b>Liquidar con Ingresos de Terceros</b></td>
+          </tr> 
+             
+                              <tr>
+            <td width="150">Filtro de Ejecutivo:</td>
+            <td width="330" style="font-size:12px"><b>Todos</b></td>
+          </tr> 
+             
+           
+                                                           
+          <tr>
+            <td width="150">Fecha de Elaboracion :</td>
+            <td width="330"><b>Lunes 12 Mayo de 2014 4:29 pm</b></td>
+          </tr>                    
+        </table>
+    </td>
+    <td width="60"><img src="../ARCHIVOS_PROPIOS/logo_0.png" width="60" height="60" /></td>
+  </tr>
+</table>
+<br />
+
+		<div style="width:740;font-weight:bold; font-size:14px; text-align:center">
+				Cotizaciones Pendientes por Confirmar
+		</div>
+		<table id="cotizaciones_pendientes" width="740" border="0" cellspacing="1">
+			<thead>
+				<tr style="font-size:9px;" bgcolor="#003366">
+					<th width="70"><font color="white"><b>Pedido</b></font></th>
+					<th width="290"><font color="white"><b>Cliente</b></font></th>
+					<th width="30" align="center"><font color="white"><b>Pax.</b></font></th>
+					<th width="30" align="center"><font color="white"><b>Pax. Aten.</b></font></th>
+					<th width="80" align="center"><font color="white"><b>Ingresos por Salon</b></font></th>
+					<th width="80" align="center"><font color="white"><b>Ingresos por AyB</b></font></th>
+					<th width="80" align="center"><font color="white"><b>Ingresos por Otros</b></font></th>
+					<th width="80" align="center"><font color="white"><b>Total</b></font></th>
+				</tr>	
+			</thead>
+		
+				<tr style="font-size:9px;  " >
+					<td width="70" valign="top"><b>C00005007</b></td>
+					<td width="290" valign="top"><b>PLATAFORMA DE COMUNICACIONES LTDA</b><br />TEST REVISIONES<br />01 Mayo 2014 / 02 Mayo 2014<br />ARTISTICO Y CULTURAL<br />LUZ STELLA TOVAR</td>
+					<td width="30" align="right" valign="top">45</td>
+					<td width="30" align="right" valign="top">0</td>
+					<td width="80" align="right" valign="top">551427</td>
+					<td width="80" align="right" valign="top">0</td>
+					<td width="80" align="right" valign="top">0</td>
+					<td width="80" align="right" valign="top">551427</td>
+				</tr>
+				<tfoot>
+		  <tr style="font-weight:bold; font-size:9px; color:#FFFFFF;" bgcolor="#003366">
+			<td width="70"></td>
+			<td width="290" align="left"><font color="white"><b>Total Eventos (1)Total Eventos Internos (0)</b></font></td>
+			<td width="30" align="right"><font color="white"><b>45</b></font></td>
+			<td width="30" align="right"><font color="white"><b>0</b></font></td>
+			<td width="80" align="right"><font color="white"><b>551427</b></font></td>
+			<td width="80" align="right"><font color="white"><b>0</b></font></td>
+			<td width="80" align="right"><font color="white"><b>0</b></font></td>
+			<td width="80" align="right"><font color="white"><b>551427</b></font></td>
+		  </tr>
+		</tfoot></table><br /><br /><saltopagina>
+		<table width="740" border="0" cellspacing="1">
+			<tr style="font-weight:bold; font-size:14px; text-align:center">
+				<td colspan="8">Cotizaciones Confirmadas (Ordenes de Evento)<br /></td>
+			</tr>		
+			<tr style="font-size:9px;" bgcolor="#003366">
+				<td width="70"><font color="white"><b>Pedido</b></font></td>
+				<td width="290"><font color="white"><b>Cliente</b></font></td>
+				<td width="30" align="center"><font color="white"><b>Pax.</b></font></td>
+				<td width="30" align="center"><font color="white"><b>Pax. Aten.</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Ingresos por Salon</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Ingresos por AyB</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Ingresos por Otros</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Total</b></font></td>
+			 </tr>	
+		
+			  <tr style="font-size:9px;" bgcolor="#003366">
+				<td width="70"></td>
+				<td width="290" align="left"><font color="white"><b>Total Eventos (0)Total Eventos Internos (0)</b></font></td>
+				<td width="30" align="right"><font color="white"><b>0</b></font></td>
+				<td width="30" align="right"><font color="white"><b></b></font></td>
+				<td width="80" align="right"><font color="white"><b>0</b></font></td>
+				<td width="80" align="right"><font color="white"><b>0</b></font></td>
+				<td width="80" align="right"><font color="white"><b>0</b></font></td>
+				<td width="80" align="right"><font color="white"><b>0</b></font></td>
+			  </tr></table><br /><br /><saltopagina>
+		<table width="740" border="0" cellspacing="1">
+			<tr style="font-weight:bold; font-size:14px; text-align:center">
+				<td colspan="8" >Cotizaciones Canceladas<br /></td>
+			</tr>		
+			<tr style="font-size:9px;" bgcolor="#003366">
+				<td width="70"><font color="white"><b>Pedido</b></font></td>
+				<td width="290"><font color="white"><b>Cliente</b></font></td>
+				<td width="30" align="center"><font color="white"><b>Pax.</b></font></td>
+				<td width="30" align="center"><font color="white"><b>Pax. Aten.</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Ingresos por Salon</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Ingresos por AyB</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Ingresos por Otros</b></font></td>
+				<td width="80" align="center"><font color="white"><b>Total</b></font></td>
+			 </tr>	
+		
+		  <tr style="font-size:9px;" bgcolor="#003366">
+			<td width="70"></td>
+			<td width="290" align="left"><font color="white"><b>Total Eventos (0)Total Eventos Internos (0)</b></font></td>
+			<td width="30" align="right"><font color="white"><b>0</b></font></td>
+			<td width="30" align="right"><font color="white"><b></b></font></td>
+			<td width="80" align="right"><font color="white"><b>0</b></font></td>
+			<td width="80" align="right"><font color="white"><b>0</b></font></td>
+			<td width="80" align="right"><font color="white"><b>0</b></font></td>
+			<td width="80" align="right"><font color="white"><b>0</b></font></td>
+		  </tr></table>

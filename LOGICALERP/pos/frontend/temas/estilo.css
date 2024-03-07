@@ -1,0 +1,80 @@
+
+body {
+	margin-left   : 0px;
+	margin-top    : 0px;
+	margin-right  : 0px;
+	margin-bottom : 0px;
+	overflow      :hidden;
+}
+/*
+ * Contenedor de los modulos
+ */
+	.desktopContainer{
+		background-color: #F7F7F7;
+		color      : #333;
+		width      : 100%;
+		height     : 100%;
+		margin     : 0;
+		float      : left;
+		overflow   : auto;
+	}
+
+/*
+ * Estilos de los iconos, barra separadora sobre el
+ * index.php del panel del contraol
+ */
+	.IconoPanelControl{
+		float      :left;
+		width      :93px;
+		height     :93px;
+		margin     :5px;
+		padding    :5px;
+		text-align :center;
+		cursor     :pointer;
+		font-size  :12px !important;
+	}
+
+	.IconoPanelControl:hover{
+		transform : scale(1.2);
+	}
+
+	.myIconstyle{
+		font-size :12px !important;
+	}
+
+	.IconoPanelControlimg > i{
+		font-size :36px !important;
+		color     :#2a80b9;
+		height    : 50px;
+	}
+
+	.form_separador{
+		font-size        : 14px !important;
+		color            : #333 !important;
+		background-color : #f1f0f0 !important;
+		padding          :10px !important;
+	}
+
+/*
+	Estilos de la tabla general
+ */
+	.simpleTable{
+		font-size : 12px;
+		margin    : 10px;
+		width     : calc( 100% - 20px);
+	}
+
+	.simpleTable thead tr td{
+		color          : #fff;
+		background     : #37474f;
+		font-weight    : 600;
+		padding        : 0.7em 0.7em;
+		text-align     : center;
+		letter-spacing : 1px;
+		margin-bottom  : 1.5em;
+	}
+
+	.simpleTable tbody tr td{
+		padding-left : 10px;
+		text-align   : center;
+	}

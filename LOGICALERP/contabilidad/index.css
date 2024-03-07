@@ -1,0 +1,1341 @@
+.renglon,.subRenglon,.label,.campo,.labelNotaGeneral, .campoNotaGeneral{ float:left; height: 18px; }
+.renglon{ width:100%; margin:0; overflow:hidden; }
+.labelTotal{ float:right; margin-right: 5px; width: calc(100% - 8px - 185px) !important; text-align: right; }
+
+.label, .labelTotal{
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	width         : calc((100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+.label{ border-right : 1px solid #d4d4d4; }
+
+.labelNotaGeneral{
+	height        : 100%;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra /*.labelNotaGeneral*/{ width : calc((100% - 40px - 95px) / 8); }
+
+.contenedorNotaContableCruce .labelNotaGeneral, .contenedorNotaContableCruce .campoNotaGeneral{
+		width: calc((100% - 40px - 95px) / 8);
+}
+
+.campoNotaGeneral{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra /*.campoNotaGeneral*/{ width : calc((100% - 40px - 95px) / 8); }
+
+.renglonTop{ float : left; margin: 7px 5px 0 0; min-width:150px; min-height: 41px; border: 1px solid #d4d4d4; }
+.renglonTop2{ float : left; margin: 7px 5px 0 0; width:100px; height: 41px; border: 1px solid #d4d4d4; }
+.campoTop{ float: left; height: 22px; width: 100%; overflow: hidden; }
+
+.labelTop{
+	font-weight      : bold;
+	text-align       : center;
+	width            : 100%;
+	height           : 15px;
+	padding-top      : 2px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra{
+	overflow   : auto;
+	overflow-x : hidden;
+	height: 100%;
+	background-color: #FFF;
+}
+
+.bodyLeft{
+	width : 100%;
+	float : left;
+}
+
+.bodyArticulos, .bodyArticulosPos{
+	width : 100%;
+	float : left;
+}
+
+.bodyArticulos{ background : #FFF; }
+
+ .contenedorGrillaPos{
+	width            : 98%;
+	margin           : 0 auto 0 auto;
+	overflow-x       : auto !important;
+	overflow-y       : hidden !important;
+	background-color : #ECECEC;
+	border           : 1px solid #B3B3B3;
+	border-top-left-radius  : 4px;
+	border-top-right-radius : 4px;
+	background-color        : #F3F3F3;
+}
+
+.contenedorGrilla{
+	width            : 98%;
+	margin-left      : 9px;
+	overflow-x       : auto !important;
+	overflow-y       : hidden !important;
+	background-color : #ECECEC;
+	border           : 1px solid #B3B3B3;
+	border-top-left-radius  : 4px;
+	border-top-right-radius : 4px;
+	background-color        : #F3F3F3;
+}
+
+
+.contenedorGrilla{ height : 200px; }
+.contenedorGrillaPos{ height : 213px; }
+
+.titleGrilla{
+	height           : 25px;
+	padding-top      : 5px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+	text-align       : center;
+	float            : left;
+	width            : 100%;
+	display          : none;
+}
+
+.contenedor_totales{
+	width      : 98%;
+	margin     : 20 auto 20px auto;
+	overflow-y : hidden;
+}
+
+.DivArticulos, .DivArticulosPos{
+	width  : 100%;
+	float  : left;
+	height : calc(100% - 21px);
+}
+
+.DivArticulos{
+	width            : calc(100% - 1px);
+	background-color : #FFF;
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	min-width        : 700px;
+}
+
+.DivArticulosPos{ overflow-y : auto; }
+
+/* STYLE SCROLL GRILLA*/
+/*.contenedorGrilla ::-webkit-scrollbar {
+	width: 8px;
+}
+.contenedorGrilla ::-webkit-scrollbar-track {
+	-webkit-box-shadow: #eceded;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.contenedorGrilla ::-webkit-scrollbar-track-piece {
+	background-color: #eceded;
+}
+
+.contenedorGrilla ::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #bcc0c2;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.contenedorGrilla ::-webkit-scrollbar-thumb:window-inactive {
+	display: none;
+}
+*/
+
+
+.contInfoFact{
+	width       : 100%;
+	overflow    : auto;
+	background  : #FFF;
+	float       : left;
+	background  : #FDFEFF;
+}
+
+/*.contInfoFact:hover:after{
+	content: '<div style="width:100%;height: 100%;background-color:red;position:fixed;">hola mundo</div>';
+}*/
+
+.contInfoFact > div:first-child {
+	width    : 20px;
+	height   : 20px;
+	position : fixed;
+	margin   : 5px 10px;
+	overflow : hidden;
+}
+
+.contInfoFact input{ font-size : 11px; }
+.bodyArticulos, .bodyTop{ font-size: 11px; }
+
+@media screen and (min-width:0px) and (max-width:550px) {
+	.contenedorObservacionGeneral{
+		width : calc(100% - 2px) !important;
+	}
+
+	.contenedorDetalleTotales{
+		width      : calc(100% - 2px) !important;
+		margin-top : 20px
+	}
+}
+
+@media screen and (min-width:551px) and (max-width:650px) {
+	.contenedorObservacionGeneral{ width: 40% !important; }
+}
+
+.campoNombreArticulo{
+	float        : left;
+	height       : 18px;
+	width        : 30%;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.labelNombreArticulo{
+	text-indent   : 1px;
+	float         : left;
+	height        : 18px;
+	width         : 30%;
+	font-weight   : bold;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	border-right  : 1px solid #d4d4d4;
+}
+
+/* DIV IZQUIERDO */
+.bodyTop{
+	width            : 100%;
+	float            : left;
+	background-color : #d4d4d4;
+}
+
+.renderFilasArticulo{
+	float : left;
+	width : 100%;
+}
+
+.contTopFila{
+	overflow : hidden;
+	width    : 98%;
+	margin   : 0px auto 10px auto;
+}
+
+/* CAMPOS CHECK*/
+.campoCheck{
+	width  : 131px;
+	float  : left;
+	margin : 2px 0 0 8px;
+}
+
+.campoCheck input[type=checkbox]{
+	cursor : pointer;
+	float  : left;
+	margin : 2px 5px 0 0;
+}
+
+.contenedorHeadArticulos, .contenedorHeadArticulosPos{
+	float            : left;
+	width            : 100%;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+	min-width        : 660px;
+}
+
+.headArticulos{
+	width  : calc(100% - 1px);
+	float  : left;
+	height : 20px;
+}
+
+.contenedorCheckbox{ float: left; }
+
+.contenedorOrdenCompra input[type=text]:focus{ background: #eef5f6; }
+.contenedorOrdenCompra input[type=text]:hover{ background: #eef5f6; }
+
+.contenedorNotaContableCruce input[type=text]:focus{ background: #eef5f6; }
+.contenedorNotaContableCruce input[type=text]:hover{ background: #eef5f6; }
+
+.campoTop input[type=text]:hover{ background : #eef5f6; }
+
+.campoTop input[type=text]{ padding-left:5px; }
+.campoTop input[type=text], .campoTop select{
+	cursor : pointer;
+	width  : 100%;
+	height : 100%;
+	border : none;
+}
+
+.campoTop select{
+	font-size         : 12px;
+	box-shadow        : none !important;
+	webkit-box-shadow : none !important;
+}
+
+.bodyDivArticulos input[type=text],
+.bodyDivArticulosFactura input[type=text],
+.bodyDivArticulosDevolucionCompra input[type=text],
+.bodyDivArticulosComprobanteEgreso input[type=text],
+.bodyDivArticulosDevolucionVenta input[type=text],
+.bodyDivArticulosNotaGeneral input[type=text],
+.bodyDivArticulosNotaCierre input[type=text],
+.bodyDivArticulosDeterioroCarteraClientes input[type=text],
+.bodyDivArticulosEditarCuentasDocumento input[type=text]{
+	width      : 100%;
+	height     : 100%;
+	border     : none;
+	font-size  : 11px;
+	text-align : right;
+	padding    : 0 3px 0 3px;
+}
+
+textarea{ width : 100%; border: none; height: 52px; }
+
+.bodyDivArticulos, .bodyDivArticulosFactura,.bodyDivArticulosDevolucionCompra,.bodyDivArticulosDevolucionVenta,.bodyDivArticulosNotaGeneral,.bodyDivArticulosNotaCierre,.bodyDivArticulosComprobanteEgreso,.bodyDivArticulosEditarCuentasDocumento,.bodyDivArticulosDeterioroCarteraClientes, .contenedorObservacionGeneral > div{
+	padding          : 0;
+	height           : 22px;
+	font-weight      : normal;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+	overflow         : hidden;
+}
+
+.bodyDivArticulos > div, .bodyDivArticulosFactura > div,.bodyDivArticulosDevolucionCompra > div,.bodyDivArticulosDevolucionVenta> div,.bodyDivArticulosComprobanteEgreso> div,.bodyDivArticulosNotaGeneral> div, .bodyDivArticulosNotaCierre> div, .bodyDivArticulosDeterioroCarteraClientes> div, .bodyDivArticulosEditarCuentasDocumento > div, .contenedorObservacionGeneral > div{ font-weight : bolder; }
+
+.campo{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+	width        : calc((100% - 40px - 12% - 30% - 95px) / 5);
+}
+
+/*estilo para  el contenedor de los totales de la factura/orden de compra*/
+.contenedorDetalleTotales{ width: 33%; float: right; min-width: 300px; }
+.contenedorObservacionGeneral{ width: 50%; float: left; height: 80px; min-width: 150px; }
+
+.contenedorObservacionGeneral,.contenedorDetalleTotales{
+	background : #FFF;
+	border     : 1px solid #D4D4D4;
+}
+
+.icono{
+	width      : 20px;
+	float      : left;
+	margin-top : 3px;
+	cursor     : pointer;
+}
+
+.iconBuscarArticulo{
+	width            : 20px;
+	height           : 100%;
+	float            : left;
+	cursor           : pointer;
+	margin-left      : -22px;
+	border-left      : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarArticulo > img{ width: 16px; height: 16px; margin: 2px; }
+
+.iconBuscarProveedor{
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	cursor           : pointer;
+	margin           : 1px 0 0 -22px;
+	border           : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarProveedor > img{ width: 16px; height: 16px; margin: 1px; }
+
+.campoCheck label{
+	height   : 20px;
+	float    : left;
+	overflow : hidden;
+	width    : calc(100% - 18px);
+}
+
+.labelNombreRetencion{
+	float         : left;
+	overflow      : hidden;
+	max-width     : calc(100% - 43px);
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	margin-right  : 2px;
+}
+
+.labelValorRetencion{
+	width : 40px;
+	float : left;
+}
+
+.renderCheck{
+	margin-top  : -3;
+	width       : 20px;
+	margin-left : -20px;
+	overflow    : hidden;
+	height      : 20px;
+	float       : left;
+}
+
+.renglonTotal{ height: 20px; border-top: 1px solid #d4d4d4; background-color: #F3F3F3;}
+.renglonTotal > div{ height: 100%; margin-top: 4px; }
+.headArticulos div { height: 100%; padding-top: 2px; }
+
+.btnCargarAgregarDocumento{
+	margin-left           : 2px;
+	float                 : left;
+	width                 : 18px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #777;
+	height                : 18px;
+	padding               : 2px 0px 0px 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+}
+
+.btnCargarAgregarDocumento:hover{ border:1px solid #333; }
+.btnCargarAgregarDocumento:active { border:2px solid #333; }
+
+/*BOTON RESTAURAR UNA REMISION O UNA FACTURA*/
+.btnRestaurarDocumento{
+	float                 : right;
+	width                 : 55px;
+	height                : 60px;
+	margin                : 5px 0 31px 10px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #d4d4d4;
+	padding               : 2px 0px 0px 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+}
+
+.btnRestaurarDocumento > img{ margin-left: 5px; }
+.btnRestaurarDocumento:hover { border:1px solid #777; }
+.btnRestaurarDocumento:active { border:1px solid #0846af; }
+
+.contenedorInputDocReferenciaFactura{
+	float        : left;
+	width        : 134px;
+	height       : 100%;
+	border-left  : 1px solid #d4d4d4;
+	border-right : 1px solid #d4d4d4;
+}
+
+.inputDocReferenciaFactura { height:100%; width:100%; }
+
+/*CAMPO DESCUENTO EN GRILLA*/
+.campoDescuento > div{
+	height       : 100%;
+	width        : 17px;
+	float        : left;
+	cursor       : pointer;
+	border-right : 1px solid #d4d4d4;
+}
+.campoDescuento > div > img{
+	margin : 6px 3px;
+	height : 11px;
+}
+
+.campoDescuento > input{
+	float : right;
+	width : calc(100% - 18px) !important;
+}
+
+.bodyArticulos select{ width: 100% !important; }
+
+/*======================= ESTILOS NOTA CONTABLE SIN DOCUMENTO CRUCE ========================*/
+.contenedorNotaContable .campoDescripcion{ width: 25% !important; }
+.contenedorNotaContable .labelNotaGeneral{ /*width : calc((100% - 50% - 40px - 95px - 80px - 12px) / 2);*/ width: calc((100% - 40px - 40px - 95px) / 6); max-width: 200px;}
+.contenedorNotaContable .campoNotaGeneral{ /*width : calc((100% - 50% - 40px - 95px - 80px - 12px) / 2);*/ width: calc((100% - 40px - 40px - 95px) / 6); max-width: 200px;}
+.contenedorNotaContable{
+	overflow   : auto;
+	overflow-x : hidden;
+	max-height : calc(100% - 80px);
+}
+.contenedorNotaContable input[type=text]:focus{ background: #eef5f6; }
+.contenedorNotaContable select{ border : none; height: 100%; width: 100%;}
+.contenedorNotaContable .opcionalCruce{ display: none; }
+
+/*====================== ESTILOS NOTA CONTABLE CON DOCUMENTO CRUCE ========================*/
+.contenedorNotaContableCruce .campoDescripcion{ width : 20% !important; }
+/*.contenedorNotaContableCruce .labelNotaGeneral{ width : calc((100% - 40% - 40px - 95px - 80px - 12px) / 4); }*/
+/*.contenedorNotaContableCruce .campoNotaGeneral{ width : calc((100% - 40% - 40px - 95px - 80px - 12px) / 4); }*/
+.contenedorNotaContableCruce{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+.contenedorNotaContableCruce input[type=text]:focus{ background: #eef5f6; }
+.contenedorNotaContableCruce select{ border : none; height: 100%; }
+
+.contenedorEditarCuentasDocumento input[type=text]:focus{ background: #eef5f6; }
+.contenedorEditarCuentasDocumento select{ border : none; height: 100%; width: 100%;}
+.contenedorEditarCuentasDocumento{
+	overflow   : auto;
+	overflow-x : hidden;
+	width      : 100%;
+}
+
+.inputPrefijoNotaContableCruce{
+	width      : 40% !important;
+	text-align : left !important;
+}
+
+.inputNumeroNotaContableCruce{
+	text-align : right;
+	width      : calc(60% - 11px) !important;
+}
+
+/*============================ CABECERA SALDOS ===========================*/
+.contenedorSaldos{
+	float        : left;
+	margin-right : 20px;
+	min-width    : 170px;
+}
+
+.contenedorSaldos > div{ float: left; width: 100%; }
+
+.textoSaldo{
+	width      : 67px;
+	float      : left;
+	text-align : left;
+}
+
+.valorSaldo{
+	float      : right;
+	text-align : right;
+	width      : calc(100% - 68px);
+}
+
+.valorSaldoBorder{ border-bottom: 1px solid #000; }
+
+/*
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//============================= ESTILOS DE LA GRILLA MANUAL ====================================//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+#contenedor_formulario{
+	overflow   : hidden;
+	width      : calc(100% - 100px);
+	margin     : 15px;
+	margin-top : 0px;
+}
+
+/*TOOLBAR DE LA BUSQUEDA DE LA GRILLA MANUAL*/
+.toolbar_grilla_manual{
+	overflow   : hidden;
+	width      : 100%;
+	height     : 34px;
+	margin-top : 5px;
+}
+.div_input_busqueda_grilla_manual{
+	width                  : 170px;
+	background-color       : #FFF;
+	height                 : 28px;
+	padding-top            : 5px;
+	padding                : 5 0 0 6;
+	background-color       : #F3F3F3;
+	border-top-left-radius : 5;
+	border                 : 1px solid #D4D4D4;
+	float                  : left;
+}
+
+.div_input_busqueda_grilla_manual>input{
+	background-image  : url(../../temas/clasico/images/BotonesTabs/buscar16.png);
+	background-repeat : no-repeat;
+	padding           : 0 0 0 27px;
+	border-radius     : 3px;
+	font-size         : 12px;
+	min-height        : 22px;
+	border: 1px solid #D4D4D4;
+}
+
+/*.div_input_busqueda_grilla_manual>input:hover,:focus{
+ 	background-color: #FFFFFF;
+}*/
+
+.div_img_actualizar_datos_grilla_manual{
+	float                   : left;
+	width                   : 35px;
+	height                  : 40px;
+	background-color        : #F3F3F3;
+	border-top-right-radius : 5;
+	border-top              : 1px solid #D4D4D4;
+	border-right            : 1px solid #d4d4d4;
+}
+
+.div_img_actualizar_datos_grilla_manual>img{
+	padding: 7 0 0 7;
+	cursor: pointer;
+}
+
+#contenedor_tabla_boletas{
+	overflow              : hidden;
+	width                 : calc(100% - 2px);
+	height                : 480px;
+	/*border              : 1px solid #d4d4d4;*/
+	border                : 1px solid #D4D4D4 	;
+	border-radius         : 4px;
+	-webkit-border-radius : 4px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+	background-color      :#F3F3F3;
+}
+
+.fila_formulario{
+	min-height : 30px;
+	margin-top : 5px;
+	overflow   : hidden;
+}
+
+.divLabelFormulario{
+	float : left;
+	width : 100px;
+}
+
+.divInputFormulario{
+	float       : left;
+	width       : calc(100% - 100px - 20px - 10px);
+	margin-left : 5px;
+}
+
+.divInputFormulario input, .divInputFormulario select, .divInputFormulario textarea{
+	min-height            : 22px;
+	width                 : 100%;
+	border                : 0px solid #999;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+	-webkit-box-shadow    : 0px 0px 3px #666;
+	-moz-box-shadow       : 1px 1px 3px #999;
+	box-shadow            : 1px 1px 3px #999;
+}
+
+.loadSaveFormulario{
+	overflow : hidden;
+	width    : 100%;
+	height   : 20px;
+}
+
+.divLoadCedula, .divLoadBoleta{
+	float : left;
+	width : 20px;
+}
+
+.headTablaBoletas{
+	overflow      : hidden;
+	font-weight   : bold;
+	width         : 100%;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas{
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	width            : 100%;
+	height           : 430px;
+	background-color : #FFF;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas > div{
+	overflow      : hidden;
+	height        : 22px;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaBoletas > div > div { height: 18px; /*background-color : #FFF;*/ padding-top: 4px; }
+#bodyTablaBoletas >  div:hover {background-color: #E3EBFC;}
+
+.headTablaBoletas div{ background-color:#F3F3F3; }
+
+.filaBoleta{ /*background-color:#F3F3F3;*/ cursor: hand; }
+
+.filaBoleta input[type=text]{
+	border:0px;
+	width: 90%;
+	height: 100%;
+}
+
+.filaBoleta input[type=text]:focus { background: #FFF; }
+
+/* -------------- 		SEPARAR LOS ESTILOS -----------------------*/
+
+#contenedor_formulario_configuracion{
+	overflow   : hidden;
+	width      : 100%;
+	height     : 100%;
+	margin     : 0px;
+	margin-top : 0px;
+}
+
+#contenedor_tabla_configuracion{
+	overflow              : hidden;
+	width                 : calc(100% - 2px);
+	height                : 99%;
+	/*border              : 1px solid #d4d4d4;*/
+	border                : 1px solid #BBB;
+	border-radius         : 4px;
+	-webkit-border-radius : 4px;
+	-webkit-box-shadow    : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow       : 1px 1px 1px #d4d4d4;
+	box-shadow            : 1px 1px 1px #d4d4d4;
+	background-color:#F3F3F3;
+}
+
+#bodyTablaConfiguracion{
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	width            : 100%;
+	height           : 285px;
+	background-color : #FFF;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+#bodyTablaConfiguracion > div{
+	overflow      : hidden;
+	height        : 22px;
+	border-bottom : 1px solid #d4d4d4;
+}
+
+#bodyTablaConfiguracion > div > div { height: 18px;  padding-top: 4px; }
+
+.headTablaBoletas div{
+	height      : 22px;
+	padding-top : 4px;
+	text-align  : left;
+}
+
+#informeFacturasPorPagar #bodyTablaConfiguracion{ height : 285px; }
+#informeBalancePrueba #bodyTablaConfiguracion{ height : 165px; }
+
+/*==================== ESTILOS GLOBALES ====================*/
+
+.campo0{
+	float            : left;
+	width            : 28px;
+	text-indent      : 5px;
+	border-right     : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.campo1{
+	float         : left;
+	width         : 100px;
+	text-indent   : 5px;
+	border-right  : 1px solid #d4d4d4;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	overflow      : hidden;
+}
+
+.campo2{
+	float         : left;
+	width         : 280px;
+	text-indent   : 5px;
+	overflow      : hidden;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campo3{
+	float            : left;
+	width            : 100px;
+	text-indent      : 5px;
+	text-align       : right;
+	padding-right    : 3px;
+	/*background-color : #FFF;*/
+	border-right     : 1px solid #d4d4d4;
+}
+
+.campo4{
+	float            : left;
+	width            : 70px;
+	text-indent      : 5px;
+	text-align       : center;
+	/*background-color : #FFF;*/
+	/*border-left      : 1px solid #d4d4d4;*/
+	border-right     : 1px solid #d4d4d4;
+}
+
+
+.labelSimbolo{
+	height      : auto;
+	overflow    : visible;
+	font-weight : bold;
+	float       : left;
+	width       : 10px;
+}
+
+.campoDocCruce{ background-color:#F3F3F3; }
+.labelTypeDocCruce, .numeroTypeDocCruce{ float: left; margin-left:5px; padding-top:3px; }
+
+.labelTypeDocCruce{
+	color       :blue;
+	font-weight :bold;
+	width       : 15px;
+}
+.numeroTypeDocCruce{
+	background-image : none;
+	background-color : #FFF;
+	height           : 20px;
+	width            : calc(100% - 31px);
+	border-left      : 1px solid #d4d4d4;
+	padding-left     : 5px;
+}
+
+.labelSimbolo{
+	height      : auto;
+	overflow    : visible;
+	font-weight : bold;
+	float       : left;
+	width       : 10px;
+}
+
+/* CLASE PARA EL ESTILO DE LA PAGINA POR DEFAULT DE LAS DEVOLUCIONES DE COMPRAS Y VENTAS */
+
+.divPaginaDefaultNotasDevolcion{
+	width            : 100%;
+	height           : calc(100% - 135px);
+	font-weight      : bold;
+	text-align       : center;
+	color            : #FFF;
+	background-image :  url('img/MyInformesFondo.png');
+	padding-top      : 50px;
+	text-shadow      : 1px 1px 1px #333;
+	font-size        : 13px;
+}
+
+.myFieldGrilla{
+	height        : 24px;
+	width         : 120px;
+	font-size     : 11px;
+	border-radius : 2px;
+	border        : 1px solid #d4d4d4;
+}
+
+.myFieldGrilla:focus {
+	border             : 1px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+
+.div_hover{
+	text-align     : left;
+	display        : table-cell;
+	vertical-align : middle;
+	cursor         : pointer;
+}
+
+
+/*=======================// MODAL UPLOAD FILE  //=======================*/
+.fondo_modal{
+    z-index          : 20000;
+    top              : 0px;
+    width            : 100%;
+    height           : 100%;
+    display          : table;
+    left             : 0px;
+    position         : fixed !important;
+    background-color : rgba(0,0,0,0.6);       /* Color de fondo */
+}
+
+.image_loading{
+    width    : 90px;
+    height   : 90px;
+    position : absolute;
+    left     : 60%;
+    top      : 50%;
+    margin   : -75px 0 0 -135px;
+}
+
+/* MODAL UPLOAD FILE */
+
+.fondo_modal_upload_file{
+	display          : none;
+	top              : 0px;
+	left             : 0px;
+	width            : 100%;
+	height           : 100%;
+	z-index          : 10000;
+	position         : fixed;
+	background-color : rgba(0,0,0,0.6);
+}
+
+.fondo_modal_upload_file > div{
+    position : absolute;
+    display  : table;
+    height   : 100%;
+    width    : 100%;
+    top      : 0;
+    left     : 0;
+}
+
+.fondo_modal_upload_file > div > div{
+    display        : table-cell;
+    vertical-align : middle;
+    width          : 100%;
+}
+
+.fondo_modal_upload_file > div > div > div{
+    width  : 400px;
+    height : 300px;
+    margin : 0px auto;
+}
+
+
+#div_upload_file{
+    width         : 400px;
+    height        : 300px;
+    background    : #FFF;
+    overflow      : hidden;
+    position      : fixed;
+    border        : 3px dashed #bcbcbc;
+}
+
+#div_upload_file:hover{ border : 3px dashed #9e9e9e; }
+
+#div_upload_file > div{
+    font-size: 23px;
+    margin-top: 130px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
+#div_upload_file2{
+    width         : 400px;
+    height        : 300px;
+    background    : #FFF;
+    overflow      : hidden;
+    position      : fixed;
+    border        : 3px dashed #bcbcbc;
+}
+
+#div_upload_file2:hover{ border : 3px dashed #9e9e9e; }
+
+#div_upload_file2 > div{
+    font-size: 23px;
+    margin-top: 130px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
+.btn_div_upload_file1{
+    width            : 26px;
+    height           : 26px;
+    position         : fixed;
+    margin-top       : -10px;
+    margin-left      : 390px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #bcbcbc;
+    border-radius    : 12px;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2{
+    color            : #9e9e9e;
+    width            : 22px;
+    height           : 22px;
+    position         : fixed;
+    margin-top       : 6px;
+    margin-left      : 375px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #fff;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2:hover{
+	color : #32B1D9;
+	border: 1px solid #32B1D9;
+}
+
+#btn_cancel_doc_upload{
+    cursor           : pointer;
+    display          : none;
+    float            : left;
+    margin           : 7px -35px;
+    height           : 23px;
+    width            : 25px;
+    border           : 1px solid;
+    border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius    : 2px;
+    padding-top      : 2px;
+    text-align       : center;
+    font-weight      : bold;
+    font-size        : 23px;
+    color            : #32B1D9;
+    background-color : #f3f3f3;
+}
+
+#div_upload_file > div {  margin: 0px !important;  }
+#div_upload_file:before {
+    content    : 'Arrastre el archivo excel o csv.';
+    width      : 100%;
+    float      : left;
+    font-size  : 23px;
+    margin-top : 130px;
+    text-align : center;
+    color      : #bcbcbc;
+}
+
+#div_upload_file2 > div {  margin: 0px !important;  }
+#div_upload_file2:before {
+    content    : 'Arrastre el archivo excel o csv.';
+    width      : 100%;
+    float      : left;
+    font-size  : 23px;
+    margin-top : 130px;
+    text-align : center;
+    color      : #bcbcbc;
+}
+
+.qq-uploader { position:relative; width: 100%; height:100%; }
+.qq-upload-button { display:block; position:fixed !important; width:100px; height:34px; margin:5px; background-image:url(img/uploading.png); background-size: 100px; }
+.qq-upload-button-hover { background-image:url(img/uploading_blue.png) }
+.qq-upload-button-focus { }
+.qq-upload-drop-area { position:absolute; top:40; left:0; width:100%; height:100%; min-height: 70px; background:none; text-align:center; display:none;  }
+.qq-upload-drop-area span {  display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px; }
+.qq-upload-drop-area-active { background:#FF0000; opacity: 0.3; filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; }
+.qq-upload-list { height:100%; list-style:none; color:#333; text-align:center; }
+.qq-upload-list li {  margin:0; padding:0; line-height:15px; font-size:12px; }
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {  margin-right: 7px; }
+.qq-upload-file {  }
+.qq-upload-spinner {
+    display             : inline-block;
+    background-image    : url("img/loading.gif");
+    width               : 400px;
+    height              : 400px;
+    vertical-align      : text-bottom;
+    position            : absolute;
+    top                 : 0;
+    left                : 0;
+    background-repeat   : no-repeat;
+    background-position : 100px 50px;
+    background-color    : #fff;
+}
+.qq-upload-size,.qq-upload-cancel { font-size:11px; }
+.qq-upload-failed-text { display:none; }
+.qq-upload-fail .qq-upload-failed-text { display:inline; }
+
+
+/*********************************************************/
+/* CLASE DEL BOTON ELIMINAR CUENTAS DE LA NOTA CONTABLE  */
+/*********************************************************/
+
+.button-delete-acounts{
+	float            : left;
+	margin           : 12px 5px 0 7px ;
+	width            : 32px;
+	height           : 32px;
+	cursor           : hand;
+	background-image : url(../../../temas/clasico/images/BotonesTabs/delete_acounts.png);
+}
+
+.button-delete-acounts:hover{
+	opacity:0.6;
+}
+
+#button-delete-acounts{
+	width : 17px;
+}
+
+.divBtnGrilla{
+	margin-left      : 2px;
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	overflow         : hidden;
+	cursor           : pointer;
+	border-radius    : 3px;
+	border           : 1px solid #999;
+	background-color : #FFF;
+	box-shadow       : 1px 1px 3px #999;
+}
+
+.divBtnGrilla:hover{ border:1px solid #333; }
+.divBtnGrilla:active { border:1px solid #333; }
+/*MODIFICACIONES PARA CONCILIACION BANCARIA*/
+.x-form-field-wrap .x-form-trigger {
+    right: -3px !important;
+}
+#fechaExtractos{
+	width: 132px !important;
+}
+/*==================================================================================*/
+/*============== ESTILOS PARA EL WIZARD DE LOS INFORMES (INCLUYE GRILLA) ===========*/
+/*==================================================================================*/
+
+	/*ESTILOS GEMERALES DEL WIZARD*/
+	.main-content{
+	    width            : 100%;
+	    height           : 100%;
+	    background-color : #FFF;
+	}
+	.sub-content{
+	    height       : 100%;
+	    float        : left;
+	    border-right : 1px solid #ddd;
+	}
+
+	.sub-content .title{
+	    text-align       : left;
+	    font-size        : 11px;
+	    color            : #1e82c4;
+	    border-top       : 1px solid #ddd;
+	    border-bottom    : 1px solid #ddd;
+	    margin           : 0;
+	    padding          : 6px;
+	    background-color : #F9F9F9;
+	}
+
+	.sub-content p{
+	    text-align : center;
+	    padding    : 15px;
+	}
+
+	.sub-content input[type="text"]{
+	    display               : block;
+	    line-height           : 1.42857143;
+	    color                 : #555;
+	    background-color      : #fff;
+	    background-image      : none;
+	    border                : 1px solid #ccc;
+	    height                : 25px;
+	}
+
+	.sub-content table td{
+	    padding     : 5px;
+	    font-family : Verdana,sans-serif,Tahoma;
+	    font-size   : 11px;
+	}
+
+	.sub-content [data-icon="btn-search"]{
+        width               : 9px;
+        background-image    : url(img/buscar20New.png);
+        background-repeat   : no-repeat;
+        background-position : center;
+        cursor              : pointer;
+    }
+
+	/*ESTILOS DE LA GRILLA DEL WIZARD*/
+	.content-grilla-filtro{
+	    width  : 95%;
+	    height : 85%;
+	    border : 1px solid #ddd;
+	    margin : 7px;
+	}
+
+	.content-grilla-filtro .head{
+	    background-color : #F9F9F9;
+	    width            : 100%;
+	    height           : 30px;
+	    border-bottom    : 1px solid #ddd;
+	    font-size        : 13px;
+	}
+
+	.content-grilla-filtro .body{
+	    width  : 100%;
+	    height : calc(100% - 31px);
+	    overflow: auto;
+	}
+
+	.content-grilla-filtro .row{
+	    float         : left;
+	    width         : 100%;
+	    border-bottom : 1px solid #ddd;
+	    height        : 25px;
+	}
+	.content-grilla-filtro .cell{
+	    height       : calc(100% - 9px);
+	    float        : left;
+	    border-right : 1px solid #ddd;
+	    padding      : 5px;
+	}
+
+	.content-grilla-filtro .cell[data-icon="search"]{
+	    width               : 22px;
+	    background-image    : url('img/buscar20New.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="delete"]{
+	    width               : 22px;
+	    background-image    : url('img/delete.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="check"]{
+		background-size       : 17px;
+		background-image      : url('img/checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="un_checked"]{
+		background-size       : 17px;
+		background-image      : url('img/un_checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+/*==================================================================================*/
+/*============== ESTILOS PARA EL WIZARD DE LOS INFORMES (INCLUYE GRILLA) ===========*/
+/*==================================================================================*/
+
+	/*ESTILOS GEMERALES DEL WIZARD*/
+	.main-content{
+	    width            : 100%;
+	    height           : 100%;
+	    background-color : #FFF;
+	}
+	.sub-content{
+	    height       : 100%;
+	    float        : left;
+	    border-right : 1px solid #ddd;
+	}
+
+	.sub-content .title{
+	    text-align       : left;
+	    font-size        : 11px;
+	    color            : #1e82c4;
+	    border-top       : 1px solid #ddd;
+	    border-bottom    : 1px solid #ddd;
+	    margin           : 0;
+	    padding          : 6px;
+	    background-color : #F9F9F9;
+	}
+
+	.sub-content p{
+	    text-align : center;
+	    padding    : 15px;
+	}
+
+	.sub-content input[type="text"]{
+	    display               : block;
+	    line-height           : 1.42857143;
+	    color                 : #555;
+	    background-color      : #fff;
+	    background-image      : none;
+	    border                : 1px solid #ccc;
+	    height                : 25px;
+	}
+
+	.sub-content table td{
+	    padding     : 5px;
+	    font-family : Verdana,sans-serif,Tahoma;
+	    font-size   : 11px;
+	}
+
+	.sub-content [data-icon="btn-search"]{
+        width               : 9px;
+        background-image    : url(img/buscar20New.png);
+        background-repeat   : no-repeat;
+        background-position : center;
+        cursor              : pointer;
+    }
+
+	/*ESTILOS DE LA GRILLA DEL WIZARD*/
+	.content-grilla-filtro{
+	    width  : 95%;
+	    height : 85%;
+	    border : 1px solid #ddd;
+	    margin : 7px;
+	}
+
+	.content-grilla-filtro .head{
+	    background-color : #F9F9F9;
+	    width            : 100%;
+	    height           : 30px;
+	    border-bottom    : 1px solid #ddd;
+	    font-size        : 13px;
+	}
+
+	.content-grilla-filtro .body{
+	    width  : 100%;
+	    height : calc(100% - 31px);
+	    overflow: auto;
+	}
+
+	.content-grilla-filtro .row{
+	    float         : left;
+	    width         : 100%;
+	    border-bottom : 1px solid #ddd;
+	    height        : 25px;
+	}
+	.content-grilla-filtro .cell{
+		height        : calc(100% - 9px);
+		float         : left;
+		border-right  : 1px solid #ddd;
+		padding       : 5px;
+		overflow      :hidden;
+		white-space   :nowrap;
+		text-overflow : ellipsis;
+	}
+
+	.content-grilla-filtro .cell[data-icon="search"]{
+	    width               : 22px;
+	    background-image    : url('../informes/img/buscar20New.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="sinc"]{
+	    width               : 22px;
+	    background-image    : url('img/sinc.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="check"]{
+		background-size       : 17px;
+		background-image      : url('img/checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="un_checked"]{
+		background-size       : 17px;
+		background-image      : url('img/un_checked.png');
+		background-repeat     : no-repeat;
+		background-position-x : 6px;
+		background-position-y : center;
+		cursor                : pointer;
+	}
+
+	.x-window-body {
+		position: relative;
+	}

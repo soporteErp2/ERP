@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bibliotecaaqui>
+  <libro seccion="favoritos">
+    <autor>Paulo Coelho</autor>
+    <titulo>El Alquimista</titulo>
+    <anio>1988</anio>
+    <editorial>Maxico D.F. - Editorial Grijalbo</editorial>
+  </libro>
+</bibliotecaaqui>

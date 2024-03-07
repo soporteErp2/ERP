@@ -1,0 +1,208 @@
+.content{
+	width            : 100%;
+	height           : 100%;
+	background-color : #FFF;
+	overflow         : hidden;
+}
+.separator{
+	text-align       : left;
+	font-size        : 18px !important;
+	color            : #FFF;
+	margin           : 0 !important;
+	padding          : 10px 20px !important;
+	background-color : #2A80B9;
+}
+
+.separator-body{
+	text-align       : left;
+	color            : #FFF;
+	float            : left;
+	width            : calc(100% - 30px);
+	margin-top       : 20px;
+	margin-bottom    : 10px;
+	font-size        : 15px;
+	padding          : 8px;
+	background-color : #2E3641;
+}
+
+.close{
+	float             : right;
+	height            : 32px;
+	width             : 32px;
+	margin-top        : -6px;
+	margin-right      : -15px;
+	background-image  : url('../../personal/images/close.png');
+	background-repeat : no-repeat;
+	background-size   : contain;
+	cursor            : pointer;
+}
+
+/*============ ESTILO DE LOS FORMULARIOS ===========*/
+
+.table-form{
+	font-family : arial,sans-serif;
+	margin-top  : 20px;
+	font-size   : 12px;
+	float       : left;
+	margin-left : 10px;
+	width       : 400px;
+}
+
+.table-form .thead{
+	background-color : #2A80B9;
+	color            : #fff;
+}
+
+.table-form .thead td{
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-form td{
+	padding: 2px 2px 2px 15px;
+}
+
+.table-form input, .table-form textarea, .table-form select{
+	line-height      : 1.42857143;
+	color            : #555;
+	background-color : #fff;
+	border           : 1px solid #ccc;
+	height           : 30px;
+	width            : 200px;
+	padding-left     : 5px;
+}
+
+.table-form textarea{
+	height: 50px;
+}
+
+.table-form input[data-requiere="true"], select[data-requiere="true"]{
+	background-color:#FFE0E0;
+}
+
+.buttom-content{
+	width         : 98%;
+	border-bottom : 1px solid;
+}
+
+.button{
+	cursor            : pointer;
+	background        : none;
+	border            :none;
+	width             : 53px;
+	height            : 64px;
+	padding-top       : 46px;
+	background-repeat : no-repeat;
+	color             : #757575;
+	font-size         : 12px;
+	text-align        : center;
+}
+
+.button:hover{
+	opacity: 0.5;
+}
+
+.button[data-value="save"]{
+	background-image: url('../../../personal/images/save.png');
+}
+
+.button[data-value="save_white"]{
+	background-image: url('../images/save_blanco.png');
+}
+
+.button[data-value="delete"]{
+	background-image: url('../images/delete_grilla.png');
+}
+
+.button[data-value="new"]{
+	background-image: url('../../personal/images/agregar.png');
+}
+
+.content-table{
+	width    : 100%;
+	height   : calc(100% - 50px);
+	overflow : auto;
+}
+
+.table-grilla{
+	font-family     : arial,sans-serif;
+	margin-top      : 20px;
+	font-size       : 12px;
+	float           : left;
+	margin-left     : 10px;
+	width           : 95%;
+	border-collapse : collapse;
+}
+
+.table-grilla .thead{
+	background-color : #2A80B9;
+	color            : #fff;
+}
+
+.table-grilla .thead td{
+	padding   : 5px;
+	font-size : 14px;
+}
+
+.table-grilla .tbody td{
+	padding   : 5px;
+	cursor: pointer;
+}
+
+.table-grilla .tbody tr:hover{
+	background-color: #C8E2F2 !important;
+}
+
+/*==== DIV MENSAJE "SIN ALMACENAMIENTO" =====*/
+.content-almacenamiento{
+	width  : 100%;
+	height : calc(100% - 42px);
+	display: none;
+}
+
+.content-sin-espacio{
+	width: 100%;
+}
+
+.title-sin-espacio{
+	text-align  : center;
+	padding     : 20px;
+	font-weight : bold;
+	font-size   : 13px;
+}
+
+.espacio-disponible{
+	width            : 400px;
+	height           : 50px;
+	background-color : #89d195;
+	margin           : auto;
+}
+
+.espacio-no-disponible{
+	height: 50px;
+	background-color: #ff7070;
+}
+
+.content-bar-space{
+	width       : 100%;
+	padding-top : 10px;
+	text-align  : center;
+}
+
+.content-label{
+	width      : 400px;
+	height     : 50px;
+	margin     : auto;
+	margin-top : 15px;
+}
+
+.table-espace{}
+
+.table-espace td{
+	font-size : 12px;
+	padding   : 5px 5px 5px 0px;
+}
+
+.table-espace [data-color="asignado"]{ background-color: #d4d4d4;}
+.table-espace [data-color="ocupado"]{ background-color: #ff7070;}
+.table-espace [data-color="disponible"]{ background-color: #89d195;}

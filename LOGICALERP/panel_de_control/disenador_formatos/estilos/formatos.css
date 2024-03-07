@@ -1,0 +1,7 @@
+html, body	{ margin:0;  padding:0;  										} 
+.der	    { background-image: url(../imagenes/der.png)     !important;	}
+.izq	   	{ background-image: url(../imagenes/izq.png)     !important;	}
+.fadd	    { background-image: url(../imagenes/fadd.gif)    !important;	}
+.fdelete   	{ background-image: url(../imagenes/fdelete.gif) !important;	}
+.page      	{ background-image: url(../imagenes/page.png)    !important;	}
+.link      	{ background-image: url(../imagenes/link.png)    !important;	}

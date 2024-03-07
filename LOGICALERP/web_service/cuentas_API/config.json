@@ -1,0 +1,7 @@
+{
+    "secret": "asdasd1212",
+    "refreshTokenSecret": "asdasdasd2323",
+    "port": 3000,
+    "tokenLife": 3600000,
+    "refreshTokenLife": 3600000
+}

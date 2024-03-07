@@ -1,0 +1,926 @@
+.renglon, .subRenglon, .label, .labelEntradaAlmacen, .labelRequisicion,.labelCheck, .labelCcos, .campo, .campoEntradaAlmacen, .campoOptionCheck, .campoCcos, .campoComprobante, .labelComprobante,.labelNotaGeneral,.campoNotaGeneral, .btnCopyAbono, .labelGrilla, .labelGrillaDocCruce, .campoGrilla{ float:left; height: 18px;}
+.renglon{ width:100%; margin:0; overflow:hidden; }
+.labelTotal{ float:right;  border-left: none !important; margin-right: 5px;  text-align: right; }
+
+
+.label,.labelEntradaAlmacen, .labelCheck, .labelCcos, .campoOptionCheck, .campoCcos,.labelRequisicion,.labelComprobante{
+	height        : 100%;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+}
+
+.labelTotal{
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : visible;
+	font-weight   : bolder;
+}
+
+.btnsGrilla > div{
+	width      : 20px;
+	float      : left;
+	margin-top : 3px;
+	cursor     : pointer;
+}
+
+.label, .labelEntradaAlmacen,.labelRequisicion,.labelCheck, .labelCcos, .campoOptionCheck, .campoCcos, .labelComprobante{ border-right : 1px solid #d4d4d4; }
+
+.labelGrilla, .labelGrillaDocCruce{
+	height        : 100%;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.campoGrilla{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.labelNotaGeneral{
+	height        : 100%;
+	text-indent   : 1px;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	font-weight   : bolder;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.labelNotaGeneral{ width : calc((100% - 40px - 95px) / 8); }
+
+.campoNotaGeneral{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.campoNotaGeneral{ width : calc((100% - 40px - 95px) / 8); }
+
+.inputPrefijoNotaContableCruce{
+	width      : 40% !important;
+	text-align : left !important;
+}
+
+.inputNumeroNotaContableCruce{
+	text-align : right;
+	width      : calc(60% - 11px) !important;
+}
+
+.campoOptionCheck{ background-color: #FFF; text-align: center;}
+.campoOptionCheck > input { margin-top: 5px; }
+
+.campoCcos{ background-color: #FFF; text-align: center;}
+.campoCcos > input { margin-top: 5px; }
+
+.contenedorOrdenCompra .labelComprobante{ width: calc((100% - 5% - -20% - 40px - 75px) / 8); }
+
+.contenedorOrdenCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
+
+.contenedorRequisicionCompra .labelComprobante{ width: calc((100% - 5% - -20% - 40px - 75px) / 8); }
+
+.contenedorRequisicionCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
+
+.contenedorFacturaCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 35px) !important; }
+
+.contenedorFacturaCompra .label{ width : calc((100% - 40px - 95px) / 10); }
+.contenedorOrdenCompraBloqueada .label{ width : calc((100% - 80px) / 10); }
+
+.contenedorRequisicionCompraBloqueada .label{ width : calc((100% - 80px) / 10); }
+
+.contenedorFacturaCompra .labelCheck, .contenedorFacturaCompra .campoOptionCheck{ width : calc((100% - 40px - 95px) / 10 / 3); text-align: center; }
+
+.contenedorFacturaCompra .labelCcos, .contenedorFacturaCompra .campoCcos{ width : 75px; text-align: center; }
+
+/*.contenedorOrdenCompra .labelCheck, .contenedorOrdenCompra .campoOptionCheck{ width : calc((100% - 40px - 95px) / 8 / 2); }
+.contenedorOrdenCompraBloqueada .labelCheck, .contenedorOrdenCompraBloqueada .campoOptionCheck{ width : calc((100% - 80px) / 10 / 2); }*/
+
+.renglonTop{ float : left; margin: 7px 5px 0 0; min-width: 135px; min-height: 41px; border: 1px solid #d4d4d4; }
+.campoTop{  float: left; height: 22px; width: 100%; }
+
+.labelTop{
+	font-weight      : bold;
+	text-align       : center;
+	width            : 100%;
+	height           : 15px;
+	padding-top      : 2px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra{
+	overflow    : auto;
+	overflow-x  : hidden;
+}
+
+.contenedorRequisicionCompra{
+	overflow    : auto;
+	overflow-x  : hidden;
+}
+
+.bodyLeft{
+	width : 100%;
+	float : left;
+}
+
+.bodyArticulos{
+	background : #FFF;
+	width      : 100%;
+	float      : left;
+}
+
+.contenedorGrilla{
+	height             : 300px;
+	width              : 98%;
+	margin             : 10px auto 0 auto;
+	overflow-x         : auto !important;
+	overflow-y         : hidden !important;
+	background-color   : #ECECEC;
+	border             : 1px solid #D4D4D4;
+}
+
+.titleGrilla{
+	height           : 25px;
+	padding-top      : 5px;
+	background-color : #F3F3F3;
+	border-bottom    : 1px solid #d4d4d4;
+	text-align       : center;
+	float            : left;
+	width            : 100%;
+	display          : none;
+}
+
+.contenedor_totales{
+	width      : 98%;
+	margin     : 20 auto 20px auto;
+	overflow-y : hidden;
+}
+
+
+.DivArticulos{
+	width            : calc(100% - 1px);
+	height           : calc(100% - 21px);
+	float            : left;
+	min-width        : 750px;
+	overflow-x       : hidden;
+	overflow-y       : auto;
+	background-color : #FFF;
+}
+
+/* STYLE SCROLL GRILLA*/
+/*.contenedorGrilla ::-webkit-scrollbar {
+	width: 8px;
+}
+.contenedorGrilla ::-webkit-scrollbar-track {
+	-webkit-box-shadow: #eceded;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.contenedorGrilla ::-webkit-scrollbar-track-piece {
+	background-color: #eceded;
+}
+
+.contenedorGrilla ::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #bcc0c2;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.contenedorGrilla ::-webkit-scrollbar-thumb:window-inactive {
+	display: none;
+}
+*/
+
+/*BOTON RESTAURAR UNA REMISION O UNA FACTURA*/
+.btnRestaurarDocumento{
+	float              : right;
+	width              : 55px;
+	height             : 60px;
+	margin             : 5px 0 31px 10px;
+	background-color   : #F3F3F3;
+	border             : 1px solid #d4d4d4;
+	padding            : 2px 0px 0px 2px;
+	border-radius      : 2px;
+	-webkit-box-shadow : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow    : 1px 1px 1px #d4d4d4;
+	box-shadow         : 1px 1px 1px #d4d4d4;
+}
+
+.btnRestaurarDocumento > img{ margin-left: 5px; }
+.btnRestaurarDocumento:hover { border : 1px solid #777; }
+.btnRestaurarDocumento:active { border : 1px solid #0846af; }
+
+.contInfoFact{
+	width         : 100%;
+	overflow      : hidden;
+	background    : #FFF;
+	float         : left;
+	margin-bottom : 5px;
+	background    : #FDFEFF;
+}
+
+.contInfoFact > div:first-child {
+	width    : 20px;
+	height   : 20px;
+	position : fixed;
+	margin   : 5px 10px;
+	overflow : hidden;
+}
+
+.contInfoFact input{ font-size : 11px; }
+.bodyArticulos, .bodyTop{ font-size: 11px;}
+
+@media screen and (min-width:0px) and (max-width:550px) {
+	.contenedorObservacionGeneral{
+		width : calc(100% - 2px) !important;
+	}
+
+	.contenedorDetalleTotales{
+		width      : calc(100% - 2px) !important;
+		margin-top : 20px
+	}
+}
+
+@media screen and (min-width:551px) and (max-width:650px) {
+	.contenedorObservacionGeneral{ width: 40% !important; }
+}
+
+.campoNombreArticulo{
+	float        : left;
+	height       : 18px;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.campoDocumentoCruzado{
+	float        : left;
+	height       : 18px;
+	width        : 5px;
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.labelNombreArticulo{
+	text-indent   : 1px;
+	float         : left;
+	height        : 18px;
+	font-weight   : bold;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	overflow      : hidden;
+	border-right  : 1px solid #d4d4d4;
+}
+
+.contenedorOrdenCompra .labelNombreArticulo, .contenedorOrdenCompra .campoNombreArticulo{ width : calc((100% - 100px - 95px) / 10 * 3);  }
+.contenedorRequisicionCompra .labelNombreArticulo, .contenedorRequisicionCompra .campoNombreArticulo{ width : calc((100% - 40px - 95px) / 8 * 3); }
+.contenedorFacturaCompra .labelNombreArticulo, .contenedorFacturaCompra .campoNombreArticulo{ width : calc((100% - 100px - 95px) / 10 * 3); }
+.contenedorOrdenCompraBloqueada .labelNombreArticulo, .contenedorOrdenCompraBloqueada .campoNombreArticulo{ width : calc((100% - 80px) / 10 * 3); }
+.contenedorRequisicionCompraBloqueada .labelNombreArticulo, .contenedorRequisicionCompraBloqueada .campoNombreArticulo{ width : calc((100% - 80px) / 10 * 3); }
+
+/* DIV IZQUIERDO */
+.bodyTop{
+	width            : 100%;
+	float            : left;
+	background-color : #d4d4d4;
+}
+
+.renderFilasArticulo{
+	float : left;
+	width : 100%;
+}
+
+.contTopFila{
+	overflow : hidden;
+	width    : 98%;
+	margin   : 0px auto 10px auto;
+}
+
+/* CAMPOS CHECK*/
+.campoCheck{
+	width       : 131px;
+	/*height      : 23px;*/
+	float       : left;
+	margin-left : 8px;
+	display     : table;
+}
+
+.campoCheck > input, .campoCheck > div, .campoCheck > label{ display: table-cell; vertical-align: middle; }
+
+.campoCheck input[type=checkbox]{
+	cursor     : pointer;
+	margin-top : 5px;
+}
+
+.contenedorHeadArticulos{
+	overflow         : hidden;
+	float            : left;
+	width            : 100%;
+	min-width        : 750px;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.headArticulos{
+	width  : calc(100% - 1px);
+	float  : left;
+	height : 20px;
+}
+
+.contenedorCheckbox{ float: left; }
+
+.contenedorOrdenCompra input[type=text]:focus{ background: #eef5f6; }
+.contenedorOrdenCompra input[type=text]:hover{ background: #eef5f6; }
+.contenedorRequisicionCompra input[type=text]:focus{ background: #eef5f6; }
+.contenedorRequisicionCompra input[type=text]:hover{ background: #eef5f6; }
+.contenedorFacturaCompra input[type=text]:focus{ background: #eef5f6; }
+.contenedorFacturaCompra input[type=text]:hover{ background: #eef5f6; }
+.contenedorComprobanteEgreso input[type=text]:focus{ background: #eef5f6; }
+.contenedorComprobanteEgreso input[type=text]:hover{ background: #eef5f6; }
+.contenedorComprobanteEgresoCuentas input[type=text]:focus{ background: #eef5f6; }
+.contenedorComprobanteEgresoCuentas input[type=text]:hover{ background: #eef5f6; }
+.contenedorEntradaAlmacen input[type=text]:focus{ background: #eef5f6; }
+.contenedorEntradaAlmacen input[type=text]:hover{ background: #eef5f6; }
+.campoTop input[type=text]:hover{ background : #eef5f6;  }
+
+.campoTop input[type=text]{ padding-left:5px; }
+.campoTop input[type=text], .campoTop select{
+	cursor : pointer;
+	width  : 100%;
+	height : 100%;
+	border : none;
+}
+
+.contenedorNotaContable input[type=text]:hover{ background: #eef5f6; }
+
+.bodyDivArticulos input[type=text], .bodyDivArticulosComprobanteEgreso input[type=text],  .bodyDivArticulosFactura input[type=text], .bodyDivArticulosFacturaCompraCuentas input[type=text], .bodyDivArticulosRequisicionCompra input[type=text], .bodyDivArticulosEntradaAlmacen input[type=text]{
+	width      : 100%;
+	height     : 100%;
+	border     : none;
+	font-size  : 11px;
+	text-align : right;
+	padding    : 0 3px 0 3px;
+}
+
+textarea{ width : 100%; border: none; height: 52px; }
+
+.bodyDivArticulos, .bodyDivArticulosFactura, .bodyDivArticulosFacturaCompraCuentas, .bodyDivArticulosComprobanteEgreso, .bodyDivArticulosRequisicionCompra, .bodyDivArticulosEntradaAlmacen, .contenedorObservacionGeneral > div{
+	padding          : 0;
+	height           : 22px;
+	font-weight      : normal;
+	border-bottom    : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.bodyDivArticulos > div, .bodyDivArticulosComprobanteEgreso > div, .bodyDivArticulosFactura > div , .bodyDivArticulosFacturaCompraCuentas > div, .bodyDivArticulosRequisicionCompra > div,  .bodyDivArticulosEntradaAlmacen > div{ font-weight : bolder; }
+
+.campo{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.campoEntradaAlmacen{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.campoComprobante{
+	height       : 100%;
+	border-right : 1px solid #d4d4d4;
+}
+
+.btnCopyAbono{
+	height      : 100%;
+	border-left : 1px solid #d4d4d4;
+	margin-left : -20px;
+	cursor      : pointer;
+}
+
+.campoAbono input{ width : calc(100% - 20px) !important; }
+
+/*LAS LINEA QUE ESTA COMENTADAS CONTROLAN EL ESTILO DE LA GRILLA DE ARTICULOS DE REQUISICIONES*/
+
+.contenedorOrdenCompra .campo, .contenedorOrdenCompra .label{ width : calc((100% - 40px - 95px) / 10); }
+.contenedorOrdenCompra .campoEntradaAlmacen, .contenedorOrdenCompra .labelEntradaAlmacen{ width : calc((100% - 40px - 95px) / 5); }
+.contenedorOrdenCompra .campoComprobante, .contenedorOrdenCompra .labelComprobante{ width: calc((100% - 5% - -20% - 40px - 75px) / 8); }
+/*.contenedorRequisicionCompra .campo, .contenedorRequisicionCompra .label{ width : calc((100% - 40px - 95px) / 10); } RESTABLECER AL RESTAURAR LOS CAMPOS ELIMINADOS*/
+.contenedorRequisicionCompra .campo, .contenedorRequisicionCompra .label{ width : calc((100% - 40px - 95px) / 5); }//*CON LOS CAMPOS ELIMINADOS */
+.contenedorRequisicionCompra .campoComprobante, .contenedorRequisicionCompra .labelComprobante{ width: calc((100% - 5% - -20% - 40px - 75px) / 8); }
+.contenedorFacturaCompra .campo, .contenedorFacturaCompra .label{ width : calc((100% - 40px - 95px) / 10); }
+.contenedorOrdenCompraBloqueada .campo, .contenedorOrdenCompraBloqueada .label{ width : calc((100% - 80px) / 10); }
+/*.contenedorRequisicionCompraBloqueada .campo, .contenedorRequisicionCompraBloqueada .label{ width : calc((100% - 80px) / 10); } RESTABLECER AL RESTAURAR LOS CAMPOS ELIMINADOS*/
+.contenedorRequisicionCompraBloqueada .campo, .contenedorRequisicionCompraBloqueada .label{ width : calc((100% - 80px) / 5); } /*CON LOS CAMPOS ELIMINADOS */
+
+.contenedorOrdenCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
+.contenedorRequisicionCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
+.contenedorFacturaCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 35px) !important; }
+.contenedorOrdenCompra .labelCheck, .contenedorOrdenCompra .campoOptionCheck,.contenedorFacturaCompra .labelCheck, .contenedorFacturaCompra .campoOptionCheck{ width : calc((100% - 40px - 95px) / 10 / 3); text-align: center; }
+
+.contenedorFacturaCompra .labelCcos, .contenedorFacturaCompra .campoCcos{ width : 75px; text-align: center; }
+
+/*estilo para  el contenedor de los totales de la factura/orden de compra*/
+.contenedorDetalleTotales{ width: 33%; float: right; min-width: 300px; }
+.contenedorObservacionGeneral{ width: 50%; float: left; height: 80px; min-width: 150px; }
+
+.contenedorObservacionGeneral,.contenedorDetalleTotales{
+	background : #FFF;
+	border     : 1px solid #D4D4D4;
+}
+
+.icono{
+	width      : 20px;
+	float      : left;
+	margin-top : 3px;
+	cursor     : pointer;
+}
+
+.iconBuscarArticulo{
+	width            : 20px;
+	height           : 100%;
+	float            : left;
+	cursor           : pointer;
+	margin-left      : -22px;
+	border-left      : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarProveedor{
+	height           : 18px;
+	width            : 18px;
+	float            : left;
+	cursor           : pointer;
+	margin-top       : 3px;
+	margin-left      : 2px;
+	margin           : 1px 0 0 -21px;
+	border           : 1px solid #d4d4d4;
+	background-color : #F3F3F3;
+}
+
+.iconBuscarProveedor > img, .iconBuscarArticulo > img{
+	margin-top  : 2px;
+	margin-left : 1px;
+	height      : 16px;
+	width       : 16px;
+}
+
+.campoCheck label{
+	height   : 20px;
+	overflow : hidden;
+	width    : calc(100% - 18px);
+}
+
+.labelNombreRetencion{
+	float         : left;
+	overflow      : hidden;
+	max-width     : calc(100% - 43px);
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+	margin-right  : 2px;
+}
+
+.labelValorRetencion{
+	width : 40px;
+	float : left;
+}
+
+.renderCheck{
+	margin-top  : -3;
+	width       : 20px;
+	margin-left : -20px;
+	overflow    : hidden;
+	height      : 20px;
+	float       : left;
+}
+
+.renglonTotal{ height: 20px; border-top: 1px solid #d4d4d4; background-color:#F3F3F3;}
+.renglonTotal > div{ height: 100%; margin-top: 4px; }
+.headArticulos div { height: 100%; padding-top: 2px; }
+
+.btnCargarAgregarOrdenCompra{
+	margin-left           : 2px;
+	float                 : left;
+	width                 : 20px;
+	height                : 20px;
+	background-color      : #F3F3F3;
+	border                : 1px solid #d4d4d4;
+	padding               : 2px 0px 0px 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+}
+
+.btnCargarAgregarOrdenCompra:hover{
+	border             : 1px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+.btnCargarAgregarOrdenCompra:active {
+	border             : 2px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+
+.btnCargarAgregarOrdenCompra > img { margin: 1px; }
+
+.btnRestaurarOrdenCompra{
+	float              : right;
+	width              : 55px;
+	height             : 60px;
+	margin             : 5px 0 31 10px;
+	background-color   : #F3F3F3;
+	border             : 1px solid #d4d4d4;
+	padding            : 2px 0px 0px 2px;
+	border-radius      : 2px;
+	-webkit-box-shadow : 1px 1px 1px #d4d4d4;
+	-moz-box-shadow    : 1px 1px 1px #d4d4d4;
+	box-shadow         : 1px 1px 1px #d4d4d4;
+}
+
+.btnRestaurarOrdenCompra > img{ margin-left: 5px; }
+.btnRestaurarOrdenCompra:hover { border:1px solid #777; }
+.btnRestaurarOrdenCompra:active { border:1px solid #0846af; }
+
+.contenedorInputOrdenCompraFactura{
+	float        : left;
+	width        : 134px;
+	height       : 100%;
+	border-left  : 1px solid #d4d4d4;
+	border-right : 1px solid #d4d4d4;
+}
+
+.inputOrdenCompraFactura { height:100%; width:100%; }
+
+/*CAMPO DESCUENTO EN GRILLA*/
+.campoDescuento > div{
+	height       : 100%;
+	width        : 17px;
+	float        : left;
+	cursor       : pointer;
+}
+
+.campoDescuento > div > img{
+	margin      : 6px 3px;
+	height      : 11px;
+}
+
+.campoDescuento > input{
+	float       : right;
+	width       : calc(100% - 18px) !important;
+	border-left : 1px solid #d4d4d4 !important;
+}
+
+/*ESTILOS COMPROBANTE EGRESO POR CUENTAS*/
+.contenedorComprobanteEgresoCuentas .labelGrilla{ width : calc((100% - 35% - 40px - 95px - 92px) / 3); }
+.contenedorComprobanteEgresoCuentas .campoGrilla{ width : calc((100% - 35% - 40px - 95px - 92px) / 3); }
+
+.contenedorComprobanteEgresoCuentas .labelGrillaDocCruce{ width : calc((100% - 20% - 40px - 95px - 87px) / 3) ; }
+.contenedorComprobanteEgresoCuentas{
+	overflow   : auto;
+	overflow-x : hidden;
+}
+.contenedorComprobanteEgresoCuentas input[type=text]:focus{ background: #eef5f6; }
+
+.inputPrefijoFacturaComprobanteEgreso{
+	text-align : left !important;
+	width      : calc(40% - 10px) !important;
+}
+
+.inputNumeroFacturaComprobanteEgreso{
+	text-align : right;
+	width      : calc(60% - 10px - 11px) !important;
+}
+
+.labelSimbolo{
+	height      : auto;
+	overflow    : visible;
+	font-weight : bold;
+	float       : left;
+	width       : 10px;
+}
+
+.myFieldGrilla{
+	height        : 24px;
+	width         : 120px;
+	font-size     : 11px;
+	border-radius : 2px;
+	border        : 1px solid #d4d4d4;
+}
+
+.myFieldGrilla:focus {
+	border             : 1px solid #99BBE8;
+	-webkit-box-shadow : 0px 0px 5px #99BBE8;
+	-moz-box-shadow    : 0px 0px 5px #99BBE8;
+	box-shadow         : 0px 0px 5px #99BBE8;
+}
+
+.div_hover{
+	text-align     : left;
+	display        : table-cell;
+	vertical-align : middle;
+	cursor         : pointer;
+}
+
+/* SCROLL*/
+
+/*::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}*/
+
+
+/*ESTILOS DE LOS BOTONES DE LAS ORDENES AGREGADAS*/
+
+.contenedorInputDocReferenciaFactura{
+	float        : left;
+	width        : 134px;
+	height       : 100%;
+	/*border-left  : 1px solid #d4d4d4;*/
+	border-right : 1px solid #d4d4d4;
+}
+
+.inputDocReferenciaFactura { height:100%; width:100%; }
+
+
+/*=======================// MODAL UPLOAD FILE //=======================*/
+
+.fondo_modal_upload_file{
+	display          : none;
+	top              : 0px;
+	left             : 0px;
+	width            : 100%;
+	height           : 100%;
+	z-index          : 10000;
+	position         : fixed;
+	background-color : rgba(0,0,0,0.6);
+}
+
+.fondo_modal_upload_file > div{
+    position : absolute;
+    display  : table;
+    height   : 100%;
+    width    : 100%;
+    top      : 0;
+    left     : 0;
+}
+
+.fondo_modal_upload_file > div > div{
+    display        : table-cell;
+    vertical-align : middle;
+    width          : 100%;
+}
+
+.fondo_modal_upload_file > div > div > div{
+    width  : 400px;
+    height : 300px;
+    margin : 0px auto;
+}
+
+
+#div_upload_file{
+    width         : 400px;
+    height        : 300px;
+    background    : #FFF;
+    overflow      : hidden;
+    position      : fixed;
+    border        : 3px dashed #bcbcbc;
+}
+
+#div_upload_file:hover{ border : 3px dashed #9e9e9e; }
+
+#div_upload_file > div{
+    font-size: 23px;
+    margin-top: 130px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
+.btn_div_upload_file1{
+    width            : 26px;
+    height           : 26px;
+    position         : fixed;
+    margin-top       : -10px;
+    margin-left      : 390px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #bcbcbc;
+    border-radius    : 12px;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2{
+    color            : #9e9e9e;
+    width            : 22px;
+    height           : 22px;
+    position         : fixed;
+    margin-top       : 6px;
+    margin-left      : 375px;
+    font-size        : 20px;
+    font-weight      : bold;
+    text-align       : center;
+    background-color : #fff;
+    cursor           : pointer;
+}
+
+.btn_div_upload_file2:hover{
+	color : #32B1D9;
+	border: 1px solid #32B1D9;
+}
+
+#btn_cancel_doc_upload{
+    cursor           : pointer;
+    display          : none;
+    float            : left;
+    margin           : 7px -35px;
+    height           : 23px;
+    width            : 25px;
+    border           : 1px solid;
+    border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius    : 2px;
+    padding-top      : 2px;
+    text-align       : center;
+    font-weight      : bold;
+    font-size        : 23px;
+    color            : #32B1D9;
+    background-color : #f3f3f3;
+}
+
+#div_upload_file > div {  margin: 0px !important;  }
+#div_upload_file:before {
+    content    : 'Arrastre el documento';
+    width      : 100%;
+    float      : left;
+    font-size  : 23px;
+    margin-top : 130px;
+    text-align : center;
+    color      : #bcbcbc;
+}
+.fondo_modal_upload_file .qq-uploader { position:relative; width: 100%; height:100%; }
+.fondo_modal_upload_file .qq-upload-button { display:block; position:fixed !important; width:100px; height:34px; margin:5px; background-image:url(img/uploading.png); background-size: 100px; }
+.fondo_modal_upload_file .qq-upload-button-hover { background-image:url(img/uploading_blue.png) }
+.fondo_modal_upload_file .qq-upload-button-focus { }
+.fondo_modal_upload_file .qq-upload-drop-area { position:absolute; top:40; left:0; width:100%; height:100%; min-height: 70px; background:none; text-align:center; display:none;  }
+.fondo_modal_upload_file .qq-upload-drop-area span {  display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px; }
+.fondo_modal_upload_file .qq-upload-drop-area-active { background:#FF0000; opacity: 0.3; filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; }
+.fondo_modal_upload_file .qq-upload-list { height:100%; list-style:none; color:#333; text-align:center; }
+.fondo_modal_upload_file .qq-upload-list li {  margin:0; padding:0; line-height:15px; font-size:12px; }
+.fondo_modal_upload_file .qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {  margin-right: 7px; }
+.fondo_modal_upload_file .qq-upload-file {  }
+
+.fondo_modal_upload_file .qq-upload-spinner {
+    display             : inline-block;
+    background-image    : url("img/loading.gif");
+    width               : 400px;
+    height              : 400px;
+    vertical-align      : text-bottom;
+    position            : absolute;
+    top                 : 0;
+    left                : 0;
+    background-repeat   : no-repeat;
+    background-position : 100px 50px;
+    background-color    : #fff;
+}
+
+.fondo_modal_upload_file .qq-upload-size,.qq-upload-cancel { font-size:11px; }
+.fondo_modal_upload_file .qq-upload-failed-text { display:none; }
+.fondo_modal_upload_file .qq-upload-fail .qq-upload-failed-text { display:inline; }
+
+/*========= ESTILO DE LOS DIV SUPERIORIORES DE LOS LOAD ===========*/
+.divLoadCampo{
+	width    : 19px;
+	height   : 19px;
+	float    : left;
+	overflow : hidden;
+}
+
+
+/*==================================================================================*/
+/*============== ESTILOS PARA EL WIZARD DE LOS INFORMES (INCLUYE GRILLA) ===========*/
+/*==================================================================================*/
+
+	/*ESTILOS GEMERALES DEL WIZARD*/
+	.main-content{
+	    width            : 100%;
+	    height           : 100%;
+	    background-color : #FFF;
+	}
+	.sub-content{
+	    height       : 100%;
+	    float        : left;
+	    border-right : 1px solid #ddd;
+	}
+
+	.sub-content .title{
+	    text-align       : left;
+	    font-size        : 11px;
+	    color            : #1e82c4;
+	    border-top       : 1px solid #ddd;
+	    border-bottom    : 1px solid #ddd;
+	    margin           : 0;
+	    padding          : 6px;
+	    background-color : #F9F9F9;
+	}
+
+	.sub-content p{
+	    text-align : center;
+	    padding    : 15px;
+	}
+
+	.sub-content input[type="text"]{
+	    display               : block;
+	    line-height           : 1.42857143;
+	    color                 : #555;
+	    background-color      : #fff;
+	    background-image      : none;
+	    border                : 1px solid #ccc;
+	    height                : 25px;
+	}
+
+	.sub-content table td{
+	    padding     : 5px;
+	    font-family : Verdana,sans-serif,Tahoma;
+	    font-size   : 11px;
+	}
+
+	.sub-content [data-icon="btn-search"]{
+        width               : 9px;
+        background-image    : url(img/buscar20New.png);
+        background-repeat   : no-repeat;
+        background-position : center;
+        cursor              : pointer;
+    }
+
+	/*ESTILOS DE LA GRILLA DEL WIZARD*/
+	.content-grilla-filtro{
+	    width  : 95%;
+	    height : 85%;
+	    border : 1px solid #ddd;
+	    margin : 7px;
+	}
+
+	.content-grilla-filtro .head{
+	    background-color : #F9F9F9;
+	    width            : 100%;
+	    height           : 30px;
+	    border-bottom    : 1px solid #ddd;
+	    font-size        : 13px;
+	}
+
+	.content-grilla-filtro .body{
+	    width  : 100%;
+	    height : calc(100% - 31px);
+	    overflow: auto;
+	}
+
+	.content-grilla-filtro .row{
+	    float         : left;
+	    width         : 100%;
+	    border-bottom : 1px solid #ddd;
+	    height        : 25px;
+	}
+	.content-grilla-filtro .cell{
+		height        : calc(100% - 9px);
+		float         : left;
+		border-right  : 1px solid #ddd;
+		padding       : 5px;
+		overflow      : hidden;
+		white-space   : nowrap;
+		text-overflow : ellipsis;
+	}
+
+	.content-grilla-filtro .cell[data-icon="search"]{
+	    width               : 22px;
+	    background-image    : url('img/buscar20New.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.content-grilla-filtro .cell[data-icon="delete"]{
+	    width               : 22px;
+	    background-image    : url('img/delete.png');
+	    background-repeat   : no-repeat;
+	    background-position : center;
+	    cursor              : pointer;
+	}
+
+	.x-window-body {
+		position: relative;
+	}

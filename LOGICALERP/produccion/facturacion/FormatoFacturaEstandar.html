@@ -1,0 +1,97 @@
+<style>
+	.StyleTableHeader{
+		font-size		:10px;
+		font-family		:"Segoe UI Light","Helvetica Neue Light","Segoe UI","Helvetica Neue","Trebuchet MS",Helvetica,"Droid Sans",Tahoma,Geneva,sans-serif;
+		border			:1px solid #000;
+	}
+	.StyleTableFooter{
+		font-size		:9px;
+		font-family		:"Segoe UI Light","Helvetica Neue Light","Segoe UI","Helvetica Neue","Trebuchet MS",Helvetica,"Droid Sans",Tahoma,Geneva,sans-serif;
+		border			:1px solid #000;
+	}
+</style>
+<htmlpageheader class="SoloPDF" name="MyHeader1"> 
+
+    <table class="StyleTableHeader" width="740" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center">
+              <img alt="" src="../../../../ARCHIVOS_PROPIOS/imagenes_empresas/empresa_48/formato_documentos/xxxxx_LOGO.png" style="width: 300px; height: 51px;" />
+          </td>
+            <td align="center">
+                <span style="font-size:18px; font-weight:bold">FACTURA DE VENTA</span><br />
+                <span style="font-size:22px; font-weight:bold">No.<span style="background-color: rgb(255, 0, 0);">[FV_NUMERO_FACTURA]</span></span>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <span style="font-size:18px; font-weight:bold"><span style="background-color: rgb(255, 0, 0);">[RAZON_SOCIAL]</span></span><br />
+                <span style="font-size:18px;"><span style="background-color: rgb(255, 0, 0);">[TIPO_REGIMEN]</span>&nbsp;<span style="background-color: rgb(255, 0, 0);">[TIPO_IDENTIFICACION]</span>&nbsp;<span style="background-color: rgb(255, 0, 0);">[NUMERO_IDENTIFICACION]</span></span><br />
+                <span style="font-size:14px; font-weight:bold"><span style="background-color: rgb(255, 0, 0);">[DIRECCION]</span></span><br />
+            </td>
+            <td align="center">
+                <span style="font-size:14px;">Paginas({PAGENO} de {nb})</span><br /><br />
+                ACTIVIDAD ECONOMICA <span style="background-color: rgb(255, 0, 0);">[ACTIVIDAD_ECONOMICA]</span><br />
+                RETENEDOR IVA A REGIMEN SIMPLIFICADO<br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+				AUTORIZACION DE FACTURACION No&nbsp;<span style="background-color: rgb(255, 0, 0);">[FV_NUMERO_RESOLUCION_DIAN]</span>&nbsp;DE&nbsp;<span style="background-color: rgb(255, 0, 0);">[FV_FECHA_RESOLUCION_DIAN]</span>&nbsp; &nbsp;DEL&nbsp;<span style="background-color: rgb(255, 0, 0);">[FV_PREFIJO_RESOLUCION_DIAN]</span>&nbsp;<span style="background-color: rgb(255, 0, 0);">[FV_NUMERO_INICIAL_RESOLUCION]</span>&nbsp;HASTA&nbsp;<span style="background-color: rgb(255, 0, 0);">[FV_PREFIJO_RESOLUCION_DIAN]</span>&nbsp;<span style="background-color: rgb(255, 0, 0);">[FV_NUMERO_FINAL_RESOLUCION]</span>&nbsp; - &nbsp;FACTURA IMPRESA POR COMPUTADOR            
+            </td>
+        </tr>
+    </table>
+
+
+</htmlpageheader>
+<sethtmlpageheader name="MyHeader1" show-this-page="1" value="on"></sethtmlpageheader>
+
+<span style="background-color: rgb(255, 0, 0);">[CONTENIDO_DOCUMENTO]</span>
+
+<table class="StyleTableCabecera" width="740" border="0" cellspacing="0" cellpadding="0" style="font-size:10px">
+    <tr>
+      <td colspan="3" height="60">&nbsp;</td>
+    </tr>
+    <tr>
+        <td width="350" align="center" style="border-top:1px solid #000; font-size:14px">
+            Vendedor <span style="background-color: rgb(255, 0, 0);">[FV_VENDEDOR]</span>                
+        </td>
+        <td width="40" align="center">&nbsp;</td>
+        <td width="350" align="center" style="border-top:1px solid #000; font-size:14px">
+            Aceptacion de la factura<br />Nombre legible de quien recibe y sello
+        </td>
+    </tr>
+</table>
+
+<htmlpagefooter class="SoloPDF" name="MyFooter1">
+
+    <table class="StyleTableFooter" width="740" border="0" cellspacing="0" cellpadding="0" style="font-size:10px">
+        <tr>
+            <td width="488" align="center">               
+                ESTA FACTURA DE VENTA SE PAGARA A LA ORDEN DE&nbsp;<span style="background-color: rgb(255, 0, 0);">[RAZON_SOCIAL]</span>&nbsp;<br />
+                A PARTIR DEL VENCIMIENTO SE CAUSARAN INTERESES DE MORA A LA TASA MAXIMA LEGAL VIGENTE<br />
+                FAVOR GIRAR CHEQUE CRUZADO Y ENVIAR EL COMPROBANTE DE PAGO AL DEPARTAMENTO DE CARTERA<br />          
+				ESTA FACTURA DE VENTA SE ASIMILA A LA LETRA DE CAMBIO PARA TODOS SUS EFECTOS LEGALES            
+            </td>
+            <td width="250" align="center">
+                <span style="font-size:16px; font-weight:bold">PAGOS POR CONSIGNACION</span><br />
+        		<span style="font-size:12px;">
+                    BCO. XXXXXX CTA.CTE.999999999999999 
+                </span>
+            </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+    </table>
+
+</htmlpagefooter>
+<sethtmlpagefooter name="MyFooter1" value="on"></sethtmlpagefooter> 
+
+
+
+                    
+
+
+
+
+

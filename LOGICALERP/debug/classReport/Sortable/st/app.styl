@@ -1,0 +1,277 @@
+html
+	background-color #555
+
+
+html, body
+	margin       0
+	padding      0
+	position     relative
+	color        #464637
+	min-height   100%
+	font-size    14px
+	font-family  'Roboto', sans-serif
+	font-weight  300
+
+
+ul
+	margin      0
+	padding     0
+	list-style  none
+	width       350px
+	height    400
+	overflow  auto
+
+
+.container
+	width 100%
+	float left
+
+.sortable-ghost
+	opacity 0.2
+
+.title
+	color             #fff
+	padding           3px 10px
+	display           inline-block
+	position          relative
+	background-color  #999
+
+.title_xl
+	padding    3px 15px
+	font-size  20px
+
+
+
+.tile
+	width             22%
+	min-width         245px
+	color             #FF7270
+	padding           10px 30px
+	text-align        center
+	margin-top        15px
+	margin-left       5px
+	margin-right      30px
+	background-color  #fff
+	display           inline-block
+	vertical-align    top
+
+.tile__name
+	cursor          move
+	padding-bottom  10px
+	border-bottom   1px solid #FF7373
+
+
+.tile__list
+	margin-top 10px
+
+.tile__list:last-child
+	margin-right  0
+	min-height    80px
+
+
+.tile__list img
+	cursor         move
+	margin         10px
+	border-radius  100%
+
+
+
+
+.block
+	opacity 1
+	position absolute
+
+.block__list
+	padding           20px 0
+	max-width         360px
+	// height         431px
+	margin-top        -8px
+	margin-left       5px
+	background-color  #fff
+	float             left
+
+.block__list-title
+	margin      -20px 0 0
+	padding     10px
+	text-align  center
+	background  #5F9EDF
+
+.block__list li
+		cursor move
+
+.block__list_words li
+	background-color  #fff
+	padding           10px 40px
+
+.block__list_words .sortable-ghost
+	opacity           0.4
+	background-color  #EEE
+
+.block__list_words li:first-letter
+	text-transform uppercase
+
+.block__list_tags
+	padding-left 30px
+
+
+.block__list_tags:after
+	clear    both
+	content  ''
+	display  block
+
+.block__list_tags li
+	color             #fff
+	float             left
+	margin            8px 20px 10px 0
+	padding           5px 10px
+	min-width         10px
+	background-color  #5F9EDF
+	text-align        center
+
+.block__list_tags li:first-child:first-letter {
+	text-transform uppercase
+}
+
+
+
+#cols
+
+	li
+		position relative
+
+
+	i
+		-webkit-transition  opacity .2s
+		transition          opacity .2s
+		opacity             0
+		display             block
+		cursor              pointer
+		color               #c00
+		top                 10px
+		right               20px
+		position            absolute
+		font-style          normal
+
+
+	li:hover i
+		opacity 1
+
+	li:hover
+		background-color #EEE
+
+
+
+#filter
+
+	button
+		color       #fff
+		width       100%
+		border      none
+		outline     0
+		opacity     1
+		margin      10px 0 0
+		transition  opacity .1s ease
+		cursor      pointer
+		background  #5F9EDF
+		padding     10px 0
+		font-size   18px
+
+	button:hover
+			opacity .5
+
+
+	.block__list
+		padding-bottom 0
+
+
+.drag-handle
+	margin-right  10px
+	font          bold 20px Sans-Serif
+	color         #5F9EDF
+	display       inline-block
+	cursor        move
+	cursor        -webkit-grabbing
+
+
+#todos input
+	padding      5px
+	font-size    14px
+	font-family  'Roboto', sans-serif
+	font-weight  300
+
+
+
+
+#nested ul li
+	background-color rgba(0,0,0,.05)
+
+.preview
+	background-color  #FFF
+	margin-left       20px
+	width             calc(100% - 350px - 50px)
+	height            400px
+	float             left
+	margin-top -8px
+
+::-webkit-scrollbar{
+	width      : 8px;
+}
+::-webkit-scrollbar-button{
+	width  :8px;
+	height : 5px;
+}
+::-webkit-scrollbar-track{
+	// border                :thin solid #1a1f25;
+}
+::-webkit-scrollbar-thumb{
+	background rgba(193, 193, 193, 0.95)
+	// border thin solid #232c34
+}
+::-webkit-scrollbar-thumb:hover{
+	background background rgba(193, 193, 193, 0.65)
+}
+/* Pseudo-clase */
+::-webkit-scrollbar-thumb:window-inactive {
+	background rgba(193, 193, 193, 0.35)
+}
+
+.tables-report
+	float left
+	border-collapse collapse
+	margin-top  10px
+	margin-left  15px
+	border 1px solid #999
+
+	thead td
+		text-align center
+		font-weight bold
+		color #FFF
+		background-color #999
+		padding 6px
+		font-size 14px
+		cursor default
+
+	tbody td
+		padding 6px
+		cursor pointer
+
+	tbody td:hover
+		opacity 0.5
+
+	input
+		border-radius 200px 200px 200px 200px
+	    box-shadow none
+
+.content-field-add-column
+	width calc(100% - 10px)
+	position absolute
+	bottom 5px
+	height 80px
+	border-top 1px solid
+	padding-top 10px
+
+	table
+		width 100%
+
+		input
+			width 100%
