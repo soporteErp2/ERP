@@ -18,7 +18,7 @@ PHP/5.4.31
 MySql libmysql - mysqlnd 5.0.10 - 20111026  
 ```
 
-### Instalación 🔧
+## Instalación 🔧
 
 _Montar una copia de base de datos erp_acceso para acceder al listado de empresas_ 
 _Montar una copia de una base de datos de un cliente con datos_ 
