@@ -11,12 +11,16 @@ Mira **Deployment** para conocer como desplegar el proyecto.
 ### Pre-requisitos 📋
 
 _version de php inferior_
-
 ```
 PHP/5.4.31
 ```
+_version de mysql_
 ```
 MySql libmysql - mysqlnd 5.0.10 - 20111026  
+```
+_Se recomienda usar XAMPP (ya trae php y mysql necesarios para la ejecucion) en la siguiente version_
+```
+XAMPP en la version 1.8.2 
 ```
 
 ## Instalación 🔧
