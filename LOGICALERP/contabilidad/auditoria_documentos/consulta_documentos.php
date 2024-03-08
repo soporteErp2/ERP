@@ -23,6 +23,7 @@
 			$whereConsecutivos    = 'numero_factura>0 OR consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'CE':
@@ -31,6 +32,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_comprobante BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_comprobante BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'RV':
@@ -39,6 +41,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'FV':
@@ -47,6 +50,7 @@
 			$whereConsecutivos    = "numero_factura>0 ";
 			$orderBy              = 'fecha_inicio DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'RC':
@@ -55,6 +59,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_recibo BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_recibo BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'LN':
@@ -63,6 +68,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_documento BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_documento BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'LE':
@@ -71,6 +77,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_documento BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin          = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_documento BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'PA':
@@ -79,6 +86,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_documento BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_documento BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		case 'NCG':
@@ -87,6 +95,7 @@
 			$whereConsecutivos    = 'consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_nota BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_nota BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 
 		default:
@@ -96,6 +105,7 @@
 			$whereConsecutivos    = 'numero_factura>0 OR consecutivo>0';
 			$orderBy              = 'consecutivo DESC';
 			$whereFechas          = ($fecha_inicial != "" && $fecha_final != "")? " AND fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
+			$whereFechasJoin      = ($fecha_inicial != "" && $fecha_final != "")? " AND TD.fecha_inicio BETWEEN '$fecha_inicial' AND '$fecha_final' " : "";
 			break;
 	}
 
@@ -105,11 +115,12 @@
 
 	if($filtro_estado != "global" && isset($filtro_estado)){
 		$sql = "SELECT id_documento
-						FROM documentos_auditados
+						FROM documentos_auditados AS DI INNER JOIN $tabla_documento AS TD ON TD.id = DI.id_documento
 						WHERE activo = 1
 						AND id_empresa = '$id_empresa'
 						AND tipo_documento = '$tipo_documento_cruce'
-						$whereSucursal";
+						$whereSucursal
+						$whereFechasJoin";
 		$query = $mysql->query($sql,$mysql->link);
 
 		if($mysql->num_rows($query) > 0){
@@ -138,23 +149,27 @@
 
 	//CONFIGURACION//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		//NOMBRE DE LA GRILLA
-			$grilla->GrillaName	 		= 'auditoriaDocumentos';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
-		//QUERY
-			$grilla->TableName			= $tabla_documento;		//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			  = "activo = 1 AND ($whereConsecutivos) AND id_empresa = '$id_empresa' $whereSucursal $whereFechas $whereIdDocumentosAuditados";  //WHERE DE LA CONSULTA A LA TABLA "$TableName"
-			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
-			$grilla->GroupBy 			  = '';
-			$grilla->OrderBy 			  = $orderBy;
-		//TAMANO DE LA GRILLA
-			$grilla->AutoResize	 		= 'false';	//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			$grilla->QuitarAncho		= 85;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
-			$grilla->QuitarAlto			= 160;			//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
-		//TOOLBAR Y CAMPO DE BUSQUEDA
+			//NOMBRE DE LA GRILLA
+			$grilla->GrillaName	 			= 'auditoriaDocumentos';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
+		
+			//QUERY
+			$grilla->TableName				= $tabla_documento;		//NOMBRE DE LA TABLA EN LA BASE DE DATOS
+			$grilla->MyWhere				= "activo = 1 AND ($whereConsecutivos) AND id_empresa = '$id_empresa' $whereSucursal $whereFechas $whereIdDocumentosAuditados";  //WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->MySqlLimit				= '0,100';			//LIMITE DE LA CONSULTA
+			$grilla->GroupBy 				= '';
+			$grilla->OrderBy 				= $orderBy;
+
+			//TAMANO DE LA GRILLA
+			$grilla->AutoResize	 			= 'false';	//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
+			$grilla->QuitarAncho			= 85;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+			$grilla->QuitarAlto				= 160;			//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+			
+			//TOOLBAR Y CAMPO DE BUSQUEDA
 			$grilla->Gtoolbar		   	    = 'true';			//SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
-			$grilla->CamposBusqueda		  = $CamposBusquedaGrilla;		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
-			$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
-		//CONFIGURACION DE CAMPOS EN LA GRILLA
+			$grilla->CamposBusqueda		  	= $CamposBusquedaGrilla;		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
+			$grilla->DivActualiBusqueda 	= '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
+			
+			//CONFIGURACION DE CAMPOS EN LA GRILLA
 			if ($tipo_documento_cruce=='FC') {
 				$grilla->AddRow('Fecha','fecha_inicio',80);
 				$grilla->AddRow('Vencimiento','fecha_final',80);
