@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 	// objeto con los datos de la conexion al servidor
 	include_once("conexion.php");
-	$acceso = mysql_connect($server->server_name,$server->user,$server->password) ;
+	$acceso = @mysql_connect($server->server_name,$server->user,$server->password) ;
 	$error = mysql_errno($acceso);
 	// echo " $servidor - $usuario - $password ";
 	// $acceso = mysql_connect($servidor,$usuario,"");
