@@ -14,7 +14,11 @@
 	$id_sucursal = $_SESSION['SUCURSAL'];
 
 	$whereSucursal = '';
-	if($filtro_sucursal > 0 && $filtro_sucursal!='global') $whereSucursal="AND id_sucursal='$filtro_sucursal'";
+	if($filtro_sucursal > 0 && $filtro_sucursal!='global') {
+		$whereSucursal="AND id_sucursal='$filtro_sucursal'"; 
+		$whereSucursalJoin="AND TD.id_sucursal='$filtro_sucursal'"; 
+		
+	}
 
 	switch ($tipo_documento_cruce) {
 		case 'FC':
@@ -116,13 +120,12 @@
 	if($filtro_estado != "global" && isset($filtro_estado)){
 		$sql = "SELECT id_documento
 						FROM documentos_auditados AS DI INNER JOIN $tabla_documento AS TD ON TD.id = DI.id_documento
-						WHERE activo = 1
-						AND id_empresa = '$id_empresa'
-						AND tipo_documento = '$tipo_documento_cruce'
-						$whereSucursal
+						WHERE TD.activo = 1
+						AND TD.id_empresa = '$id_empresa'
+						AND DI.tipo_documento = '$tipo_documento_cruce'
+						$whereSucursalJoin
 						$whereFechasJoin";
 		$query = $mysql->query($sql,$mysql->link);
-
 		if($mysql->num_rows($query) > 0){
 			if($filtro_estado == "auditados"){
 				$operador = "=";
@@ -142,8 +145,8 @@
 			}
 
 			$whereIdDocumentosAuditados = " AND ($whereIdDocumentosAuditados)";
-		} else{
-			$whereIdDocumentosAuditados = "";
+		} else {
+			$whereIdDocumentosAuditados =  ($filtro_estado=="auditados")?" AND id IN('') " : "";
 		}
 	}
 
@@ -154,6 +157,7 @@
 		
 			//QUERY
 			$grilla->TableName				= $tabla_documento;		//NOMBRE DE LA TABLA EN LA BASE DE DATOS
+			
 			$grilla->MyWhere				= "activo = 1 AND ($whereConsecutivos) AND id_empresa = '$id_empresa' $whereSucursal $whereFechas $whereIdDocumentosAuditados";  //WHERE DE LA CONSULTA A LA TABLA "$TableName"
 			$grilla->MySqlLimit				= '0,100';			//LIMITE DE LA CONSULTA
 			$grilla->GroupBy 				= '';
