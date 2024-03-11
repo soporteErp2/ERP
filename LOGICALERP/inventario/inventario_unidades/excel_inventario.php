@@ -8,6 +8,7 @@
 	$sql="SELECT * FROM inventario_totales WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id_ubicacion=$filtro_ubicacion AND inventariable='true' ";
 	$query=$mysql->query($sql,$mysql->link);
 	while ($row=$mysql->fetch_array($query)) {
+		$costos = number_format($row['costos'],2,$separador_decimales,$separador_miles);
 		$bodyTable .=  "<tr>
 											<td >$row[familia]</td>
 											<td >$row[grupo]</td>
@@ -16,7 +17,7 @@
 											<td >$row[code_bar]</td>
 											<td >$row[nombre_equipo]</td>
 											<td >$row[cantidad]</td>
-											<td >$row[costos]</td>
+											<td >$costos</td>
 											<td >$row[precio_venta]</td>
 										</tr>";
 	}

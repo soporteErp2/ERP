@@ -135,36 +135,12 @@
 											items   :
 											[
 												{
-													text		: '<br>Acta Inventario',
-													scale		: 'small',
-													iconCls		: 'genera',
-													iconAlign	: 'top',
-													handler		: function(){window.open("inventario_unidades/imprimir_acta_inventario.php?filtro_empresa="+filtro_empresa+"&filtro_sucursal="+filtro_sucursal+"&filtro_ubicacion="+filtro_ubicacion+"&opc=imprimirActaParcial");}
-												}
-												,
-												{
 													text		: '<br>Exportar Inventario',
 													scale		: 'small',
 													iconCls		: 'xls32',
 													iconAlign	: 'top',
-													handler		: function(){window.open("inventario_unidades/excel_inventario.php?filtro_empresa="+filtro_empresa+"&filtro_sucursal="+filtro_sucursal+"&filtro_ubicacion="+filtro_ubicacion+"&opc=imprimirActaParcial");}
+													handler		: function(){ventanaConfigurarInforme();}
 												}
-												,
-												{
-													text		: '<br>Kardex ',
-													scale		: 'small',
-													iconCls		: 'doc_con_contrato',
-													iconAlign	: 'top',
-													handler		: function(){ ventanaConfigurarInforme(); }
-												}
-												// ,
-												// {
-												// 	text		: '<br>Acta Parcial',
-												// 	scale		: 'small',
-												// 	iconCls		: 'genera',
-												// 	iconAlign	: 'top',
-												// 	handler		: function(){ ver_acta_parcial_inventario(); }
-												// }
 											]
 										},'->',
 		                                {
