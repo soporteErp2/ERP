@@ -577,14 +577,14 @@ if(!isset($opcion)){ ?>
 			    width       : 500,
 				height      : 280,
 			    id          : 'Win_Ventana_configurar',
-			    title       : 'Asistente para la generacion de informes',
+			    title       : 'Configuracion inventario exportado',
 			    modal       : true,
 			    autoScroll  : false,
 			    closable    : true,
 			    autoDestroy : true,
 			    autoLoad    :
 			    {
-			        url     : 'inventario_unidades/kardex/wizard_informe_kardex.php',
+			        url     : 'inventario_unidades/wizard_exportar_inventario.php',
 			        scripts : true,
 			        nocache : true,
 			        params  :
@@ -595,18 +595,30 @@ if(!isset($opcion)){ ?>
 			}).show();
 		}
 
-		function generarInformeKardex(){
-			var id_bodega   = document.getElementById('filtro_ubicacion_inventario').value
-			,	fecha_corte = document.getElementById('fecha_corte').value
-			,	detallado   = document.getElementById('detallado').value
-			,	sendVar = `id_bodega=${id_bodega}
-							&fecha_corte=${fecha_corte}
-							&detallado=${detallado}
-							`
-			window.open("inventario_unidades/kardex/informe_kardex.php?"+sendVar);
+		function generarInventarioExcel(){
+			var id_bodega   		 = document.getElementById('filtro_ubicacion_inventario').value
+			,	separadorDecimales   = document.getElementById('separadorDecimales').value
+			,	separadorMiles   	 = document.getElementById('separadorMiles').value
+
+			const url = "inventario_unidades/excel_inventario.php?filtro_empresa="+'<?php echo $empresa; ?>'+"&filtro_sucursal="+'<?php echo $filtro_sucursal ?>'+"&filtro_ubicacion="+id_bodega+"&separador_decimales="+separadorDecimales+"&separador_miles="+separadorMiles;
+			
+			//console.log(url);
+			window.open(url);
+		}
+
+		function validarSelect(separadorId){
+
+			const selectDecimales	  = document.getElementById('separadorDecimales'),
+				  selectMiles 		  = document.getElementById('separadorMiles')
+
+			if(selectDecimales.value === selectMiles.value && separadorId === 'decimales'){
+				selectMiles.value = (selectMiles.value === ',')? "." : ",";
+			}
+			else if(selectDecimales.value === selectMiles.value){
+				selectDecimales.value = (selectDecimales.value === ',')? "." : ",";
+			}
 		}
 
 </script>
-
 <?php
 } ?>
