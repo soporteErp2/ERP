@@ -58,11 +58,11 @@
 
 				if (localStorage.tipo_balance_estado_situacion_financiera=='comprobacion') { var MyInformeNiifFechaInicio=''; }
 				else if (localStorage.tipo_balance_estado_situacion_financiera=='comparativo') { var MyInformeNiifFechaInicio=localStorage.MyInformeNiifFechaInicio; }
-				window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&generar="+generar+"&MyInformeNiifFechaFinal="+MyInformeNiifFechaFinal+"&MyInformeNiifFechaInicio="+MyInformeNiifFechaInicio+"&tipo_balance="+localStorage.tipo_balance_estado_situacion_financiera);
+				window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&generar="+generar+"&MyInformeNiifFechaFinal="+MyInformeNiifFechaFinal+"&MyInformeNiifFechaInicio="+MyInformeNiifFechaInicio+"&tipo_balance="+localStorage.tipo_balance_estado_situacion_financiera+"&mostrar_cuenta_niif="+localStorage.mostrar_cuentas_estado_situacion_financiera);
 			}
-			else{ window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&$tipo_balance==comprobacion"); }
+			else{ window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&$tipo_balance==comprobacion&mostrar_cuenta_niif="+localStorage.mostrar_cuentas_estado_situacion_financiera); }
 		}
-		else{ window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&$tipo_balance==comprobacion"); }
+		else{ window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&$tipo_balance==comprobacion&mostrar_cuenta_niif="+localStorage.mostrar_cuentas_estado_situacion_financiera); }
 
 	}
 
@@ -211,7 +211,7 @@
 		else if (tipo_balance=='comparativo') { MyInformeNiifFechaInicio=document.getElementById('MyInformeNiifFechaInicio').value; }
 		else{ return; }
 
-		window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&generar="+generar+"&MyInformeNiifFechaFinal="+MyInformeNiifFechaFinal+"&MyInformeNiifFechaInicio="+MyInformeNiifFechaInicio+"&tipo_balance=comprobacion&tipo_balance="+tipo_balance);
+		window.open("../informes/informes/contabilidad_niif/estado_situacion_financiera_Result.php?"+tipo_documento+"=true&nombre_informe=Balance General&generar="+generar+"&MyInformeNiifFechaFinal="+MyInformeNiifFechaFinal+"&MyInformeNiifFechaInicio="+MyInformeNiifFechaInicio+"&tipo_balance=comprobacion&tipo_balance="+tipo_balance+"&mostrar_cuenta_niif="+localStorage.mostrar_cuentas_estado_situacion_financiera);
 
 	}
 
