@@ -106,17 +106,18 @@
 			$logDocumentsQuery=mysql_query($logTempoSql,$this->mysql);
 			
 			$logTempoSql= "INSERT INTO tempologs (max_id,cantidad,costo) SELECT
-								id AS max_id,
-								SUM(cantidad) as cantidad,
-								costo_nuevo as costo
+								LI.id AS max_id,
+								SUM(LI.cantidad) as cantidad,
+								LI.costo_nuevo as costo
 							FROM 
-								logs_inventario
+								logs_inventario AS LI INNER JOIN ventas_pos as VP ON VP.id = LI.id_documento
 							WHERE 
-							  	id_item = ".$this->itemInfo['id_item']."
-								AND id_bodega = $this->id_bodega 
-							  	AND fecha_documento BETWEEN '$this->fechaInicio' AND '$this->fechaFin'
-								AND tipo_documento = 'POS'
-								GROUP BY id_documento";
+								VP.estado IN(1,2)
+								AND LI.id_item = ".$this->itemInfo['id_item']."
+								AND LI.id_bodega = $this->id_bodega 
+							  	AND LI.fecha_documento BETWEEN '$this->fechaInicio' AND '$this->fechaFin'
+								AND LI.tipo_documento = 'POS'
+								GROUP BY LI.id_documento";
 			$logDocumentsQuery=mysql_query($logTempoSql,$this->mysql);
 
 			$logDocumentsSql= "SELECT
