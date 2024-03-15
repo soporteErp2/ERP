@@ -16,7 +16,8 @@
     if (isset($id)) {
     	// FUNCION PARA VERIFICAR SI EXISTE ALGUN CIERRE EN ESE PERIODO ANTES DE PROCESAR EL DOCUMENTO, EXEPTO EN LA FUNCION DE CAMBIAR LA FECHA DE LA NOTA
 		if ($opc<>'actualizarFechaNota') {
-			verificaCierre($id,'fecha_registro',$tablaPrincipal,$id_empresa,$link);
+			if($opcCargar=='facturaVenta'){verificaCierre($id,'fecha_inicio',$tablaPrincipal,$id_empresa,$link,$opcCargar);}
+			else{verificaCierre($id,'fecha_registro',$tablaPrincipal,$id_empresa,$link,$opcCargar);}
 		}
 
   	if ($opc!='cancelarDocumento' && $opc!='restaurarDocumento' && $opc!='modificarDocumentoGenerado' && $opc!='buscarCotizacionPedido' && $opc!='actualizaArticulo') {
@@ -2226,9 +2227,10 @@
 	}
 
 	// FUNCION PARA VERIFICAR SI EXISTE ALGUN CIERRE EN ESE PERIODO ANTES DE PROCESAR EL DOCUMENTO
-	function verificaCierre($id_documento,$campoFecha,$tablaPrincipal,$id_empresa,$link){
+	function verificaCierre($id_documento,$campoFecha,$tablaPrincipal,$id_empresa,$link,$opcCargar){
 		// CONSULTAR EL DOCUMENTO
-		$sql="SELECT $campoFecha AS fecha FROM $tablaPrincipal WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
+		$whereId = ($opcCargar=='facturaVenta') ? "id=$id_documento" : "numero_factura_completo=$id_documento"; 
+		$sql= "SELECT $campoFecha AS fecha FROM $tablaPrincipal WHERE activo=1 AND id_empresa=$id_empresa AND $whereId";
 		$query=mysql_query($sql,$link);
 		$fecha_documento = mysql_result($query,0,'fecha');
 
