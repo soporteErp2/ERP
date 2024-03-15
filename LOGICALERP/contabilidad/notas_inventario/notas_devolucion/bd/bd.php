@@ -2229,7 +2229,7 @@
 	// FUNCION PARA VERIFICAR SI EXISTE ALGUN CIERRE EN ESE PERIODO ANTES DE PROCESAR EL DOCUMENTO
 	function verificaCierre($id_documento,$campoFecha,$tablaPrincipal,$id_empresa,$link,$opcCargar){
 		// CONSULTAR EL DOCUMENTO
-		$whereId = ($opcCargar=='facturaVenta') ? "id=$id_documento" : "numero_factura_completo= '$id_documento' "; 
+		$whereId = ($opcCargar!=='facturaVenta') ? "id=$id_documento" : "numero_factura_completo= '$id_documento' "; 
 		$sql= "SELECT $campoFecha AS fecha FROM $tablaPrincipal WHERE activo=1 AND id_empresa=$id_empresa AND $whereId";
 		$query=mysql_query($sql,$link);
 		$fecha_documento = mysql_result($query,0,'fecha');
