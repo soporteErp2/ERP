@@ -20,9 +20,9 @@ MySql libmysql - mysqlnd 5.0.10 - 20111026
 ```
 _Se recomienda usar XAMPP (ya trae php y mysql necesarios para la ejecucion) en la siguiente version_
 ```
-XAMPP - version 1.8.2
-https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/1.8.2/
-xampp-win32-1.8.2-6-VC9-installer.exe
+XAMPP - version 5.6.40
+https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/5.6.40/
+xampp-windows-x64-5.6.40-1-VC11-installer.exe
 ```
 
 ## Instalación 🔧
