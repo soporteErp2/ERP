@@ -1063,7 +1063,7 @@
 
                                     console.log(JsonText);
 
-                                    if(JsonText == '{}'){ alert("Aviso\nLo sentimos a ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!"); return; }
+                                    if(JsonText == '{}'){ alert("Aviso\nLo sentimos ha ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!"); return; }
                                     else{
 
                                         // document.getElementById('btn_cancel_doc_upload').style.display = 'block';

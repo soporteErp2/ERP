@@ -807,7 +807,7 @@ if(!isset($opcion)) { ?>
                                     console.log(responseJSON['success']);
                                     // console.log(JsonText);
                                     if(JsonText == '{}'){
-                                    	alert("Aviso\nLo sentimos a ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!");
+                                    	alert("Aviso\nLo sentimos ha ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!");
                                     	Ext.Ajax.request({
                                     	    url     : 'items/bd/bd.php',
                                     	    params  :
