@@ -12,7 +12,6 @@ $sucursal	= $_POST['sucursal'];
 
 $consul  = mysql_query("SELECT * FROM empleados WHERE username = '$usuario' AND password = '$pass' AND (id_empresa = $IdEmpresa OR id_empresa = 0) AND activo = 1 ORDER BY id_empresa LIMIT 0,1",$link);
 $consul2 = mysql_query("SELECT * FROM configuracion_global",$link);
-$consul3 = mysql_query("SELECT * FROM vista_sucursales_empresas WHERE id_sucursal = $sucursal AND id_empresa = $IdEmpresa",$link);
 $consul4 = mysql_query("SELECT activo FROM configuracion_global_api_google",$link);
 //echo 'false{.}';
 // echo "SELECT * FROM vista_sucursales_empresas WHERE id_sucursal = $sucursal AND id_empresa = $IdEmpresa";exit;
@@ -57,23 +56,50 @@ if(mysql_num_rows($consul)){
 
 	//DATOS DE LA SUCURSAL
 	//--------------------------------------------------------------------------------------------------------------//
-	$_SESSION["SUCURSAL"] = mysql_result($consul3,0,"id_sucursal");
-	$_SESSION["NOMBRESUCURSAL"] = mysql_result($consul3,0,"sucursal");
-	$_SESSION["EMPRESA"] = mysql_result($consul3,0,"id_empresa");
-	$_SESSION["NOMBREEMPRESA"] = mysql_result($consul3,0,"empresa");
-	$_SESSION["NITEMPRESA"] = mysql_result($consul3,0,"nit_completo");
-	$_SESSION["GRUPOEMPRESARIAL"] = mysql_result($consul3,0,"grupo_empresarial");
+	$sql = "SELECT
+				`empresas_sucursales`.`id` AS `id_sucursal`,
+				`empresas_sucursales`.`nombre` AS `sucursal`,
+				`empresas`.`nombre` AS `empresa`,
+				`empresas`.`id` AS `id_empresa`,
+				`empresas`.`id_pais` AS `id_pais`,
+				`empresas`.`pais` AS `pais`,
+				`empresas`.`id_moneda` AS `id_moneda`,
+				`empresas`.`documento` AS `documento`,
+				`empresas`.`nit_completo` AS `nit_completo`,
+				`empresas`.`simbolo_moneda` AS `simbolo_moneda`,
+				`empresas`.`decimales_moneda` AS `decimales_moneda`,
+				`empresas`.`grupo_empresarial` AS `grupo_empresarial`,
+				`empresas`.`descripcion_moneda` AS `descripcion_moneda`
+			FROM
+				(
+					`empresas_sucursales`
+					JOIN `empresas` ON (
+						(
+							`empresas`.`id` = `empresas_sucursales`.`id_empresa`
+						)
+					)
+				)
+			WHERE `empresas_sucursales`.`activo` = 1 AND `empresas_sucursales`.id=$sucursal AND `empresas_sucursales`.id_empresa = $IdEmpresa";
+	$query = $mysql->query($sql);
+	// $consul3 = mysql_query("SELECT * FROM vista_sucursales_empresas WHERE id_sucursal = $sucursal AND id_empresa = $IdEmpresa",$link);
 
-	$_SESSION["PAIS"] = mysql_result($consul3,0,"id_pais");
-	$_SESSION["MONEDA"] = mysql_result($consul3,0,"id_moneda");
-	$_SESSION["DESCRIMONEDA"] = mysql_result($consul3,0,"descripcion_moneda");
-	$_SESSION["SIMBOLOMONEDA"] = mysql_result($consul3,0,"simbolo_moneda");
-	$_SESSION["DECIMALESMONEDA"] = mysql_result($consul3,0,"decimales_moneda");
+	$_SESSION["SUCURSAL"]         = $mysql->result($query,0,"id_sucursal");
+	$_SESSION["NOMBRESUCURSAL"]   = $mysql->result($query,0,"sucursal");
+	$_SESSION["EMPRESA"]          = $mysql->result($query,0,"id_empresa");
+	$_SESSION["NOMBREEMPRESA"]    = $mysql->result($query,0,"empresa");
+	$_SESSION["NITEMPRESA"]       = $mysql->result($query,0,"nit_completo");
+	$_SESSION["GRUPOEMPRESARIAL"] = $mysql->result($query,0,"grupo_empresarial");
+
+	$_SESSION["PAIS"]            = $mysql->result($query,0,"id_pais");
+	$_SESSION["MONEDA"]          = $mysql->result($query,0,"id_moneda");
+	$_SESSION["DESCRIMONEDA"]    = $mysql->result($query,0,"descripcion_moneda");
+	$_SESSION["SIMBOLOMONEDA"]   = $mysql->result($query,0,"simbolo_moneda");
+	$_SESSION["DECIMALESMONEDA"] = $mysql->result($query,0,"decimales_moneda");
 
 	$_SESSION["SUCURSALORIGEN"] = mysql_result($consul,0,"id_sucursal");
-	$_SESSION["EMPRESAORIGEN"] = mysql_result($consul,0,"id_empresa");
-	$_SESSION["CONEXIONSIIP3"] = mysql_result($consul2,0,"conexion_siip3");
-	$_SESSION["APIGOOGLE"] = mysql_result($consul4,0,"activo");
+	$_SESSION["EMPRESAORIGEN"]  = mysql_result($consul,0,"id_empresa");
+	$_SESSION["CONEXIONSIIP3"]  = mysql_result($consul2,0,"conexion_siip3");
+	$_SESSION["APIGOOGLE"]      = mysql_result($consul4,0,"activo");
 
 	/*$DIRECTORIO = explode ("/", $_SERVER['REQUEST_URI']);
 	if(count($DIRECTORIO) == 4){

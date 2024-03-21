@@ -28,8 +28,7 @@ xampp-windows-x64-5.6.40-1-VC11-installer.exe
 ## Instalación 🔧
 
 _Montar una copia de base de datos erp_acceso para acceder al listado de empresas_ 
-_Montar una copia de una base de datos de un cliente con datos_ 
-_la base de datos del cliente tiene una vista esta se tiene que verificar que funcione, accediendo a ella desde phpmyadmin o un gestor externo, si no funciona se debe editar y crear de nuevo, sin esta vista no se carga la informacion de la empresa y sucursales_
+_Montar una copia de una base de datos de un cliente con datos_
 _luego clonar el repo en la ruta del servidor a ejecutar por ejemplo en windows en local para desarrollo usando xammp se clonaria en la carpeta htdocs_
 _Luego dentro del repo en la carpeta configuracion se debe crear el archivo conexion.php (este esta excluido en gitignore) y debe contener la siguiente informacion_
 
