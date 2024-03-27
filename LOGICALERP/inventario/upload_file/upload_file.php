@@ -150,7 +150,7 @@
                 // else{ return array('error'=> $errorLoadFile, 'debug'=> "$debugError"); }
 
                 if ($errorLoadFile<>'') {
-                    return array('error'=>$errorLoadFile, 'nombreArchivo'=>$filename,"ruta"=>$uploadDirectory);
+                    return array('error'=>$errorLoadFile, 'nombreArchivo'=>$filename);
                 }
 
                 return array('success'=>true, 'nombreArchivo'=>$filename,"ruta"=>$uploadDirectory,"document_root"=>$_SERVER['DOCUMENT_ROOT'],"http_host"=>$_SERVER['HTTP_HOST']);
