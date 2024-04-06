@@ -1,4 +1,5 @@
 <?php
+
     include_once('../../../misc/excel/Classes/PHPExcel.php');
     $id_empresa     = $_SESSION['EMPRESA'];
     $id_sucursal    = $_SESSION['SUCURSAL'];
@@ -41,14 +42,14 @@
     $sql="SELECT id,cuenta,descripcion FROM puc WHERE activo=1 AND id_empresa=$id_empresa";
     $query=$mysql->query($sql,$mysql->link);
     while ($row=$mysql->fetch_array($query)) {
-        $arrayPuc[$row['cuenta']] = array('id' => $row['id']/*, 'descripcion' => $row['descripcion']*/ );
+        $arrayPuc[$row['cuenta']] = array('id' => $row['id'], 'descripcion' => $row['descripcion'] );
     }
 
     // CONSULTAR PUC NIIF
     $sql="SELECT id,cuenta,descripcion FROM puc_niif WHERE activo=1 AND id_empresa=$id_empresa ";
     $query=$mysql->query($sql,$mysql->link);
     while ($row=$mysql->fetch_array($query)) {
-        $arrayPucNiif[$row['cuenta']] = array('id' => $row['id']/*, 'descripcion' => $row['descripcion']*/ );
+        $arrayPucNiif[$row['cuenta']] = array('id' => $row['id'], 'descripcion' => $row['descripcion'] );
     }
 
      // CONSULTAR LOS CENTROS DE COSTOS
@@ -59,26 +60,21 @@
     }
 
     $contFilas = 0;
-    $cuentaExcel = "{";
     foreach ($arrayExcel as $filas => $arrayExcelCol) {
                 // $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[0]</div><div class='cell' data-col='3'> La cuenta (Local) no existe </div></div>";
         if ($contFilas<=0) { $contFilas++; continue; }
         // VALIDAR PUC
-        if ($typeNota == 'colgaap' || $typeNota == 'colgaap_niif') {
+        if ($typeNota = 'colgaap') {
             if ($arrayExcelCol[0]<>'' && !array_key_exists("$arrayExcelCol[0]",$arrayPuc)) {
-                $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[0]</div><div class='cell' data-col='3'> La cuenta (Local) no existe </div></div>";
+                $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[0]</div><div class='cell' data-col='3'> La cuenta (Local ".$arrayExcelCol[0].") no existe </div></div>";
             }
-            $idCuenta =  $arrayPuc[(string)$arrayExcelCol[0]]['id'];
+            $idCuenta = $arrayPuc[$arrayExcelCol[0]]['id'];
         }
         else{
             if ($arrayExcelCol[0]<>'' && !array_key_exists("$arrayExcelCol[0]",$arrayPucNiif)) {
-                $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[0]</div><div class='cell' data-col='3'> La cuenta (Niif) no existe </div></div>";
+                $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[0]</div><div class='cell' data-col='3'> La cuenta (Niif ".$arrayExcelCol[0].") no existe </div></div>";
             }
-            $idCuenta =  $arrayPucNiif[(string)$arrayExcelCol[0]]['id'];
-        }
-
-        if ($arrayPuc[$arrayExcelCol[0]]['id']=='') {
-            $cuentaExcel .= "$arrayExcelCol[0]=>".gettype($arrayPuc[$arrayExcelCol[0]]['id']).",";
+            $idCuenta = $arrayPucNiif[$arrayExcelCol[0]]['id'];
         }
 
         // VALIDAR QUE EL DEBITO Y CREDITO SEAN VALORES NUMERICOS
@@ -94,7 +90,7 @@
 
         // VALIDAR EL TERCERO
         if ($arrayExcelCol[4]<>'' && !array_key_exists("$arrayExcelCol[4]",$arrayTerceros)) {
-            $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[4]</div><div class='cell' data-col='3'> No existe el tercero </div></div>";
+            $arrayError[$arrayExcelCol[0]] .= "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'>$arrayLabelCol[4]</div><div class='cell' data-col='3'> No existe el tercero ".$arrayExcelCol[4]."</div></div>";
         }
 
         // VALIDAR EL CENTRO DE COSTOS
@@ -106,20 +102,15 @@
         $acumCredito += $arrayExcelCol[3];
 
         // CREAR EL INSERT DE LAS CUENTAS
-        $valueInsert .= "('id_nota_replace','$idCuenta','$arrayExcelCol[2]','$arrayExcelCol[3]','$id_empresa','".$arrayTerceros[$arrayExcelCol[4]]['id']."','".$arrayCentroCostos[$arrayExcelCol[5]]['id']."'),";
+        $valueInsert .= "('id_nota_replace','$idCuenta', '$arrayExcelCol[2]', '$arrayExcelCol[3]', '$id_empresa', '".$arrayTerceros[$arrayExcelCol[4]]['id']."','".$arrayCentroCostos[$arrayExcelCol[5]]['id']."'),";
 
     }
-
-    $cuentaExcel .= "}";
-
-    $acumDebito  = round($acumDebito,2);
-    $acumCredito = round($acumCredito,2);
 
     // SI NO HAY ERRORES DE VALIDACION ENTONCES INSERTAR LOS ITEMS EN LA BASE DE DATOS
     if (empty($arrayError)) {
         if ($acumDebito <> $acumCredito) {
             $debug      = "bd";
-            $arrayError[1] = "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'> Saldo en Debito y Credito no son iguales </div><div class='cell' data-col='3' >Debito:$acumDebito Credito:$acumCredito</div></div>";
+            $arrayError[1] = "<div class='row'><div class='cell' data-col='1'></div><div class='cell' data-col='2'> Saldo en Debito y Credito no son iguales </div><div class='cell' data-col='3' >Verifique el saldo de las cuentas</div></div>";
         }
 
         // INSERTAR LA CABECERA DE LA NOTA

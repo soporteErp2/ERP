@@ -33,12 +33,14 @@ _luego clonar el repo en la ruta del servidor a ejecutar por ejemplo en windows 
 _Luego dentro del repo en la carpeta configuracion se debe crear el archivo conexion.php (este esta excluido en gitignore) y debe contener la siguiente informacion_
 
 ```php
+<?php
 $server = (object) [
 "server_name" => "nombre del servidor de bd",
 "user" => "usuario de bd",
 "password" => "contraseña de bd",
 "database" => "base de datos principal donde estan todas las bd (usualmente erp_acceso o  erp_bd)",
 ];
+?>
 ```
 
 

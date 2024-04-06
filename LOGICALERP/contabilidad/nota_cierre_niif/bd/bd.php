@@ -957,7 +957,7 @@
 
 		if (!$query) {
 			echo '<script>
-					alert("Error!\nNo se cargaron las cuentas a cerrar, intententelo de nuevo, si el problema continua comuniquese con el administrador del sistema");
+					alert("Error!\nNo se cargaron las cuentas Niif a cerrar, intententelo de nuevo, si el problema continua comuniquese con el administrador del sistema");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 				</script>';
 			exit;
