@@ -185,7 +185,6 @@
 
     $bodyArticle = cargaArticulosSave($id_factura_venta,$observacion,$estado,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
 
-
     if ($opcGrillaContable=='FacturaVenta') {
 
       if("$estado" == "1" && "$opcGrillaContable" == "FacturaVenta"){

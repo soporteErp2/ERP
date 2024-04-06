@@ -54,7 +54,7 @@
 					WHERE $idTablaPrincipal='$id' AND activo = 1 $whereItems
 					$orderBy";
 			$query = mysql_query($sql,$link);
-
+			
 			$sqlConfirmSaldo = "SELECT TI.id,TS.saldo_cantidad
 								FROM $tablaInventario AS TI, ventas_pedidos_inventario AS TS
 								WHERE TI.$idTablaPrincipal='$id' AND TI.activo = 1 AND TI.nombre_consecutivo_referencia='Pedido' AND TS.id=TI.id_tabla_inventario_referencia
@@ -528,7 +528,7 @@
 					//llamamos la funcion para generar los calculos de la factura
 					calcTotalDocCompraVenta'.$opcGrillaContable.'("'.$cantidad.'","'.$descuento.'",'.$costo_unitario.',"agregar","'.$tipoDescuento.'","'.$id_impuesto.'",'.$cont.');
 
-					'.showIngredients($id,$cont,1).'
+					'.(($opcGrillaContable == 'FacturaVenta')? showIngredients($id,$cont,1) : "" ).'
 				</script>';
 		return $body;
 	}
