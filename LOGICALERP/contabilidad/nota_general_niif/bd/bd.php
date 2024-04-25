@@ -1055,7 +1055,7 @@
 					</script>';
 				exit;
 			}
-			else if($saldoDebitoNiif != $saldoCreditoNiif){
+			else if($saldoDebitoNiif != $saldoCreditoNiif && ABS($saldoDebitoNiif-$saldoCreditoNiif)>1){
 				echo '<script>
 						alert("Aviso!\nLos saldos Debitos ('.$saldoDebitoNiif.') y Creditos ('.$saldoCreditoNiif.')  en la contabilidad Niif son diferentes!");
 						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);

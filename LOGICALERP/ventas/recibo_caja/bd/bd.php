@@ -1065,7 +1065,7 @@
 
 			while ($row=mysql_fetch_array($query)) {
 				$idFactura = $row['id'];
-				if($row['saldo'] < $arraySaldoFacturas[$idFactura]){
+				if($row['saldo'] < $arraySaldoFacturas[$idFactura] && (ABS($row['saldo']-$arraySaldoFacturas[$idFactura] > 1))){
 					$diferencia       = number_format($arraySaldoFacturas[$idFactura] - $row['saldo'],2);
 					$numero_documento = ($row['prefijo'] != '')? $row['prefijo'].' '.$row['numero_factura']: $row['numero_factura'];
 					echo '<script>
