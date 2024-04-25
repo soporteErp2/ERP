@@ -1,0 +1,11 @@
+{
+	"name"        : "LogicalSoft-API",
+	"version"     : "1.0.0",
+	"description" : "Documentacion de uso de las API",
+	"title"       : "Documentacion",
+	"url"         : "https://logicalsoft-erp.com/api/v1",
+	"header": {
+		"title"    : "General",
+		"filename" : "header.md"
+	  }
+}
