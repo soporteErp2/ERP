@@ -2,189 +2,122 @@
 	include("../../../configuracion/conectar.php");
 	include("../../../configuracion/define_variables.php");
 	include("../../../misc/MyGrilla/class.MyGrilla.php");
+?>
 
-	/**//////////////////////////////////////////////**/
-	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
-	/**/											/**/
-	/**/	$grilla = new MyGrilla();				/**/
-	/**/											/**/
-	/**//////////////////////////////////////////////**/
+<div class="w-full h-full bg-white  ">
+	<div class="p-2 flex justify-end">
+		<input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar"  />
+	</div>
+	<div class="w-full h-4/5 p-3 pt-0 overflow-x-hidden overflow-y-auto" id="table-content">
+		<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+			<thead class="text-xs text-gray-900 uppercase bg-gray-300 sticky top-0">
+				<tr>
+					<th scope="col" class="px-6 py-3">
+						Asignar
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Codigo
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Nombre
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Familia
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Grupo
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Subgrupo
+					</th>
+				</tr>
+			</thead>
+			<tbody id="tbody-items">
+			</tbody>
+		</table>
+	</div>
 
-	$id_empresa = $_SESSION["EMPRESA"];
-	//CONFIGURACION//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+</div>
+<script>
+	var page      = 1
+	  , q         = ""
+	  , data_list = []
+	  ,	is_fetching = false
 
-		//NOMBRE DE LA GRILLA
-			$grilla->GrillaName	 		= 'itemsGeneral';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
-		//QUERY
-			$grilla->TableName			= 'items';		//NOMBRE DE LA TABLA DE CONSULTA EN LA BASE DE DATOS DE
-			$grilla->MyWhere			= "activo = 1 AND id_empresa = '$id_empresa' AND modulo_pos='true' ";	//WHERE DE LA CONSULTA A LA TABLA "$TableName"
-			$grilla->OrderBy 			= 'codigo ASC';
-			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
-		//TAMANO DE LA GRILLA
-			$grilla->AutoResize	 		= 'true';			//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			// $grilla->Ancho		 		= 800;				//ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
-			// $grilla->Alto		 		= 220;				//ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
-			$grilla->QuitarAncho		= 150;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
-			$grilla->QuitarAlto			= 200;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
-		//TOOLBAR Y CAMPO DE BUSQUEDA
-			$grilla->Gtoolbar			= 'true';			//SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
-			$grilla->CamposBusqueda		= 'codigo,nombre_equipo,familia,grupo,subgrupo';			//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
-			$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
+	async function get_items(page=1){
+		if (is_fetching) return;
+    	is_fetching = true;
 
-			$grilla->Gfilters			= 'false';
-			$grilla->GfiltersAutoOpen	= 'false';
-			$grilla->AddFilter('Disponible','estado_venta','estado_venta');
-			$grilla->AddFilter('Familia','familia','familia');
-			$grilla->AddFilter('Grupo','grupo','grupo');
-			$grilla->AddFilter('Subgrupo','subgrupo','subgrupo');
-			$grilla->AddFilter('Tipo de Documento','id_tipo_identificacion','tipo_identificacion');
+		let url = `configuracion_secciones_pos/bd/backend.php`
+		,	data = 	{
+						page,
+						option:'get_items'
+					}
 
-		//CONFIGURACION DE CAMPOS EN LA GRILLA
-			$grilla->AddRowImage('Cod. Tx',"<center><img src='img/config16.png' onclick='winCodTxItem([id])' title='Configurar Cod. TX de Item' ></center>",'50');
-			$grilla->AddRow('Codigo','codigo',80);
-			$grilla->AddRow('Nombre','nombre_equipo',250);
-			$grilla->AddRow('Familia','familia',200);
-			$grilla->AddRow('Grupo','grupo',200);
-			$grilla->AddRow('Subgrupo','subgrupo',200);
-			// $grilla->AddRowImage('Compra','<center><img src="img/[estado_compra].png"></center>','80');
+		let requestOptions = {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		};
 
- 		//CONFIGURACION DE LOS FORMULARIOS DE CAPTURA Y EDICION
-	 		$grilla->FContenedorAncho		= 500;
-			$grilla->FColumnaGeneralAncho	= 530;
-			$grilla->FColumnaGeneralAlto	= 25;
-			$grilla->FColumnaLabelAncho		= 280;
-			$grilla->FColumnaFieldAncho		= 250;
-
-		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
-			$grilla->VentanaAuto			= 'false';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
-			$grilla->TituloVentana			= 'Ventana itemsGeneral'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
-			$grilla->CerrarDespuesDeAgregar = 'false';
-			$grilla->CerrarDespuesDeEditar  = 'false';
-			$grilla->VBarraBotones			= 'false';			//SI HAY O NO BARRA DE BOTONES
-			$grilla->VBotonNuevo			= 'true';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
-			$grilla->VBotonNText			= 'Nuevo Item'; 	//TEXTO DEL BOTON DE NUEVO REGISTRO
-			$grilla->VBotonNImage			= 'addequipo';		//IMAGEN CSS DEL BOTON
-			$grilla->VAutoResize			= 'false';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			$grilla->VAncho		 			= 100;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
-			$grilla->VAlto		 			= 100;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
-			// $grilla->VQuitarAncho		= 100;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
-			// $grilla->VQuitarAlto			= 50;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
-			$grilla->VAutoScroll			= 'true';			//SI LA VENTANA TIENE O NO AUTOSCROLL
-			$grilla->VBotonEliminar			= 'false';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
-			$grilla->VComporEliminar		= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
-
-		//BOTONES ADICIONALES EN EL TOOLBAR DE LA VENTANA DE INSERT DELETE Y UPDATE
-
- 		// //CONFIGURACION DEL MENU CONTEXTUAL
- 		// 	$grilla->MenuContext		= 'true';		//MENU CONTEXTUAL
-	 	// 	$grilla->MenuContextEliminar= 'false';
-
-		//OPCIONES ADICIONALES EN EL MENU CONTEXTUAL
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	/**//////////////////////////////////////////////////////////////**/
-	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
-	/**/															/**/
-	/**/	$grilla->Link = $link;  	//Conexion a la BD			/**/
-	/**/	$grilla->inicializa($_POST);//variables POST			/**/
-	/**/	$grilla->GeneraGrilla(); 	// Inicializa la Grilla		/**/
-	/**/															/**/
-	/**//////////////////////////////////////////////////////////////**/
-
-
-if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
-	<script>
-
-
-	</script>
-<?php
-}
-
-
-if(!isset($opcion)) { ?>
-	<script >
-
-		var winCodTxItem = (id_item) => {
-			Win_Ventana_cod_tx_item = new Ext.Window({
-			    width       : 300,
-			    height      : 200,
-			    id          : 'Win_Ventana_cod_tx_item',
-			    title       : 'Cod. Tx. Item',
-			    modal       : true,
-			    autoScroll  : false,
-			    closable    : false,
-			    autoDestroy : true,
-			    autoLoad    :
-			    {
-			        url     : 'configuracion_secciones_pos/bd/bd.php',
-			        scripts : true,
-			        nocache : true,
-			        params  :
-			        {
-						opc        : 'codTxItem',
-						id_item    : id_item,
-						id_seccion : "<?= $id_seccion ?>"
-			        }
-			    },
-			    tbar :
-			    [
-			        {
-			            xtype   : 'buttongroup',
-			            columns : 3,
-			            title   : 'Opciones',
-			            style   : 'border-right:none;',
-			            items   :
-			            [
-			                {
-			                    xtype       : 'button',
-			                    width       : 60,
-			                    height      : 56,
-			                    text        : 'Guardar',
-			                    scale       : 'large',
-			                    iconCls     : 'guardar',
-			                    iconAlign   : 'top',
-			                    hidden      : false,
-			                    handler     : function(){ BloqBtn(this); saveCodTx(id_item); }
-			                },
-			                {
-			                    xtype       : 'button',
-			                    width       : 60,
-			                    height      : 56,
-			                    text        : 'Regresar',
-			                    scale       : 'large',
-			                    iconCls     : 'regresar',
-			                    iconAlign   : 'top',
-			                    hidden      : false,
-			                    handler     : function(){ BloqBtn(this); Win_Ventana_cod_tx_item.close(id) }
-			                }
-			            ]
-			        }
-			    ]
-			}).show();
+		try {
+			let response = await fetch(url, requestOptions);
+			let data = await response.json()
+			let content = render_list(data)
+			let tbody = document.getElementById("tbody-items")
+			
+			if (data.length > 0) {
+				tbody.innerHTML = (data_list.length == 0 || page == 1) ? content : tbody.innerHTML + content;
+				data_list=[...data]
+			}
+			console.log(data_list);
+			
+		} catch (error) {
+			console.log(error)
 		}
+		is_fetching = false;
+	}
 
-		var saveCodTx = (id_item) => {
-			MyLoading2('on');
-			Ext.Ajax.request({
-		        url     : 'configuracion_secciones_pos/bd/bd.php',
-			    params  :
-			    {
-					opc        : 'saveCodTx',
-					id_item    : id_item,
-					id_seccion : "<?= $id_seccion ?>",
-					codTx      : document.getElementById('codTx').value
-			    },
-			    success :function (response, request){
-			    			let result = JSON.parse(response.responseText);
-			    			console.log(result);
-			                if(result.response == 'success'){ MyLoading2('off') }
-			                else{MyLoading2('off',{icono:'fail',texto:result.msg}) }
-			            },
-			    failure : function(){ console.log("fail"); MyLoading2('off') }
-			});
-		}
+	function render_list (data){
+		let content = data.map(element=>(
+			`<tr class="bg-white odd:bg-white even:bg-slate-50 hover:bg-gray-200 cursor-default">
+				<td class="px-6 py-1">
+					<input type="checkbox">
+				</td>	
+				<td class="px-6 py-1">
+					${element.codigo}
+				</td>
+				<th scope="row" class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+					${element.nombre}
+				</th>
+				<td class="px-6 py-1">
+					${element.familia}
+				</td>
+				<td class="px-6 py-1">
+					${element.grupo}
+				</td>
+				<td class="px-6 py-1">
+					${element.subgrupo}
+				</td>
+			</tr>`
+		)).join('')
+		return content;
+	}
 
-	</script>
-<?php
-} ?>
+	document.getElementById("table-content").addEventListener("scroll", function (e) {
+		function handleScroll(event){
+			let table = event.target;
+			if (table.scrollHeight - table.scrollTop === table.clientHeight) {
+				console.log("scrolling");
+				page++;
+				get_items(page)
+			}
+		};
+		handleScroll(e)
+	});
+
+	get_items(1);
+
+</script>

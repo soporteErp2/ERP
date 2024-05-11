@@ -43,18 +43,18 @@
 				$label_totalizado = "";
 				if(!isset($arraySecciones['child'][$id_seccion])) {
 					$body .= "<div class='hover' ondblclick='agregarModificarSeccion(".$id_seccion.")' >
-									&#8226; ".$arraySecciones['child'][$id_seccion]['nombre']."
+									 ".$arraySecciones['child'][$id_seccion]['nombre']."
 								</div>";
 				}
 
 				if(isset($arraySecciones['child'][$id_seccion])) {
 					$labelNombre = $arraySecciones['child'][$id_seccion]['nombre'];
 					if ($arraySecciones['child'][$id_seccion]['restaurante']=='Si') {
-						$labelNombre = "<b>".$arraySecciones['child'][$id_seccion]['nombre']."</b> <img onclick='codTxItems(".$arraySecciones['child'][$id_seccion]['id'].")' title='Cod. Tx. para items' src='../../temas/clasico/images/BotonesTabs/inventario16.png' >";
+						$labelNombre = "<b>".$arraySecciones['child'][$id_seccion]['nombre']."</b> <img onclick='items_by_section(".$arraySecciones['child'][$id_seccion]['id'].")' title='Inventario para la seccion' src='../../temas/clasico/images/BotonesTabs/inventario16.png' >";
 					}
 
 					$body .= "<div class='hover' ondblclick='agregarModificarSeccion($id_seccion)'>
-								&#8226; $labelNombre
+								 $labelNombre
 							</div>";
 					$body .= createTreeView($id_seccion, $arraySecciones);
 				}
@@ -69,6 +69,13 @@
 ?>
 
 <style>
+	.content-sections{
+		height: 100%;
+		width: 100%;
+		display: flex;
+    	justify-content: center;
+		background-color:FFF;
+	}
 	img{
 		cursor: pointer;
 	}
@@ -78,8 +85,8 @@
 	}
 
 	.tree > div{
-		margin-left: 15px;
-		    padding: 2px 0px 2px 0px;
+		/* margin-left: 15px; */
+		padding: 2px 0px 2px 0px;
 	}
 
 	.hover:hover{
@@ -90,22 +97,46 @@
 	.total_seccion{
 		margin-left: 0px !important;
 	}
+
+	.content-sections .table-form {
+		width : 90%;
+		margin : 0;
+		border: 1px solid #a2a2a2;
+		height: 350px;
+		overflow: hidden;
+		margin-top : 10px;
+	}
+
+	.content-sections .table-form .hover {
+		display :  flex;
+		justify-content: space-between;
+    	align-items: center;
+		padding: 5px 10px 5px 5px;
+	}
+
+	.content-sections .table-form .title {
+		cursor: default; 
+		font-size: 14px;
+		background-color: #a2a2a2;
+		color : FFF;
+		font-family: arial, sans-serif;
+	}
+
 </style>
 <div id="toolbar_secciones"></div>
-<div class="content" id="form_secciones" >
-	<table class="table-form" style="width:calc(100% - 20px);" >
-		<tbody>
-			<tr class="thead" >
-				<td colspan="2">Secciones u organizacion para el POS (Ambientes, Restaurantes, etc) </td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="table-form" style="padding-bottom: 20px;">
+<div class="content-sections" id="form_secciones" >
+
+	<div class="table-form" >
+		<div class='hover title'  >
+			<span>SECCION</span>
+			<span>INVENTARIO</span>
+		</div>
 		<?php
 			echo createTreeView(0,$arraySecciones);
 		 ?>
 	 </div>
-	<div id="loadForm" style="display:none;"></div>
+	
+	 <div id="loadForm" style="display:none;"></div>
 </div>
 <script>
 	if (!document.getElementById('tbar_secciones')) {
@@ -221,7 +252,7 @@
 		}).show();
 	}
 
-	var codTxItems = (id_seccion) =>{
+	var items_by_section = (id_seccion) =>{
 		var myalto  = Ext.getBody().getHeight();
 		var myancho = Ext.getBody().getWidth();
 
@@ -229,7 +260,7 @@
 		    width       : myancho-100,
 		    height      : myalto-50,
 		    id          : 'Win_Ventana_item_cod_tx',
-		    title       : 'Configuracion de Cod. TX por Item',
+		    title       : 'Configuracion de inventario por seccion',
 		    modal       : true,
 		    autoScroll  : false,
 		    closable    : true,
