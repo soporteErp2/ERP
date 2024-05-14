@@ -29,17 +29,22 @@
             // Parámetros de solicitud
             $limit = isset($params->limit) ? intval($params->limit) : 100;
             $page = isset($params->page) ? intval($params->page) : 1;
-            $search = isset($params->search) ? $params->search : "";
+            $search = isset($params->q) ? $params->q : "";
             // Calcular el offset
             $offset = ($page - 1) * $limit;
             $where = "";
             // Agregar cláusula WHERE si se proporciona un parámetro de búsqueda
             if (!empty($search)) {
-                // $where .= " WHERE nombre LIKE '%$search%' OR apellido LIKE '%$search%' OR correo LIKE '%$search%'";
+                $where .= " AND (
+                                    items.nombre_equipo LIKE '%$search%' OR 
+                                    items.familia LIKE '%$search%' OR 
+                                    items.grupo LIKE '%$search%' OR
+                                    items.subgrupo LIKE '%$search%'  
+                                )";
             }
             // seccion_items
             // Consulta SQL para obtener registros con paginación y límite
-            $sql = "SELECT
+           $sql = "SELECT
                         items.id,
                         items.codigo,
                         items.nombre_equipo AS item,
@@ -49,7 +54,9 @@
                         seccion_items.id_seccion
                     FROM items 
                     LEFT JOIN seccion_items ON seccion_items.id_item = items.id
+                    WHERE activo=1 AND id_empresa=$params->id_empresa
                     $where 
+                    ORDER BY nombre_equipo ASC
                     LIMIT $limit OFFSET $offset";
             $query = $this->mysql->query($sql);
             $ret_val = [];

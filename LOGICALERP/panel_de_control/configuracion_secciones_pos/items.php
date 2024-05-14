@@ -5,11 +5,21 @@
 ?>
 
 <div class="w-full h-full bg-white  ">
-	<div class="p-2 flex justify-end">
-		<input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar"  />
+	<div class="p-2 flex justify-end ">
+		<!-- <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Buscar</label> -->
+		<div class="relative w-96">
+			<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+				<svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+					<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+				</svg>
+			</div>
+			<input type="search" id="search_input" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="codigo, nombre, etc..." required />
+			<button type="button" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 ">Buscar</button>
+		</div>
+		<!-- <input type="text" id="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar"  /> -->
 	</div>
 	<div class="w-full h-4/5 p-3 pt-0 overflow-x-hidden overflow-y-auto" id="table-content">
-		<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+		<table class="w-full text-sm text-left rtl:text-right text-gray-500 table-auto">
 			<thead class="text-xs text-gray-900 uppercase bg-gray-300 sticky top-0">
 				<tr>
 					<th scope="col" class="px-6 py-3">
@@ -33,6 +43,16 @@
 				</tr>
 			</thead>
 			<tbody id="tbody-items">
+				<!-- <tr class="" >
+					<td colspan="6">
+						<div class='flex items-center justify-center'>
+							<div class="px-2" >cargando</div>  
+							<div class="animate-bounce w-6 text-5xl">.</div>
+							<div class="animate-bounce w-6 text-5xl" style="animation-delay: 0.2s">.</div>
+							<div class="animate-bounce w-6 text-5xl"  style="animation-delay: 0.4s">.</div>
+						</div>
+					</td>
+				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -44,14 +64,18 @@
 	  , data_list = []
 	  ,	is_fetching = false
 
+	// consultar los items
 	async function get_items(page=1){
 		if (is_fetching) return;
     	is_fetching = true;
+		loading_records(true)
 
 		let url = `configuracion_secciones_pos/bd/backend.php`
 		,	data = 	{
 						page,
-						option:'get_items'
+						q,
+						option:'get_items',
+						id_empresa : '<?= $_SESSION["EMPRESA"] ?>'
 					}
 
 		let requestOptions = {
@@ -67,19 +91,55 @@
 			let data = await response.json()
 			let content = render_list(data)
 			let tbody = document.getElementById("tbody-items")
-			
+			console.log(data.length)
 			if (data.length > 0) {
 				tbody.innerHTML = (data_list.length == 0 || page == 1) ? content : tbody.innerHTML + content;
 				data_list=[...data]
+				loading_records(false, data.length)
 			}
-			console.log(data_list);
+			else{
+				loading_records(false, 0)
+			}
+			// console.log(data_list);
 			
 		} catch (error) {
 			console.log(error)
 		}
 		is_fetching = false;
+		
 	}
 
+	// mostrar loading de los datos
+	function loading_records(state,exist_data=1){
+		console.table({state,exist_data})
+		if (state && exist_data>0) {
+			let tbody = document.getElementById("tbody-items")
+			let new_tr = document.createElement("tr")
+			new_tr.setAttribute("id","loading-tr");
+			new_tr.innerHTML = `<td colspan="6">
+									<div class='flex items-center justify-center'>
+										<div class="px-2" >cargando</div>  
+										<div class="animate-bounce w-6 text-5xl">.</div>
+										<div class="animate-bounce w-6 text-5xl" style="animation-delay: 0.2s">.</div>
+										<div class="animate-bounce w-6 text-5xl"  style="animation-delay: 0.4s">.</div>
+									</div>
+								</td>`
+			tbody.appendChild(new_tr);
+
+			let content = document.getElementById("table-content")
+			content.scrollTop = content.scrollHeight;
+		}
+		else{
+			try {
+				document.getElementById("loading-tr").remove()
+			} catch (error) {
+				// console.warn(error)				
+			}
+		}
+
+	}
+
+	// renderizar la lista de la tabla
 	function render_list (data){
 		let content = data.map(element=>(
 			`<tr class="bg-white odd:bg-white even:bg-slate-50 hover:bg-gray-200 cursor-default">
@@ -89,7 +149,7 @@
 				<td class="px-6 py-1">
 					${element.codigo}
 				</td>
-				<th scope="row" class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+				<th scope="row" class="px-6 py-1 font-medium whitespace-nowrap">
 					${element.nombre}
 				</th>
 				<td class="px-6 py-1">
@@ -106,11 +166,11 @@
 		return content;
 	}
 
+	// evento para el scroll infinito
 	document.getElementById("table-content").addEventListener("scroll", function (e) {
 		function handleScroll(event){
 			let table = event.target;
 			if (table.scrollHeight - table.scrollTop === table.clientHeight) {
-				console.log("scrolling");
 				page++;
 				get_items(page)
 			}
@@ -119,5 +179,34 @@
 	});
 
 	get_items(1);
+
+	// Función debounce
+	// function debounce(func, delay) {
+	// 	let timer;
+	// 	return function() {
+	// 		clearTimeout(timer);
+	// 		const context = this;
+	// 		const args = arguments;
+	// 		timer = setTimeout(() => {
+	// 			func.apply(context, args);
+	// 		}, delay);
+	// 	};
+	// }
+
+	// Asignar la función debounce al evento de input
+	document.getElementById("search_input").addEventListener('keyup', function(event) {
+		q = event.target.value;
+		data_list = [];
+
+		// Verificar si se presionó la tecla "Enter" o el campo de búsqueda está vacío
+		if (event.keyCode === 13 || q === "") {
+			// Realizar la consulta si se presionó "Enter" o el campo está vacío y no hay una solicitud en curso
+			if (!is_fetching) {
+				get_items(1);
+			}
+		} 
+	});
+
+	// llamado inicial a la funcion
 
 </script>
