@@ -942,6 +942,16 @@
 			$response = $this->curlApi($params);
 			$response = json_decode($response,true);
 
+			// Para mejorar la robustez, si hay un error, se intenta hacer un segundo envio
+			if(strpos($data["result"],"Procesado Correctamente") == false 
+			&& strpos($data["result"],"Documento no enviado, Ya cuenta con env") == false 
+			&& strpos($data["result"],"procesado anteriormente") == false 
+			&& strpos($data["result"],"ha sido autorizada") == false){
+				$response = $this->curlApi($params);
+				$response = json_decode($response,true);
+				return $response["respuesta"];
+			}
+			
 			return $response["respuesta"];
 		}
 
