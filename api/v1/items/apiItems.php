@@ -104,7 +104,7 @@
 		}
 
 		/**
-		 * @api {get} /items/:codigo/:cod_familia/:cod_grupo/:cod_subgrupo/:disponible_pos/:disponible_asiste/:modulo/:id_sucursal/:id_bodega Consultar Items
+		 * @api {get} /items/:codigo/:cod_familia/:cod_grupo/:cod_subgrupo/:disponible_pos/:disponible_asiste/:modulo/:id_sucursal/:id_bodega/:id_seccion Consultar Items
 		 * @apiVersion 1.0.0
 		 * @apiDescription Consultar items del sistema.
 		 * @apiName get_items
@@ -116,6 +116,7 @@
 		 * @apiParam {String} [cod_grupo] Codigo del grupo para consultar todos los items de un grupo
 		 * @apiParam {String} [cod_subgrupo] Codigo del subgrupo para consultar todos los items de un subgrupo
 		 * @apiParam {String="true","false"} [disponible_pos] Filtrar si los items son del pos
+		 * @apiParam {Int} [id_seccion] Id de la seccion a la que pertenecen los items que se quieren consultar (Consultar en el panel de control del sistema)
 		 * @apiParam {String="true","false"} [minibar] Filtrar si los items estan disponibles en para minibar (Hoteles)
 		 * @apiParam {String="true","false"} [disponible_asiste] Filtrar si los items estan disponibles en asiste
 		 * @apiParam {String="venta","compra"} [modulo] Filtrar si los items estan disponibles en el modulo compra o venta
@@ -385,6 +386,8 @@
 				}
 			}
 			// LEFT JOIN inventario_totales AS IT ON IT.id_item=I.id
+			
+			$sqlJoin = ($data['id_seccion']<>'')? " INNER JOIN seccion_items as SI ON SI.id_item=I.id WHERE SI.id_seccion =$data[id_seccion] " : "";
 			$sqlItems="SELECT
 					I.id,
 					I.codigo,
@@ -425,7 +428,8 @@
 					I.precio_venta_5,
 					I.id_categoria_asiste
 				FROM items AS I
-				WHERE I.activo=1
+				$sqlJoin
+				AND I.activo=1
 				AND I.id_empresa=$this->id_empresa
 				AND I.opcion_activo_fijo <> 'true'
 				$whereItems
