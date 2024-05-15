@@ -13,8 +13,17 @@
 
     $object = new Sections_Settings($mysql);
 
-    if ($params->option=="get_items") {
-        $object->get_items($params);
+    switch ($params->option) {
+        case 'get_items':
+            $object->get_items($params);
+            break;
+        case 'set_item':
+            $object->set_item($params);
+            break;
+        
+        default:
+            echo json_encode(["warning"=>"no se detecto la opcion"]);
+            break;
     }
 
     class Sections_Settings
@@ -36,6 +45,7 @@
             // Agregar cláusula WHERE si se proporciona un parámetro de búsqueda
             if (!empty($search)) {
                 $where .= " AND (
+                                    items.codigo LIKE '%$search%' OR 
                                     items.nombre_equipo LIKE '%$search%' OR 
                                     items.familia LIKE '%$search%' OR 
                                     items.grupo LIKE '%$search%' OR
@@ -73,6 +83,26 @@
             }
             $ret_val = json_encode($ret_val);
             echo $ret_val;
+        }
+
+        public function set_item($params){
+            // id_empresa
+            // id_item
+            // id_seccion
+            if ($params->set) {
+                $sql = "INSERT INTO seccion_items (id_item,id_seccion) VALUES ($params->id_item,$params->id_seccion) ";
+            }
+            else{
+                $sql = "DELETE FROM seccion_items WHERE id_item=$params->id_item AND id_seccion=$params->id_seccion ";
+            }
+            $query = $this->mysql->query($sql);
+            if ($query) {
+                echo json_encode(["success"=>true]);
+            }
+            else{
+                echo json_encode(["success"=>false]);
+            }
+
         }
 
     }
