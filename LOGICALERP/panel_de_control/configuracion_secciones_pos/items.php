@@ -20,25 +20,31 @@
 	</div>
 	<div class="w-full h-4/5 p-3 pt-0 overflow-x-hidden overflow-y-auto" id="table-content">
 		<table class="w-full text-sm text-left rtl:text-right text-gray-500 table-auto">
-			<thead class="text-xs text-gray-900 uppercase bg-gray-300 sticky top-0">
+			<thead class="text-xs text-gray-900 uppercase bg-gray-300 sticky top-0 cursor-pointer">
 				<tr>
 					<th scope="col" class="px-6 py-3 text-center">
-						Asignar
+						<span>Asignar</span>	
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Codigo
+						<span>Codigo</span>	
+					</th>
+					<th scope="col" class="px-6 py-3 flex justify-between items-center">
+						<span>Nombre</span>
+						<!-- <svg class="w-3 h-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4"></path>
+						</svg>
+						<svg class="w-3 h-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v12m0 0 4-4m-4 4L1 9"></path>
+						</svg> -->
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Nombre
+						<span>Familia</span>
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Familia
+						<span>Grupo</span>
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Grupo
-					</th>
-					<th scope="col" class="px-6 py-3">
-						Subgrupo
+						<span>Subgrupo</span>
 					</th>
 				</tr>
 			</thead>
@@ -61,6 +67,7 @@
 <script>
 	var page      = 1
 	  , q         = ""
+	  ,	order_by  = ""
 	  , data_list = []
 	  ,	is_fetching = false
 	  ,	end_fetching = false
