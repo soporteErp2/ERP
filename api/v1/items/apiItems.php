@@ -387,7 +387,7 @@
 			}
 			// LEFT JOIN inventario_totales AS IT ON IT.id_item=I.id
 			
-			$sqlJoin = ($data['id_seccion']<>'')? " INNER JOIN seccion_items as SI ON SI.id_item=I.id WHERE SI.id_seccion =$data[id_seccion] " : "";
+			$sqlJoin = ($data['id_seccion']<>'')? " INNER JOIN seccion_items as SI ON SI.id_item=I.id WHERE SI.id_seccion =$data[id_seccion] AND " : " WHERE ";
 			$sqlItems="SELECT
 					I.id,
 					I.codigo,
@@ -429,7 +429,7 @@
 					I.id_categoria_asiste
 				FROM items AS I
 				$sqlJoin
-				AND I.activo=1
+				I.activo=1
 				AND I.id_empresa=$this->id_empresa
 				AND I.opcion_activo_fijo <> 'true'
 				$whereItems
