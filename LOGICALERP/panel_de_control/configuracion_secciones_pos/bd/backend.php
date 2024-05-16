@@ -65,7 +65,8 @@
                     FROM items 
                     LEFT JOIN seccion_items ON seccion_items.id_item = items.id
                     WHERE activo=1 AND id_empresa=$params->id_empresa
-                    $where 
+                    $where
+                    AND modulo_pos = 'true'
                     ORDER BY nombre_equipo ASC
                     LIMIT $limit OFFSET $offset";
             $query = $this->mysql->query($sql);
