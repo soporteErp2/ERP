@@ -6,7 +6,7 @@
 	 // : "GET,POST,PUT,DELETE,OPTIONS",
 	include '../../../../configuracion/define_variables.php';
 	include '../configuracion/conectar.php';
-//	include '../configuracion/configuration.php';
+	include '../configuracion/configuration.php';
 	include 'ClassGlobalFunctions.php';
 	include 'PosClassFunctions.php';
 	include 'PosClass.php';

@@ -25,6 +25,7 @@
 			echo $this->curlApi($params);
 		}
 
+
 		public function validatePin($pin){
 			$sql   = "SELECT pin,token_pos FROM empleados WHERE pin=$pin ";
 			$query = $this->mysql->query($sql);
@@ -231,6 +232,7 @@
 		 * @param  Int 	 $params.id Id del tiquet a generar
 		 * @return Array         Array con el estado y el consecutivo del tiquet generado
 		 */
+
 		public function generateTiquet($params){
 
 			$arrayResolucion = $this->validateResolucion();
@@ -335,7 +337,7 @@
 		 * si se supera el tope de facturacion entonces se debe generar una factura electronica en lugar del pos
 		 */
 		public function generate_electronic_billing()
-		{
+		{	
 			global $SERVER; // from configuracion/configuration
 			$query_auth = base64_encode($this->username.":".$this->token.":".$this->datosEmpresa['documento'] );
 			
@@ -372,7 +374,6 @@
 					"causacion_normal" => "true"
 				]);
 			}
-			
 			// Cambiamos la url de validacion por la del envio
 			$curl_params                   = [];
 			$curl_params['request_url']    = "$SERVER/api/v1/facturas/";
@@ -701,6 +702,8 @@
 
 		public function savePayPos($params){
 			// IDENTIFICAR SI SE REALIZARA UNA SOLA FACTURA O FACTURA Y CHEQUE CUENTA
+			global $SERVER;
+
 			$general      = 0;
 			$chequeCuenta = 0;
 			$cortesia     = 0;
@@ -724,6 +727,13 @@
 					AND ci.cantidad  > 0
 					AND (ci.cantidad > ci.cantidad_pendiente OR ci.cantidad_pendiente IS NULL)";
 			$query=$this->mysql->query($sql);
+			if(!$query) { 
+				$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
+				//$arrayResult = array('status'=>'failed','detalle'=>$this->mysql->error(), 'debug'=>$sql);
+				//s$arrayResult = $this->utf8ize($arrayResult);
+				echo json_encode($arrayResult);
+				return ;
+			}
 			while ($row=$this->mysql->fetch_array($query)) {
 
 				$arrayCuentasItems[$row['id']] = array(
@@ -744,13 +754,149 @@
 			$cliente           = '';
 
 			if(count($params['huespedesSelect'])>0){
-				$id_reserva  		= $params['huespedesSelect'][0]['id_reserva'];
-				$numero_reserva 	= $params['huespedesSelect'][0]['numero_reserva'];
-				$habitacion 		= $params['huespedesSelect'][0]['numero_habitacion'];
-				$id_huesped 		= $params['huespedesSelect'][0]['id_comensal'];
-				// $id_cliente 		= $params['huespedesSelect'][0]['id'];
-				$documento_cliente  = $params['huespedesSelect'][0]['documento_comensal'];
-				$cliente			= $params['huespedesSelect'][0]['comensal'];
+				$nombres 				= explode(" ", $params['huespedesSelect'][0]['nombres']);
+				$apellidos 				= explode(" ", $params['huespedesSelect'][0]['apellidos']);
+				$id_reserva  			= $params['huespedesSelect'][0]['id_reserva'];
+				$numero_reserva 		= $params['huespedesSelect'][0]['numero_reserva'];
+				$habitacion 			= $params['huespedesSelect'][0]['numero_habitacion'];
+				$id_huesped 			= $params['huespedesSelect'][0]['id_comensal'];
+				$correoCliente	    	= $params['huespedesSelect'][0]['correo'];
+				$documento_cliente  	= $params['huespedesSelect'][0]['documento_comensal'];
+				$cliente				= $params['huespedesSelect'][0]['comensal'];
+				$tipoDocumento			= $params['huespedesSelect'][0]['tipoDocumento'];
+				$tipoPersona			= $params['huespedesSelect'][0]['tipoPersona'];
+
+				if($params['huespedesSelect'][0]['clientePos']){
+					$datosEmpresa = $this->getInfoEmpresa();
+
+					//Comprobar si el tercero existe
+					$sql = "SELECT id, nombre, email FROM terceros  WHERE numero_identificacion = '$documento_cliente';";
+					$query=$this->mysql->query($sql);
+
+					//Si el tercero existe
+					if($this->mysql->num_rows($query) > 0){
+						$idT = $this->mysql->result($query,0,'id');
+						$nombreT = $this->mysql->result($query,0,'nombre');
+						$emailT = $this->mysql->result($query,0,'email');
+						
+						//validar que el correo no este configurada en una sucursal
+						$sql = "SELECT TDE.id_direccion, TDE.email FROM terceros_direcciones_email AS TDE inner join
+						terceros_direcciones AS TD on TDE.id_direccion = TD.id WHERE TD.id_tercero = $idT";
+						$query=$this->mysql->query($sql);
+						while ($row=$this->mysql->fetch_array($query)) {
+							if($row['email'] == $correoCliente){
+								$this->newIdSucursal = $row['id_direccion'];
+								break;}
+						}
+						//Si el correo es diferente del configurado crear una nueva sucursal con el nuevo correo
+						if($emailT !== $correoCliente && $this->newIdSucursal == ''){
+							
+							$sql = "INSERT INTO terceros_direcciones 
+									(id_tercero,
+									direccion,
+									id_departamento,
+									departamento,
+									id_ciudad,
+									ciudad,
+									activo,
+									telefono1,
+									telefono2,
+									celular1,
+									celular2,
+									nombre,
+									direccion_principal,
+									id_pais,
+									pais,
+									id_siip,
+									debug,
+									emails,
+									codigo_postal,
+									numero_matricula_mercantil) 
+								VALUES(
+									$idT,
+									'".mb_convert_encoding($datosEmpresa['direccion'], 'UTF-8', 'UTF-8')."',
+									".$datosEmpresa['id_departamento'].",
+									'".mb_convert_encoding($datosEmpresa['departamento'], 'UTF-8', 'UTF-8')."',
+									".$datosEmpresa['id_ciudad'].",
+									'".mb_convert_encoding($datosEmpresa['ciudad'], 'UTF-8', 'UTF-8')."',
+									1,
+									'',
+									'',
+									'',
+									'',
+									'".mb_convert_encoding($nombreT, 'UTF-8', 'UTF-8')."',
+									0,
+									".$datosEmpresa['id_pais'].",
+									'".mb_convert_encoding($datosEmpresa['pais'], 'UTF-8', 'UTF-8')."',
+									0,
+									0,
+									0,
+									'',
+									'')";
+
+							$query=$this->mysql->query($sql);
+
+							if(!$query) { 
+								$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
+								return;
+							}
+
+							$this->newIdSucursal = $this->mysql->insert_id();
+
+							$sql = "INSERT INTO terceros_direcciones_email 
+							(id_direccion,
+							contacto,
+							email,
+							id_siip,
+							activo) VALUES('$this->newIdSucursal', 'POS', '$correoCliente', '', 1)";
+							$query=$this->mysql->query($sql);
+							if(!$query) { 
+								$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
+								return;
+							}
+						}
+					}else{
+							$query_auth = base64_encode(
+								$params['user']['username'].":"
+								.$params['user']['token'].":"
+								.$params['user']['nitEmpresa'] );
+
+							$paramsterceros['cod_documento_dian'] 	= $tipoDocumento;
+							$paramsterceros['tipo_persona'] 		= $tipoPersona;
+							$paramsterceros['documento'] 			= $documento_cliente;
+							$paramsterceros['digito_verificacion'] 	= ($tipoDocumento==31)?
+																		$this->calcular_digito_verificacion($documento_cliente)
+																		:"";
+							$paramsterceros['nombre'] 				= $cliente;
+							$paramsterceros['nombre_comercial'] 	= $cliente;
+							$paramsterceros['direccion'] 			= $datosEmpresa['direccion'];
+							$paramsterceros['telefono1'] 			= $datosEmpresa['telefono'];
+							$paramsterceros['id_pais'] 				= $datosEmpresa['id_pais'];
+							$paramsterceros['id_departamento'] 		= $datosEmpresa['id_departamento'];
+							$paramsterceros['id_ciudad'] 			= $datosEmpresa['id_ciudad'];
+							$paramsterceros['email'] 				= $correoCliente;
+							$paramsterceros['cliente'] 				= "Si";
+							$paramsterceros['proveedor'] 			= "No";
+							$paramsterceros['exento_iva'] 			= "No";
+							$paramsterceros['primer_nombre'] 		= $nombres[0];
+							$paramsterceros['segundo_nombre'] 		= (count($nombres)>0)?$nombres[1]:"";
+							$paramsterceros['primer_apellido'] 		= $apellidos[0];
+							$paramsterceros['segundo_apellido'] 	= (count($apellidos)>0)?$apellidos[1]:"";
+							
+							//si el tercero no existe
+							// Cambiamos la url de validacion por la del envio
+							$curl_params                   = [];
+							$curl_params['request_url']    = "$SERVER/api/v1/terceros/";
+							$curl_params['request_method'] = "POST";
+							$curl_params['Authorization']  = "Authorization: Basic ".$query_auth;
+							$curl_params['data']           = json_encode($paramsterceros);
+
+							// Consumimos el API y obtenemos sus resultados
+							$respuesta = $this->curlApi($curl_params);
+							$respuesta = json_decode($respuesta,true);
+					}
+					
+				}
 			}
 			else if(count($params['clienteErp'])>0){
 				$id_cliente 		= $params['clienteErp'];
@@ -836,8 +982,16 @@
 						'".$params["propinaData"]["porcentaje"]."',
 						'".$params["propinat"]."'
 					) ";
-
+			
 			$query=$this->mysql->query($sql);
+			if(!$query) { 
+				$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
+				//$arrayResult = array('status'=>'failed','detalle'=>$this->mysql->error(), 'debug'=>$sql);
+				//$arrayResult = $this->utf8ize($arrayResult);
+				//echo json_encode($arrayResult);
+				return ;
+			}
+
 			$id_pos = $this->mysql->insert_id();
 
 			$contMe=0;
@@ -1008,6 +1162,51 @@
 			return ;
 		}
 
+		public function utf8ize($d) {
+			if (is_array($d)) {
+				foreach ($d as $k => $v) {
+					$d[$k] = $this->utf8ize($v);
+				}
+			} else if (is_string($d)) {
+				return mb_convert_encoding($d, 'UTF-8', 'UTF-8');
+			}
+			return $d;
+		}
+
+		//El nit debe ser una cadena
+
+		public function calcular_digito_verificacion($nit) {
+			// Pesos predefinidos
+			$pesos = array(3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47);
+		
+			// Convertir el NIT en un array de enteros
+			$nit_array = array_map('intval', str_split($nit));
+		
+			// Invertir el array para empezar desde el dígito menos significativo
+			$nit_array = array_reverse($nit_array);
+		
+			// Calcular la suma de las multiplicaciones
+			$suma_array = array();
+			for ($i = 0; $i < count($pesos); $i++) {
+				$suma_array[] = $nit_array[$i] * $pesos[$i];
+			}
+		
+			// Usar array_sum para sumar todos los elementos del array de sumas
+			$suma = array_sum($suma_array);
+		
+			// Calcular el residuo de la suma módulo 11
+			$residuo = $suma % 11;
+		
+			// Determinar el dígito de verificación
+			if ($residuo == 0 || $residuo == 1) {
+				$digito_verificacion = $residuo;
+			} else {
+				$digito_verificacion = 11 - $residuo;
+			}
+		
+			return $digito_verificacion;
+		}
+		
 
 		/**
 		 * printTiquet Imprimir la comanda
@@ -1609,7 +1808,7 @@
 				$arrayResult = array('status' => 'success', 'message'=>'Se actualizo el token de seguridad' );
 			}
 			else{
-				$arrayResult = array('status' => 'failed', 'message'=>'No se actualizo el token para cerrar la sesion', "debug" =>$sql );
+				$arrayResult = array('status' => 'failed', 'message'=>'No se actualizo el token para cerrar la sesion');
 			}
 
 			echo json_encode($arrayResult);
