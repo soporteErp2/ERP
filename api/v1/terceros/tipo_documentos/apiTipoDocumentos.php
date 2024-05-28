@@ -2,8 +2,7 @@
 
 	include '../../../../misc/ConnectDb/class.ConnectDb.php';
 	/**
-	 * @apiDefine Tercero Se requieren permisos de terceros
-	 * Para crear, actualizar o eliminar terceros, se requiere permiso al modulo de terceros en el sistema
+	 * @apiDefine Consultar los tipos de documentos aceptables para facturacion electronica
 	 *
 	 */
 	class apiTipoDocumentos
@@ -131,7 +130,35 @@
 
 			}
 		}
-
+				/**
+		 * @api {get} /terceros/tipo_documentos Consultar tipos de documento
+		 * @apiVersion 1.0.0
+		 * @apiDescription Consultar los tipos de documentos aceptables para facturacion electronica
+		 * @apiName get_tipo_documentos
+		 * @apiGroup Terceros
+		 * 
+		 * @apiSuccess {Object[]} TiposDocumento Listado con los tipos de documentos
+		 * @apiSuccess {String} TiposDocumento.id Codigo DIAN del documento
+		 * @apiSuccess {String} TiposDocumento.nombre Abreviacion del tipo de documento
+		 * @apiSuccess {String} TiposDocumento.detalle Nombre del tipo de documento
+		 * @apiSuccessExample Success-Response:
+		 *     HTTP/1.1 200 OK
+		 *     {
+		 *     	"status":true,
+		 *      "data": [
+         *					{
+         *					    "id": "13",
+         *					    "nombre": "C.C",
+         *					    "detalle": "Cedula de Ciudadania"
+         *					},
+         *					{
+         *					    "id": "12",
+         *					    "nombre": "T.I",
+         *					    "detalle": "Tarjeta de identidad"
+         *					}
+		 *				]
+		 *     }
+		 */
 		public function index(){
 			$sql="SELECT id,nombre,detalle, codigo_tipo_documento_dian 
 				  FROM tipo_documento 
