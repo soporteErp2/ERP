@@ -249,6 +249,7 @@
 		 * @apiParam (Codigos Identificacion Dian) {Int} 42 Documento de identificacion extranjero
 		 * @apiParam (Codigos Identificacion Dian) {Int} 91 NUIP *
 		 *
+		 * @apiParam {Int{1}="1","2"} [tipo_persona] Tipo de persona 1 si es juridica, 2 si es natural
 		 * @apiParam {Int{2}="11","12","13","21","22","31","41","42","91"} cod_documento_dian Codigo Dian del tipo de documento (Ver tabla <b>Codigos Identificacion Dian</b> )
 		 * @apiParam {Int} digito_verificacion Digito de verificacion, si aplica
 		 * @apiParam {String} documento Numero de documento
@@ -344,6 +345,7 @@
 								'".$arrayTipoDoc[$data['cod_documento_dian']]['nombre']."',
 								'$data[digito_verificacion]',
 								'$data[documento]',
+								'$data[tipo_persona]',
 								'$data[nombre]',
 								'$data[nombre_comercial]',
 								'$data[direccion]',
@@ -376,6 +378,7 @@
 											tipo_identificacion,
 											dv,
 											numero_identificacion,
+											id_tipo_persona_dian,
 											nombre,
 											nombre_comercial,
 											direccion,
