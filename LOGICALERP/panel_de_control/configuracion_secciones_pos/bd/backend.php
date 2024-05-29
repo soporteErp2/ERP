@@ -61,9 +61,13 @@
                         items.familia,
                         items.grupo,
                         items.subgrupo,
-                        seccion_items.id_seccion
+                        CASE
+                            WHEN seccion_items.id_seccion = $params->id_seccion THEN seccion_items.id_seccion
+                            ELSE NULL
+                        END AS id_seccion
                     FROM items 
-                    LEFT JOIN seccion_items ON seccion_items.id_item = items.id
+                    LEFT JOIN seccion_items ON seccion_items.id_item = items.id 
+                    AND (seccion_items.id_seccion = $params->id_seccion OR seccion_items.id_seccion IS NULL)
                     WHERE activo=1 AND id_empresa=$params->id_empresa
                     $where
                     AND modulo_pos = 'true'
@@ -72,7 +76,7 @@
             $query = $this->mysql->query($sql);
             $ret_val = [];
 			while ($row=$this->mysql->fetch_array($query)) {
-                $ret_val[] = [
+               $ret_val[] = [
                     "id"         => $row["id"],
                     "codigo"     => $row["codigo"],
                     "nombre"     => utf8_encode($row["item"]),
@@ -82,6 +86,7 @@
                     "id_seccion" => $row["id_seccion"],
                 ];
             }
+
             $ret_val = json_encode($ret_val);
             echo $ret_val;
         }
