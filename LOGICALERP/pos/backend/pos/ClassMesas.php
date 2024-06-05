@@ -972,8 +972,8 @@
 				$query=$this->mysql->query($sql);
 				while ($row=$this->mysql->fetch_array($query)) {
 					$taxPercent = ($row['porcentaje_impuesto']*0.01)+1;
-					$subtotal   = $row['precio']/$taxPercent;
-					$acumsubtotal   += $row['precio']/$taxPercent;
+					$subtotal   = $row['cantidad']*$row['precio']/$taxPercent;
+					$acumsubtotal   += $row['cantidad']*$row['precio']/$taxPercent;
 					if ($row['porcentaje_impuesto']>0) {
 						$arrayImpuestos[$row['id_impuesto']]['nombre'] = $row['nombre_impuesto'];
 						$arrayImpuestos[$row['id_impuesto']]['valor'] += ($subtotal*$row['porcentaje_impuesto'])/100;
@@ -1146,12 +1146,12 @@
 										</tr>
 										$bodyImp
 										<tr>
-											<td>Total:</td>
-											<td><b>".number_format($acumTotal,0 ,',', '.')."</b></td>
-										</tr>
-										<tr>
 											<td>Propina:</td>
 											<td><b>".number_format($acumsubtotal*0.10,0 ,',', '.')."</b></td>
+										</tr>
+										<tr>
+											<td>Total:</td>
+											<td><b>".number_format($acumTotal+$acumsubtotal*0.10,0 ,',', '.')."</b></td>
 										</tr>
 									</table>
 									<table class='firmas' >
