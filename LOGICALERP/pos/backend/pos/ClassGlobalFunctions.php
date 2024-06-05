@@ -27,14 +27,17 @@
 		 * @return String nit de la empresa
 		 */
 		public function getInfoEmpresa(){
-			$sql="SELECT documento,nombre,pais,departamento,ciudad,direccion,telefono FROM empresas
+			$sql="SELECT documento,nombre,id_pais,pais,id_departamento,departamento,id_ciudad,ciudad,direccion,telefono FROM empresas
 					WHERE activo=1 AND id=$this->id_empresa ";
 			$query=$this->mysql->query($sql);
 			$array['documento']    = $this->mysql->result($query,0,'documento');
 			$array['nombre']       = $this->mysql->result($query,0,'nombre');
+			$array['id_pais']         = $this->mysql->result($query,0,'id_pais');
 			$array['pais']         = $this->mysql->result($query,0,'pais');
+			$array['id_departamento'] = $this->mysql->result($query,0,'id_departamento');
 			$array['departamento'] = $this->mysql->result($query,0,'departamento');
 			$array['ciudad']       = $this->mysql->result($query,0,'ciudad');
+			$array['id_ciudad']       = $this->mysql->result($query,0,'id_ciudad');
 			$array['direccion']    = $this->mysql->result($query,0,'direccion');
 			$array['telefono']     = $this->mysql->result($query,0,'telefono');
 

@@ -895,7 +895,7 @@ class ClassFacturaJSON_V2{
 			}
 
 			//---------------------------- TIPO PERSONA ----------------------------//
-			if($this->tipo_persona_codigoT == null || $this->tipo_persona_codigoT == ""){
+			if($this->tipo_persona_codigoT == null || $this->tipo_persona_codigoT == "" || $this->tipo_persona_codigoT == 0){
 				$tipo_persona_tercero = ($this->codigo_tipo_documento_dianT == "31")? "1" : "2";
 			}
 			else{

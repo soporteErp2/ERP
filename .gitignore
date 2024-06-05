@@ -15,3 +15,4 @@ configuracion/conexion.php
 #ignorar la configuracion para el pos
 LOGICALERP/pos/frontend/POS/pos/config.js
 
+LOGICALERP/pos/backend/configuracion/configuration.php
