@@ -233,36 +233,36 @@
 				$query=$this->mysql->query($sql);
 				while ($row=$this->mysql->fetch_array($query)) {
 					if ($row['estado_comanda']==3) { continue; }
-					$arrayReceta = '';
-					$sqlIng="SELECT
-								id,
-								id_cuenta,
-								id_cuenta_item,
-								id_item,
-								codigo_item,
-								nombre_item,
-								cantidad,
-								observaciones,
-								id_usuario,
-								documento_usuario,
-								usuario
-							FROM ventas_pos_mesas_cuenta_items_recetas
-							WHERE activo=1 AND id_empresa=$this->id_empresa AND id_cuenta=$id_cuenta AND id_cuenta_item=$row[id] ";
-					$queryIng=$this->mysql->query($sqlIng);
-					while ($rowIng=$this->mysql->fetch_array($queryIng)) {
-						$arrayReceta[] = array(
-													"id_cuenta"         => $rowIng['id_cuenta'],
-													"id_cuenta_item"    => $rowIng['id_cuenta_item'],
-													"id"           => $rowIng['id_item'],
-													"codigo"       => $rowIng['codigo_item'],
-													"nombre"       => $rowIng['nombre_item'],
-													"cantidad"          => $rowIng['cantidad'],
-													"observaciones"     => $rowIng['observaciones'],
-													"id_usuario"        => $rowIng['id_usuario'],
-													"documento_usuario" => $rowIng['documento_usuario'],
-													"usuario"           => $rowIng['usuario'],
-												);
-					}
+					//$arrayReceta = '';
+					//$sqlIng="SELECT
+					//			id,
+					//			id_cuenta,
+					//			id_cuenta_item,
+					//			id_item,
+					//			codigo_item,
+					//			nombre_item,
+					//			cantidad,
+					//			observaciones,
+					//			id_usuario,
+					//			documento_usuario,
+					//			usuario
+					//		FROM ventas_pos_mesas_cuenta_items_recetas
+					//		WHERE activo=1 AND id_empresa=$this->id_empresa AND id_cuenta=$id_cuenta AND id_cuenta_item=$row[id] ";
+					//$queryIng=$this->mysql->query($sqlIng);
+					//while ($rowIng=$this->mysql->fetch_array($queryIng)) {
+					//	$arrayReceta[] = array(
+					//								"id_cuenta"         => $rowIng['id_cuenta'],
+					//								"id_cuenta_item"    => $rowIng['id_cuenta_item'],
+					//								"id"           => $rowIng['id_item'],
+					//								"codigo"       => $rowIng['codigo_item'],
+					//								"nombre"       => $rowIng['nombre_item'],
+					//								"cantidad"          => $rowIng['cantidad'],
+					//								"observaciones"     => $rowIng['observaciones'],
+					//								"id_usuario"        => $rowIng['id_usuario'],
+					//								"documento_usuario" => $rowIng['documento_usuario'],
+					//								"usuario"           => $rowIng['usuario'],
+					//							);
+					//}
 
 					$cantidadTotal = (int)$row['cantidad'] - (int)$row['cantidad_pendiente'];
 					$arrayDetail[] = array(
@@ -280,7 +280,7 @@
 											"observaciones"       => $row['observaciones'],
 											"id_comanda" 		  => $row['id_comanda'],
 											"comandado"           => (($row['id_comanda']>0)? true : false ),
-											"receta"              => $arrayReceta,
+											//"receta"              => $arrayReceta,
 											"id_usuario"          => $row['id_usuario'],
 											"documento_usuario"   => $row['documento_usuario'],
 											"usuario"             => $row['usuario'],

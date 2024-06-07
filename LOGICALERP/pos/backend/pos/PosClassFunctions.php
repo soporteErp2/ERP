@@ -133,6 +133,7 @@
 						seccion,
 						id_propina,
 						valor_propina,
+						porcentaje_descuento,
 						valor_descuento,
 						id_huesped,
 						id_cliente,
@@ -150,29 +151,30 @@
 					WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$id_documento ";
 			$this->debug = "WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$id_documento";
 			$query=$this->mysql->query($sql);
-			$this->id_documento      = $id_documento;
-			$this->fecha_documento   = $this->mysql->result($query,0,'fecha_documento');
-			$this->prefijo           = $this->mysql->result($query,0,'prefijo');
-			$this->consecutivo       = $this->mysql->result($query,0,'consecutivo');
-			$this->id_seccion        = $this->mysql->result($query,0,'id_seccion');
-			$this->seccion           = $this->mysql->result($query,0,'seccion');
-			$this->id_propina        = $this->mysql->result($query,0,'id_propina');
-			$this->valor_propina     = $this->mysql->result($query,0,'valor_propina');
-			$this->valor_descuento   = $this->mysql->result($query,0,'valor_descuento');
-			$this->id_huesped        = $this->mysql->result($query,0,'id_huesped');
-			$this->id_cliente        = $this->mysql->result($query,0,'id_cliente');
-			$this->documento_cliente = $this->mysql->result($query,0,'documento_cliente');
-			$this->cliente           = $this->mysql->result($query,0,'cliente');
-			$this->id_reserva        = $this->mysql->result($query,0,'id_reserva');
-			$this->id_usuario        = $this->mysql->result($query,0,'id_usuario');
-			$this->subtotal_pos      = $this->mysql->result($query,0,'subtotal_pos');
-			$this->total_pos         = $this->mysql->result($query,0,'total_pos');
-			$this->estado            = $this->mysql->result($query,0,'estado');
-			$this->id_factura 		 = $this->mysql->result($query,0,'id_factura');
-			$this->id_entrada_almacen = $this->mysql->result($query,0,'id_entrada_almacen');
-			$this->id_sucursal 		 = (!isset($this->id_sucursal))? 
-										$this->mysql->result($query,0,'id_sucursal') 
-										: $this->id_sucursal;
+			$this->id_documento      	  = $id_documento;
+			$this->fecha_documento   	  = $this->mysql->result($query,0,'fecha_documento');
+			$this->prefijo           	  = $this->mysql->result($query,0,'prefijo');
+			$this->consecutivo       	  = $this->mysql->result($query,0,'consecutivo');
+			$this->id_seccion        	  = $this->mysql->result($query,0,'id_seccion');
+			$this->seccion           	  = $this->mysql->result($query,0,'seccion');
+			$this->id_propina        	  = $this->mysql->result($query,0,'id_propina');
+			$this->valor_propina     	  = $this->mysql->result($query,0,'valor_propina');
+			$this->porcentaje_descuento   = $this->mysql->result($query,0,'porcentaje_descuento');
+			$this->valor_descuento   	  = $this->mysql->result($query,0,'valor_descuento');
+			$this->id_huesped        	  = $this->mysql->result($query,0,'id_huesped');
+			$this->id_cliente        	  = $this->mysql->result($query,0,'id_cliente');
+			$this->documento_cliente 	  = $this->mysql->result($query,0,'documento_cliente');
+			$this->cliente           	  = $this->mysql->result($query,0,'cliente');
+			$this->id_reserva        	  = $this->mysql->result($query,0,'id_reserva');
+			$this->id_usuario        	  = $this->mysql->result($query,0,'id_usuario');
+			$this->subtotal_pos      	  = $this->mysql->result($query,0,'subtotal_pos');
+			$this->total_pos         	  = $this->mysql->result($query,0,'total_pos');
+			$this->estado            	  = $this->mysql->result($query,0,'estado');
+			$this->id_factura 		 	  = $this->mysql->result($query,0,'id_factura');
+			$this->id_entrada_almacen 	  = $this->mysql->result($query,0,'id_entrada_almacen');
+			$this->id_sucursal 		 	  = (!isset($this->id_sucursal))? 
+											$this->mysql->result($query,0,'id_sucursal') 
+											: $this->id_sucursal;
 			// $this->id_sucursal       = $this->mysql->result($query,0,'id_sucursal');
 
 			//get user info for electronic billing
