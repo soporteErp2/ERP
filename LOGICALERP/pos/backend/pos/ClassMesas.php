@@ -608,14 +608,86 @@
 		 * @param  Int $id_item   Id del item para eliminar el item de la cuenta
 		 * @return Json           Respuesta de la peticion en formato JSON
 		 */
-		public function deleteItem($id_cuenta,$id_row,$id_item){
+		public function deleteItem($id_cuenta,$id_row,$id_item,$username,$password){
+			
+			$sql = "SELECT id_comanda FROM ventas_pos_mesas_cuenta_items WHERE id_cuenta=$id_cuenta AND id=$id_row AND id_item=$id_item";
+			$query=$this->mysql->query($sql);
+			$id_comanda = $this->mysql->result($query,0,'id_comanda');
+
+			if($username!=='' && $password!==''){
+				//validar usuario
+				$sql="SELECT password,id_rol FROM empleados WHERE username='$username'";
+				$query=$this->mysql->query($sql);
+				$passBD = $this->mysql->result($query,0,'password');
+				$id_rol = $this->mysql->result($query,0,'id_rol');
+				
+				if($passBD !== md5($password)){
+					$arrayResult = array('status' => 'failed', 'message'=>"Credenciales incorrectas");
+					echo json_encode($arrayResult);
+					return;
+				}
+
+				$sql="SELECT id FROM empleados_roles_permisos WHERE id_permiso = '247' AND id_rol='$id_rol'";
+				$query=$this->mysql->query($sql);
+				$numItems = $this->mysql->num_rows($query);
+				if($numItems<=0){
+					//si no tiene permisos
+					$arrayResult = array('status' => 'failed', 'message'=>"El usuario no tiene permisos válidos", "debug"=>$sql);
+					echo json_encode($arrayResult);
+					return;
+				}
+
+				$sql="DELETE FROM ventas_pos_mesas_cuenta_items WHERE id_cuenta=$id_cuenta AND id=$id_row AND id_item=$id_item";
+				$query=$this->mysql->query($sql);
+				if ($query) {
+					$sql="DELETE FROM ventas_pos_mesas_cuenta_items_recetas WHERE id_cuenta=$id_cuenta AND id_cuenta_item=$id_row ";
+					$query=$this->mysql->query($sql);
+					if ($query) {
+						$arrayResult = array('status' => 'success', 'message'=>"se elimino correctamente","sql"=>$username." ".$password);
+					}
+					else{
+						$arrayResult = array('status' => 'failed', 'message'=>"se produjo un error al eliminar la receta del item","sql"=>$sql);
+					}
+				}
+				else{
+					$arrayResult = array('status' => 'failed', 'message'=>"se produjo un error al eliminar el item","sql"=>$sql);
+				}
+
+				$sql = "SELECT id FROM ventas_pos_mesas_cuenta_items WHERE id_comanda = $id_comanda";
+				$query=$this->mysql->query($sql);
+				$numItems = $this->mysql->num_rows($query);
+				if($numItems<=0){
+					$sql   = "UPDATE
+									ventas_pos_comanda
+								SET estado                  = 3,
+									id_usuario_anulacion        = '$_SESSION[IDUSUARIO]',
+									documento_usuario_anulacion = '$_SESSION[CEDULAFUNCIONARIO]',
+									usuario_anulacion           = '$_SESSION[NOMBREFUNCIONARIO]',
+									fecha_anulacion             = '".date("Y-m-d")."',
+									hora_anulacion              = '".date("H:i:s")."',
+									observacion_anulacion       = 'Comanda anulada desde POS'
+								WHERE activo=1
+								AND id_empresa=$this->id_empresa
+								AND id=$id_comanda ";
+						$query = $this->mysql->query($sql);
+						if ($query) {
+							$arrayResult = array('status' => "success", "message"=> "Comanda anulada correctamente" );
+						}
+						else{
+							$arrayResult = array('status' => "failed", "message"=> "No se pudo anular la comanda ","debug"=>$sql );
+						}
+				}
+				echo json_encode($arrayResult);
+				return;
+			}
+
 			$sql="DELETE FROM ventas_pos_mesas_cuenta_items WHERE id_cuenta=$id_cuenta AND id=$id_row AND id_item=$id_item";
 			$query=$this->mysql->query($sql);
 			if ($query) {
 				$sql="DELETE FROM ventas_pos_mesas_cuenta_items_recetas WHERE id_cuenta=$id_cuenta AND id_cuenta_item=$id_row ";
 				$query=$this->mysql->query($sql);
 				if ($query) {
-					$arrayResult = array('status' => 'success', 'message'=>"se elimino correctamente","sql"=>$sql);
+					$arrayResult = array('status' => 'success', 'message'=>"se elimino correctamente","sql"=>$username." ".$password);
 				}
 				else{
 					$arrayResult = array('status' => 'failed', 'message'=>"se produjo un error al eliminar la receta del item","sql"=>$sql);
@@ -624,8 +696,6 @@
 			else{
 				$arrayResult = array('status' => 'failed', 'message'=>"se produjo un error al eliminar el item","sql"=>$sql);
 			}
-
-
 
 			echo json_encode($arrayResult);
 		}
