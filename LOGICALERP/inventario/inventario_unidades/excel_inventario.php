@@ -5,27 +5,48 @@
 	$id_empresa  =$_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
 
-	$sql="SELECT * FROM inventario_totales WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id_ubicacion=$filtro_ubicacion AND inventariable='true' ";
-	$query=$mysql->query($sql,$mysql->link);
-	while ($row=$mysql->fetch_array($query)) {
-		$costos = number_format($row['costos'],2,$separador_decimales,$separador_miles);
-		$bodyTable .=  "<tr>
-											<td >$row[familia]</td>
-											<td >$row[grupo]</td>
-											<td >$row[subgrupo]</td>
-											<td style='mso-number-format:\"\@\";'>$row[codigo]</td>
-											<td >$row[code_bar]</td>
-											<td >$row[nombre_equipo]</td>
-											<td >$row[cantidad]</td>
-											<td >$costos</td>
-											<td >$row[precio_venta]</td>
-										</tr>";
+	if ($fecha_inventario<>'') {
+		$sql="SELECT * FROM inventario_totales_log_mensual WHERE id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id_bodega=$filtro_ubicacion AND inventariable='true'  ";
+		$query=$mysql->query($sql,$mysql->link);
+		while ($row=$mysql->fetch_array($query)) {
+			$costos = number_format($row['costo'],2,$separador_decimales,$separador_miles);
+			$bodyTable .=  "<tr>
+								<td >$row[familia]</td>
+								<td >$row[grupo]</td>
+								<td >$row[subgrupo]</td>
+								<td style='mso-number-format:\"\@\";'>$row[codigo]</td>
+								<td ></td>
+								<td >$row[nombre]</td>
+								<td >$row[cantidad]</td>
+								<td >$costos</td>
+								<td >$row[precio_venta]</td>
+							</tr>";
+		}
 	}
+	else{
+		$sql="SELECT * FROM inventario_totales WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id_ubicacion=$filtro_ubicacion AND inventariable='true' ";
+		$query=$mysql->query($sql,$mysql->link);
+		while ($row=$mysql->fetch_array($query)) {
+			$costos = number_format($row['costos'],2,$separador_decimales,$separador_miles);
+			$bodyTable .=  "<tr>
+												<td >$row[familia]</td>
+												<td >$row[grupo]</td>
+												<td >$row[subgrupo]</td>
+												<td style='mso-number-format:\"\@\";'>$row[codigo]</td>
+												<td >$row[code_bar]</td>
+												<td >$row[nombre_equipo]</td>
+												<td >$row[cantidad]</td>
+												<td >$costos</td>
+												<td >$row[precio_venta]</td>
+											</tr>";
+		}
 
-	$sql="SELECT nombre FROM empresas_sucursales_bodegas WHERE id=$filtro_ubicacion";
-	$query=$mysql->query($sql,$mysql->link);
-	$nombre_bodega = $mysql->result($query,0,'nombre');
+		$sql="SELECT nombre FROM empresas_sucursales_bodegas WHERE id=$filtro_ubicacion";
+		$query=$mysql->query($sql,$mysql->link);
+		$nombre_bodega = $mysql->result($query,0,'nombre');
 
+	}
+	
 	header('Content-type: application/vnd.ms-excel');
  	header("Content-Disposition: attachment; filename=listado_de_inventario_".(date("Y-m-d")).".xls");
  	header("Pragma: no-cache");

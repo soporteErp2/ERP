@@ -135,7 +135,9 @@ class Inventory_Log
                             '$row[cantidad]',
                             '$row[inventariable]',
                             '$row[estado_compra]',
-                            '$row[estado_venta]'
+                            '$row[estado_venta]',
+                            '".date("Y-m-d")."',
+                            '".date("H:i:s")."'
                             ),";
             // echo "codigo: " . $row["codigo"]. " - nombre_equipo: " . $row["nombre_equipo"]." - ubicacion $row[ubicacion] <br>";
         }   
@@ -170,10 +172,12 @@ class Inventory_Log
                     cantidad,
                     inventariable,
                     estado_compra,
-                    estado_venta
+                    estado_venta,
+                    fecha,
+                    hora
                 ) VALUES $sql_items";
-        // $query = $this->mysql->query($sql);
-        echo "log";
+        $query = $this->mysql->query($sql);
+        // echo "log";
         // echo "<pre>$sql</pre>";
         // echo "<br><b>Inventory_Log set_log $this->id_empresa</b><br><br>";
     }
