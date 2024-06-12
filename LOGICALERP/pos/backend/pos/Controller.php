@@ -90,7 +90,7 @@
 			$objectMesas->saveItem($params);
 			break;
 		case 'deleteItem':
-			$objectMesas->deleteItem($id_cuenta,$id_row,$id_item);
+			$objectMesas->deleteItem($id_cuenta,$id_row,$id_item,$username,$password);
 			break;
 		case 'solicitarPedido':
 			$json   = file_get_contents('php://input');

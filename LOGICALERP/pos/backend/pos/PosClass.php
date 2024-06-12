@@ -441,9 +441,13 @@
 				echo json_encode(array('status' => true,"consecutivo"=>$this->consecutivo,"cuentas"=>$this->arrayCuentas) );
 			}
 			else{
+				$error = json_encode($respuesta['detalle']);
+				$frase = "Los articulos no tienen una configuracion contable";
 				$params["nivel"]          = 1;
-				$params["estado"]         = 500;
-				$params["detalle_estado"] = "Error en remision de venta: ".json_encode($respuesta['detalle']);
+				$params["estado"]         = (stripos($error, $frase) !== false)? 1 : 500;
+				$params["detalle_estado"] = (stripos($error, $frase) !== false)? 
+											"Los items no tenian receta configurada":
+											"Error en remision de venta: $error";
 				$this->rollback($params);
 			}
 		}
@@ -467,7 +471,7 @@
 				$retval[] = [
 					"codigo" => $row["codigo"],
 					"cantidad" => $row["cantidad"],
-					"precio" => $row["subtotal"],
+					"precio" => $row["subtotal"]*(1 - $this->porcentaje_descuento/100),
 				];
 			}
 			return $retval;
@@ -982,7 +986,7 @@
 						'".$params["propinaData"]["porcentaje"]."',
 						'".$params["propinat"]."'
 					) ";
-			
+			$this->descuentoFacturaPos = $params["descuentoData"]["porcentaje"];
 			$query=$this->mysql->query($sql);
 			if(!$query) { 
 				$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
@@ -1089,39 +1093,53 @@
 				$query=$this->mysql->query($sql);
 
 				$itemValidate[] =  array('sdsd'=>$arrayCuentasItems[$value["id"]],'sq' => $sql, 'cantidad'=>$cantidad_pendiente);
-
-				foreach ($value['receta'] as $key => $receta) {
+	
+				$sqlIng="SELECT
+							id_item,
+							codigo_item,
+							nombre_item,
+							cantidad
+						FROM 
+							ventas_pos_mesas_cuenta_items_recetas
+						WHERE 
+							activo=1 
+							AND id_empresa=$this->id_empresa 
+							AND id_cuenta='".$value["id_cuenta"]."'
+							AND id_cuenta_item='".$value["id"]."'";
+				$queryIng=$this->mysql->query($sqlIng);
+				while ($rowIng=$this->mysql->fetch_array($queryIng)) {
 					$sql="INSERT INTO ventas_pos_inventario_receta
-								(
-									id_pos,
-									id_cuenta,
-									id_cuenta_item,
-									id_item_producto,
-									id_item,
-									codigo,
-									cantidad_unidad_medida,
-									nombre,
-									cantidad,
-									id_empresa,
-									activo
-								)
-								VALUES
-								(
-									'".$id_pos."',
-									'".$receta['id_cuenta']."',
-									'".$receta['id_cuenta_item']."',
-									'".$id_row."',
-									'".$receta["id"]."',
-									'".$receta["codigo"]."',
-									'".$receta["cantidad"]."',
-									'".$receta["nombre"]."',
-									'".$receta["cantidad"]."',
-									'$this->id_empresa',
-									1
-								) ";
+							(
+								id_pos,
+								id_cuenta,
+								id_cuenta_item,
+								id_item_producto,
+								id_item,
+								codigo,
+								cantidad_unidad_medida,
+								nombre,
+								cantidad,
+								id_empresa,
+								activo
+							)
+							VALUES
+							(
+								'".$id_pos."',
+								'".$value["id_cuenta"]."',
+								'".$value["id"]."',
+								'".$id_row."',
+								'".$rowIng['id_item']."',
+								'".$rowIng['codigo_item']."',
+								'".$rowIng['cantidad']."',
+								'".$rowIng['nombre_item']."',
+								'".$rowIng["cantidad"]."',
+								'$this->id_empresa',
+								1
+							) ";
 					$query=$this->mysql->query($sql);
 					$sqlRecipies .= $sql;
 				}
+
 			}
 
 			// <------------------------------ validacion comanda ------------------------------------>
