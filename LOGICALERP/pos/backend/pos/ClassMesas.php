@@ -1007,284 +1007,291 @@
 				include("../../../../ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_factura.php");
 			}
 			else{
-				$datosEmpresa = $this->getInfoEmpresa();
-				//
-				$sql="SELECT
-						nombre_mesa,
-						fecha_apertura,
-						hora_apertura
-					FROM ventas_pos_mesas_cuenta WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$id_cuenta";
-				$query=$this->mysql->query($sql);
-				$nombre_mesa = $this->mysql->result($query,0,'nombre_mesa');
-				$fecha       = $this->mysql->result($query,0,'fecha_apertura');
-				$hora        = $this->mysql->result($query,0,'hora_apertura');
+				date_default_timezone_set("America/Bogota");
 
+				if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-				$sql="SELECT
-							IP.nombre_item,
-							IP.cantidad - IFNULL( IP.cantidad_pendiente, 0) AS cantidad,
-							IP.precio,
-							IP.id_impuesto,
-							IP.nombre_impuesto,
-							IP.porcentaje_impuesto,
-							IP.termino,
-							IP.observaciones,
-							I.grupo
-						FROM
-							ventas_pos_mesas_cuenta_items AS IP
-						INNER JOIN items AS I ON I.id = IP.id_item
-						WHERE
-							IP.activo = 1
-						AND IP.id_empresa = $this->id_empresa
-						AND IP.id_cuenta = $id_cuenta
-						AND IP.id_comanda>0
-						AND (IP.cantidad_pendiente < IP.cantidad OR ISNULL(IP.cantidad_pendiente))";
-				$query=$this->mysql->query($sql);
-				while ($row=$this->mysql->fetch_array($query)) {
-					$taxPercent = ($row['porcentaje_impuesto']*0.01)+1;
-					$subtotal   = $row['cantidad']*$row['precio']/$taxPercent;
-					$acumsubtotal   += $row['cantidad']*$row['precio']/$taxPercent;
-					if ($row['porcentaje_impuesto']>0) {
-						$arrayImpuestos[$row['id_impuesto']]['nombre'] = $row['nombre_impuesto'];
-						$arrayImpuestos[$row['id_impuesto']]['valor'] += ($subtotal*$row['porcentaje_impuesto'])/100;
+					$params = json_decode($_POST['data'], true);
+					$datosEmpresa = $this->getInfoEmpresa();
+					//
+					$sql="SELECT
+							nombre_mesa
+						FROM ventas_pos_mesas_cuenta WHERE activo=1 AND id_empresa=$this->id_empresa AND id=".$params['items'][0]['id_cuenta'];
+					$query=$this->mysql->query($sql);
+					$nombre_mesa = $this->mysql->result($query,0,'nombre_mesa');
+
+					$groupItems = array();
+
+					foreach ( $params['items'] as $value ) {
+						$id = $value['id_item'].$value['precio'];
+						if(array_key_exists($id,$groupItems)){
+							//Si el key existe, aumenta la cantidad
+							$groupItems[$id]['cantidad']++;
+						}
+						//Si el key no existe, reinicia la cantidad
+						else{
+							$value['cantidad']=1;
+							$groupItems[$id] = $value;
+						}
+
 					}
 
-					// impuestos  += ((element.precio/taxPercent)*element.porcentaje_impuesto)/100
+					foreach($groupItems as $items){
+						$cantidad 		= $items['cantidad'];
+						$taxPercent 	= ($items['porcentaje_impuesto']*0.01)+1;
+						$descuento 		= ($params['totales']['descuentoData'])?(1-$params['totales']['descuentoData']['porcentaje']/100):1;
+						$subtotal   	= ROUND(($descuento*$cantidad*$items['precio']/$taxPercent),0);
+						if ($items['porcentaje_impuesto']>0) {
+							$arrayImpuestos[$items['id_impuesto']]['nombre'] = $items['nombre_impuesto'];
+							$arrayImpuestos[$items['id_impuesto']]['valor'] += ($subtotal*$items['porcentaje_impuesto'])/100;
+						}
 
-					$acumCantidad += $row['cantidad'];
-					$acumTotal    += ($row['cantidad']*$row['precio']);
-					$bodyTable .= "<tr><td colspan='4' >$row[nombre_item]</td></tr>";
-					$bodyTable .= "<tr><td colspan='2' style='text-align:right;' >$row[cantidad]</td><td colspan='2' style='text-align:center;'>".number_format($row['precio'],0 ,',', '.')."</td></tr>";
-					$bodyTable .= "<tr class='row' ><td colspan='4' style='text-align:right;'>".number_format($row['cantidad']*$row['precio'],0 ,',', '.')."</td></tr>";
-				}
+						// impuestos  += ((element.precio/taxPercent)*element.porcentaje_impuesto)/100
 
-				foreach ($arrayImpuestos as $id => $arrayResult) {
-					$bodyImp .= "<tr>
-									<td>$arrayResult[nombre]</td>
-									<td><b>".number_format($arrayResult['valor'],0 ,',', '.')."</b></td>
-								</tr>";
-				}
+						$acumCantidad += $cantidad;
+						$acumTotal    += ($cantidad*$items['precio']);
+						$bodyTable .= "<tr><td colspan='4' >$items[nombre_item]</td></tr>";
+						$bodyTable .= "<tr><td colspan='2' style='text-align:right;' >$items[cantidad]</td><td colspan='2' style='text-align:center;'>".number_format($items['precio'],0 ,',', '.')."</td></tr>";
+						$bodyTable .= "<tr class='row' ><td colspan='4' style='text-align:right;'>".number_format($items['cantidad']*$items['precio'],0 ,',', '.')."</td></tr>";
+					}
 
-				$bodyTable .= "
-								<thead>
-									<tr>
-										<td>Cant. Total:</td>
-										<td>$acumCantidad</td>
-										<td>Total:</td>
-										<td>".number_format($acumTotal,0 ,',', '.') ."</td>
-									</tr>
-								</thead>
-								";
+					foreach ($arrayImpuestos as $id => $arrayResult) {
+						$bodyImp .= "<tr>
+										<td>$arrayResult[nombre]</td>
+										<td><b>".number_format($arrayResult['valor'],0 ,',', '.')."</b></td>
+									</tr>";
+					}
 
-				$contenido = "<html>
-								<head>
-								<style>
-									@page {
-										size: auto;
-									}
-									body{
-										font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
-									}
-									.title{
-										font-weight   : bold;
-										font-size     : 12px;
-										width         : 100%;
-										text-align    : center;
-										margin-bottom : 5px;
-									}
-									.subtitle{
-										font-size     : 11px;
-										width         : 100%;
-										text-align    : center;
-										margin-bottom : 5px;
-									}
-									.subtitle span{
-										width : 100%;
-										font-weight   : bold;
-
-									}
-
-									table {
-										font-size : 11px;
-										width     : 100%;
-									}
-									.separator{
-										/*border-top     : 1px solid #CCC;*/
-										padding-bottom : 5px;
-									}
-
-									.productos{
-										border-collapse:collapse;
-										font-size : 10px;
-										margin-bottom : 15px;
-									}
-									.productos thead td{
-										border-top: 1px solid;
-										border-bottom: 1px solid;
-										padding : 5px;
-									}
-									.row td{
-										border-bottom: 1px solid;
-									}
-
-									.condiciones{
-										width : 100%;
-										font-size:9px;
-										margin-bottom : 15px;
-									}
-
-									.totales{
-
-									}
-
-									.firmas{
-										margin-top: 20px;
-										/*margin-bottom: 20px*/
-									}
-									.firmas td{
-										padding-bottom: 25px;
-									}
-
-								</style>
-								</head>
-								<body>
-								<div>
-									<div class='title' >
-										$datosEmpresa[nombre] <br>
-										NIT. $datosEmpresa[documento]<br>
-										$datosEmpresa[direccion]
-									</div>
-									<div class='subtitle' >
-										<span>*** ATENCION ***</span><br>
-											CUENTA INFORMATIVA PARA SU VERIFICACIÓN
-											No Válida como FACTURA
-											POR FAVOR EXIGA SU FACTURA<br>
-										<span>*** GRACIAS POR SU VISITA ***</span>
-									</div>
-
-									<table>
-										<thead>
-											<tr>
-												<td><b>Fecha</b></td>
-												<td>".($this->fecha_larga($fecha))."</td>
-												<td>$hora</td>
-											</tr>
-											<tr>
-												<td><b>Mesa</b></td>
-												<td>$nombre_mesa</td>
-											</tr>
-											<tr>
-												<td colspan='2' class='separator' >&nbsp;</td>
-											</tr>
-										<thead>
-									</table>
-									<div class='subtitle' >
-										<span>LISTADO DE PRODUCTOS CONSUMIDOS</span>
-									</div>
-									<table class='productos' >
-										<thead>
-											<tr>
-												<td>Producto</td>
-												<td>Cantidad</td>
-												<td style='text-align:right;' >V/unit</td>
-												<td style='text-align:right;' >Valor</td>
-										</thead>
-										$bodyTable
-									</table>
-									<div class='condiciones' >
-										Se informa a los consumidores que este
-										establecimiento de comercio sugiere una propina
-										correspondiente al 10% del valor de la cuenta, el
-										cual podra ser aceptado, rechazado o modificado
-										por usted, de acuerdo a su valoraciòn del servicio
-										prestado.
-										Al momento de solicitud la cuenta, indìque a la
-										persona que lo atiende que dicho valor sea o no
-										incluido en la factura o indìque el valor que quiere
-										dar como propina.
-										En caso que tenga algùn inconveniente con el
-										cobro podra comunicarce con la Lìnea de Atenciòn
-										al Ciudadano de la Superintencia de Industria y
-										Comercio : 592 0404 en Bogotà, Para el resto del
-										paìs, lìnea gratuita nacional: 018000-910165, para
-										que radique su queja
-									</div>
-									<table class='totales'>
+					$bodyTable .= "
+									<thead>
 										<tr>
-											<td>Neto:</td>
-											<td><b>".number_format($acumsubtotal,0 ,',', '.')."</b></td>
-										</tr>
-										$bodyImp
-										<tr>
-											<td>Propina:</td>
-											<td><b>".number_format($acumsubtotal*0.10,0 ,',', '.')."</b></td>
-										</tr>
-										<tr>
+											<td>Cant. Total:</td>
+											<td>$acumCantidad</td>
 											<td>Total:</td>
-											<td><b>".number_format($acumTotal+$acumsubtotal*0.10,0 ,',', '.')."</b></td>
+											<td>".number_format($acumTotal,0 ,',', '.') ."</td>
 										</tr>
-									</table>
-									<table class='firmas' >
-										<tr>
-											<td>Nombre:</td>
-											<td>_________________________________________</td>
-										</tr>
-										<tr>
-											<td>Firma:</td>
-											<td>_________________________________________</td>
-										</tr>
-									</table>
+									</thead>
+									";
 
-									<div class='subtitle' >
-										<span>GRACIAS POR SU COMPRA</span><br>
-										<span>*** NO VALIDA COMO FACTURA***</span>
+					$contenido = "<html>
+									<head>
+									<style>
+										@page {
+											size: auto;
+										}
+										body{
+											font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+										}
+										.title{
+											font-weight   : bold;
+											font-size     : 12px;
+											width         : 100%;
+											text-align    : center;
+											margin-bottom : 5px;
+										}
+										.subtitle{
+											font-size     : 11px;
+											width         : 100%;
+											text-align    : center;
+											margin-bottom : 5px;
+										}
+										.subtitle span{
+											width : 100%;
+											font-weight   : bold;
+
+										}
+
+										table {
+											font-size : 11px;
+											width     : 100%;
+										}
+										.separator{
+											/*border-top     : 1px solid #CCC;*/
+											padding-bottom : 5px;
+										}
+
+										.productos{
+											border-collapse:collapse;
+											font-size : 10px;
+											margin-bottom : 15px;
+										}
+										.productos thead td{
+											border-top: 1px solid;
+											border-bottom: 1px solid;
+											padding : 5px;
+										}
+										.row td{
+											border-bottom: 1px solid;
+										}
+
+										.condiciones{
+											width : 100%;
+											font-size:9px;
+											margin-bottom : 15px;
+										}
+
+										.totales{
+
+										}
+
+										.firmas{
+											margin-top: 20px;
+											/*margin-bottom: 20px*/
+										}
+										.firmas td{
+											padding-bottom: 25px;
+										}
+
+									</style>
+									</head>
+									<body>
+									<div>
+										<div class='title' >
+											$datosEmpresa[nombre] <br>
+											NIT. $datosEmpresa[documento]<br>
+											$datosEmpresa[direccion]
+										</div>
+										<div class='subtitle' >
+											<span>*** ATENCION ***</span><br>
+												CUENTA INFORMATIVA PARA SU VERIFICACIÓN
+												No Válida como FACTURA
+												POR FAVOR EXIGA SU FACTURA<br>
+											<span>*** GRACIAS POR SU VISITA ***</span>
+										</div>
+
+										<table>
+											<thead>
+												<tr>
+													<td><b>Fecha</b></td>
+													<td>".($this->fecha_larga(date('Y-m-d')))."</td>
+													<td>".date('H:i:s')."</td>
+												</tr>
+												<tr>
+													<td><b>Mesa</b></td>
+													<td>$nombre_mesa</td>
+												</tr>
+												<tr>
+													<td colspan='2' class='separator' >&nbsp;</td>
+												</tr>
+											<thead>
+										</table>
+										<div class='subtitle' >
+											<span>LISTADO DE PRODUCTOS CONSUMIDOS</span>
+										</div>
+										<table class='productos' >
+											<thead>
+												<tr>
+													<td>Producto</td>
+													<td>Cantidad</td>
+													<td style='text-align:right;' >V/unit</td>
+													<td style='text-align:right;' >Valor</td>
+											</thead>
+											$bodyTable
+										</table>
+										<div class='condiciones' >
+											Se informa a los consumidores que este
+											establecimiento de comercio sugiere una propina
+											correspondiente al 10% del valor de la cuenta, el
+											cual podra ser aceptado, rechazado o modificado
+											por usted, de acuerdo a su valoraciòn del servicio
+											prestado.
+											Al momento de solicitud la cuenta, indìque a la
+											persona que lo atiende que dicho valor sea o no
+											incluido en la factura o indìque el valor que quiere
+											dar como propina.
+											En caso que tenga algùn inconveniente con el
+											cobro podra comunicarce con la Lìnea de Atenciòn
+											al Ciudadano de la Superintencia de Industria y
+											Comercio : 592 0404 en Bogotà, Para el resto del
+											paìs, lìnea gratuita nacional: 018000-910165, para
+											que radique su queja
+										</div>
+										<table class='totales'>
+											<tr>
+												<td>Neto:</td>
+												<td><b>".number_format($params['totales']['subtotal'],0 ,',', '.')."</b></td>
+											</tr>
+											$bodyImp
+											<tr>
+												<td>Descuento:</td>
+												<td><b>".number_format($params['totales']['descuentos'],0 ,',', '.')."</b></td>
+											</tr>
+											<tr>
+												<td>Propina:</td>
+												<td><b>".number_format($params['totales']['propina'],0 ,',', '.')."</b></td>
+											</tr>
+											<tr>
+												<td>Total:</td>
+												<td><b>".number_format($acumTotal-$params['totales']['descuentos']+$params['totales']['propina'],0 ,',', '.')."</b></td>
+											</tr>
+										</table>
+										<table class='firmas' >
+											<tr>
+												<td>Nombre:</td>
+												<td>_________________________________________</td>
+											</tr>
+											<tr>
+												<td>Firma:</td>
+												<td>_________________________________________</td>
+											</tr>
+										</table>
+
+										<div class='subtitle' >
+											<span>GRACIAS POR SU COMPRA</span><br>
+											<span>*** NO VALIDA COMO FACTURA***</span>
+										</div>
 									</div>
-								</div>
-								</body>
-								</html>
-								";
-								// ".($this->fecha_larga($fecha))."
-				include("../misc/MPDF54/mpdf.php");
+									</body>
+									</html>
+									";
+									// ".($this->fecha_larga($fecha))."
+									
+					include("../misc/MPDF54/mpdf.php");
 
-				// echo $sql; exit;
-				// echo $id_comanda;
-				// $mpdf = new mPDF(
-				// 	"utf-8",  						// mode - default "
-				// 	strtoupper($options["tamano"]),	// format - A4, for example, default "
-				// 	12,								// font size - default 0
-				// 	"",								// default font family
-				// 	$options["margins"]["left"],	// margin_left
-				// 	$options["margins"]["right"],	// margin right
-				// 	$options["margins"]["top"],		// margin top
-				// 	$options["margins"]["bottom"],	// margin bottom
-				// 	3,								// margin header
-				// 	10,								// margin footer
-				//     $orientacion    				// orientacion
-				// );
-				$mpdf = new mPDF(
-					"utf-8",  						// mode - default "
-					'A6.5',	// format - A4, for example, default "
-					12,								// font size - default 0
-					"",								// default font family
-					'10', // margin_left
-					'10', // margin right
-					'10', // margin top
-					'10', // margin bottom
-					3,								// margin header
-					10,								// margin footer
-				    $orientacion    				// orientacion
-				);
-				$mpdf->SetAutoPageBreak(TRUE, 15);
-				$mpdf->SetTitle ("Precuenta POS");
-				$mpdf->SetAuthor ( "LOGICALSOFT-POS" );
-				$mpdf->SetDisplayMode ( "fullpage" );
-				$mpdf->SetHeader("");
-				// $mpdf->SetFooter("$fecha $hora ");
-				// $mpdf->WriteHTML(utf8_encode($contenido));
-				$mpdf->WriteHTML($contenido);
-				$mpdf->Output("comanda_$id_comanda.pdf","I");
-				// if($options["op"]=="view"){$mpdf->Output($nombre.".pdf","I");}
-				// if($options["op"]=="download"){$mpdf->Output($nombre.".pdf","D");}
+					// echo $sql; exit;
+					// echo $id_comanda;
+					// $mpdf = new mPDF(
+					// 	"utf-8",  						// mode - default "
+					// 	strtoupper($options["tamano"]),	// format - A4, for example, default "
+					// 	12,								// font size - default 0
+					// 	"",								// default font family
+					// 	$options["margins"]["left"],	// margin_left
+					// 	$options["margins"]["right"],	// margin right
+					// 	$options["margins"]["top"],		// margin top
+					// 	$options["margins"]["bottom"],	// margin bottom
+					// 	3,								// margin header
+					// 	10,								// margin footer
+					//     $orientacion    				// orientacion
+					// );
+					$mpdf = new mPDF(
+						"utf-8",  						// mode - default "
+						'A6.5',	// format - A4, for example, default "
+						12,								// font size - default 0
+						"",								// default font family
+						'10', // margin_left
+						'10', // margin right
+						'10', // margin top
+						'10', // margin bottom
+						3,								// margin header
+						10,								// margin footer
+					    $orientacion    				// orientacion
+					);
+					$mpdf->SetAutoPageBreak(TRUE, 15);
+					$mpdf->SetTitle ("Precuenta POS");
+					$mpdf->SetAuthor ( "LOGICALSOFT-POS" );
+					$mpdf->SetDisplayMode ( "fullpage" );
+					$mpdf->SetHeader("");
+					// $mpdf->SetFooter("$fecha $hora ");
+					// $mpdf->WriteHTML(utf8_encode($contenido));
+					$mpdf->WriteHTML($contenido);
+					$mpdf->Output("comanda_$id_comanda.pdf","I");
+					// if($options["op"]=="view"){$mpdf->Output($nombre.".pdf","I");}
+					// if($options["op"]=="download"){$mpdf->Output($nombre.".pdf","D");}
+				}else{
+					http_response_code(405); // Método no permitido
+					echo json_encode(['error' => 'Only POST method is allowed']);
+				}
+
 			}
 		}
 
