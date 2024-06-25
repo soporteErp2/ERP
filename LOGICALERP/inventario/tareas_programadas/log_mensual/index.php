@@ -14,7 +14,10 @@ if ($configPath) {
 date_default_timezone_set('America/Bogota');
 
 // validar que sea el ultimo dia del mes
-if (date('t') != date('d')) {
+// if (date('t') != date('d')) {
+if (date('j') != 1) {
+    exit("no es el ultimo dia del mes!\n");
+}
     // guardar log para verificacion de ejecucion
     $logFile = $baseDir . '/task_log.txt'; 
 
@@ -38,8 +41,7 @@ if (date('t') != date('d')) {
         echo "Error al abrir el archivo de log.\n";
     }
 
-    exit("no es el ultimo dia del mes!\n");
-}
+   
 
 // id empresas a las que se les realiza la copia
 $companies = [
@@ -177,6 +179,9 @@ class Inventory_Log
                     hora
                 ) VALUES $sql_items";
         $query = $this->mysql->query($sql);
+        if (!$query) {
+            throw new Exception("Error en la inserción SQL: " . $this->mysql->error);
+        }
         // echo "log";
         // echo "<pre>$sql</pre>";
         // echo "<br><b>Inventory_Log set_log $this->id_empresa</b><br><br>";
