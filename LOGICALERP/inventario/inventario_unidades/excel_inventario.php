@@ -35,6 +35,7 @@
 												<td style='mso-number-format:\"\@\";'>$row[codigo]</td>
 												<td >$row[code_bar]</td>
 												<td >$row[nombre_equipo]</td>
+												<td >$row[unidad_medida]</td>
 												<td >$row[cantidad]</td>
 												<td >$costos</td>
 												<td >$row[precio_venta]</td>
@@ -85,6 +86,7 @@
 			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">CODIGO INTERNO</td>
 			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">CODIGO DE BARRAS</td>
 			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">ARTICULO</td>
+			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">UNIDAD DE MEDIDA</td>
 			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">CANTIDAD</td>
 			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">COSTO</td>
 			<td style="height: 30px; text-align:center; vertical-align: middle; font-size: 14px;background-color : #2A80B9;color: #fff;">PRECIO VENTA</td>
