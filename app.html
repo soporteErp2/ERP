@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ERP</title>
+    <link rel="stylesheet" href="app_style.css">
+</head>
+<body class="h-screen">
+    <div id="main" class="h-full flex flex-col">
+        <div id="header" class="bg-red-100 w-full h-10 flex justify-between items-center p-2">
+            <svg onclick="toogle_nav()" class="w-4 h-4 text-gray-600 dark:text-white cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"></path>
+            </svg>
+            header
+        
+        </div>
+        <div class="overflow-hidden flex">
+            <div id="nav" class=" overflow-hidden transition-all ease-in-out duration-500 bg-green-100 w-64 h-screen">
+                <ul class="fixed list-none p-0">
+                    <li class="py-2 px-4">ventas</li>
+                    <li class="py-2 px-4">compras</li>
+                    <li class="py-2 px-4">activos fijos</li>
+                    <li class="py-2 px-4">nomina</li>
+                </ul>
+            </div>
+            <div id="content" class="z-10 flex-grow bg-gray-200 h-screen overflow-auto transition-all ease-in-out">content</div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="app_js.js"></script>
