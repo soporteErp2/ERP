@@ -14,7 +14,7 @@
 	$id_sucursal_default = $_SESSION['SUCURSAL'];
 
 	$informe->InformeName           =	'certificado_ingresos_retenciones';  //NOMBRE DEL INFORME
-	$informe->InformeTitle          =	'Certificado de Retencion de Industria y Comercio ICA'; //TITULO DEL INFORME
+	$informe->InformeTitle          =	'Certificado de Retenciones'; //TITULO DEL INFORME
 	$informe->InformeEmpreSucuBode  =	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
 	$informe->InformeEmpreSucu      =	'false'; //FILTRO EMPRESA, SUCURSAL
 	$informe->InformeFechaInicioFin =	'false';	 //FILTRO FECHA
@@ -49,10 +49,10 @@
 
 
 	function ventanaConfigurarInforme(){
-		Win_Ventana_configurar_medios_magneticos = new Ext.Window({
-		    width       : 600,
-			height      : 280,
-		    id          : 'Win_Ventana_configurar_medios_magneticos',
+		Win_Ventana_configurar_informe_retenciones = new Ext.Window({
+		    width       : 320,
+			height      : 380,
+		    id          : 'Win_Ventana_configurar_informe_retenciones',
 		    title       : 'Configurar Informe',
 		    modal       : true,
 		    autoScroll  : false,
@@ -60,7 +60,7 @@
 		    autoDestroy : true,
 		    autoLoad    :
 		    {
-		        url     : '../informes/informes/tributario/wizard_certificado_retencion_ica.php',
+		        url     : '../informes/informes/tributario/wizard_certificado_retenciones.php',
 		        scripts : true,
 		        nocache : true,
 		        params  :
@@ -77,20 +77,23 @@
 		,	fecha_final       = document.getElementById('fecha_final').value
 		,	id_tercero        = document.getElementById('id_tercero').value
 		,	documento_tercero = document.getElementById('documento_tercero').innerHTML
-		,	nombre_tercero    = document.getElementById('nombre_tercero').innerHTML;
+		,	nombre_tercero    = document.getElementById('nombre_tercero').innerHTML
+		,	tipo_retencion    = document.getElementById('tipoRetencion').value;
+
 
 		if (id_tercero==0 || id_tercero=='') { alert('Debe seleccionar el tercero!'); return; }
 
 		Ext.get('RecibidorInforme_certificado_ingresos_retenciones').load({
-			url     : '../informes/informes/tributario/certificado_retencion_ica_Result.php',
+			url     : '../informes/informes/tributario/certificado_retenciones_Result.php',
 			text	: 'Generando Informe...',
 			scripts : true,
 			nocache : true,
 			params  :
 			{
-				fecha_inicio : fecha_inicio,
-				fecha_final  : fecha_final,
-				id_tercero   : id_tercero,
+				fecha_inicio 	: fecha_inicio,
+				fecha_final  	: fecha_final,
+				id_tercero   	: id_tercero,
+				tipo_retencion	: tipo_retencion,
 			}
 		});
 
@@ -106,16 +109,18 @@
 	function generar_Excel(){
 		var fecha_inicio      = document.getElementById('fecha_inicial').value
 		,	fecha_final       = document.getElementById('fecha_final').value
-		,	id_tercero        = document.getElementById('id_tercero').value;
+		,	id_tercero        = document.getElementById('id_tercero').value
+		,	tipo_retencion    = document.getElementById('tipoRetencion').value;
 
 		if (id_tercero==0 || id_tercero=='') { alert('Debe seleccionar el empleado!'); return; }
 
 		var bodyVar = 	'&fecha_inicio='+fecha_inicio+
 						'&fecha_final='+fecha_final+
+						'&tipo_retencion='+tipo_retencion+
 						'&id_tercero='+id_tercero;
 
 
-		window.open("../informes/informes/tributario/certificado_retencion_ica_Result.php?IMPRIME_PDF=true"+bodyVar);
+		window.open("../informes/informes/tributario/certificado_retenciones_Result.php?IMPRIME_PDF=true"+bodyVar);
 
 	}
 
