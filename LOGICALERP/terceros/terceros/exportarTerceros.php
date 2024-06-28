@@ -8,7 +8,19 @@
     header("Expires: 0");
 
     // CONSULTAR LOS EMAIL DE LOS TERCEROS
-    $sql="SELECT id_tercero,email FROM terceros_emails  WHERE activo=1 ";
+    $sql="SELECT
+			TD.id_tercero,
+			TDE.email 
+		FROM
+			terceros_direcciones_email AS TDE
+			INNER JOIN terceros_direcciones AS TD ON TD.id = TDE.id_direccion 
+			INNER JOIN terceros AS T ON T.id=TD.id_tercero
+		WHERE
+			TDE.activo = 1 
+			AND T.activo = 1
+		GROUP BY
+			TD.id_tercero";
+
     $query=$mysql->query($sql,$mysql->link);
     while ($row=$mysql->fetch_array($query)) {
     	$id_tercero = $row['id_tercero'];
