@@ -10,6 +10,7 @@
         background-color : #FFF;
         margin-top       : 10px;
         margin-left      : 20px;
+        margin-bottom    : 10px;
         border           : 1px solid #D4D4D4;
     }
 
@@ -87,28 +88,48 @@
     .user_search{
         background-image: url('../../temas/clasico/images/BotonesTabs/user_search.png');
     }
-
-    #WizCapaDerecha{
+    .WizTitulo{
+        text-align: center;
+        margin-bottom:10px
+    }
+    #WizCapaPrincipal{
         padding-top: 10px;
+        width: 300px;
+        margin-bottom  : 10px;
+    }
+    .contenedor_fechas {
+        float            : left;
+        width            : 60%;
+        margin-top       : 10px;
+        margin-left      : 70px;
+        margin-bottom    : 10px;
+    }
+    .tabla_fechas {
+        font-size        : 11px;
+        font-weight      : bold;
+    }
+    .tabla_fechas tr{
+        height:40px;
+        font-size        : 11px;
+        font-weight      : bold;
+    }
+    .tabla_fechas td{
+        padding:4px;
+        font-size        : 11px;
+        font-weight      : bold;
+    }
+    .contenedor_retenciones{
+        width:60%;
+        margin-left:70px;
+        font-size        : 11px;
+        font-weight      : bold;
     }
 
 </style>
 
 <div id="WizCapaPrincipal">
-    <div id="WizCapaIzquierda"></div>
-    <div id="WizCapaDerecha">
         <div class="WizTitulo">Asistente Generador del Certificado</div>
         <div  class="WizContenido">
-
-            <div class="contenedor_tablas" style="width:105px;">
-                <div class="headDivs" style="width:105px;">Fecha Inicio</div>
-                <div class="filaDivs" style="width:105px;"><input type="text" class="myfield" id="fecha_inicial" /></div>
-            </div>
-
-            <div class="contenedor_tablas" style="width:105px;">
-                <div class="headDivs" style="width:105px;">Fecha Final</div>
-                <div class="filaDivs" style="width:105px;"><input type="text" class="myfield" id="fecha_final" /></div>
-            </div>
 
             <div class="contenedor_tablas">
                 <div class="headDivs" style="width:130px;">Documento</div>
@@ -117,41 +138,59 @@
                 <div class="filaDivs" style="width:calc(100% - 138px - 25px);" id="nombre_tercero">&nbsp;</div>
                 <input type="hidden" id="id_tercero">
                 <div class="divIcono" onclick="ventanaBusquedaEmpleados()">
-                    <img src="img/buscar20.png" title="Buscar Cuenta">
+                    <img src="img/buscar20.png" title="Buscar tercero">
                 </div>
             </div>
-
+            <div class="contenedor_retenciones">
+            <label for="tipoRetencion">Seleccione el tipo de retencion</label>
+                        <select id="tipoRetencion">
+                            <option value="ReteIca">Rete ICA</option>
+                            <option value="ReteIva">Rete IVA</option>
+                        </select>
+            </div>
+            </div>
+            <div class="contenedor_fechas">
+                <table class="tabla_fechas">
+                    <tr>
+                        <td>Fecha inicial</td>
+                        <td><input type="text" id="fecha_inicial"/></td>
+                    </tr>
+                    <tr>
+                        <td>Fecha final</td>
+                        <td><input type="text" id="fecha_final"/></td>
+                    </tr>
+                </table>
+            </div>
             <div class="content-buttom">
                 <input type="button" class="generate" value="Generar" onClick="generarHtml();" />
                 <input type="button" class="generatePDF" value="Generar" onClick="generar_Excel()" style="margin-left:10px;" />
-                <button class="user_search" onClick="ventanaBusquedaTercerosACertificar()">Terceros a<br> Certificar</button>
-                <!-- <input type="button" class="generate" value="Terceros a Certificar" onClick="generarHtml();" /> -->
-            </div>
+           </div>
 
         </div>
-    </div>
 </div>
 
 <script>
 
-    new Ext.form.DateField({
-        format     : 'Y-m-d',               //FORMATO
-        width      : 100,                   //ANCHO
+new Ext.form.DateField({
+        format     : "Y-m-d",
+        width      : 100,
         allowBlank : false,
         showToday  : false,
-        applyTo    : 'fecha_inicial',
-        editable   : false,                 //EDITABLE
-        value      : new Date(),             //VALOR POR DEFECTO
+        applyTo    : "fecha_inicial",
+        editable   : false,
+        // value      : "'.$fechaInicial.'"
+        // listeners  : { select: function() {   } }
     });
 
     new Ext.form.DateField({
-        format     : 'Y-m-d',               //FORMATO
-        width      : 100,                   //ANCHO
+        format     : "Y-m-d",
+        width      : 100,
         allowBlank : false,
         showToday  : false,
-        applyTo    : 'fecha_final',
-        editable   : false,                 //EDITABLE
-        value      : new Date(),             //VALOR POR DEFECTO
+        applyTo    : "fecha_final",
+        editable   : false,
+        // value      : new Date(),
+        // listeners  : { select: function() {   } }
     });
 
     if (typeof(localStorage.fecha_inicio_CRICA)!="undefined") {

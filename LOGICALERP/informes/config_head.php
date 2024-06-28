@@ -148,11 +148,11 @@
 													'activo' => 'true',
 													'url' => 'informes/tributario/certificado_ingresos_retenciones.php'),
 
-										2 => array('text' => 'Certificado Retencion ICA',
+										2 => array('text' => 'Certificado Retenciones',
 													'informe' => '',
 													'iconCls' => 'certificado_16',
 													'activo' => 'true',
-													'url' => 'informes/tributario/certificado_retencion_ica.php'),
+													'url' => 'informes/tributario/certificado_retenciones.php'),
 
 										3 => array('text' => 'Certificado Retencion en la Fuente',
 													'informe' => '',

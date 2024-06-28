@@ -133,7 +133,6 @@
 		$conceptos.='<tr>
 						<td style="'.$style.'">'.$arrayResul['concepto'].'</td>
 						<td style="'.$style.'text-align:right;">'.($arrayResul['dias_laborados']+$arrayResul['dias_adicionales']).'</td>
-						<td style="'.$style.'text-align:right;">'.number_format ($arrayResul['base'],$_SESSION['DECIMALESMONEDA']).'</td>
 						<td style="'.$style.'text-align:right;">'.$devengo.'</td>
 						<td style="'.$style.'text-align:right;">'.$deduccion.'</td>
 					</tr>';
@@ -207,7 +206,6 @@
 						<tr>
 							<td style="width:50%;">CONCEPTOS</td>
 							<td style="text-align:right;">DIAS</td>
-							<td style="text-align:right;">BASE</td>
 							<td style="text-align:right;">DEVENGO</td>
 							<td style="text-align:right;">DEDUCCION</td>
 						</tr>
@@ -215,7 +213,7 @@
 					<tbody>
 						'.$conceptos.'
 						<tr class="total" style="">
-							<td colspan="3">TOTALES</td>
+							<td colspan="2">TOTALES</td>
 							<td style="text-align:right;">'.number_format ($acumDevengo,$_SESSION['DECIMALESMONEDA']).'</td>
 							<td style="text-align:right;">'.number_format ($acumDeduccion,$_SESSION['DECIMALESMONEDA']).'</td>
 						</tr>

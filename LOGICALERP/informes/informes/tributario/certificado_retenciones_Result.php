@@ -5,7 +5,7 @@
     include_once('../../../../configuracion/define_variables.php');
 
     $id_empresa = $_SESSION['EMPRESA'];
-    $object = new CRICA($fecha_inicio,$fecha_final,$id_tercero,$id_empresa,$mysql,$IMPRIME_PDF);
+    $object = new CRICA($fecha_inicio,$fecha_final,$id_tercero,$tipo_retencion,$id_empresa,$mysql,$IMPRIME_PDF);
     $object->createCert();
 
 
@@ -17,6 +17,7 @@
         private $mysql            = '';
         private $fecha_inicio     = '';
         private $fecha_final      = '';
+        private $tipo_retencion      = '';
         private $id_empresa       = '';
         private $id_tercero       = '';
         private $arrayInfoEmpresa = '';
@@ -33,14 +34,16 @@
         * @param int id de la empresa
         * @param obj objeto de conexion mysql
         */
-        function __construct($fecha_inicio,$fecha_final,$id_tercero,$id_empresa,$mysql,$IMPRIME_PDF)
+        function __construct($fecha_inicio,$fecha_final,$id_tercero,$tipo_retencion,$id_empresa,$mysql,$IMPRIME_PDF)
         {
-            $this->fecha_inicio = $fecha_inicio;
-            $this->fecha_final  = $fecha_final;
-            $this->id_empresa = $id_empresa;
-            $this->id_tercero = $id_tercero;
-            $this->mysql      = $mysql;
-            $this->IMPRIME_PDF = $IMPRIME_PDF;
+            $this->fecha_inicio         = $fecha_inicio;
+            $this->fecha_final          = $fecha_final;
+            $this->id_empresa           = $id_empresa;
+            $this->id_tercero           = $id_tercero;
+            $this->tipo_retencion       = $tipo_retencion;
+            $this->mysql                = $mysql;
+            $this->IMPRIME_PDF          = $IMPRIME_PDF;
+            $this->nombre_certificado   = ($tipo_retencion=='ReteIva')? "IVA" :"INDUSTRIA Y COMERCIO ICA";
         }
 
         /**
@@ -76,7 +79,7 @@
         */
         public function getReteciones()
         {
-            $sql="SELECT id,retencion,valor,cuenta,ciudad,base FROM retenciones WHERE activo=1 AND id_empresa=$this->id_empresa AND modulo='compra' AND tipo_retencion='ReteIca' ";
+            $sql="SELECT id,retencion,valor,cuenta,ciudad,base FROM retenciones WHERE activo=1 AND id_empresa=$this->id_empresa AND modulo='compra' AND tipo_retencion='$this->tipo_retencion' ";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
                 $arrayTemp[$row['cuenta']]=array(
@@ -206,8 +209,8 @@
                                 <tr><td ><b>Direccion: </b>'.$this->arrayInfoEmpresa['direccion'].'</td></tr>
                                 <tr><td ><b>Ciudad: </b>'.$this->arrayInfoEmpresa['ciudad'].'</td></tr>
                                 <tr><td>&nbsp;</td></tr>
-                                <tr><td style="width:100%; font-weight:bold; font-size:14px; text-align:center;text-transform: uppercase;">Certificado de Retencion de Industria y Comercio ICA</td></tr>
-                                <tr style="font-size:12px;"><td>Desde '.$this->fecha_inicio.' hasta '.$this->fecha_final.'<br>Fecha de expedición '.date('Y-m-d').'</td></tr>
+                                <tr><td style="width:100%; font-weight:bold; font-size:14px; text-align:center;text-transform: uppercase;">Certificado de Retencion de '.$this->nombre_certificado.'</td></tr>
+                                <tr style="font-size:12px;"><td>Desde '.$this->fecha_inicio.' hasta '.$this->fecha_final.'<br>Fecha de expedicion '.date('Y-m-d').'</td></tr>
                             </table>
                         </div>
                         <div class="body">
@@ -242,7 +245,7 @@
 
                             <table class="tableTotal">
                                 <tr>
-                                    <td colspan="2"><i>Este documento no requiere para su validez firma autógrafa de acuerdo con el artículo 10 del Decreto 836 de 1991. recopilado en el articulo 1.6.1.12.12 del DUT 1625 d octubre de 2016, que regula el contenido del certificado de retenciones a titulo de renta.<i></td>
+                                    <td colspan="2"><i>Este documento no requiere para su validez firma autografa de acuerdo con el articulo 10 del Decreto 836 de 1991. recopilado en el articulo 1.6.1.12.12 del DUT 1625 d octubre de 2016, que regula el contenido del certificado de retenciones a titulo de renta.<i></td>
                                 </tr>
                             </table>
 
@@ -448,7 +451,7 @@
                     $t .= ' mil';
                  }
               }elseif ($num == 1) {
-                 $t .= ' ' . $matsub[$sub] . 'ón';
+                 $t .= ' ' . $matsub[$sub] . 'ï¿½n';
               }elseif ($num > 1){
                  $t .= ' ' . $matsub[$sub] . 'ones';
               }
