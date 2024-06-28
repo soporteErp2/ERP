@@ -28,7 +28,7 @@
     }
 
     // CONSULTAR LOS TERCEROS
-	$sql = "SELECT tipo_identificacion,numero_identificacion,dv,ciudad_identificacion,nombre,nombre_comercial,direccion,telefono1,telefono2,celular1,celular2,email,pais,departamento,ciudad,representante_legal,sector_empresarial,tercero_tributario,tipo_cliente,tipo_proveedor,exento_iva
+	$sql = "SELECT id,tipo_identificacion,numero_identificacion,dv,ciudad_identificacion,nombre,nombre_comercial,direccion,telefono1,telefono2,celular1,celular2,email,pais,departamento,ciudad,representante_legal,sector_empresarial,tercero_tributario,tipo_cliente,tipo_proveedor,exento_iva
 					FROM terceros WHERE activo = 1 AND id_empresa = ".$_SESSION['EMPRESA'];
 	$query = $mysql->query($sql,$mysql->link);
 	while($row = $mysql->fetch_array($query)){
