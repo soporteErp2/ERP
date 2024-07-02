@@ -63,7 +63,12 @@ class Login
             $company = $result->fetch_assoc();
             $sql = "SELECT id,nombre FROM empresas_sucursales WHERE id_empresa=$company[id] AND activo=1";
             $result = $this->session_mysqli->query($sql);
-            $branches = $result->fetch_assoc();
+            $branches = [];
+            while ($row = $result->fetch_assoc()) {
+                $branches[] = $row;
+            }
+
+            // $branches = $result->fetch_array();
             return $branches;
             // var_dump($branches);
         } else {

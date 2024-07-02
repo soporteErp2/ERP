@@ -33,12 +33,31 @@ async function load_company(){
     let n_documento = document.getElementById("n_documento").value
     let request = await fetch(`LOGICALERP/login/Controller.php?method=load_company&n_documento=${ n_documento }`);
     let response = await request.json();
-    
+    let select = document.getElementById('sucursal');
+    let options = response.map(option => `<option value="${option.id}">${option.nombre}</option>`).join('');
+    select.innerHTML = `<option>Sucursal...</option> ${options}`
+}
+
+async function login(){
+    let n_documento = document.getElementById("n_documento").value
+      , sucursal    = document.getElementById("sucursal").value
+      , usuario     = document.getElementById("usuario").value
+      , password    = document.getElementById("password").value
+
+    if(n_documento=='' ||
+        sucursal=='' ||
+        usuario=='' ||
+        password==''){
+            alert("todos los campos son obligatorios")
+            return;
+    }
 
 }
 
 //listeners
 document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("n_documento").focus();
+
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'F2') {
             show_hide();
@@ -55,6 +74,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('close_modal').addEventListener('click', function() {
         show_hide();
     });
+
+    document.getElementById('btn_submit').addEventListener('click', function() {
+        login();
+    });
+
+    
+    
 
     
 });

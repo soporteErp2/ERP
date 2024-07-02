@@ -21,6 +21,10 @@
                         },
                         'gray' : {
                             'light' : '#DADADA'
+                        },
+                        'orange' : {
+                            'dark' : '#FF6010',
+                            'light' : '#ffb088'
                         }
                     }
                 }
@@ -89,9 +93,9 @@
                                     class="border-neutral-pureGray ps-11 absolute bg-transparent w-full h-full border rounded-[12px] pe-3 text-[16px] text-body-30-regular focus:text-brand-blue600 focus:border-brand-blue400 outline-none"
                                     type="text" 
                                     name="nit" 
-                                    value=""
                                     placeholder="Nit / CODE"
                                     id="n_documento"
+                                    value="900542975"
                                 >
                             </div>
                         </div>
@@ -109,7 +113,7 @@
                                         <path fill-rule="evenodd" clip-rule="evenodd"  d="M4.33474 12.3347C4.78105 11.8884 5.50467 11.8884 5.95098 12.3347L20 26.3838L34.049 12.3347C34.4953 11.8884 35.219 11.8884 35.6653 12.3347C36.1116 12.781 36.1116 13.5047 35.6653 13.951L21.6187 27.9976C21.4121 28.2135 21.1643 28.386 20.8899 28.5048C20.609 28.6264 20.3061 28.6892 20 28.6892C19.6939 28.6892 19.391 28.6264 19.1101 28.5048C18.8357 28.386 18.5879 28.2135 18.3813 27.9976L4.33474 13.951C3.88842 13.5047 3.88842 12.781 4.33474 12.3347Z" fill="currentColor"></path>
                                     </svg>
                                 </button> -->
-                                <select class="absolute bg-transparent w-full h-full border border-neutral-pureGray  rounded-[12px] ps-10 pe-3 text-[16px] focus:text-brand-blue600 focus:border-brand-blue400 outline-none" name="hotel" disabled="">
+                                <select id="sucursal" class="absolute bg-transparent w-full h-full border border-neutral-pureGray  rounded-[12px] ps-10 pe-3 text-[16px] focus:text-brand-blue600 focus:border-brand-blue400 outline-none" name="hotel" >
                                     <option value="">Sucursal...</option>
                                 </select>
                             </div>
@@ -125,9 +129,9 @@
                                 <input
                                     class="border-neutral-pureGray ps-11 absolute bg-transparent w-full h-full border rounded-[12px] pe-3 text-[16px] text-body-30-regular focus:text-brand-blue600 focus:border-brand-blue400 outline-none"
                                     type="text" 
-                                    name="email" 
                                     value=""
                                     placeholder="Usuario"
+                                    id="usuario"
                                 >
                             </div>
                         </div>
@@ -147,9 +151,9 @@
                                 <input
                                     class="border-neutral-pureGray ps-11 absolute bg-transparent w-full h-full border rounded-[12px] pe-3 text-[16px] text-body-30-regular focus:text-brand-blue600 focus:border-brand-blue400 outline-none"
                                     type="password" 
-                                    name="password" 
                                     value=""
                                     placeholder="Contraseña"
+                                    id="password"
                                 >
                             </div>
                         </div>
@@ -161,12 +165,12 @@
                                 Stay Logged
                             </label>
                             <!-- <button class="max-w-[367px] px-[16px] py-2 h-[48px] text-subtitle-10 rounded-[12px] grid place-content-center bg-brand-orange600 transition-all text-white bg-neutral-lightGray pointer-events-none" type="submit"> -->
-                           <button class="p-2 rounded-lg flex items-center gap-5 place-content-center text-subtitle-10 bg-gray-light text-white text-xl">
+                           <div id="btn_submit" class="p-2 rounded-lg flex items-center gap-5 place-content-center text-subtitle-10 bg-orange-dark hover:bg-orange-light text-white text-xl">
                                 Continue 
                                 <svg width="1em" height="1em" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M36.3428 20C36.3428 20.3637 36.1983 20.7126 35.9411 20.9698L24.9697 31.9412C24.4341 32.4768 23.5657 32.4768 23.0302 31.9412C22.4946 31.4056 22.4946 30.5373 23.0302 30.0017L31.6604 21.3715L5.7142 21.3715C4.95678 21.3715 4.34277 20.7574 4.34277 20C4.34277 19.2426 4.95678 18.6286 5.7142 18.6286L31.6604 18.6286L23.0302 9.99834C22.4946 9.46276 22.4946 8.59442 23.0302 8.05885C23.5657 7.52327 24.4341 7.52327 24.9697 8.05885L35.9411 19.0303C36.1983 19.2875 36.3428 19.6363 36.3428 20Z" fill="currentColor"></path>
                                 </svg>
-                            </button>
+                            </div>
                         <!-- </button> -->
                     </form>
                 </div>
