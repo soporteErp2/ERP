@@ -76,10 +76,9 @@
             <div class="flex flex-col gap-8 py-16 px-20 md:px-[85px] xl:px-[85px] h-screen overflow-y-auto">
                 <img src="assets/img/plataforma_software.png" alt="logo" width="65" class="mb-3">
                 <h1 class="text-title-10 text-brand-blue600 text-blue-dark text-4xl font-semibold">Welcome</h1>
-                <p class="text-body-30-regular text-neutral-black leading-[17.5px] max-w-[367px]">Lorem ipsum dolor sit
-                    amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
+                <p class="text-body-30-regular text-neutral-black leading-[17.5px] max-w-[367px]">Ingrese todos los campos para iniciar sesion en el software contable</p>
                 <div>
-                    <form onsubmit="return false;" class="grid gap-5 max-w-[500px]">
+                    <form  class="grid gap-5 max-w-[500px]">
                         <div class="grid w-full">
                             <div class="h-[48px] relative">
                                 <label class="translate-y-3 text-body-30-regular absolute left-[45px] flex items-center text-neutral-mediumGray transition-all" for="nit">
@@ -165,12 +164,12 @@
                                 Stay Logged
                             </label>
                             <!-- <button class="max-w-[367px] px-[16px] py-2 h-[48px] text-subtitle-10 rounded-[12px] grid place-content-center bg-brand-orange600 transition-all text-white bg-neutral-lightGray pointer-events-none" type="submit"> -->
-                           <div id="btn_submit" class="p-2 rounded-lg flex items-center gap-5 place-content-center text-subtitle-10 bg-orange-dark hover:bg-orange-light text-white text-xl">
+                           <button id="btn_submit" class=" cursor-pointer p-2 rounded-lg flex items-center gap-5 place-content-center text-subtitle-10 bg-orange-dark hover:bg-orange-light text-white text-xl">
                                 Continue 
                                 <svg width="1em" height="1em" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M36.3428 20C36.3428 20.3637 36.1983 20.7126 35.9411 20.9698L24.9697 31.9412C24.4341 32.4768 23.5657 32.4768 23.0302 31.9412C22.4946 31.4056 22.4946 30.5373 23.0302 30.0017L31.6604 21.3715L5.7142 21.3715C4.95678 21.3715 4.34277 20.7574 4.34277 20C4.34277 19.2426 4.95678 18.6286 5.7142 18.6286L31.6604 18.6286L23.0302 9.99834C22.4946 9.46276 22.4946 8.59442 23.0302 8.05885C23.5657 7.52327 24.4341 7.52327 24.9697 8.05885L35.9411 19.0303C36.1983 19.2875 36.3428 19.6363 36.3428 20Z" fill="currentColor"></path>
                                 </svg>
-                            </div>
+                            </button>
                         <!-- </button> -->
                     </form>
                 </div>

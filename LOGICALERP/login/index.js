@@ -52,6 +52,18 @@ async function login(){
             return;
     }
 
+    let request = await fetch(`LOGICALERP/login/Controller.php?method=login&n_documento=${ n_documento }&sucursal=${sucursal}&usuario=${usuario}&password=${password}`);
+    let response = await request.json();
+
+    if (response.error) {
+        alert(response.error);
+        return;        
+    }
+
+    if (response.success) {
+        window.location = "app.php";
+    }
+    console.log(response)
 }
 
 //listeners
@@ -69,6 +81,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.key === 'Enter') {
             load_company();
         }
+    });
+
+    document.getElementById('n_documento').addEventListener('blur', function(event) {
+        load_company();
     });
 
     document.getElementById('close_modal').addEventListener('click', function() {
