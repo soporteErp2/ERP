@@ -3,6 +3,7 @@
     include_once("../../../configuracion/conectar.php");
     include_once("../../../configuracion/define_variables.php");
     include_once("../../../configuracion/mimetype.php");
+    include_once('../../../misc/excel/Classes/PHPExcel.php');
 
     /**
      * Handle file uploads via XMLHttpRequest
@@ -114,7 +115,7 @@
             return $random1.''.$random2;
         }
 
-        function handleUpload($uploadDirectory,$idSaldoInicial,$mysql){
+        function handleUpload($uploadDirectory,$idSaldoInicial){
             if (!is_writable($uploadDirectory)){ return array('error' => "Server error. El directorio no tiene permisos de escritura -".$uploadDirectory); }
             if (!$this->file){ return array('error' => 'No files were uploaded.'); }
 
@@ -143,15 +144,7 @@
                 include("load_excel.php");
                 unlink($uploadDirectory . $filename . '.' . $ext);
 
-
-                if (!empty($arrayError)) {
-                    $msjError =($debug=="documentos")? "El archivo de Excel contiene errores de validacion\nCorrijalos e intentelo de nuevo" : "Se genero un error en el sistema, si el problema continua comuniquese con el administrador de sistema" ;
-                    return array('error'=> $msjError, 'debug'=> $debug, 'detalle'=>$arrayError, 'idSaldoInicial'=>$idSaldoInicial);
-                }
-
-                return array('success'=>true, 'nombreArchivo'=>$filename, 'idSaldoInicial'=>$idSaldoInicial,'sql'=>$sql);
-
-                // return array('success'=>'true');
+                return array('success'=>'true');
             }
             else{ return array('error'=> 'No se guardo el Documento en el servidor'); }
         }
@@ -169,16 +162,19 @@
     if (!$pos && $_SERVER['HTTP_HOST'] != 'erp.plataforma.co' && $_SERVER['HTTP_HOST'] != 'logicalsoft-erp.com' && $_SERVER['HTTP_HOST'] != 'www.logicalsoft-erp.com') { $rutaServer = $_SERVER['DOCUMENT_ROOT'].'/LOGICALERP'; }
 
     $serv = $rutaServer."/";
-    $url  = $serv."ARCHIVOS_PROPIOS/empresa_$id_host/";
+    $url  = $serv.'ARCHIVOS_PROPIOS/documentos_contabilidad/';
     if(!file_exists($url)){ mkdir ($url); }
 
-    $url = $url.'archivos_temporales/';
+    $url  = $serv.'ARCHIVOS_PROPIOS/documentos_contabilidad/saldos_factura/';
+    if(!file_exists($url)){ mkdir ($url); }
+
+    $url = $url.'empresa_'.$id_host.'/';
     if(!file_exists($url)){ mkdir ($url); }
 
     $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-    $result   = $uploader->handleUpload($url,$idSaldoInicial,$mysql);
+    $result   = $uploader->handleUpload($url,$idSaldoInicial);
 
-    echo json_encode($result);
+    echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
 
 ?>
 

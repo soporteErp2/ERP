@@ -16,11 +16,11 @@
 	switch ($opc) {
 
 		case 'buscarCliente':
-			buscarCliente($id,$codCliente,$tipoDocumento,$id_empresa,$opcGrillaContable,$tablaPrincipal,$tablaRetenciones,$idTablaPrincipal,$inputId,$link);
+			buscarCliente($id,$codCliente,$tipoDocumento,$id_empresa,$opcGrilla,$tablaPrincipal,$tablaRetenciones,$idTablaPrincipal,$inputId,$link);
 			break;
 
 		case 'guardarTerceroComoNotaInterna':
-			guardarTerceroComoNotaInterna($opcGrillaContable,$id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$accion,$link);
+			guardarTerceroComoNotaInterna($opcGrilla,$id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$accion,$link);
 			break;
 
 		case 'cargaHeadInsertUnidades':
@@ -32,35 +32,35 @@
 			break;
 
 		case 'buscarCuenta':
-			buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$link);
+			buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrilla,$link);
 			break;
 
 		case 'deleteCuenta':
-			deleteCuenta($cont,$id,$idCuenta,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link);
+			deleteCuenta($cont,$id,$idCuenta,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$link);
 			break;
 
 		case 'retrocederCuenta':
-		 	retrocederCuenta($id,$idCuentaInsert,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link);
+		 	retrocederCuenta($id,$idCuentaInsert,$cont,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$link);
 			break;
 
 		case 'validaNota':
-			validaNota($id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_empresa,$id_sucursal,$opcGrillaContable,$link);
+			validaNota($id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_empresa,$id_sucursal,$id_tercero,$notaCruce,$link);
 			break;
 
 		case 'terminarGenerar':
-			terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$link);
+			terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$notaCruce,$link);
 			break;
 
 		case 'modificarDocumentoGenerado':
-			modificarDocumentoGenerado($idDocumento,$opcGrillaContable,$id_empresa,$id_sucursal,$id_bodega,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link);
+			modificarDocumentoGenerado($idDocumento,$opcGrilla,$id_empresa,$id_sucursal,$id_bodega,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link);
 			break;
 
 		case 'guardarCuenta':
-			guardarCuenta($id_empresa,$consecutivo,$id,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$idPuc,$cuenta,$debe,$haber,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link);
+			guardarCuenta($id_empresa,$consecutivo,$id,$cont,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$idPuc,$cuenta,$debe,$haber,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link);
 			break;
 
 		case 'actualizaCuenta':
-			actualizaCuenta($id_empresa,$id,$idInsertCuenta,$idPuc,$cuenta,$debe,$haber,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link);
+			actualizaCuenta($id_empresa,$id,$idInsertCuenta,$idPuc,$cuenta,$debe,$haber,$cont,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link);
 			break;
 
 		case 'guardarObservacion':
@@ -68,11 +68,11 @@
 			break;
 
 		case 'cancelarDocumento':
-			cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_sucursal,$id_empresa,$link);
+			cancelarDocumento($id,$opcGrilla,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_sucursal,$id_empresa,$link);
 			break;
 
 		case 'restaurarDocumento':
-			restaurarDocumento($idDocumento,$opcGrillaContable,$carpeta,$id_sucursal,$idBodega,$id_empresa,$tablaPrincipal,$link);
+			restaurarDocumento($idDocumento,$opcGrilla,$carpeta,$id_sucursal,$idBodega,$id_empresa,$tablaPrincipal,$link);
 			break;
 
 		case 'actualizarTipoNota':
@@ -88,47 +88,39 @@
 			break;
 
 		case 'ventana_buscar_documento_cruce':
-			ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$link);
+			ventana_buscar_documento_cruce($cont,$opcGrilla,$carpeta,$id_empresa,$id_sucursal,$link);
 			break;
 
 		case 'cargaConfiguracionCuenta':
-			cargaConfiguracionCuenta($id_nota,$idInsertCuenta,$idCuenta,$id_empresa,$opcGrillaContable,$cont,$link);
+			cargaConfiguracionCuenta($id_documento,$idInsertCuenta,$idCuenta,$id_empresa,$opcGrilla,$cont,$link);
 			break;
 
 		case 'actualizarNiif':
-			actualizarNiif($id_niif,$cuenta,$idInsertCuenta,$idCuenta,$opcGrillaContable,$cont,$id_empresa,$link);
+			actualizarNiif($id_niif,$cuenta,$idInsertCuenta,$idCuenta,$opcGrilla,$cont,$id_empresa,$link);
 			break;
 
 		case 'actualizarCcos':
-			actualizarCcos($idInsertCuenta,$idCuenta,$opcGrillaContable,$id_centro_costos,$codigo_centro_costos,$id_nota,$id_empresa,$link);
-			break;
-
-		case 'cambiaSyncNota':
-			cambiaSyncNota($tipo,$id,$opcGrillaContable,$id_empresa,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link);
+			actualizarCcos($idInsertCuenta,$idCuenta,$opcGrilla,$id_centro_costos,$codigo_centro_costos,$id_documento,$id_empresa,$link);
 			break;
 
 		case 'cargaHeadInsertUnidadesConTercero':
-			cargaHeadInsertUnidadesConTercero($formaConsulta,$cont,$opcGrillaContable);
+			cargaHeadInsertUnidadesConTercero($formaConsulta,$cont,$opcGrilla);
 			break;
 
 		case 'validarCuenta':
 			validarCuenta($cuenta,$id_empresa,$link);
 			break;
 
-		case 'eliminar_todas_cuentas':
-			eliminar_todas_cuentas($opcGrillaContable,$id_documento,$id_sucursal,$id_empresa,$link);
-			break;
-
 	}
 
 	//=========================== FUNCION PARA BUSCAR UN CLIENTE ===============================================================================//
-	function buscarCliente($id,$codCliente,$tipoDocumento,$id_empresa,$opcGrillaContable,$tablaPrincipal,$tablaRetenciones,$idTablaPrincipal,$inputId,$link){
+	function buscarCliente($id,$codCliente,$tipoDocumento,$id_empresa,$opcGrilla,$tablaPrincipal,$tablaRetenciones,$idTablaPrincipal,$inputId,$link){
 
-		if ($inputId=='nitCliente'.$opcGrillaContable) {
+		if ($inputId=='nitCliente'.$opcGrilla) {
 			$where   ='numero_identificacion="'.$codCliente.'" AND tipo_identificacion="'.$tipoDocumento.'"';
 			$mensaje = 'alert("'.$tipoDocumento.' de tercero no establecido");';
 		}
-		else if ($inputId=='codigoTercero'.$opcGrillaContable) {
+		else if ($inputId=='codigoTercero'.$opcGrilla) {
 			$where   = 'codigo= "'.$codCliente.'"';
 			$mensaje = 'alert("codigo de tercero no establecido");';
 		}
@@ -154,18 +146,18 @@
 
 			echo'<script>
 					'.$mensaje.'
-					document.getElementById("codigoTercero'.$opcGrillaContable.'").value = "'.$codigoTercero.'";
-					document.getElementById("tipoDocumento'.$opcGrillaContable.'").value = "'.$tipoNitTercero.'";
-					document.getElementById("nitCliente'.$opcGrillaContable.'").value    = "'.$nitTercero.'";
+					document.getElementById("codigoTercero'.$opcGrilla.'").value = "'.$codigoTercero.'";
+					document.getElementById("tipoDocumento'.$opcGrilla.'").value = "'.$tipoNitTercero.'";
+					document.getElementById("nitCliente'.$opcGrilla.'").value    = "'.$nitTercero.'";
 				</script>';
 			exit;
 		}
-		else if ($inputId=='nitCliente'.$opcGrillaContable) {
+		else if ($inputId=='nitCliente'.$opcGrilla) {
 			$camposInsert = "codigo_tercero = '$codigo ',
 							numero_identificacion_tercero = '$codCliente',
 							tipo_identificacion_tercero = '$tipoDocumento'";
 		}
-		else if ($inputId=='codigoTercero'.$opcGrillaContable) {
+		else if ($inputId=='codigoTercero'.$opcGrilla) {
 			$camposInsert = "codigo_tercero = '$codigo ',
 							numero_identificacion_tercero = '$nit',
 							tipo_identificacion_tercero = '$tipoNit'";
@@ -179,23 +171,23 @@
 		$queryUpdate = mysql_query($sqlUpdate,$link);
 
 		echo'<script>
-				document.getElementById("codigoTercero'.$opcGrillaContable.'").value = "'.$codigo.'";
-				document.getElementById("tipoDocumento'.$opcGrillaContable.'").value = "'.$tipoNit.'";
-				document.getElementById("nitCliente'.$opcGrillaContable.'").value    = "'.$nit.'";
-				document.getElementById("nombreCliente'.$opcGrillaContable.'").value = "'.$nombre.'";
+				document.getElementById("codigoTercero'.$opcGrilla.'").value = "'.$codigo.'";
+				document.getElementById("tipoDocumento'.$opcGrilla.'").value = "'.$tipoNit.'";
+				document.getElementById("nitCliente'.$opcGrilla.'").value    = "'.$nit.'";
+				document.getElementById("nombreCliente'.$opcGrilla.'").value = "'.$nombre.'";
 
-				id_cliente_'.$opcGrillaContable.'   = "'.$idTercero.'";
-				nitCliente'.$opcGrillaContable.'    = "'.$nit.'";
-				nombreCliente'.$opcGrillaContable.' = "'.$nombre.'";
+				id_cliente_'.$opcGrilla.'   = "'.$idTercero.'";
+				nitCliente'.$opcGrilla.'    = "'.$nit.'";
+				nombreCliente'.$opcGrilla.' = "'.$nombre.'";
 
-				// id_tipo_nota = document.getElementById("selectTipoNota").value;
-				// if(arrayTipoNota[id_tipo_nota] == "Si"){ document.getElementById("contenedorNotaContable").setAttribute("class","contenedorNotaContableCruce"); }
-				// else{ document.getElementById("contenedorNotaContable").setAttribute("class","contenedorNotaContable"); }
+				id_tipo_nota = document.getElementById("selectTipoNota").value;
+				if(arrayTipoNota[id_tipo_nota] == "Si"){ document.getElementById("contenedorNotaContable").setAttribute("class","contenedorNotaContableCruce"); }
+				else{ document.getElementById("contenedorNotaContable").setAttribute("class","contenedorNotaContable"); }
 			</script>';
 	}
 
 	//=========================== FUNCION PARA GUARDAR EL TERCERO COMO NOTA INTERNA =============================================================//
-	function guardarTerceroComoNotaInterna($opcGrillaContable,$id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$accion,$link){
+	function guardarTerceroComoNotaInterna($opcGrilla,$id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$accion,$link){
 
 		if ($accion=='agregar') {
 			$sqlUpdate = "UPDATE $tablaPrincipal
@@ -211,7 +203,7 @@
 			$nitCliente    = 'NI';
 			$nombreCliente = 'NOTA INTERNA';
 
-			$body= cargaHeadInsertUnidadesConTercero('return',1,$opcGrillaContable);
+			$body= cargaHeadInsertUnidadesConTercero('return',1,$opcGrilla);
 
 		}
 		else if ($accion=='eliminar'){
@@ -227,7 +219,7 @@
 			$nitCliente    = '';
 			$nombreCliente = '';
 
-			$body=cargaHeadInsertUnidades('return',1,$opcGrillaContable);
+			$body=cargaHeadInsertUnidades('return',1,$opcGrilla);
 		}
 		//ACTUALIZAMOS EL TERCERO DE LA NOTA
 		$queryUpdate = mysql_query($sqlUpdate,$link);
@@ -239,12 +231,12 @@
 		if($queryUpdate){
 			echo'<script>
 
-					id_cliente_'.$opcGrillaContable.'                                    = "";
-					document.getElementById("codigoTercero'.$opcGrillaContable.'").value = "";
-					document.getElementById("nitCliente'.$opcGrillaContable.'").value    = "'.$nitCliente.'";
-					document.getElementById("nombreCliente'.$opcGrillaContable.'").value = "'.$nombreCliente.'";
-					nitCliente'.$opcGrillaContable.'                                     = "'.$nitCliente.'";
-					nombreCliente'.$opcGrillaContable.'                                  = "'.$nombreCliente.'";
+					id_cliente_'.$opcGrilla.'                                    = "";
+					document.getElementById("codigoTercero'.$opcGrilla.'").value = "";
+					document.getElementById("nitCliente'.$opcGrilla.'").value    = "'.$nitCliente.'";
+					document.getElementById("nombreCliente'.$opcGrilla.'").value = "'.$nombreCliente.'";
+					nitCliente'.$opcGrilla.'                                     = "'.$nitCliente.'";
+					nombreCliente'.$opcGrilla.'                                  = "'.$nombreCliente.'";
 
 				</script>'.$body;
 		}
@@ -252,11 +244,11 @@
 	}
 
 	//========================== CARGAR LA CABECERA DE LA GRILLA DE LOS ARTICULOS ==============================================================//
-	function cargaHeadInsertUnidades($formaConsulta,$cont,$opcGrillaContable){
+	function cargaHeadInsertUnidades($formaConsulta,$cont,$opcGrilla){
 		$head ='<div class="contenedorGrilla">
 					<div class="titleGrilla"><b>ARTICULOS FACTURA DE COMPRA</b></div>
 					<div class="contenedorHeadArticulos">
-						<div class="headArticulos" id="head'.$opcGrillaContable.'">
+						<div class="headArticulos" id="head'.$opcGrilla.'">
 							<div class="labelNotaGeneral" style="width:40px !important;"></div>
 							<div class="labelNotaGeneral" style="width:95px;">Cuenta</div>
 							<div class="labelNotaGeneral" style="width:50%">Descripcion</div>
@@ -265,78 +257,77 @@
 							<div style="float:right; min-width:80px;"></div>
 						</div>
 					</div>
-					<div class="DivArticulos" id="DivArticulos'.$opcGrillaContable.'" onscroll="resizeHeadMyGrilla(this,\'head'.$opcGrillaContable.'\')">
-						<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
-							'.cargaDivsInsertUnidades('return',$cont,$opcGrillaContable).'
+					<div class="DivArticulos" id="DivArticulos'.$opcGrilla.'" onscroll="resizeHeadMyGrilla(this,\'head'.$opcGrilla.'\')">
+						<div class="bodyDivArticulos'.$opcGrilla.'" id="bodyDivArticulos'.$opcGrilla.'_'.$cont.'">
+							'.cargaDivsInsertUnidades('return',$cont,$opcGrilla).'
 						</div>
 					</div>
 				</div>
 
-				<div class="contenedor_totales" id="contenedor_totales_'.$opcGrillaContable.'" >
+				<div class="contenedor_totales" id="contenedor_totales_'.$opcGrilla.'" >
 					<div class="contenedorObservacionGeneral">
-						<div style="padding:2px 0 0 3px;" id="labelObservacion'.$opcGrillaContable.'"><b>OBSERVACIONES</b></div>
-						<textarea id="observacion'.$opcGrillaContable.'"  onKeydown="inputObservacion'.$opcGrillaContable.'(event,this)"></textarea>
+						<div style="padding:2px 0 0 3px;"><b>OBSERVACIONES</b></div>
+						<textarea id="observacion'.$opcGrilla.'"  onKeydown="inputObservacion'.$opcGrilla.'(event,this)"></textarea>
 					</div>
 					<div class="contenedorDetalleTotales">
 						<div class="renglon">
 							<div class="label" style="width:170px !important; padding-left:5px;">Debito</div>
 							<div class="label" style="width:8px;">$</div>
-							<div class="labelTotal" id="debitoAcumulado'.$opcGrillaContable.'">0</div>
+							<div class="labelTotal" id="debitoAcumulado'.$opcGrilla.'">0</div>
 						</div>
 						<div class="renglon">
 							<div class="label" style="width:170px !important; padding-left:5px;">Credito</div>
 							<div class="label" style="width:8px;">$</div>
-							<div class="labelTotal" id="creditoAcumulado'.$opcGrillaContable.'">0</div>
+							<div class="labelTotal" id="creditoAcumulado'.$opcGrilla.'">0</div>
 						</div>
 
 						<div class="renglon renglonTotal" >
 							<div class="label" style="width:170px !important; padding-left:5px; text-align:center;">TOTAL (DEBITO - CREDITO)</div>
 							<div class="label" style="width:8px;">$</div>
-							<div class="labelTotal"  id="totalAcumulado'.$opcGrillaContable.'">0</div>
+							<div class="labelTotal"  id="totalAcumulado'.$opcGrilla.'">0</div>
 						</div>
 					</div>
 				</div>
 
 				<script>
 					//mostramos los valores de las variables de los calculos del total de la factura
-					document.getElementById("debitoAcumulado'.$opcGrillaContable.'").innerHTML  = parseFloat(debitoAcumulado'.$opcGrillaContable.').toFixed(2);
-					document.getElementById("creditoAcumulado'.$opcGrillaContable.'").innerHTML = parseFloat(creditoAcumulado'.$opcGrillaContable.').toFixed(2);
-					document.getElementById("totalAcumulado'.$opcGrillaContable.'").innerHTML   = parseFloat(total'.$opcGrillaContable.').toFixed(2);
+					document.getElementById("debitoAcumulado'.$opcGrilla.'").innerHTML  = parseFloat(debitoAcumulado'.$opcGrilla.').toFixed(2);
+					document.getElementById("creditoAcumulado'.$opcGrilla.'").innerHTML = parseFloat(creditoAcumulado'.$opcGrilla.').toFixed(2);
+					document.getElementById("totalAcumulado'.$opcGrilla.'").innerHTML   = parseFloat(total'.$opcGrilla.').toFixed(2);
 				</script>';
 		echo $head;
 	}
-
 	//========================== CARGAR LA GRILLA CON LOS ARTICULOS ================================//
-	function cargaDivsInsertUnidades($formaConsulta,$cont,$opcGrillaContable){
+	function cargaDivsInsertUnidades($formaConsulta,$cont,$opcGrilla){
 		$body ='<div class="campo" style="width:40px !important; overflow:hidden;">
 					<div style="float:left; margin:3px 0 0 2px;">'.$cont.'</div>
-					<div style="float:left; width:18px; overflow:hidden;" id="renderArticulo'.$opcGrillaContable.'_'.$cont.'"></div>
+					<div style="float:left; width:18px; overflow:hidden;" id="renderArticulo'.$opcGrilla.'_'.$cont.'"></div>
 				</div>
 
 				<div class="campoNotaGeneral" style="width:95px;">
-					<input type="text" id="cuenta'.$opcGrillaContable.'_'.$cont.'" onKeyup="buscarCuenta'.$opcGrillaContable.'(event,this);" />
+					<input type="text" id="cuenta'.$opcGrilla.'_'.$cont.'" onKeyup="buscarCuenta'.$opcGrilla.'(event,this);" />
 				</div>
 
-				<div class="campoNotaGeneral" style="width:50%;" ><input type="text" id="descripcion'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" readonly/></div>
-				<div onclick="ventanaBuscarCuenta'.$opcGrillaContable.'('.$cont.');" title="Buscar Cuenta" class="iconBuscarArticulo">
+				<div class="campoNotaGeneral" style="width:50%;" ><input type="text" id="descripcion'.$opcGrilla.'_'.$cont.'" style="text-align:left;" readonly/></div>
+				<div onclick="ventanaBuscarCuenta'.$opcGrilla.'('.$cont.');" title="Buscar Cuenta" class="iconBuscarArticulo">
 					<img src="img/buscar20.png"/>
 				</div>
 
-				<div class="campoNotaGeneral" ><input type="text" id="debito'.$opcGrillaContable.'_'.$cont.'"  onKeyup="validarNumberCuenta'.$opcGrillaContable.'(event,this,\'double\',\''.$cont.'\');" style="text-align:left;" /></div>
-				<div class="campoNotaGeneral" ><input type="text" id="credito'.$opcGrillaContable.'_'.$cont.'" onKeyup="guardarAuto'.$opcGrillaContable.'(event,this,'.$cont.');"/></div>
+				<div class="campoNotaGeneral" ><input type="text" id="debito'.$opcGrilla.'_'.$cont.'"  onKeyup="validarNumberCuenta'.$opcGrilla.'(event,this,\'double\',\''.$cont.'\');" style="text-align:left;" /></div>
+				<div class="campoNotaGeneral" ><input type="text" id="credito'.$opcGrilla.'_'.$cont.'" onKeyup="guardarAuto'.$opcGrilla.'(event,this,'.$cont.');"/></div>
 
 				<div style="float:right; min-width:80px;">
-					<div onclick="guardarNewCuenta'.$opcGrillaContable.'('.$cont.')" id="divImageSave'.$opcGrillaContable.'_'.$cont.'" title="Guardar Cuenta" style="width:20px; float:left; margin-top:3px;cursor:pointer;"><img src="img/save_true.png" id="imgSaveArticulo'.$opcGrillaContable.'_'.$cont.'"/></div>
-					<div onclick="retrocederCuenta'.$opcGrillaContable.'('.$cont.')" id="divImageDeshacer'.$opcGrillaContable.'_'.$cont.'" title="Deshacer Cambios" style="width:20px; float:left; margin-top:3px;cursor:pointer;display:none"><img src="img/deshacer.png" id="imgDeshacerArticulo'.$opcGrillaContable.'_'.$cont.'"></div>
-					<div onclick="deleteCuenta'.$opcGrillaContable.'('.$cont.')" id="deleteCuenta'.$opcGrillaContable.'_'.$cont.'" title="Eliminar Cuenta" style="width:20px; float:left; margin-top:3px; display:none;cursor:pointer;"><img src="img/delete.png" /></div>
+					<div onclick="guardarNewCuenta'.$opcGrilla.'('.$cont.')" id="divImageSave'.$opcGrilla.'_'.$cont.'" title="Guardar Cuenta" style="width:20px; float:left; margin-top:3px;cursor:pointer;"><img src="img/save_true.png" id="imgSaveArticulo'.$opcGrilla.'_'.$cont.'"/></div>
+					<div onclick="retrocederCuenta'.$opcGrilla.'('.$cont.')" id="divImageDeshacer'.$opcGrilla.'_'.$cont.'" title="Deshacer Cambios" style="width:20px; float:left; margin-top:3px;cursor:pointer;display:none"><img src="img/deshacer.png" id="imgDeshacerArticulo'.$opcGrilla.'_'.$cont.'"></div>
+					<div onclick="deleteCuenta'.$opcGrilla.'('.$cont.')" id="deleteCuenta'.$opcGrilla.'_'.$cont.'" title="Eliminar Cuenta" style="width:20px; float:left; margin-top:3px; display:none;cursor:pointer;"><img src="img/delete.png" /></div>
 				</div>
 
-				<input type="hidden" id="idCuenta'.$opcGrillaContable.'_'.$cont.'" value="0" />
-				<input type="hidden" id="idInsertCuenta'.$opcGrillaContable.'_'.$cont.'" value="0" />
-				<input type="hidden" id="idTercero'.$opcGrillaContable.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idCuenta'.$opcGrilla.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idInsertCuenta'.$opcGrilla.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idTercero'.$opcGrilla.'_'.$cont.'" value="0" />
 
 				<script>
-					document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont.'").focus();
+					document.getElementById("cuenta'.$opcGrilla.'_'.$cont.'").focus();
 				</script>';
 
 		if($formaConsulta == 'return'){ return $body; }
@@ -344,7 +335,7 @@
 	}
 
 	//========================== CARGAR LA CABECERA DE LA GRILLA DE LOS ARTICULOS ==============================================================//
-	function cargaHeadInsertUnidadesConTercero($formaConsulta,$cont,$opcGrillaContable){
+	function cargaHeadInsertUnidadesConTercero($formaConsulta,$cont,$opcGrilla){
 		$head ='<div class="contenedorGrilla">
 					<div class="titleGrilla"><b>ARTICULOS FACTURA DE COMPRA</b></div>
 					<div class="contenedorHeadArticulos">
@@ -357,99 +348,101 @@
 							<div class="labelNotaGeneral opcionalCruce" >N.Doc.Cruce</div>
 							<div class="labelNotaGeneral" >Debito</div>
 							<div class="labelNotaGeneral" >Credito</div>
-							<div style="float:right; min-width:80px;"><img src="img/delete_all.png" style="cursor:pointer;" title="Eliminar Registros" onclick="dir_eliminar_cuentas()" id="button-delete-acounts"></div>
+							<div style="float:right; min-width:80px;"></div>
 						</div>
 					</div>
-					<div class="DivArticulos" id="DivArticulos'.$opcGrillaContable.'">
-
+					<div class="DivArticulos" id="DivArticulos'.$opcGrilla.'">
+						<div class="bodyDivArticulos'.$opcGrilla.'" id="bodyDivArticulos'.$opcGrilla.'_'.$cont.'">
+							'.cargaDivsInsertUnidadesConTercero('return',$cont,$opcGrilla).'
+						</div>
 					</div>
 				</div>
 
-				<div class="contenedor_totales" id="contenedor_totales_'.$opcGrillaContable.'" >
+				<div class="contenedor_totales" id="contenedor_totales_'.$opcGrilla.'" >
 					<div class="contenedorObservacionGeneral">
-						<div style="padding:2px 0 0 3px;" id="labelObservacion'.$opcGrillaContable.'"><b>OBSERVACIONES</b></div>
-						<textarea id="observacion'.$opcGrillaContable.'"  onKeydown="inputObservacion'.$opcGrillaContable.'(event,this)"></textarea>
+						<div style="padding:2px 0 0 3px;"><b>OBSERVACIONES</b></div>
+						<textarea id="observacion'.$opcGrilla.'"  onKeydown="inputObservacion'.$opcGrilla.'(event,this)"></textarea>
 					</div>
 					<div class="contenedorDetalleTotales">
 						<div class="renglon">
 							<div class="label" style="width:170px !important; padding-left:5px;">Debito</div>
 							<div class="labelSimbolo" >$</div>
-							<div class="labelTotal" id="debitoAcumulado'.$opcGrillaContable.'">0</div>
+							<div class="labelTotal" id="debitoAcumulado'.$opcGrilla.'">0</div>
 						</div>
 						<div class="renglon">
 							<div class="label" style="width:170px !important; padding-left:5px;">Credito</div>
 							<div class="labelSimbolo">$</div>
-							<div class="labelTotal" id="creditoAcumulado'.$opcGrillaContable.'">0</div>
+							<div class="labelTotal" id="creditoAcumulado'.$opcGrilla.'">0</div>
 						</div>
 
 						<div class="renglon renglonTotal" >
 							<div class="label" style="width:170px !important; padding-left:5px; text-align:center;">TOTAL (DEBITO - CREDITO)</div>
 							<div class="labelSimbolo">$</div>
-							<div class="labelTotal"  id="totalAcumulado'.$opcGrillaContable.'">0</div>
+							<div class="labelTotal"  id="totalAcumulado'.$opcGrilla.'">0</div>
 						</div>
 					</div>
 				</div>
 
 				<script>
 					//mostramos los valores de las variables de los calculos del total de la factura
-					document.getElementById("debitoAcumulado'.$opcGrillaContable.'").innerHTML  = parseFloat(debitoAcumulado'.$opcGrillaContable.').toFixed(2);
-					document.getElementById("creditoAcumulado'.$opcGrillaContable.'").innerHTML = parseFloat(creditoAcumulado'.$opcGrillaContable.').toFixed(2);
-					document.getElementById("totalAcumulado'.$opcGrillaContable.'").innerHTML   = parseFloat(total'.$opcGrillaContable.').toFixed(2);
+					document.getElementById("debitoAcumulado'.$opcGrilla.'").innerHTML  = parseFloat(debitoAcumulado'.$opcGrilla.').toFixed(2);
+					document.getElementById("creditoAcumulado'.$opcGrilla.'").innerHTML = parseFloat(creditoAcumulado'.$opcGrilla.').toFixed(2);
+					document.getElementById("totalAcumulado'.$opcGrilla.'").innerHTML   = parseFloat(total'.$opcGrilla.').toFixed(2);
 				</script>';
 		echo $head;
 	}
 
 	//========================== CARGAR LA GRILLA CON LOS ARTICULOS ============================================================================//
-	function cargaDivsInsertUnidadesConTercero($formaConsulta,$cont,$opcGrillaContable){
+	function cargaDivsInsertUnidadesConTercero($formaConsulta,$cont,$opcGrilla){
 		$body ='<div class="campo" style="width:40px !important; overflow:hidden;">
 					<div style="float:left; margin:3px 0 0 2px;">'.$cont.'</div>
-					<div style="float:left; width:18px; overflow:hidden;" id="renderArticulo'.$opcGrillaContable.'_'.$cont.'"></div>
+					<div style="float:left; width:18px; overflow:hidden;" id="renderArticulo'.$opcGrilla.'_'.$cont.'"></div>
 				</div>
 
 				<div class="campoNotaGeneral" style="width:95px;">
-					<input type="text" id="cuenta'.$opcGrillaContable.'_'.$cont.'" onKeyup="buscarCuenta'.$opcGrillaContable.'(event,this);" />
+					<input type="text" id="cuenta'.$opcGrilla.'_'.$cont.'" onKeyup="buscarCuenta'.$opcGrilla.'(event,this);" />
 				</div>
 
-				<div class="campoNotaGeneral campoDescripcion"><input type="text" id="descripcion'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" readonly/></div>
-				<div onclick="ventanaBuscarCuenta'.$opcGrillaContable.'('.$cont.');" title="Buscar Cuenta" class="iconBuscarArticulo">
+				<div class="campoNotaGeneral campoDescripcion"><input type="text" id="descripcion'.$opcGrilla.'_'.$cont.'" style="text-align:left;" readonly/></div>
+				<div onclick="ventanaBuscarCuenta'.$opcGrilla.'('.$cont.');" title="Buscar Cuenta" class="iconBuscarArticulo">
 					<img src="img/buscar20.png" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;"/>
 				</div>
 
-				<div class="campoNotaGeneral campoDescripcion"><input type="text" id="tercero'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" readonly/></div>
+				<div class="campoNotaGeneral campoDescripcion"><input type="text" id="tercero'.$opcGrilla.'_'.$cont.'" style="text-align:left;" readonly/></div>
 				<div class="iconBuscarArticulo" >
-					<img src="img/buscar20.png" id="imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;" onclick="buscarVentanaTercero'.$opcGrillaContable.'('.$cont.')" title="Buscar Tercero" />
+					<img src="img/buscar20.png" id="imgBuscarTercero'.$opcGrilla.'_'.$cont.'" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;" onclick="buscarVentanaTercero'.$opcGrilla.'('.$cont.')" title="Buscar Tercero" />
 				</div>
 
 				<div class="campoNotaGeneral opcionalCruce">
-				 	<input type="text" id="documentoCruce'.$opcGrillaContable.'_'.$cont.'" readonly style="text-align:left;" >
+				 	<input type="text" id="documentoCruce'.$opcGrilla.'_'.$cont.'" readonly style="text-align:left;" >
 				 </div>
 				 <div class="iconBuscarArticulo opcionalCruce">
-					<img onclick="ventanaBuscarDocumentoCruce'.$opcGrillaContable.'('.$cont.');" id="imgBuscarDocumentoCruce_'.$cont.'" title="Buscar Documento Cruce" src="img/buscar20.png" />
+					<img onclick="ventanaBuscarDocumentoCruce'.$opcGrilla.'('.$cont.');" id="imgBuscarDocumentoCruce_'.$cont.'" title="Buscar Documento Cruce" src="img/buscar20.png" />
 				</div>
 
 				<div class="campoNotaGeneral opcionalCruce">
-					<input title="Prefijo" type="text" readonly id="prefijoDocumentoCruce'.$opcGrillaContable.'_'.$cont.'" class="inputPrefijoNotaContableCruce" onKeyup="validarNumberCuenta'.$opcGrillaContable.'(event,this,\'mayuscula\',\''.$cont.'\');"   />
+					<input title="Prefijo" type="text" readonly id="prefijoDocumentoCruce'.$opcGrilla.'_'.$cont.'" class="inputPrefijoNotaContableCruce" onKeyup="validarNumberCuenta'.$opcGrilla.'(event,this,\'mayuscula\',\''.$cont.'\');"   />
 					-
-					<input title="Numero" type="text" readonly id="numeroDocumentoCruce'.$opcGrillaContable.'_'.$cont.'" class="inputNumeroNotaContableCruce" onKeyup="validarNumberCuenta'.$opcGrillaContable.'(event,this,\'\',\''.$cont.'\');"  />
+					<input title="Numero" type="text" readonly id="numeroDocumentoCruce'.$opcGrilla.'_'.$cont.'" class="inputNumeroNotaContableCruce" onKeyup="validarNumberCuenta'.$opcGrilla.'(event,this,\'\',\''.$cont.'\');"  />
 				</div>
 
-				<div class="campoNotaGeneral" ><input type="text" id="debito'.$opcGrillaContable.'_'.$cont.'"  onKeyup="validarNumberCuenta'.$opcGrillaContable.'(event,this,\'double\',\''.$cont.'\');"  /></div>
-				<div class="campoNotaGeneral" ><input type="text" id="credito'.$opcGrillaContable.'_'.$cont.'" onKeyup="guardarAuto'.$opcGrillaContable.'(event,this,'.$cont.');"/></div>
+				<div class="campoNotaGeneral" ><input type="text" id="debito'.$opcGrilla.'_'.$cont.'"  onKeyup="validarNumberCuenta'.$opcGrilla.'(event,this,\'double\',\''.$cont.'\');"  /></div>
+				<div class="campoNotaGeneral" ><input type="text" id="credito'.$opcGrilla.'_'.$cont.'" onKeyup="guardarAuto'.$opcGrilla.'(event,this,'.$cont.');"/></div>
 
 				<div style="float:right; min-width:80px;">
-					<div onclick="guardarNewCuenta'.$opcGrillaContable.'('.$cont.')" id="divImageSave'.$opcGrillaContable.'_'.$cont.'" title="Guardar Cuenta" style="width:20px; float:left; margin-top:3px;cursor:pointer;"><img src="img/save_true.png" id="imgSaveArticulo'.$opcGrillaContable.'_'.$cont.'"/></div>
-					<div onclick="retrocederCuenta'.$opcGrillaContable.'('.$cont.')" id="divImageDeshacer'.$opcGrillaContable.'_'.$cont.'" title="Deshacer Cambios" style="width:20px; float:left; margin-top:3px;cursor:pointer;display:none"><img src="img/deshacer.png" id="imgDeshacerArticulo'.$opcGrillaContable.'_'.$cont.'"></div>
-					<div onclick="deleteCuenta'.$opcGrillaContable.'('.$cont.')" id="deleteCuenta'.$opcGrillaContable.'_'.$cont.'" title="Eliminar Cuenta" style="width:20px; float:left; margin-top:3px; display:none;cursor:pointer;"><img src="img/delete.png" /></div>
-					<div onclick="cambiaCuentaNiif'.$opcGrillaContable.'('.$cont.')" id="configurarCuenta'.$opcGrillaContable.'_'.$cont.'" title="Configurar Cuenta Niif" style="width:20px; float:left; margin-top:3px; display:none;cursor:pointer;"><img src="img/config16.png" /></div>
+					<div onclick="guardarNewCuenta'.$opcGrilla.'('.$cont.')" id="divImageSave'.$opcGrilla.'_'.$cont.'" title="Guardar Cuenta" style="width:20px; float:left; margin-top:3px;cursor:pointer;"><img src="img/save_true.png" id="imgSaveArticulo'.$opcGrilla.'_'.$cont.'"/></div>
+					<div onclick="retrocederCuenta'.$opcGrilla.'('.$cont.')" id="divImageDeshacer'.$opcGrilla.'_'.$cont.'" title="Deshacer Cambios" style="width:20px; float:left; margin-top:3px;cursor:pointer;display:none"><img src="img/deshacer.png" id="imgDeshacerArticulo'.$opcGrilla.'_'.$cont.'"></div>
+					<div onclick="deleteCuenta'.$opcGrilla.'('.$cont.')" id="deleteCuenta'.$opcGrilla.'_'.$cont.'" title="Eliminar Cuenta" style="width:20px; float:left; margin-top:3px; display:none;cursor:pointer;"><img src="img/delete.png" /></div>
+					<div onclick="cambiaCuentaNiif'.$opcGrilla.'('.$cont.')" id="configurarCuenta'.$opcGrilla.'_'.$cont.'" title="Configurar Cuenta Niif" style="width:20px; float:left; margin-top:3px; display:none;cursor:pointer;"><img src="img/config16.png" /></div>
 				</div>
 
-				<input type="hidden" id="idCuenta'.$opcGrillaContable.'_'.$cont.'" value="0" />
-				<input type="hidden" id="idInsertCuenta'.$opcGrillaContable.'_'.$cont.'" value="0" />
-				<input type="hidden" id="idTercero'.$opcGrillaContable.'_'.$cont.'" value="0" />
-				<input type="hidden" id="idDocumentoCruce'.$opcGrillaContable.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idCuenta'.$opcGrilla.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idInsertCuenta'.$opcGrilla.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idTercero'.$opcGrilla.'_'.$cont.'" value="0" />
+				<input type="hidden" id="idDocumentoCruce'.$opcGrilla.'_'.$cont.'" value="0" />
 
 				<script>
-					document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont.'").focus();
+					document.getElementById("cuenta'.$opcGrilla.'_'.$cont.'").focus();
 				</script>
 				';
 
@@ -458,7 +451,7 @@
 	}
 
 	//=========================== FUNCION PARA BUSCAR UN ARTICULO ===============================================================================//
-	function buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$link){
+	function buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrilla,$link){
 		/* VALIDACION:
 			- SI SE INSERTO UN ASIENTO CON UNA CUENTA CON MENOR CANTIDAD DE DIGITOS A LA QUE SE VA A BUSCAR,
 			ES DECIR, SI BUSCAMOS LA CUENTA 110505 (UN NIVEL INFERIOR) PERO YA SE INSERTARON DATOS EN LA 110505 EN ADELANTE
@@ -470,7 +463,7 @@
 		if (strlen ($cuenta)<5) {
 			echo '<script>
 					alert("Ingrese una cuenta de minimo 6 digitos!");
-					setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").focus(); },100);
+					setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").focus(); },100);
 				</script>';
 			exit;
 		}
@@ -498,10 +491,10 @@
 			$textAlert = ($contSucursal == 0)? "no se encuentra asignado en el PUC de la empresa": "no esta disponible en la presente sucursal!";
 			echo'<script>
 					alert("El Numero de cuenta '.$cuenta.' '.$textAlert.'");
-					setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").focus(); },100);
-					document.getElementById("idCuenta'.$opcGrillaContable.'_'.$contFila.'").value    = "0";
-					document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").value      = "";
-					document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").value = "";
+					setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").focus(); },100);
+					document.getElementById("idCuenta'.$opcGrilla.'_'.$contFila.'").value    = "0";
+					document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").value      = "";
+					document.getElementById("descripcion'.$opcGrilla.'_'.$contFila.'").value = "";
 				</script>';
 			exit;
 		}
@@ -514,9 +507,9 @@
 		if($contCuenta > 0){
 			echo'<script>
 					alert("Aviso.\nEl numero de cuenta '.$cuenta.' pertenece a una cuenta padre!");
-					setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").focus(); },100);
-					document.getElementById("idCuenta'.$opcGrillaContable.'_'.$contFila.'").value = "0";
-					document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").value   = "";
+					setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").focus(); },100);
+					document.getElementById("idCuenta'.$opcGrilla.'_'.$contFila.'").value = "0";
+					document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").value   = "";
 				</script>';
 				exit;
 		}
@@ -533,11 +526,11 @@
 			echo'<script>
 					arrayCuentaPago['.$contFila.']='.$cuenta.';
 
-					document.getElementById("idCuenta'.$opcGrillaContable.'_'.$contFila.'").value    = "'.$id_cuenta.'";
-					document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").value = "'.$descripcion_cuenta.'";
+					document.getElementById("idCuenta'.$opcGrilla.'_'.$contFila.'").value    = "'.$id_cuenta.'";
+					document.getElementById("descripcion'.$opcGrilla.'_'.$contFila.'").value = "'.$descripcion_cuenta.'";
 
-					document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").blur();
-					setTimeout(function(){ document.getElementById("debito'.$opcGrillaContable.'_'.$contFila.'").focus(); }, 100);
+					document.getElementById("descripcion'.$opcGrilla.'_'.$contFila.'").blur();
+					setTimeout(function(){ document.getElementById("debito'.$opcGrilla.'_'.$contFila.'").focus(); }, 100);
 			  	</script>';
 		}
 		//SI LA CUENTA NO EXISTE ENTONCES SE VA A VALIDAR ANTES DE CONTINUAR
@@ -551,7 +544,7 @@
 			if ($cont>=1) {
 				echo '<script>
 						alert("Error!\n'.$mensaje.'");
-						setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").focus(); },100);
+						setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").focus(); },100);
 					</script>';
 				exit;
 			}
@@ -565,20 +558,20 @@
 				echo'<script>
 						arrayCuentaPago['.$contFila.']='.$cuenta.';
 
-						document.getElementById("idCuenta'.$opcGrillaContable.'_'.$contFila.'").value    = "'.$id.'";
-						document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").value = "'.$descripcion.'";
+						document.getElementById("idCuenta'.$opcGrilla.'_'.$contFila.'").value    = "'.$id.'";
+						document.getElementById("descripcion'.$opcGrilla.'_'.$contFila.'").value = "'.$descripcion.'";
 
-						document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").blur();
-						setTimeout(function(){ document.getElementById("debito'.$opcGrillaContable.'_'.$contFila.'").focus();},100);
+						document.getElementById("descripcion'.$opcGrilla.'_'.$contFila.'").blur();
+						setTimeout(function(){ document.getElementById("debito'.$opcGrilla.'_'.$contFila.'").focus();},100);
 					</script>';
 			}
 			else{
 				echo'<script>
 						alert("El Numero de cuenta '.$cuenta.' no se encuentra asignado en el PUC de la empresa");
-						setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").focus(); },100);
-						document.getElementById("idCuenta'.$opcGrillaContable.'_'.$contFila.'").value    ="0";
-						document.getElementById("cuenta'.$opcGrillaContable.'_'.$contFila.'").value      ="";
-						document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").value ="";
+						setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").focus(); },100);
+						document.getElementById("idCuenta'.$opcGrilla.'_'.$contFila.'").value    ="0";
+						document.getElementById("cuenta'.$opcGrilla.'_'.$contFila.'").value      ="";
+						document.getElementById("descripcion'.$opcGrilla.'_'.$contFila.'").value ="";
 					</script>';
 			}
 		}
@@ -586,7 +579,7 @@
 
 
 	//=========================== FUNCION PARA DESHACER LOS CAMBIOS DE UN ARTICULO QUE SE MODIFICA ==============================================//
-	function retrocederCuenta($id,$idCuentaInsert,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link){
+	function retrocederCuenta($id,$idCuentaInsert,$cont,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$link){
 		$sql   = "SELECT id_puc,cuenta_puc,descripcion_puc,debe,haber,id_documento_cruce,numero_documento_cruce,tercero,tipo_documento_cruce,prefijo_documento_cruce FROM $tablaCuentasNota WHERE $idTablaPrincipal='$id' AND id='$idCuentaInsert' ";
 		$query = mysql_query($sql,$link);
 
@@ -605,46 +598,46 @@
 		echo'<script>';
 
 		echo 	($tercero != "")?
-					'document.getElementById("imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'").setAttribute("src","img/eliminar.png");
-        			document.getElementById("imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'").setAttribute("title","Eliminar Tercero");
-        			document.getElementById("imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'").setAttribute("onclick"," eliminaTercero'.$opcGrillaContable.'('.$cont.')");'
+					'document.getElementById("imgBuscarTercero'.$opcGrilla.'_'.$cont.'").setAttribute("src","img/eliminar.png");
+        			document.getElementById("imgBuscarTercero'.$opcGrilla.'_'.$cont.'").setAttribute("title","Eliminar Tercero");
+        			document.getElementById("imgBuscarTercero'.$opcGrilla.'_'.$cont.'").setAttribute("onclick"," eliminaTercero'.$opcGrilla.'('.$cont.')");'
 
-				:	'document.getElementById("imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'").setAttribute("src","img/buscar20.png");
-        			document.getElementById("imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'").setAttribute("title","Buscar Tercero");
-        			document.getElementById("imgBuscarTercero'.$opcGrillaContable.'_'.$cont.'").setAttribute("onclick","buscarVentanaTercero'.$opcGrillaContable.'('.$cont.')");';
+				:	'document.getElementById("imgBuscarTercero'.$opcGrilla.'_'.$cont.'").setAttribute("src","img/buscar20.png");
+        			document.getElementById("imgBuscarTercero'.$opcGrilla.'_'.$cont.'").setAttribute("title","Buscar Tercero");
+        			document.getElementById("imgBuscarTercero'.$opcGrilla.'_'.$cont.'").setAttribute("onclick","buscarVentanaTercero'.$opcGrilla.'('.$cont.')");';
 
 		echo 	($numero_documento_cruce != "")?
 					'document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("src","img/eliminar.png");
         			document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("title","Eliminar Documento Cruce");
-        			document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("onclick"," eliminaDocumentoCruce'.$opcGrillaContable.'('.$cont.')");'
+        			document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("onclick"," eliminaDocumentoCruce'.$opcGrilla.'('.$cont.')");'
 				:
 					'document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("src","img/buscar20.png");
         			document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("title","Buscar Documento Cruce");
-        			document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("onclick","ventanaBuscarDocumentoCruce'.$opcGrillaContable.'('.$cont.')");';
+        			document.getElementById("imgBuscarDocumentoCruce_'.$cont.'").setAttribute("onclick","ventanaBuscarDocumentoCruce'.$opcGrilla.'('.$cont.')");';
 
-		echo'	document.getElementById("idCuenta'.$opcGrillaContable.'_'.$cont.'").value                 = "'.$idCuenta.'";
-				document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont.'").value                   = "'.$cuenta.'";
-				document.getElementById("descripcion'.$opcGrillaContable.'_'.$cont.'").value              = "'.$descripcion.'";
-				document.getElementById("tercero'.$opcGrillaContable.'_'.$cont.'").value                  = "'.$tercero.'";
-				document.getElementById("documentoCruce'.$opcGrillaContable.'_'.$cont.'").value           = "'.$tipo_documento_cruce.'";
-				document.getElementById("prefijoDocumentoCruce'.$opcGrillaContable.'_'.$cont.'").value    = "'.$prefijo_documento_cruce.'";
-				document.getElementById("numeroDocumentoCruce'.$opcGrillaContable.'_'.$cont.'").value     = "'.$numero_documento_cruce.'";
-				document.getElementById("idDocumentoCruce'.$opcGrillaContable.'_'.$cont.'").value      	  = "'.$id_documento_cruce.'";
-				document.getElementById("debito'.$opcGrillaContable.'_'.$cont.'").value                   = "'.$debe.'";
-				document.getElementById("credito'.$opcGrillaContable.'_'.$cont.'").value                  = "'.$haber.'";
-				document.getElementById("divImageSave'.$opcGrillaContable.'_'.$cont.'").style.display     = "none";
-				document.getElementById("divImageDeshacer'.$opcGrillaContable.'_'.$cont.'").style.display = "none";
+		echo'	document.getElementById("idCuenta'.$opcGrilla.'_'.$cont.'").value                 = "'.$idCuenta.'";
+				document.getElementById("cuenta'.$opcGrilla.'_'.$cont.'").value                   = "'.$cuenta.'";
+				document.getElementById("descripcion'.$opcGrilla.'_'.$cont.'").value              = "'.$descripcion.'";
+				document.getElementById("tercero'.$opcGrilla.'_'.$cont.'").value                  = "'.$tercero.'";
+				document.getElementById("documentoCruce'.$opcGrilla.'_'.$cont.'").value           = "'.$tipo_documento_cruce.'";
+				document.getElementById("prefijoDocumentoCruce'.$opcGrilla.'_'.$cont.'").value    = "'.$prefijo_documento_cruce.'";
+				document.getElementById("numeroDocumentoCruce'.$opcGrilla.'_'.$cont.'").value     = "'.$numero_documento_cruce.'";
+				document.getElementById("idDocumentoCruce'.$opcGrilla.'_'.$cont.'").value      	  = "'.$id_documento_cruce.'";
+				document.getElementById("debito'.$opcGrilla.'_'.$cont.'").value                   = "'.$debe.'";
+				document.getElementById("credito'.$opcGrilla.'_'.$cont.'").value                  = "'.$haber.'";
+				document.getElementById("divImageSave'.$opcGrilla.'_'.$cont.'").style.display     = "none";
+				document.getElementById("divImageDeshacer'.$opcGrilla.'_'.$cont.'").style.display = "none";
 			</script>';
 	}
 
 	//=========================== FUNCION PARA ELIMINAR UN ARTICULO Y LA FILA EN QUE SE ENCUENTRA ===============================================//
-	function deleteCuenta($cont,$id,$idCuenta,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link){
+	function deleteCuenta($cont,$id,$idCuenta,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$link){
 		$sqlDelete   = "DELETE FROM $tablaCuentasNota WHERE $idTablaPrincipal='$id' AND id='$idCuenta'";
 		$queryDelete = mysql_query($sqlDelete,$link);
 		if(!$queryDelete){ echo '<script>alert("No se puede eliminar la cuenta, si el problema persiste favor comuniquese con el administrador del sistema");</script>'; }
 		else{
 			echo'<script>
-					(document.getElementById("bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'")).parentNode.removeChild(document.getElementById("bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'"));
+					(document.getElementById("bodyDivArticulos'.$opcGrilla.'_'.$cont.'")).parentNode.removeChild(document.getElementById("bodyDivArticulos'.$opcGrilla.'_'.$cont.'"));
 				</script>';
 		}
 	}
@@ -655,23 +648,20 @@
 
 	//=========================== FUNCION PARA TERMINAR 'GENERAR' LA NOTA ==========================================================================//
 	//CIERRA Y/O BLOQUEA, Y MUEVE LAS CUENTAS DE LOS DOCUMENTOS
-	function terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$link){
+	function terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$notaCruce,$link){
 
 	 	//MOVEMOS LAS CUENTAS
 		moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'agregar',$id_tercero,$link);
 
 		//MOVER LOS SALDOS DE LOS DOCUMENTOS RELACIONADOS
-		// moverDocumentosSaldos($id_empresa,$id,'eliminar',$link);
+		moverDocumentosSaldos($id_empresa,$id,'eliminar',$link);
 
 		$fecha = date("Y-m-d");
 		$sql   = "UPDATE $tablaPrincipal SET estado=1,fecha_finalizacion='$fecha' WHERE id='$id' AND activo=1 AND id_empresa=$id_empresa";
 		$query = mysql_query($sql,$link);
 		if (!$query){
-			echo '<script>
-					alert("Error!\nNo se pudo actualizar la nota, vuelva a intentarlo\nSi el problema persite comuniquese con el administrador del sistema");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-			// moverDocumentosSaldos($id_empresa,$id,'agregar',$link);
+			echo '<script>alert("Error!\nNo se pudo actualizar la nota, vuelva a intentarlo\nSi el problema persite comuniquese con el administrador del sistema");</script>';
+			moverDocumentosSaldos($id_empresa,$id,'agregar',$link);
 			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',$id_tercero,$link);
 		}
 		else{
@@ -681,43 +671,42 @@
 
 			$sqlUpdate = "UPDATE asientos_colgaap
 							SET consecutivo_documento='$consecutivo_documento',
-								numero_documento_cruce=IF(id_documento<>id_documento_cruce OR tipo_documento<>tipo_documento_cruce,numero_documento_cruce,'$consecutivo_documento')
+								numero_documento_cruce='$consecutivo_documento'
 						 	WHERE id_documento='$id'
-						 		AND tipo_documento='NCC'
+						 		AND tipo_documento='NCG'
 						 		AND id_empresa='$id_empresa'";
 			$queryUpdate=mysql_query($sqlUpdate,$link);
 
 			$sqlUpdate = "UPDATE asientos_niif
 							SET consecutivo_documento='$consecutivo_documento',
-								numero_documento_cruce=IF(id_documento<>id_documento_cruce OR tipo_documento<>tipo_documento_cruce,numero_documento_cruce,'$consecutivo_documento')
+								numero_documento_cruce='$consecutivo_documento'
 						 	WHERE id_documento='$id'
-						 		AND tipo_documento='NCC'
+						 		AND tipo_documento='NCG'
 						 		AND id_empresa='$id_empresa'";
 			$queryUpdate=mysql_query($sqlUpdate,$link);
 		}
 
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
-					VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Nota Contable Cierre',$id_sucursal,'$id_empresa','NCC','".$_SERVER['REMOTE_ADDR']."')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Nota Contable General',$id_sucursal,'$id_empresa')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 	   	echo'<script>
-   				Ext.get("contenedor_NotaCierre").load({
- 		            url     : "nota_cierre/bd/grillaContableBloqueada.php",
+   				Ext.get("contenedor_NotaGeneral").load({
+ 		            url     : "nota_general/bd/grillaContableBloqueada.php",
  		            scripts : true,
  		            nocache : true,
  		            params  :
  		            {
 						id_nota           : '.$id.',
-						opcGrillaContable : "NotaCierre",
+						opcGrilla : "NotaGeneral",
  		            }
  		        });
-				document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 			</script>';
 	}
 
 	//============================= FUNCION PARA MOVER LOS SALDOS (ABONOS) DE LOS DOCUMENTOS RELACIONADOS EN FC Y FV ================================//
-	function moverDocumentosSaldos($id_empresa,$id_nota,$accion,$link){
+	function moverDocumentosSaldos($id_empresa,$id_documento,$accion,$link){
 
 		if ($accion=='agregar') {
 			$sqlCompra="UPDATE compras_facturas AS CF,
@@ -727,7 +716,7 @@
 							FROM
 								nota_contable_general_cuentas AS NC
 							WHERE
-								NC.id_nota_general = $id_nota
+								NC.id_nota_general = $id_documento
 							AND NC.tipo_documento_cruce = 'FC'
 							AND NC.id_documento_cruce <> ''
 						) AS NC
@@ -744,7 +733,7 @@
 							FROM
 								nota_contable_general_cuentas AS NC
 							WHERE
-								NC.id_nota_general =  $id_nota
+								NC.id_nota_general =  $id_documento
 							AND NC.tipo_documento_cruce = 'FV'
 							AND NC.id_documento_cruce <> ''
 						) AS NC
@@ -764,7 +753,7 @@
 							FROM
 								nota_contable_general_cuentas AS NC
 							WHERE
-								NC.id_nota_general = $id_nota
+								NC.id_nota_general = $id_documento
 							AND NC.tipo_documento_cruce = 'FC'
 							AND NC.id_documento_cruce <> ''
 						) AS NC
@@ -781,7 +770,7 @@
 							FROM
 								nota_contable_general_cuentas AS NC
 							WHERE
-								NC.id_nota_general =  $id_nota
+								NC.id_nota_general =  $id_documento
 							AND NC.tipo_documento_cruce = 'FV'
 							AND NC.id_documento_cruce <> ''
 						) AS NC
@@ -804,179 +793,104 @@
 
 	//========================// VALIDA NOTA Y EJECUTA LA FUNCION TERMINAR //========================//
 	//***********************************************************************************************//
-	function validaNota($id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_empresa,$id_sucursal,$opcGrillaContable,$link){
-		// $fecha_inicio '01-01-'= split('[/.-]', $fecha)
+	function validaNota($id,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_empresa,$id_sucursal,$id_tercero,$notaCruce,$link){
 
-		$sqlNota   = "SELECT id_tercero,tercero,tipo_nota,fecha_nota FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa'";
+		// VALIDACION DE CCOS
+		$errorCcos = '';
+		$sqlCcos = "SELECT id, cuenta_puc
+					FROM $tablaCuentasNota
+					WHERE $idTablaPrincipal='$id'
+						AND id_empresa='$id_empresa'
+						AND (id_centro_costos='' OR id_centro_costos=0)
+						AND tiene_centro_costo='Si'";
+		$queryCcos = mysql_query($sqlCcos);
+		while ($rowCcos = mysql_fetch_assoc($queryCcos)) {
+			// $saldo = ($rowCcos['saldo']>0)? $rowCcos['saldo']: '('.$rowCcos['saldo'].')';
+			$errorCcos .= '\n- '.$rowCcos['cuenta_puc'].' ';
+		}
+
+		if($errorCcos != '') { echo '<script>alert("Aviso,\nLas siguientes cuentas deben tener centro de costo!\n'.$errorCcos.'")</script>'; exit; }
+
+		$sqlNota   = "SELECT tercero,tipo_nota,fecha_nota FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa'";
 		$queryNota = mysql_query($sqlNota,$link);
 
-		$id_tercero = mysql_result($queryNota,0,'id_tercero');
 		$tercero    = mysql_result($queryNota,0,'tercero');
 		$tipo_nota  = mysql_result($queryNota,0,'tipo_nota');
 		$fecha_nota = mysql_result($queryNota,0,'fecha_nota');
 
+		$mes_fecha_nota  = date("m",strtotime($fecha_nota));
+		$anio_fecha_nota = date("y",strtotime($fecha_nota));
+
+		if ($mes_fecha_nota=='12') {
+			$anio_fecha_nota++;
+			$mes_fecha_nota='01';
+		}
+		else{ $mes_fecha_nota++; }
+
 		//FECHA A BUSCAR LAS NOTAS GENERADAS PARA VALIDAR
-		$fecha_inicio_buscar = date("Y", strtotime($fecha_nota)).'-01-01';
-		$fecha_fin_buscar    = date("Y", strtotime($fecha_nota)).'-12-31';
+		$fecha_buscar=$anio_fecha_nota.'/'.$mes_fecha_nota.'/01';
 
-		// echo '<script>document.getElementById("bodyArticulosNotaCierre").innerHTML="'.$fecha_buscar.'";</script>';
+		if($tercero==''){ echo '<script>alert("Debe Seleccionar el tercero!");</script>'; exit; }
 
-		if($tercero==''){
-			echo '<script>
-					alert("Debe Seleccionar el tercero!");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-			exit;
+		//VALIDAMOS LAS CUENTAS DE LA NOTA PARA VERIFICAR QUE ESTEN BALANCEADAS Y QUE ESTEN BIEN REGISTRADAS
+		$sqlCuentasNota   = "SELECT cuenta_puc,descripcion_puc,debe,haber FROM $tablaCuentasNota WHERE activo=1 AND $idTablaPrincipal='$id'";
+		$queryCuentasNota = mysql_query($sqlCuentasNota,$link);
+
+		//VARIABLES PARA ACUMULAR LOS VALORES DEBITO Y CREDITO
+		$acumDebito  =0;
+		$acumCredito =0;
+		$diferencia  =0;
+		$contCuentas =0;
+
+		//RECORRER LAS NOTAS
+		while ($rowCuentas=mysql_fetch_array($queryCuentasNota)) {
+			//VERIFICAR SI SE INSERTO UNA CUENTA CON VALORES EN DEBITO Y CREDITO, YA QUE SOLO SE PUEDE EN UN SOLO CAMPO
+			if ($rowCuentas['debe']>0 && $rowCuentas['haber']>0) { echo '<script>alert("Error!\nLa cuenta '.$rowCuentas['cuenta_puc'].' -> '.$rowCuentas['descripcion_puc'].'\nTiene valores en debito y credito, y solo se permite en uno\nverifique la cuenta y vuelva a intentarlo ");</script>';	exit;}
+			//VERIFICAR SI LAS DOS FILAS DE DEBITO Y CREDITO ESTAN VACIAS
+			if ($rowCuentas['debe']==0 && $rowCuentas['haber']==0) {echo '<script>alert("Error!\nLa cuenta '.$rowCuentas['cuenta_puc'].' -> '.$rowCuentas['descripcion_puc'].'\nTiene valores en debito y credito en cero\nInserte un valor en uno y vuelva a intentarlo");</script>'; exit;}
+			//SI PASO LAS VALIDACIONES, ACUMULAMOS EL VALOR DEL DEBITO Y DEL CREDITO
+			$acumDebito  += $rowCuentas['debe'];
+			$acumCredito += $rowCuentas['haber'];
 		}
 
-		// CONSULTAR SI TIENE CUENTA DE CIERRE
-		$sql="SELECT COUNT(id) AS cont,id,cuenta,descripcion FROM puc WHERE activo=1 AND tipo='cuenta_cierre' AND id_empresa=$id_empresa";
-		$query=mysql_query($sql,$link);
+		//UNA VEZ QUE RECORRIMOS LAS CUENTAS Y SE VALIDO QUE ESTUVIERAN CORRECTAMENTE INSERTADAS, Y SE TIENE EL ACUMULADO DEL DEBITO Y DEL CREDITO, VERIFICAMOS QUE ESTE BALACEADA LA NOTA, ES DECIR QUE LA DIFERENCIA
+		//ENTRE EL DEBITO-CREDITO SEA IGUAL A CERO, SI NO ES IGUAL A CERO ENTONCES NO ESTA BALANCEADA LA NOTA Y NO SE PUEDE GENERAR
 
-		$cont                      = mysql_result($query,0,'cont');
-		$id_cuenta_cierre          = mysql_result($query,0,'id');
-		$cuenta_cierre             = mysql_result($query,0,'cuenta');
-		$descripcion_cuenta_cierre = mysql_result($query,0,'descripcion');
+		$diferencia=round($acumDebito,2) - round($acumCredito,2);
+		if ($diferencia!=0) {echo '<script>alert("Error!\nLa nota no esta balanceada! tiene una diferencia de: $ '.$diferencia.'\nVerifiquela y vuelva a intentarlo");</script>';	exit;}
 
-		if ($cont==0) {
-			echo '<script>
-					alert("No se ha configurado ninguna cuenta de cierre!\nConfigurela desde el panel de control -> puc -> click derecho sobre la cuenta a asignar y seleccione tipo, cuenta cierre");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-				exit;
-		}
-
-		// VALIDAR QUE NO EXISTAN MAS NOTAS DE CIERRE CREADAS PARA ESE PERIODO
-		$sql="SELECT COUNT(id) AS cont FROM nota_cierre WHERE activo=1 AND id_empresa=$id_empresa AND estado=1 AND fecha_nota>='$fecha_inicio_buscar' AND fecha_nota<='$fecha_fin_buscar' ";
-		$query=mysql_query($sql,$link);
-		$cont = mysql_result($query,0,'cont');
-
+		$sqlNotaGenerada   = "SELECT COUNT(id) AS cont FROM $tablaPrincipal WHERE fecha_nota>='$fecha_buscar' AND activo=1 AND estado=1 AND id_sucursal='$id_sucursal' AND id_empresa=".$_SESSION['EMPRESA'];
+		$queryNotaGenerada = mysql_query($sqlNotaGenerada,$link);
+		$contNotaGenerada  = mysql_result($queryNotaGenerada,0,'cont');
+		//SI CONT ES MAYOR A CERO, HAY NOTAS GENERADAS EN EL MES SIGUIENTE, ASI QUE SE ADVERTIRA AL USUARIO
 		if ($cont>0) {
 			echo '<script>
-					alert("No se puede generar la nota de cierre, existe '.$cont.' nota de cierre de ese periodo! ");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+					if (confirm("Aviso!\nExiten '.$cont.' notas creadas del mes siguiente a la fecha de la nota!\nSi continua no coincidara el consecutivo con el mes\nDesea continuar de todos modos?")) {
+						validarNotaGeneral("terminar");
+					}
 				</script>';
-				exit;
+			return;
+		}
+		else{
+			terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$notaCruce,$link);
 		}
 
-		// VALIDAR QUE LA NOTA DE CIERRE NO TENGA CUENTAS EN EL CUERPO
-		$sql="SELECT COUNT(id) AS cant_cuentas FROM $tablaCuentasNota WHERE activo=1 AND id_empresa=$id_empresa AND id_nota_general=$id";
-		$query=mysql_query($sql,$link);
-		$cant_cuentas = mysql_result($query,0,'cant_cuentas');
-
-		if ($cant_cuentas>0) {
-			echo '<script>
-					alert("Aviso!\nNo se puede generar la nota debido a que tiene cuentas almacenadas, eliminelas de forma manual e intentelo de nuevo");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-			exit;
-		}
-
-
-		// CARGAR EL CUERPO DE LA NOTA, TRAER LAS CUENTAS DEL BALANCE PARA SER CERRADAS 4, 5, 6, 7, 8, 9
-		echo$sql="SELECT
-					id_cuenta,
-					codigo_cuenta,
-					cuenta,
-					id_tercero,
-					nit_tercero,
-					tercero,
-					SUM(debe) AS debito,
-					SUM(haber) AS credito,
-					SUM(debe-haber) AS saldo
-				FROM
-					asientos_colgaap
-				WHERE
-					activo = 1
-				AND id_empresa = $id_empresa
-				AND fecha>='$fecha_inicio_buscar' AND fecha<='$fecha_fin_buscar'
-				AND (
-					codigo_cuenta LIKE '4%'
-					OR codigo_cuenta LIKE '5%'
-					OR codigo_cuenta LIKE '6%'
-					OR codigo_cuenta LIKE '7%'
-					OR codigo_cuenta LIKE '8%'
-					OR codigo_cuenta LIKE '9%'
-					)
-				GROUP BY
-					codigo_cuenta,
-					id_tercero
-				ORDER BY codigo_cuenta ASC";
-		$query=mysql_query($sql,$link);
-		$cont = 0;
-		while ($row=mysql_fetch_array($query)) {
-			if ($row['saldo']==0) { continue; }
-			$body.='<tr><td>'.$row['codigo_cuenta'].'</td><td>'.$row['cuenta'].'</td><td>0</td><td>'.$saldo.'</td><td>'.$row['tercero'].'</td></tr>';
-
-			$debito  = ($row['saldo']<0)? abs($row['saldo']) : 0;
-			$credito = ($row['saldo']>0)? $row['saldo'] : 0;
-
-			// $body.='<tr><td>'.$cuenta_cierre.'</td><td>'.$descripcion_cuenta_cierre.'</td><td>'.$saldo.'</td><td>0</td><td>'.$tercero.'</td></tr>';
-
-			// $body.='<tr><td>'.$acumCont.'</td><td>'.$row['codigo_cuenta'].'</td><td>'.$row['cuenta'].'</td><td>'.$debito.'</td><td>'.$credito.'</td><td>'.$row['tercero'].'</td></tr>';
-			// $acumCont++;
-			// $body.='<tr><td>'.$acumCont.'</td><td>'.$cuenta_cierre.'</td><td>'.$descripcion_cuenta_cierre.'</td><td>'.$credito.'</td><td>'.$debito.'</td><td>'.$row['tercero'].'</td></tr>';
-			$acumCont++;
-
-			$acumDebito  += $debito+$credito;
-			$acumCredito += $credito+$debito;
-
-			// CUENTA A CERRAR
-			$valueInsert.="($id,$row[id_cuenta],$row[id_tercero],$debito,$credito,$id_empresa),";
-			// CUENTA DE CIERRE
-			$valueInsert.="($id,$id_cuenta_cierre,$id_tercero,$credito,$debito,$id_empresa),";
-
-
-		}
-
-		// echo '<script>console.log("cont: '.$acumCont.'");</script>';
-
-		if (($acumDebito-$acumCredito)!=0) {
-			// echo '<script>alert("Cuentas descuadradas '.($acumDebito-$acumCredito).'");</script>';
-			echo '<script>console.log("Descuabre\ndebito: '.$acumDebito.' - credito: '.$acumCredito.' - diferencia: '.($acumDebito-$acumCredito).' ");</script>';
-		}
-
-		// echo '<script>
-		// 		document.getElementById("bodyArticulosNotaCierre").innerHTML="<table style=\'font-size:14px;font-family:monoscape;\' align=\'center\'><tr style=\'font-weight:bold;\'><td>Cuenta</td><td>N</td><td>Descripcion</td><td>Debito</td><td>Credito</td><td>Tercero</td></tr>'.$body.'</table>";
-		// 	</script>
-		// 	';
-
-
-		$valueInsert = substr($valueInsert, 0, -1);
-
-		$sql="INSERT INTO $tablaCuentasNota (id_nota_general,id_puc,id_tercero,debe,haber,id_empresa) VALUES $valueInsert ";
-		$query=mysql_query($sql,$link);
-
-		// echo '<script>
-		// 		document.getElementById("bodyArticulosNotaCierre").innerHTML="'.$sql.'";
-		// 	</script>
-		// 	';
-
-		if (!$query) {
-			$errormssg = mysql_error($link);
-			echo '<script>
-					alert("Error!\nNo se cargaron las cuentas a cerrar, intententelo de nuevo, si el problema continua comuniquese con el administrador del sistema");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-			exit;
-		}
-
-		terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$link);
 	}
 
 	//=========================== FUNCION MOVER LAS CUENTAS CUANDO SE VAN A GENERER UNA FACTURA O REMISON =============================================================//
-	// ESTA FUNCION MUEVE LAS CUENTAS DE LOS DOCUMENTO, SI LA VARIABLE ACCION = AGREGAR ENTONCES SE VA A CONTABILIZAR UN DOCUMENTO, SI ES = A ELIMINAR, ENTONCES SE VA A
-	// DESCONTABILIZAR UN DOCUMENTO.
+	//ESTA FUNCION MUEVE LAS CUENTAS DE LOS DOCUMENTO, SI LA VARIABLE ACCION = AGREGAR ENTONCES SE VA A CONTABILIZAR UN DOCUMENTO, SI ES = A ELIMINAR, ENTONCES SE VA A
+	//DESCONTABILIZAR UN DOCUMENTO.
 	function moverCuentasDocumento($idDocumento,$idEmpresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,$accion,$id_tercero,$link){
 		$decimalesMoneda = ($_SESSION['DECIMALESMONEDA'] >= 0)? $_SESSION['DECIMALESMONEDA']: 0;
 
 		if ($accion=='agregar') {
-			$sqlNotaGeneral   = "SELECT consecutivo,tercero,fecha_nota FROM nota_cierre WHERE activo=1 AND id='$idDocumento' AND id_empresa='$idEmpresa';";
+			$sqlNotaGeneral   = "SELECT consecutivo,tercero,fecha_nota,sinc_nota FROM nota_contable_general WHERE activo=1 AND id='$idDocumento' AND id_empresa='$idEmpresa'";
 			$queryNotaGeneral = mysql_query($sqlNotaGeneral,$link);
 
 			$consecutivoNota = mysql_result($queryNotaGeneral,0,'consecutivo');
 			$tercero         = mysql_result($queryNotaGeneral,0,'tercero');
 			$fechaNota       = mysql_result($queryNotaGeneral,0,'fecha_nota');
+			$sinc_nota       = mysql_result($queryNotaGeneral,0,'sinc_nota');
 
 			$sql   = "SELECT debe,haber,cuenta_puc,cuenta_niif,id_tercero,id_documento_cruce,tipo_documento_cruce,prefijo_documento_cruce,numero_documento_cruce
 						FROM $tablaCuentasNota WHERE $idTablaPrincipal='$idDocumento' AND activo=1";
@@ -991,7 +905,8 @@
 
 			$valueInsertCuentasColgaap = "";
 			$valueInsertCuentasNiif    = "";
-			while ($row=mysql_fetch_array($query)){
+			while ($row=mysql_fetch_assoc($query)){
+
 				if($row['debe'] == '') $row['debe'] = 0;
 				if($row['haber'] == '') $row['haber'] = 0;
 
@@ -1013,21 +928,23 @@
 				}
 
 				// VALIDAR EL DOCUMENTO CRUCE
-				$row['id_documento_cruce']   = ($row['id_documento_cruce'] > 0)? $row['id_documento_cruce']: $idDocumento;
-				$row['tipo_documento_cruce'] = ($row['tipo_documento_cruce']=='' )? 'NCC' : $row['tipo_documento_cruce'];
+				$row['id_documento_cruce'] = ($row['id_documento_cruce'] =='' || $row['id_documento_cruce'] ==0)? $idDocumento : $row['id_documento_cruce'] ;
+				$row['tipo_documento_cruce'] = ($row['tipo_documento_cruce']=='' )? 'NCG' : $row['tipo_documento_cruce'];
 
 				$id_tercero_nota = ($row['id_tercero']=='0' || $row['id_tercero']=='')? $id_tercero : $row['id_tercero'];
 				$documento_cruce = ($row['prefijo_documento_cruce'] != '')? $row['prefijo_documento_cruce'].' '.$row['numero_documento_cruce']: $row['numero_documento_cruce'];
-				$documento_cruce = ($row['id_documento_cruce'] > 0)? $documento_cruce: $consecutivoNota;
+				$documento_cruce=($documento_cruce=='' || $documento_cruce==0)? $consecutivoNota : $documento_cruce ;
 				$valueInsertCuentasColgaap .= "('$idDocumento',
 												'$consecutivoNota',
-												'NCC',
-												'Nota Contable de Cierre',
+												'NCG',
+												'Nota Contable General',
 												'".$row['debe']."',
 												'".$row['haber']."',
 												'".$row['cuenta_puc']."',
 												'$id_sucursal',
 												'$id_tercero_nota',
+												'".$_SESSION['NITEMPRESA']."',
+												'NOTA INTERNA',
 												'$idEmpresa',
 												'$fechaNota',
 												'".$row['id_documento_cruce']."',
@@ -1037,13 +954,15 @@
 
 				$valueInsertCuentasNiif .= "('$idDocumento',
 											'$consecutivoNota',
-											'NCC',
-											'Nota Contable de Cierre',
+											'NCG',
+											'Nota Contable General',
 											'".$row['debe']."',
 											'".$row['haber']."',
 											'".$row['cuenta_niif']."',
 											'$id_sucursal',
 											'$id_tercero_nota',
+											'".$_SESSION['NITEMPRESA']."',
+											'NOTA INTERNA',
 											'$idEmpresa',
 											'$fechaNota',
 											'".$row['id_documento_cruce']."',
@@ -1059,51 +978,15 @@
 			$saldoCreditoNiif = ROUND($saldoCreditoNiif,$decimalesMoneda);
 
 			//VALIDACIONES CONTABILIDAD COLGAAP
-			if($cuentaVaciaColgaap > 0){
-				echo '<script>
-						alert("Aviso!\nExisten '.$cuentaVaciaColgaap.' registros sin cuentas en la contabilidad colgaap!");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
-			}
-			else if($saldoDebitoColgaap == 0 || $saldoCreditoColgaap == 0){
-				echo '<script>
-						alert("Aviso!\nLos saldos deben ser mayores a cero en la contabilidad Colgaap!\n'.$saldoDebitoColgaap.' - '.$saldoCreditoColgaap .'");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
-			}
-			else if($saldoDebitoColgaap != $saldoCreditoColgaap){
-				echo '<script>
-						alert("Aviso!\nLos saldos Debitos ('.$saldoDebitoColgaap.') y Creditos ('.$saldoCreditoColgaap.') en la contabilidad colgaap son diferentes!");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
-			}
+			if($cuentaVaciaColgaap > 0){ echo '<script>alert("Aviso!\nExisten '.$cuentaVaciaColgaap.' registros sin cuentas en la contabilidad colgaap!");</script>'; exit; }
+			else if($saldoDebitoColgaap == 0 || $saldoCreditoColgaap == 0){ echo '<script>alert("Aviso!\nLos saldos deben ser mayores a cero en la contabilidad Colgaap!");</script>'; exit; }
+			else if($saldoDebitoColgaap != $saldoCreditoColgaap){ echo '<script>alert("Aviso!\nLos saldos Debitos ('.$saldoDebitoColgaap.') y Creditos ('.$saldoCreditoColgaap.') en la contabilidad colgaap son diferentes!");</script>'; exit; }
 
 			//VALIDACIONES CONTABILIDAD NIIF
 			if ($sinc_nota=='colgaap_niif') {
-				if($cuentaVaciaNiif > 0){
-					echo '<script>
-							alert("Aviso!\nExisten '.$cuentaVaciaNiif.' registros sin cuentas en la contabilidad niif!");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
-					exit;
-				}
-				else if($saldoDebitoNiif == 0 || $saldoCreditoNiif == 0){
-					echo '<script>
-							alert("Aviso!\nLos saldos deben ser mayores a cero en la contabilidad niif!");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
-					exit;
-				}
-				else if($saldoDebitoNiif != $saldoCreditoNiif){
-					echo '<script>
-							alert("Aviso!\nLos saldos Debitos ('.$saldoDebitoNiif.') y Creditos ('.$saldoCreditoNiif.')  en la contabilidad Niif son diferentes!");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
-					exit;
-				}
+				if($cuentaVaciaNiif > 0){ echo '<script>alert("Aviso!\nExisten '.$cuentaVaciaNiif.' registros sin cuentas en la contabilidad niif!");</script>'; exit; }
+				else if($saldoDebitoNiif == 0 || $saldoCreditoNiif == 0){ echo '<script>alert("Aviso!\nLos saldos deben ser mayores a cero en la contabilidad niif!");</script>'; exit; }
+				else if($saldoDebitoNiif != $saldoCreditoNiif){ echo '<script>alert("Aviso!\nLos saldos Debitos ('.$saldoDebitoNiif.') y Creditos ('.$saldoCreditoNiif.')  en la contabilidad Niif son diferentes!");</script>'; exit; }
 			}
 
 			$valueInsertCuentasColgaap = substr($valueInsertCuentasColgaap, 0, -1);
@@ -1119,6 +1002,8 @@
 								codigo_cuenta,
 								id_sucursal,
 								id_tercero,
+								nit_tercero,
+								tercero,
 								id_empresa,
 								fecha,
 								id_documento_cruce,
@@ -1126,37 +1011,46 @@
 								numero_documento_cruce)
 							VALUES $valueInsertCuentasColgaap";
 			$queryInsert = mysql_query($sqlInsert,$link);
-			if (!$queryInsert) {
-				echo '<script>
-						alert("Error!\nNo se genero el asiento contable Colgaap, Intentelo de nuevo\nSi el problema persiste comuniquese con el administrador del sistema");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
+			if (!$queryInsert) { echo '<script>alert("Error!\nNo se genero el asiento contable Colgaap, Intentelo de nuevo\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; exit; }
+
+			if ($sinc_nota=='colgaap_niif') {
+
+				$sqlInsert   = "INSERT INTO asientos_niif(
+									id_documento,
+									consecutivo_documento,
+									tipo_documento,
+									tipo_documento_extendido,
+									debe,
+									haber,
+									codigo_cuenta,
+									id_sucursal,
+									id_tercero,
+									nit_tercero,
+									tercero,
+									id_empresa,
+									fecha,
+									id_documento_cruce,
+									tipo_documento_cruce,
+									numero_documento_cruce)
+								VALUES $valueInsertCuentasNiif";
+				$queryInsert = mysql_query($sqlInsert,$link);
+				if (!$queryInsert) {
+					$sqlDelete   = "DELETE FROM asientos_colgaap WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='NCG'";
+					$queryDelete = mysql_query($sqlDelete,$link);
+
+					echo'<script>alert("Error!\nNo se genero el asiento contable Niif, Intentelo de nuevo\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; exit;
+				}
 			}
-
-
 		}
 
 		else if ($accion=='eliminar') {
-			$sqlDelete   = "DELETE FROM asientos_colgaap WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='NCC'";
+			$sqlDelete   = "DELETE FROM asientos_colgaap WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='NCG'";
 			$queryDelete = mysql_query($sqlDelete,$link);
-			if (!$queryDelete){
-				echo '<script>
-						alert("Error!\nNo se eliminaron los asientos de la nota\nSi el problema persiste comuniquese con el administrador del sistema");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
-			}
+			if (!$queryDelete){ echo '<script>alert("Error!\nNo se eliminaron los asientos de la nota\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; exit; }
 
-			$sql="DELETE FROM nota_cierre_cuentas WHERE activo=1 AND id_empresa=$idEmpresa AND id_nota_general='$idDocumento' ";
-			$query=mysql_query($sql,$link);
-			if (!$queryDelete){
-				echo '<script>
-						alert("Error!\nNo se eliminaron las cuentas de la nota, elimine manualmente las cuentas del documento para poder generarlo nuevamente\nSi el problema persiste comuniquese con el administrador del sistema");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
-			}
+			$sqlDelete   = "DELETE FROM asientos_niif WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='NCG'";
+			$queryDelete = mysql_query($sqlDelete,$link);
+			if (!$queryDelete){ echo '<script>alert("Error!\nNo se eliminaron los asientos de la nota\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; exit; }
 		}
 	}
 
@@ -1164,7 +1058,8 @@
 	// AL EDITAR UNA FACTURA - REMISION YA GENERADA, SE DESCONTABILIZA, ES DECIR SE ELIMINAN LOS REGISTROS CONTABLES QUE GENERO (SOLO LA FACTURA), Y DEVOLVEMOS LOS ARTICULOS
 	// AL INVENTARIO, ADEMAS CAMBIAMOS SU ESTADO A CERO, QUEDANDO LA FACTURA COMO SI SE HUBIERA CREADO PERO NO SE HUBIERA TERMINADO
 	// ESTO SOLO SE CUMPLE SI LA FACTURA NO ESTA DENTRO DE UN CIERRE, SI ES ASI NO SE PODRA MODIFICAR EN NINGUNA MANERA
-	function modificarDocumentoGenerado($idDocumento,$opcGrillaContable,$id_empresa,$id_sucursal,$id_bodega,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link){
+
+	function modificarDocumentoGenerado($idDocumento,$opcGrilla,$id_empresa,$id_sucursal,$id_bodega,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link){
 
 		$sql   = "SELECT consecutivo FROM $tablaPrincipal WHERE id='$idDocumento' AND id_empresa='$id_empresa' LIMIT 0,1 ";
 		$query = mysql_query($sql,$link);
@@ -1187,11 +1082,7 @@
 			//RECORREMOS TODOS LOS ARTICULOS Y LLAMAMOS LA FUNCION PARA REVERSAR EL PROCESO DE CADA UNO
 			while ($rowArticulos=mysql_fetch_array($queryArticulos)) { $resul=eliminarArticuloRelacionado($rowArticulos['id'],$rowArticulos['tipo'],'return',$link); }
 
-			if ($resul>0) {
-				echo '<script>
-						alert("Erro!\nNo se actualizo el inventario\nSi el problema persiste comuniquese con el administrador del sistema");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>'; exit; }
+			if ($resul>0) { echo '<script>alert("Erro!\nNo se actualizo el inventario\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; exit; }
 		}
 
 		//PARA MODIFICAR EL DOCUMENTO PRIMERO DEBEMOS DESCONTABILIZARLO Y LUEGO REGRESARLO A ESTADO=0
@@ -1201,35 +1092,30 @@
 		$query = mysql_query($sql,$link);
 
 		//MOVER LOS SALDOS DE LOS DOCUMENTOS RELACIONADOS
-		// moverDocumentosSaldos($id_empresa,$idDocumento,'agregar',$link);
+		moverDocumentosSaldos($id_empresa,$idDocumento,'agregar',$link);
 
 		if($query){
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
-						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Nota Contable Cierre',$id_sucursal,'$id_empresa','NCC','".$_SERVER['REMOTE_ADDR']."')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Nota Contable General',$id_sucursal,'$id_empresa')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
-				 	Ext.get("contenedor_'.$opcGrillaContable.'").load({
-						url     : "nota_cierre/grilla/grillaContable.php",
+				 	Ext.get("contenedor_'.$opcGrilla.'").load({
+						url     : "nota_general/grilla/grillaContable.php",
 						scripts : true,
 						nocache : true,
 						params  :
 						{
 							id_nota           : "'.$idDocumento.'",
-							opcGrillaContable : "'.$opcGrillaContable.'"
+							opcGrilla : "'.$opcGrilla.'"
 						}
 					});
 
-					Ext.getCmp("Btn_exportar_NotaCierre").disable();
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+					Ext.getCmp("Btn_exportar_NotaGeneral").disable();
 				</script>';
 		}
-		else{
-			echo '<script>
-					alert("Error!\nNo se insertaron los articulos nuevamente al inventario!");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>'; }
+		else{ echo '<script>alert("Error!\nNo se insertaron los articulos nuevamente al inventario!");</script>'; }
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1237,13 +1123,13 @@
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//=========================== FUNCION PARA GUARDAR CUENTA DE LA GRILLA ==================================================================//
-	function guardarCuenta($id_empresa,$consecutivo,$id,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$idPuc,$cuenta,$debe,$haber,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link){
+	function guardarCuenta($id_empresa,$consecutivo,$id,$cont,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$idPuc,$cuenta,$debe,$haber,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link){
 		//VALIDACIONES
 		if ($debe==0 && $haber==0) { echo '<script>alert("Error\nDebe ingresar el monto  del debito o del credito");</script>'; return; }
 		elseif ($debe>0 && $haber>0) { echo '<script>alert("Error\nDebe ingresar el monto solo para el debito o el credito");</script>'; return; }
 
 		//VERIFICAR QUE EL DOCUMENTO (SI TIENE) EXISTA  Y SE ENCUENTRE DISPONIBLE Y CON EL SALDO QUE SE VA A INGRESAR LA CUENTA
-		if ($tipoDocumentoCruce!='') { validaDocumentoCruce($id_empresa,$id_documento_cruce,$tipoDocumentoCruce,$prefijoDocumentoCruce,$numeroDocumentoCruce,$opcGrillaContable,$cont,$terceroGeneral,$id_tercero,$cuenta,'guardar',$debe,$haber,$link); }
+		if ($tipoDocumentoCruce!='') { validaDocumentoCruce($id_empresa,$id_documento_cruce,$tipoDocumentoCruce,$prefijoDocumentoCruce,$numeroDocumentoCruce,$opcGrilla,$cont,$terceroGeneral,$id_tercero,$cuenta,'guardar',$debe,$haber,$link); }
 
 		$sqlInsert = "INSERT INTO $tablaCuentasNota(
 						$idTablaPrincipal,
@@ -1276,26 +1162,26 @@
 			$debe  = (is_nan($debe))? 0  : $debe;
 			$haber = (is_nan($haber))? 0 : $haber;
 
-			if($terceroGeneral!='NOTA INTERNA'){ $body=cargaDivsInsertUnidadesConTercero('return',$consecutivo,$opcGrillaContable); }
-			else{ $body=cargaDivsInsertUnidadesConTercero('return',$consecutivo,$opcGrillaContable); }
+			if($terceroGeneral!='NOTA INTERNA'){ $body=cargaDivsInsertUnidadesConTercero('return',$consecutivo,$opcGrilla); }
+			else{ $body=cargaDivsInsertUnidadesConTercero('return',$consecutivo,$opcGrilla); }
 
 			echo'<script>
-					document.getElementById("idInsertCuenta'.$opcGrillaContable.'_'.$cont.'").value = '.$lastId.'
+					document.getElementById("idInsertCuenta'.$opcGrilla.'_'.$cont.'").value = '.$lastId.'
 
-					document.getElementById("divImageSave'.$opcGrillaContable.'_'.$cont.'").setAttribute("title","Actualizar Cuenta");
-					document.getElementById("imgSaveArticulo'.$opcGrillaContable.'_'.$cont.'").setAttribute("src","img/reload.png");
+					document.getElementById("divImageSave'.$opcGrilla.'_'.$cont.'").setAttribute("title","Actualizar Cuenta");
+					document.getElementById("imgSaveArticulo'.$opcGrilla.'_'.$cont.'").setAttribute("src","img/reload.png");
 
-					document.getElementById("divImageSave'.$opcGrillaContable.'_'.$cont.'").style.display     = "none";
-					document.getElementById("divImageDeshacer'.$opcGrillaContable.'_'.$cont.'").style.display = "none";
-					document.getElementById("deleteCuenta'.$opcGrillaContable.'_'.$cont.'").style.display     = "block";
-					document.getElementById("configurarCuenta'.$opcGrillaContable.'_'.$cont.'").style.display = "block";
+					document.getElementById("divImageSave'.$opcGrilla.'_'.$cont.'").style.display     = "none";
+					document.getElementById("divImageDeshacer'.$opcGrilla.'_'.$cont.'").style.display = "none";
+					document.getElementById("deleteCuenta'.$opcGrilla.'_'.$cont.'").style.display     = "block";
+					document.getElementById("configurarCuenta'.$opcGrilla.'_'.$cont.'").style.display = "block";
 
 					//llamamos a la funcion para calcular los totales de la nota
-					calcTotal'.$opcGrillaContable.'("'.$debe.'","'.$haber.'","agregar");
+					calcTotal'.$opcGrilla.'("'.$debe.'","'.$haber.'","agregar");
 
 					//habilitar el boton terminar y nuevo
-					Ext.getCmp("Btn_guardar_'.$opcGrillaContable.'").enable();
-					Ext.getCmp("Btn_nueva_'.$opcGrillaContable.'").enable();
+					Ext.getCmp("Btn_guardar_'.$opcGrilla.'").enable();
+					Ext.getCmp("Btn_nueva_'.$opcGrilla.'").enable();
 
 				</script>'.$body;
 
@@ -1303,22 +1189,22 @@
 		else{
 				echo'<script>
 						alert("Error\nNo se ha guardo la cuenta en la nota, Intentelo de nuevo\nSi el problema persiste favor comuniquese con la administracion del sistema");
-						var elemento=document.getElementById("bodyDivArticulos'.$opcGrillaContable.'_'.$consecutivo.'");
+						var elemento=document.getElementById("bodyDivArticulos'.$opcGrilla.'_'.$consecutivo.'");
 						elemento.parentNode.removeChild(elemento);
 				  	</script>  ';
 			}
 	}
 
 
-	function validaDocumentoCruce($id_empresa,$id_documento_cruce,$documento_cruce,$prefijo_documento_cruce='',$numero_documento_cruce,$opcGrillaContable,$cont,$id_tercero_general,$id_tercero,$cuenta,$evento,$debe,$haber,$link){
+	function validaDocumentoCruce($id_empresa,$id_documento_cruce,$documento_cruce,$prefijo_documento_cruce='',$numero_documento_cruce,$opcGrilla,$cont,$id_tercero_general,$id_tercero,$cuenta,$evento,$debe,$haber,$link){
 
 		$script = '';
 		$cont2  = $cont;
 
 		//CON LA VARIABLE EVENTO IDENTIFICAMOS SI SE ESTA GUARDANDO O ACTUALIZANDO UNA CUENTA, PARA ASI MOSTRAR O NO UN BLOQUE DE CODIGO Y PARA EL CONTADOR
 		if ($evento=='guardar') {
-			$script = 'document.getElementById("bodyDivArticulos'.$opcGrillaContable.'_'.($cont++).'").parentNode.removeChild(document.getElementById("bodyDivArticulos'.$opcGrillaContable.'_'.($cont++).'"));
-						contArticulos'.$opcGrillaContable.'--;';
+			$script = 'document.getElementById("bodyDivArticulos'.$opcGrilla.'_'.($cont++).'").parentNode.removeChild(document.getElementById("bodyDivArticulos'.$opcGrilla.'_'.($cont++).'"));
+						contItems'.$opcGrilla.'--;';
 			$cont2  = ($cont-2);
 		}
 
@@ -1326,7 +1212,7 @@
 		if ($numero_documento_cruce=='' || $numero_documento_cruce=='0') {
 			echo'<script>
 					alert("Si relaciona una '.$documento_cruce.', debe ingresar el numero!");
-					document.getElementById("numeroDocumentoCruce'.$opcGrillaContable.'_'.$cont.'").focus();
+					document.getElementById("numeroDocumentoCruce'.$opcGrilla.'_'.$cont.'").focus();
 				</script>';
 			exit;
 		}
@@ -1353,7 +1239,7 @@
 			echo '<script>
 					alert(" La cuenta '.$cuenta.' de la '.$documento_cruce.' relacionada no existe en los asientos de ese documento\nPor favor digite una cuenta que genero el documento relacionado");
 					'.$script.'
-					setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont2.'").focus(); },100);
+					setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$cont2.'").focus(); },100);
 				</script>';
 			exit;
 		}
@@ -1361,7 +1247,7 @@
 			echo '<script>
 					alert("No se permite debitar o acreditar la misma cuenta en mas de una ocacion.");
 					'.$script.'
-					setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont2.'").focus(); },100);
+					setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$cont2.'").focus(); },100);
 				</script>';
 			exit;
 		}
@@ -1369,17 +1255,17 @@
 			echo '<script>
 					alert("El valor a cruzar es superior al registrado en el documento ('.$absCuentaDb.').");
 					'.$script.'
-					setTimeout(function(){ document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont2.'").focus(); },100);
+					setTimeout(function(){ document.getElementById("cuenta'.$opcGrilla.'_'.$cont2.'").focus(); },100);
 				</script>';
 			exit;
 		}
 	}
 
 	//=========================== FUNCION PARA ACTUALIZAR UN ARTICULO YA AGREGADO EN LA GRILLA ===================================================//
-	function actualizaCuenta($id_empresa,$id,$idInsertCuenta,$idPuc,$cuenta,$debe,$haber,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link){
+	function actualizaCuenta($id_empresa,$id,$idInsertCuenta,$idPuc,$cuenta,$debe,$haber,$cont,$opcGrilla,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$terceroGeneral,$id_documento_cruce,$numeroDocumentoCruce,$prefijoDocumentoCruce,$tipoDocumentoCruce,$link){
 
 		//VERIFICAR QUE EL DOCUMENTO (SI TIENE) EXISTA  Y SE ENCUENTRE DISPONIBLE Y CON EL SALDO QUE SE VA A INGRESAR LA CUENTA
-		if ($tipoDocumentoCruce!='') { validaDocumentoCruce($id_empresa,$id_documento_cruce,$tipoDocumentoCruce,$prefijoDocumentoCruce,$numeroDocumentoCruce,$opcGrillaContable,$cont,$terceroGeneral,$id_tercero,$cuenta,'actualizar',$debe,$haber,$link); }
+		if ($tipoDocumentoCruce!='') { validaDocumentoCruce($id_empresa,$id_documento_cruce,$tipoDocumentoCruce,$prefijoDocumentoCruce,$numeroDocumentoCruce,$opcGrilla,$cont,$terceroGeneral,$id_tercero,$cuenta,'actualizar',$debe,$haber,$link); }
 
 		// se agrega la funcionalidad para actualizar los costos de la factura, se elimina los costos del anterior articulo y se agregan los costos del nuevo
 		//----- consultamos el articulo que estaba anteriormente, junto con todos sus datos para recalcular el monto de la factura
@@ -1411,12 +1297,12 @@
 			$haber = ($haber=='')? 0: $haber;
 
 			echo'<script>
-					document.getElementById("divImageSave'.$opcGrillaContable.'_'.$cont.'").style.display     = "none";
-					document.getElementById("divImageDeshacer'.$opcGrillaContable.'_'.$cont.'").style.display = "none";
+					document.getElementById("divImageSave'.$opcGrilla.'_'.$cont.'").style.display     = "none";
+					document.getElementById("divImageDeshacer'.$opcGrilla.'_'.$cont.'").style.display = "none";
 
 					//llamamos la funcion para recalcular el costo de la nota
-					calcTotal'.$opcGrillaContable.'("'.$debeAnterior.'","'.$haberAnterior.'","eliminar");
-					calcTotal'.$opcGrillaContable.'("'.$debe.'","'.$haber.'","agregar");
+					calcTotal'.$opcGrilla.'("'.$debeAnterior.'","'.$haberAnterior.'","eliminar");
+					calcTotal'.$opcGrilla.'("'.$debe.'","'.$haber.'","agregar");
 				</script>';
 		}
 		else{ echo '<script> alert("Error, no se actualizo la cuenta"); </script>'; }
@@ -1433,7 +1319,7 @@
 
 
 	//============================ FUNCION PARA CANCELAR UN PEDIDO - COTIZACION ====================================================================//
-	function cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_sucursal,$id_empresa,$link){
+	function cancelarDocumento($id,$opcGrilla,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_sucursal,$id_empresa,$link){
 		//CONSULTAMOS EL DOCUMENTO PARA SABER SI ESTA GENERADO
 		$sql   = "SELECT estado,consecutivo FROM $tablaPrincipal WHERE id='$id' AND id_empresa='$id_empresa' LIMIT 0,1 ";
 		$query = mysql_query($sql,$link);
@@ -1441,7 +1327,7 @@
 		$estado      = mysql_result($query,0 ,'estado');
 		$consecutivo = mysql_result($query,0 ,'consecutivo');
 
-		if($estado=='3'){ echo '<script>alert("Error!\nEsta nota ya esta cancelada!");document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);</script>'; return;}
+		if($estado=='3'){ echo '<script>alert("Error!\nEsta nota ya esta cancelada!");</script>'; return;}
 		else if ($estado=='0' && $consecutivo=='') { $sqlUpdate="UPDATE $tablaPrincipal SET activo=0 WHERE id='$id' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa' ";	}
 		else if($estado=='0' && $consecutivo!=''){$sqlUpdate="UPDATE $tablaPrincipal SET estado=3 WHERE id='$id' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa' ";	}
 		else if ($estado=='1') {
@@ -1463,17 +1349,12 @@
 					$resul=eliminarArticuloRelacionado($rowArticulos['id'],$rowArticulos['tipo'],'return',$link);
 				}
 
-				if ($resul>0) {
-					echo '<script>
-							alert("Erro!\nNo se actualizo el inventario\nSi el problema persiste comuniquese con el administrador del sistema");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>'; exit;
-					}
+				if ($resul>0) { echo '<script>alert("Erro!\nNo se actualizo el inventario\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; exit; }
 			}
 
 			//DESCONTABILIZAMOS LA NOTA, ELIMINADO LOS ASIENTOS QUE SE GENERARON A PARTIR DE ELLA
 			//MOVER LOS SALDOS DE LOS DOCUMENTOS RELACIONADOS
-			// moverDocumentosSaldos($id_empresa,$id,'agregar',$link);
+			moverDocumentosSaldos($id_empresa,$id,'agregar',$link);
 
 			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',0,$link);
 			//CADENA PARA ACTUALIZAR LA NOTA
@@ -1486,19 +1367,16 @@
 
 
 		if (!$queryUpdate) {
-			echo '<script>
-					alert("Error!\nSe proceso el documento pero no se cancelo\nSi el problema persiste comuniquese con el administrador del sistema");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
+			echo '<script>alert("Error!\nSe proceso el documento pero no se cancelo\nSi el problema persiste comuniquese con el administrador del sistema");</script>';
 			return;
 		}
 		else{
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
-						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Nota Contable Cierre',$id_sucursal,".$_SESSION['EMPRESA'].",'NCC','".$_SERVER['REMOTE_ADDR']."')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Nota Contable General',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 
-			echo '<script>nueva'.$opcGrillaContable.'();document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);</script>';
+			echo '<script>nueva'.$opcGrilla.'();</script>';
 		}
 
 	}
@@ -1566,7 +1444,7 @@
  	}
 
  	//============================ FUNCION PARA RESTAURAR UN DOCUMENTO CANCELADO ====================================================================//
- 	function restaurarDocumento($idDocumento,$opcGrillaContable,$carpeta,$id_sucursal,$idBodega,$id_empresa,$tablaPrincipal,$link){
+ 	function restaurarDocumento($idDocumento,$opcGrilla,$carpeta,$id_sucursal,$idBodega,$id_empresa,$tablaPrincipal,$link){
 
 		$sqlUpdate   = "UPDATE $tablaPrincipal SET estado=0 WHERE activo=1 AND id='$idDocumento' AND id_sucursal='$id_sucursal'  AND id_empresa='$id_empresa' ";
 		$queryUpdate = mysql_query($sqlUpdate,$link);
@@ -1574,29 +1452,25 @@
 		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
 		if ($queryUpdate) {
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
-						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Nota Contable Cierre',$id_sucursal,".$_SESSION['EMPRESA'].",'NCC','".$_SERVER['REMOTE_ADDR']."')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Nota Contable General',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
-					Ext.get("contenedor_'.$opcGrillaContable.'").load({
-						url     : "nota_cierre/grilla/grillaContable.php",
+					Ext.get("contenedor_'.$opcGrilla.'").load({
+						url     : "nota_general/grilla/grillaContable.php",
 						scripts : true,
 						nocache : true,
 						params  :
 						{
 							id_nota           : "'.$idDocumento.'",
-							opcGrillaContable : "'.$opcGrillaContable.'"
+							opcGrilla : "'.$opcGrilla.'"
 						}
 					});
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 				</script>';
 		}
 		else{
-			echo '<script>
-					alert("Error!\nNo se pudo restaurar el documento\nSi el problema persiste comuniquese con el administrador del sistema");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
+			echo '<script>alert("Error!\nNo se pudo restaurar el documento\nSi el problema persiste comuniquese con el administrador del sistema");</script>';
 			return;
 		}
 
@@ -1610,7 +1484,7 @@
  		if (!$query) {
  			echo '<script>
  					alert("Error!\nNo se actualizo el tipo de nota\nSi el problema persiste comuniquese con el administrador del sistema");
- 					// document.getElementById("selectTipoNota").focus();
+ 					document.getElementById("selectTipoNota").focus();
  				  </script>';
  			exit;
  		}
@@ -1623,8 +1497,6 @@
 
  	//=========================== FUNCION PARA ACTUALIZAR LA FECHA DE LA NOTA =========================================================================//
  	function actualizarFechaNota($id,$fecha,$tablaPrincipal,$link){
- 		$fecha = $fecha.'-12-31';
- 		// echo "<script>console.log('$fecha');</script>";
 		$sql   = "UPDATE $tablaPrincipal SET fecha_nota='$fecha' WHERE id='$id'";
 		$query = mysql_query($sql,$link);
 
@@ -1632,7 +1504,7 @@
  	}
 
  	//REDERIZA FILTRO TIPO DE DOCUMENTO
- 	function ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$link){
+ 	function ventana_buscar_documento_cruce($cont,$opcGrilla,$carpeta,$id_empresa,$id_sucursal,$link){
  		echo'<select class="myfield" name="filtro_tipo_documento" id="filtro_tipo_documento" style="width:100px; margin: 2px 0px 0px 4px;" onChange="carga_filtro_tipo_documento(this.value)">
         		<option value="FC">FC</option>
         		<option value="FV">FV</option>
@@ -1640,7 +1512,7 @@
     		<script>
 				function carga_filtro_tipo_documento(tipo_documento_cruce){
 					var filtroTipoDocumento = document.getElementById("filtro_tipo_documento").value;
-					Ext.get("contenedor_buscar_documento_cruce_'.$opcGrillaContable.'").load({
+					Ext.get("contenedor_buscar_documento_cruce_'.$opcGrilla.'").load({
 						url     : "'.$carpeta.'bd/grillaDocumentoCruce.php",
 						scripts : true,
 						nocache : true,
@@ -1650,7 +1522,7 @@
 							filtro_sucursal      : '.$id_sucursal.',
 							tipo_documento_cruce : tipo_documento_cruce,
 							cont                 : "'.$cont.'",
-							opcGrillaContable    : "'.$opcGrillaContable.'",
+							opcGrilla    : "'.$opcGrilla.'",
 							carpeta              : "'.$carpeta.'",
 							tablaPrincipal       : "nota_contable_general",
 							idTablaPrincipal     : "id_nota_general",
@@ -1663,7 +1535,7 @@
  	}
 
  	//========================== FUNCION PARA CARGAR LA CUENTA NIIF ==============================================================//
- 	function cargaConfiguracionCuenta($id_nota,$idInsertCuenta,$idCuenta,$id_empresa,$opcGrillaContable,$cont,$link){
+ 	function cargaConfiguracionCuenta($id_documento,$idInsertCuenta,$idCuenta,$id_empresa,$opcGrilla,$cont,$link){
 		$sql   = "SELECT N.cuenta_niif,
 						N.descripcion_niif,
 						N.cuenta_puc,
@@ -1680,7 +1552,7 @@
 						AND N.id_puc = '$idCuenta'
 						AND N.id_empresa = '$id_empresa'
 						AND N.activo = 1
-						AND id_nota_general='$id_nota'";
+						AND id_nota_general='$id_documento'";
 		$query = mysql_query($sql,$link);
 
 		$divCccos   = "";
@@ -1697,10 +1569,10 @@
 			$divCccos = '<div style="color: #15428b;font-weight: bold;font-size: 13px;font-family: tahoma,arial,verdana,sans-serif;text-align:center;margin-top:20px;float: left;width:100%;">CENTRO DE COSTOS</div>
 		 				<div style="float:left;width:90%; background-color:#FFF; margin-top:10px; margin-left:20px; border:1px solid #D4D4D4;">
 		 					<div style="float:left;width:100px;background-color:#F3F3F3;padding: 5px 0 5px 3px;border-right:1px solid #D4D4D4;font-weight: bold;font-size: 11px;">CODIGO</div><div style="float:left;width:calc(100% - 107px);background-color:#F3F3F3;padding: 5px 0 5px 3px;font-weight: bold;font-size: 11px;">CENTRO DE COSTOS</div>
-		 					<div style="float: left; margin-left: -30px; margin-top: 3px; width: 20px; padding: 0 0 0 5; border-left: 1px solid #D4D4D4;" onclick="ventanaBuscarCentroCostos_'.$opcGrillaContable.'('.$cont.')"><img src="img/buscar20.png" style="cursor:pointer;width:16px;height:16px;" title="Cambiar Cuenta"></div>
+		 					<div style="float: left; margin-left: -30px; margin-top: 3px; width: 20px; padding: 0 0 0 5; border-left: 1px solid #D4D4D4;" onclick="ventanaBuscarCentroCostos_'.$opcGrilla.'('.$cont.')"><img src="img/buscar20.png" style="cursor:pointer;width:16px;height:16px;" title="Cambiar Cuenta"></div>
 
-		 					<div id="codigoCcos_'.$opcGrillaContable.'" style="float:left; height:13px; width:100px; border-right:1px solid #D4D4D4; padding: 5px 0 5px 3px;">'.$codigoCcos.'</div>
-		 					<div id="nombreCcos_'.$opcGrillaContable.'" style="float:left; height:13px; width:calc(100% - 110px); padding: 5px 0 5px 3px; overflow:hidden;white-space:nowrap;text-overflow: ellipsis;">'.$nombreCcos.'</div>
+		 					<div id="codigoCcos_'.$opcGrilla.'" style="float:left; height:13px; width:100px; border-right:1px solid #D4D4D4; padding: 5px 0 5px 3px;">'.$codigoCcos.'</div>
+		 					<div id="nombreCcos_'.$opcGrilla.'" style="float:left; height:13px; width:calc(100% - 110px); padding: 5px 0 5px 3px; overflow:hidden;white-space:nowrap;text-overflow: ellipsis;">'.$nombreCcos.'</div>
 		 				</div>';
 		}
 
@@ -1709,7 +1581,7 @@
 
  				<div style="float:left;width:90%;background-color:#FFF;margin-top:10px;margin-left:20px;border:1px solid #D4D4D4;">
  					<div style="float:left;width:100px;background-color:#F3F3F3;padding: 5px 0 5px 3px;border-right:1px solid #D4D4D4;font-weight: bold;font-size: 11px;">CUENTA</div><div style="float:left;width:calc(100% - 107px);background-color:#F3F3F3;padding: 5px 0 5px 3px;font-weight: bold;font-size: 11px;">DESCRIPCION</div>
- 					<div style="float: left; margin-left: -30px; margin-top: 3px; width: 20px; padding: 0 0 0 5px; border-left: 1px solid #D4D4D4;" onclick="ventanaBuscarCuenta'.$opcGrillaContable.'('.$cont.',\'niif\')"><img src="img/buscar20.png" style="cursor:pointer;width:16px;height:16px;" title="Cambiar Cuenta"></div>
+ 					<div style="float: left; margin-left: -30px; margin-top: 3px; width: 20px; padding: 0 0 0 5px; border-left: 1px solid #D4D4D4;" onclick="ventanaBuscarCuenta'.$opcGrilla.'('.$cont.',\'niif\')"><img src="img/buscar20.png" style="cursor:pointer;width:16px;height:16px;" title="Cambiar Cuenta"></div>
 
  					<div style="float:left; height:13px; width:100px; border-right:1px solid #D4D4D4; padding: 5px 0 5px 3px;">'.$cuentaNiif.'</div>
  					<div style="float:left; height:13px; width:calc(100% - 110px); padding: 5px 0 5px 3px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">'.$nombreNiif.'</div>
@@ -1720,7 +1592,7 @@
  	}
 
  	//=========================== FUNCION PARA ACTUALIZAR LA CUENTA NIIF DE UNA COLGAAP ====================================//
- 	function actualizarNiif($id_niif,$cuenta,$idInsertCuenta,$idCuenta,$opcGrillaContable,$cont,$id_empresa,$link){
+ 	function actualizarNiif($id_niif,$cuenta,$idInsertCuenta,$idCuenta,$opcGrilla,$cont,$id_empresa,$link){
 		$sql   = "UPDATE nota_contable_general_cuentas SET id_niif='$id_niif' WHERE id='$idInsertCuenta' AND id_puc='$idCuenta' AND id_empresa='$id_empresa' AND activo=1";
 		$query = mysql_query($sql,$link);
 
@@ -1729,7 +1601,7 @@
  	}
 
  	//===============================// FUNCION PARA ACTUALIZAR EL CENTRO DE COSTOS //===============================//
- 	function actualizarCcos($idInsertCuenta,$idCuenta,$opcGrillaContable,$id_centro_costos,$codigo_centro_costos,$id_nota,$id_empresa,$link){
+ 	function actualizarCcos($idInsertCuenta,$idCuenta,$opcGrilla,$id_centro_costos,$codigo_centro_costos,$id_documento,$id_empresa,$link){
 		$sqlCcos   = "SELECT COUNT(id) AS contCcos
 						FROM centro_costos
 						WHERE codigo<>'$codigo_centro_costos'
@@ -1751,32 +1623,9 @@
  		else{ echo 'false'; }
  	}
 
- 	function cambiaSyncNota($tipo,$id,$opcGrillaContable,$id_empresa,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link){
-		$sql   = "UPDATE $tablaPrincipal SET sinc_nota='$tipo' WHERE activo=1 AND id_empresa='$id_empresa' AND id='$id'";
-		$query = mysql_query($sql,$link);
- 		if ($query) {
-
- 			if ($tipo=='colgaap') {
- 				echo'<script>
- 						Ext.getCmp("GroupBtnSync").show();
-						Ext.getCmp("GroupBtnNoSync").hide();
-						sinc_nota_'.$opcGrillaContable.' = "'.$tipo.'";
-					</script>';
- 			}
- 			else{
- 				echo'<script>
- 						Ext.getCmp("GroupBtnSync").hide();
-						Ext.getCmp("GroupBtnNoSync").show();
-						sinc_nota_'.$opcGrillaContable.' = "'.$tipo.'";
- 					</script>';
- 			}
- 		}
- 		else{ echo'<script>alert("Aviso!\nNo se genero el cambio en la nota!\nIntentelo de Nuevo, si el problema persiste comuniquese con el administrador del sistema");</script>'; }
- 	}
-
 	//FUNCION PARA VERIFICAR EL ESTADO DEL DOCUMENTO
 	function verificaEstadoDocumento($id_documento,$link){
-		$sql   = "SELECT estado,consecutivo FROM nota_cierre WHERE id=$id_documento";
+		$sql   = "SELECT estado,consecutivo FROM nota_contable_general WHERE id=$id_documento";
 		$query = mysql_query($sql,$link);
 
 		$estado      = mysql_result($query,0,'estado');
@@ -1794,14 +1643,14 @@
 						Win_Ventana_cambiar_cuenta_niif.close();
 					}
 
-					Ext.get("contenedor_NotaCierre").load({
-	        		    url     : "nota_cierre/bd/grillaContableBloqueada.php",
+					Ext.get("contenedor_NotaGeneral").load({
+	        		    url     : "nota_general/bd/grillaContableBloqueada.php",
 	        		    scripts : true,
 	        		    nocache : true,
 	        		    params  :
 	        		    {
 							id_nota           : '.$id_documento.',
-							opcGrillaContable : "NotaCierre",
+							opcGrilla : "NotaGeneral",
 	        		    }
 	        		});
 
@@ -1816,17 +1665,4 @@
 
 		echo mysql_result($queryCuenta, 0, 'contCuenta');
 	}
-
-	// FUNCION PARA ELIMINAR LAS CUENTAS QUE FORMAN PARTE DEL CUERPO DEL DOCUMENTO
-	function eliminar_todas_cuentas($opcGrillaContable,$id_documento,$id_sucursal,$id_empresa,$link){
-		$sql="DELETE FROM nota_cierre_cuentas WHERE activo=1 AND id_empresa=$id_empresa AND id_nota_general=$id_documento";
-		$query=mysql_query($sql,$link);
-		if (!$query) {
-			echo "false{.}No se puedieron eliminar las cuentas del documento{.}";
-			exit;
-		}
-		echo 'true{.}';
-	}
-
-
 ?>

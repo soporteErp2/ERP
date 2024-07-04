@@ -2229,7 +2229,7 @@
 	// FUNCION PARA VERIFICAR SI EXISTE ALGUN CIERRE EN ESE PERIODO ANTES DE PROCESAR EL DOCUMENTO
 	function verificaCierre($id_documento,$campoFecha,$tablaPrincipal,$id_empresa,$link,$opcCargar){
 		// CONSULTAR EL DOCUMENTO
-		$whereId = ($opcCargar!=='facturaVenta') ? "id=$id_documento" : "numero_factura_completo= '$id_documento' "; 
+		$whereId = ($opcCargar !== 'facturaVenta') ? "id=$id_documento" : "numero_factura_completo= '$id_documento' ";
 		$sql= "SELECT $campoFecha AS fecha FROM $tablaPrincipal WHERE activo=1 AND id_empresa=$id_empresa AND $whereId";
 		$query=mysql_query($sql,$link);
 		$fecha_documento = mysql_result($query,0,'fecha');
@@ -2242,7 +2242,6 @@
 		$sql="SELECT COUNT(id) AS cont FROM cierre_por_periodo WHERE activo=1 AND id_empresa=$id_empresa AND estado=1 AND '$fecha_documento' BETWEEN fecha_inicio AND fecha_final ";
 		$query=mysql_query($sql,$link);
 		$cont1 = mysql_result($query,0,'cont');
-
 		// VALIDAR QUE NO EXISTAN MAS NOTAS DE CIERRE CREADAS PARA ESE PERIODO
 		$sql="SELECT COUNT(id) AS cont FROM nota_cierre WHERE activo=1 AND id_empresa=$id_empresa AND estado=1 AND fecha_nota>='$fecha_inicio_buscar' AND fecha_nota<='$fecha_fin_buscar' ";
 		$query=mysql_query($sql,$link);

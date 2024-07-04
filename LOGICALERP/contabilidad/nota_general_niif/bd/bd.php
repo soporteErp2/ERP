@@ -716,12 +716,9 @@
 			$queryUpdate=mysql_query($sqlUpdate,$link);
 		}
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','NCG','Nota Contable General',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Nota Contable General',$id_sucursal,'$id_empresa')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 	   	echo'<script>
@@ -942,18 +939,15 @@
 	//ESTA FUNCION MUEVE LAS CUENTAS DE LOS DOCUMENTO, SI LA VARIABLE ACCION = AGREGAR ENTONCES SE VA A CONTABILIZAR UN DOCUMENTO, SI ES = A ELIMINAR, ENTONCES SE VA A
 	//DESCONTABILIZAR UN DOCUMENTO.
 	function moverCuentasDocumento($idDocumento,$idEmpresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,$accion,$id_tercero,$link){
-		$decimalesMoneda = ($_SESSION['DECIMALESMONEDA'] >= 0)? $_SESSION['DECIMALESMONEDA']: 0;
 
 		if ($accion=='agregar') {
-			$sqlNotaGeneral   = "SELECT consecutivo_niif,tercero,fecha_nota,sinc_nota,tipo_nota FROM nota_contable_general WHERE activo=1 AND id='$idDocumento' AND id_empresa='$idEmpresa'";
+			$sqlNotaGeneral   = "SELECT consecutivo_niif,tercero,fecha_nota,sinc_nota FROM nota_contable_general WHERE activo=1 AND id='$idDocumento' AND id_empresa='$idEmpresa'";
 			$queryNotaGeneral = mysql_query($sqlNotaGeneral,$link);
 
 			$consecutivoNota = mysql_result($queryNotaGeneral,0,'consecutivo_niif');
 			$tercero         = mysql_result($queryNotaGeneral,0,'tercero');
 			$fechaNota       = mysql_result($queryNotaGeneral,0,'fecha_nota');
 			$sinc_nota       = mysql_result($queryNotaGeneral,0,'sinc_nota');
-			$tipo_nota       = mysql_result($queryNotaGeneral,0,'tipo_nota');
-
 
 			$sql   = "SELECT debe,haber,cuenta_puc,cuenta_niif,id_tercero,id_documento_cruce,tipo_documento_cruce,prefijo_documento_cruce,numero_documento_cruce
 						FROM $tablaCuentasNota WHERE $idTablaPrincipal='$idDocumento' AND activo=1";
@@ -1000,7 +994,7 @@
 				$valueInsertCuentasColgaap .= "('$idDocumento',
 												'$consecutivoNota',
 												'NCG',
-												'$tipo_nota',
+												'Nota Contable General',
 												'".$row['debe']."',
 												'".$row['haber']."',
 												'".$row['cuenta_puc']."',
@@ -1015,10 +1009,11 @@
 												'$documento_cruce'
 												),";
 
+
 				$valueInsertCuentasNiif .= "('$idDocumento',
 											'$consecutivoNota',
 											'NCG',
-											'$tipo_nota',
+											'Nota Contable General Niif',
 											'".$row['debe']."',
 											'".$row['haber']."',
 											'".$row['cuenta_niif']."',
@@ -1033,12 +1028,6 @@
 											'$documento_cruce'
 											),";
 			}
-
-			$saldoDebitoColgaap  = ROUND($saldoDebitoColgaap,$decimalesMoneda);
-			$saldoCreditoColgaap = ROUND($saldoCreditoColgaap,$decimalesMoneda);
-
-			$saldoDebitoNiif  = ROUND($saldoDebitoNiif,$decimalesMoneda);
-			$saldoCreditoNiif = ROUND($saldoCreditoNiif,$decimalesMoneda);
 
 			//VALIDACIONES CONTABILIDAD NIIF
 			if($cuentaVaciaNiif > 0){
@@ -1231,12 +1220,9 @@
 		moverDocumentosSaldos($id_empresa,$idDocumento,'agregar',$link);
 
 		if($query){
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','NCG','Nota Contable General',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Nota Contable General',$id_sucursal,'$id_empresa')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1637,18 +1623,15 @@
 
 		if (!$queryUpdate) {
 			echo '<script>
-							alert("Error!\nSe proceso el documento pero no se cancelo\nSi el problema persiste comuniquese con el administrador del sistema");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
+					alert("Error!\nSe proceso el documento pero no se cancelo\nSi el problema persiste comuniquese con el administrador del sistema");
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
 			return;
 		}
 		else{
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','NCG','Nota Contable General',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Nota Contable General',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo '<script>nueva'.$opcGrillaContable.'();document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);</script>';
@@ -1702,12 +1685,9 @@
 
 		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
 		if ($queryUpdate) {
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','NCG','Nota Contable General',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Nota Contable General',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1822,7 +1802,7 @@
 		$fecha_fin_buscar    = date("Y", strtotime($fecha_documento)).'-12-31';
 
 		// VALIDAR QUE NO EXISTAN CIERRES POR PERIODO CREADOS EN ESE LAPSO
-		$sql="SELECT COUNT(id) AS cont FROM cierre_por_periodo WHERE activo=1 AND id_empresa=$id_empresa AND estado=1 AND '$fecha_documento' BETWEEN fecha_inicio AND fecha_final";
+		$sql="SELECT COUNT(id) AS cont FROM cierre_por_periodo WHERE activo=1 AND id_empresa=$id_empresa AND estado=1 AND '$fecha_documento' BETWEEN fecha_inicio AND fecha_final  ";
 		$query=mysql_query($sql,$link);
 		$cont1 = mysql_result($query,0,'cont');
 

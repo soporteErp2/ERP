@@ -149,7 +149,7 @@
                     return array('error'=> $msjError, 'debug'=> $debug, 'detalle'=>$arrayError, 'idNotaContable'=>$id_nota);
                 }
 
-                return array('success'=>true, 'nombreArchivo'=>$filename, 'idNotaContable'=>$id_nota, /*'sql'=>$sql1 ,*/'typeNota'=>$typeNota, 'arrayPuc'=> $arrayPuc['4102010101']['id'] );
+                return array('success'=>true, 'nombreArchivo'=>$filename, 'idNotaContable'=>$id_nota);
 
                 // if($idNotaContable > 0){ return array('success'=>true, 'idNotaContable'=>$idNotaContable, 'contCuentaNoExiste'=>$contCuentaNoExiste, 'debugError'=>$debugError); }
                 // else{ return array('error'=> $errorLoadFile, 'debug'=> "$debugError"); }

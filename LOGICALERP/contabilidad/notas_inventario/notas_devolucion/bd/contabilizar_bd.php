@@ -649,9 +649,10 @@
 		$tablaDebug .= '<div style="float:left; width:80px; border-top:1px solid">-'.$totalDebito.'</div><div style="float:left; width:80px; border-top:1px solid">'.$totalCredito.'</div><br>';
 		if($totalDebito != $totalCredito){
 			echo '<script>
-    					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control.");
-    					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-    				</script>';
+					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control.1");
+					console.log( " $totalDebito  ='.$totalDebito  .'  -  $totalCredito  ='.$totalCredito .'  ");
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
 			exit;
 		}
     echo round($saldoGlobalNotaSinAbono,$_SESSION['DECIMALESMONEDA'])." > ".round($totalFactura,$_SESSION['DECIMALESMONEDA'])." && ".round($saldoGlobalNotaSinAbono,$_SESSION['DECIMALESMONEDA'])." > 0";
@@ -1267,9 +1268,6 @@
 
 			if($arrayCampo['debito'] == 0 && $arrayCampo['credito'] == 0){ continue; }
 
-			$arrayCampo['debito'] = round($arrayCampo['debito'],$_SESSION['DECIMALESMONEDA']);
-			$arrayCampo['credito'] = round($arrayCampo['credito'],$_SESSION['DECIMALESMONEDA']);
-
 			$totalDebito  += $arrayCampo['credito'];
 			$totalCredito += $arrayCampo['debito'];
 
@@ -1301,9 +1299,11 @@
 
 		$totalDebito  = ROUND($totalDebito,$decimalesMoneda);
 		$totalCredito = ROUND($totalCredito,$decimalesMoneda);
+
 		if($totalDebito != $totalCredito){
 			echo '<script>
-					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control.");
+					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control.2");
+					console.log( " $totalDebito  ='.$totalDebito  .'  -  $totalCredito  ='.$totalCredito .'  ");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 				</script>';
 			exit;
