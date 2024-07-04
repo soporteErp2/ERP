@@ -3683,12 +3683,9 @@
 			exit;
 		}
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','LN','Planilla de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Planilla de Nomina',$id_sucursal,'$id_empresa')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 		echo '<script>
@@ -3837,13 +3834,10 @@
 		$query = mysql_query($sql,$link);
 
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','LN','Planilla de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-				$queryLog = mysql_query($sqlLog,$link);
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Planilla de Nomina',$id_sucursal,'$id_empresa')";
+			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_NominaPlanilla").load({
 						url     : "planilla/grillaPlanilla.php",
@@ -3893,13 +3887,10 @@
 		$sql   = "UPDATE nomina_planillas SET estado=3 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
 		$query = mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','LN','Planilla de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-				$queryLog = mysql_query($sqlLog,$link);
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Planilla de Nomina',$id_sucursal,'$id_empresa')";
+			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_NominaPlanilla").load({
 						url     : "planilla/bd/grillaContableBloqueada.php",
@@ -3929,13 +3920,10 @@
 		$sql   = "UPDATE nomina_planillas SET estado=0 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
 		$query = mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-				
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','LN','Planilla de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-				$queryLog = mysql_query($sqlLog,$link);
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Planilla de Nomina',$id_sucursal,'$id_empresa')";
+			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_NominaPlanilla").load({
 						url     : "planilla/grillaPlanilla.php",

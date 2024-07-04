@@ -286,12 +286,12 @@
 
                 <div class="renglonTop">
                     <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
-                    <div class="labelTop">Fecha Inicio liquidacion<div id="divLoadfecha_inicio<?php echo $opcGrillaContable; ?>" style="float: right;width: 20px;height: 16px;margin-top: -2;"></div></div>
+                    <div class="labelTop">Fecha Inicio<div id="divLoadfecha_inicio<?php echo $opcGrillaContable; ?>" style="float: right;width: 20px;height: 16px;margin-top: -2;"></div></div>
                     <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>"  readonly></div>
                 </div>
 
                 <div class="renglonTop">
-                    <div class="labelTop">Fecha Final liquidacion<div id="divLoadfecha_final<?php echo $opcGrillaContable; ?>" style="float: right;width: 20px;height: 16px;margin-top: -2;"></div></div>
+                    <div class="labelTop">Fecha Final<div id="divLoadfecha_final<?php echo $opcGrillaContable; ?>" style="float: right;width: 20px;height: 16px;margin-top: -2;"></div></div>
                     <div class="campoTop" >
                         <input type="text" id="fechaFinal<?php echo $opcGrillaContable; ?>" />
                     </div>

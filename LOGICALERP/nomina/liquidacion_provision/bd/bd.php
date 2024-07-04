@@ -533,12 +533,9 @@
 
 		}
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','LP','Liquidacion Provision',$id_sucursal_login,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Liquidacion Provision',$id_sucursal_login,'$id_empresa')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 	   	echo'<script>
@@ -896,12 +893,9 @@
 		moverDocumentosSaldos($id_empresa,$idDocumento,'agregar',$link);
 
 		if($query){
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','LP','Liquidacion Provision',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Liquidacion Provision',$id_sucursal,'$id_empresa')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1152,12 +1146,9 @@
 		moverDocumentosSaldos($id_empresa,$idDocumento,'agregar',$link);
 
 		if($query){
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','LP','Liquidacion Provision',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						 VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Liquidacion Provision',$id_sucursal,'$id_empresa')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1177,6 +1168,43 @@
 
 	}
 
+ 	//=========================== FUNCION PARA ELIMINAR LOS ARTICULOS RELACIONADOS A LA NOTA ==========================================================//
+ 	function eliminarArticuloRelacionado($id,$tipo,$opc='',$link){
+ 		//PRIMERO REVERSAMOS EL PROCESO QUE SE EJECUTO CUANDO SE GENERO EL MOVIMIENTO, ES DECIR, SI SALIERON ARTICULOS ENTONCES VUELVEN A INGRESAR, Y VICEVERSA
+
+ 		$cont=0;
+ 		//CONSULTA DEL ARTICULO Y LAS CANTIDADES INGRESADAS PARA PROCEDER A AGREGAR O ELIMINAR DEL INVENTARIO
+		$sqlConsul   = "SELECT id_item,cantidad,id_bodega,id_sucursal FROM inventario_movimiento_notas WHERE id='$id' ";
+		$queryConsul = mysql_query($sqlConsul,$link);
+
+		$id_item     = mysql_result($queryConsul,0,'id_item');
+		$cantidad    = mysql_result($queryConsul,0,'cantidad');
+		$id_bodega   = mysql_result($queryConsul,0,'id_bodega');
+		$id_sucursal = mysql_result($queryConsul,0,'id_sucursal');
+
+ 		if ($tipo=='entrada') {
+ 			//SI SE ENTRARON ARTICULOS CON LA NOTA, AL ELIMINAR EL REGISTRO, ENTONCES SE DEBEN SACAR
+			$sqlInventario   = "UPDATE inventario_totales SET cantidad=cantidad-$cantidad WHERE id_item='$id_item' AND id_sucursal='$id_sucursal' AND id_ubicacion='$id_bodega' ";
+			$queryInventario = mysql_query($sqlInventario,$link);
+ 			if (!$queryInventario) { $cont++; }
+
+ 		}
+ 		else if ($tipo=='salida') {
+			//SI SE SACARON ARTICULOS CON LA NOTA, AL ELIMINAR EL REGISTRO, ENTONCES SE DEBEN INGRESAR
+			$sqlInventario   = "UPDATE inventario_totales SET cantidad=cantidad+$cantidad WHERE id_item='$id_item' AND id_sucursal='$id_sucursal' AND id_ubicacion='$id_bodega' ";
+			$queryInventario = mysql_query($sqlInventario,$link);
+			if (!$queryInventario) { $cont++; }
+ 		}
+
+		$sql   = "DELETE FROM inventario_movimiento_notas WHERE id='$id'";
+		$query = mysql_query($sql,$link);
+ 		if (!$query) { $cont++; }
+
+ 		if ($opc=='return') { return $cont; }
+ 		else if ($cont==0 && $opc=='') { echo "true"; }
+ 		else if ($cont>0 && $opc=='') { echo "false"; }
+
+ 	}
 
  	//============================ FUNCION PARA RESTAURAR UN DOCUMENTO CANCELADO ====================================================================//
  	function restaurarDocumento($idDocumento,$opcGrillaContable,$carpeta,$id_sucursal,$id_empresa,$tablaPrincipal,$link){
@@ -1186,12 +1214,9 @@
 
 		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
 		if ($queryUpdate) {
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','LP','Liquidacion Provision',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Liquidacion Provision',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1654,3 +1679,4 @@
 	}
 
 ?>
+

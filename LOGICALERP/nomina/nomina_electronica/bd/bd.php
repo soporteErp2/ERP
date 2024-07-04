@@ -1,5 +1,4 @@
 <?php
-
 	// error_reporting(E_ALL);
 	include("../../../../configuracion/conectar.php");
 	include("../../../../configuracion/define_variables.php");
@@ -455,6 +454,7 @@
 		 * @param [int] $cont        list count
 		 */
 		public function addEmployee($id_contrato,$cont){
+			date_default_timezone_set("America/Bogota");
 			$fecha=date("Y-m-d");	
 
 			/* get employee contract  information */
@@ -1460,7 +1460,12 @@
 			/* get employee vacations*/
 			$vacations = $this->getVacations($id_empleado);
 
-			/* Tipo de nota ajuste */
+
+			/* credentials position*/
+			$this->JsonStructure["Credencial"]=[
+				"ClientToken" => $companyData["client_token"],
+				"AccessToken" => $companyData["access_token"]
+			];
 			$sql = "SELECT 
 					codigo_tipo_ajuste,
 					planilla_relacionada_al_ajuste
@@ -1475,13 +1480,6 @@
 				$planilla_relacionada_al_ajuste = (is_null($row["planilla_relacionada_al_ajuste"]))? "" : $row["planilla_relacionada_al_ajuste"];
 				$tipo_nota_ajuste = ($row["codigo_tipo_ajuste"] != 1 && $row["codigo_tipo_ajuste"] != 2) ? 0 : $row["codigo_tipo_ajuste"];
 			}
-
-			/* credentials position*/
-			$this->JsonStructure["Credencial"]=[
-				"ClientToken" => $companyData["client_token"],
-				"AccessToken" => $companyData["access_token"]
-			];
-			/* document position, contains branch information*/
 			date_default_timezone_set("America/Bogota");
 			// Obtiene la hora actual del servidor
 			$hora_servidor = time();
@@ -1491,7 +1489,7 @@
 
 			// Convierte la hora ajustada en un formato legible
 			$hora_formateada = date('Y-m-d H:i:s', $hora_local);
-
+			/* document position, contains branch information*/
 			$this->JsonStructure["Documento"] = [
 				"OrigenDocumento"        => "",
 				"TipoDocumento"          => $this->payRollInfo->codigo_tipo_documento,

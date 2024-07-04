@@ -3775,9 +3775,6 @@
 			exit;
 		}
 
-		// CUENTAS SIMULTANEAS DE LAS CUENTAS DEL DOCUMENTO
-		contabilizacionSimultanea($id_planilla,'PCP',$id_sucursal,$id_empresa,$link);
-
 		// $tiempo_fin = microtime_float();
 		// $tiempo = $tiempo_fin - $tiempo_inicio;
     	// echo "<script>console.log('Tiempo empleado colgaap: ".($tiempo_fin - $tiempo_inicio)." ');</script>  ";
@@ -3823,12 +3820,9 @@
     	// GENERAR EL MOVIMIENTO DE LOS PRESTAMOS
     	// moverSaldoPrestamos('eliminar',$id_planilla,$id_empresa,$link);
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','PCP','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+					VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PCP')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 		echo '<script>
@@ -4104,13 +4098,10 @@
     	$sql="UPDATE nomina_planillas_consolidacion_provision SET estado=0 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
     	$query=mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						       VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','PCP','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-			  $queryLog = mysql_query($sqlLog,$link);
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Planilla de Consolidacion',$id_sucursal,'$id_empresa',,'".$_SERVER['REMOTE_ADDR']."','PCP')";
+			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_PlanillaConsolidacionProvision").load({
 						url     : "consolidacion_provision/grillaPlanilla.php",
@@ -4159,13 +4150,10 @@
     	$sql="UPDATE nomina_planillas_consolidacion_provision SET estado=3 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
     	$query=mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','PCP','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-				$queryLog = mysql_query($sqlLog,$link);
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PCP')";
+			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_PlanillaConsolidacionProvision").load({
 						url     : "consolidacion_provision/bd/grillaContableBloqueada.php",
@@ -4194,13 +4182,10 @@
    		$sql="UPDATE nomina_planillas_consolidacion_provision SET estado=0 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
     	$query=mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','PCP','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-				$queryLog = mysql_query($sqlLog,$link);
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Planilla de Consolidacion',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PCP')";
+			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_PlanillaConsolidacionProvision").load({
 						url     : "consolidacion_provision/grillaPlanilla.php",
