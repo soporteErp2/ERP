@@ -56,6 +56,11 @@
 		 	retrocederArticulo($id,$idArticulo,$cont,$id_empresa,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$link);
 			break;
 
+		case 'checkboxRetenciones':
+			verificaEstadoDocumento($id,$opcGrillaContable,$tablaPrincipal,$link);
+			checkboxRetenciones($id,$idRetencion,$accion,$opcGrillaContable,$tablaRetenciones,$idTablaPrincipal,$link);
+			break;
+
 		case 'actualizaFechaDocumento':
 			verificaEstadoDocumento($id,$opcGrillaContable,$tablaPrincipal,$link);
 			actualizaFechaDocumento($id,$fecha,$tablaPrincipal,$opcGrillaContable,$link);
@@ -67,11 +72,11 @@
 
 		case 'terminarGenerar':
 			// verificaEstadoDocumento($id,$opcGrillaContable,$tablaPrincipal,$link);
-			terminarGenerar($id,$id_sucursal,$observacion,$tablaPrincipal,$idTablaPrincipal,$tablaInventario,$opcGrillaContable,$mysql);
+			terminarGenerar($id,$id_sucursal,$observacion,$tablaPrincipal,$idTablaPrincipal,$tablaInventario,$opcGrillaContable,$link);
 			break;
 
 		case 'modificarDocumentoGenerado':
-			modificarDocumentoGenerado($id,$opcGrillaContable,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$carpeta,$mysql);
+			modificarDocumentoGenerado($id,$opcGrillaContable,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$carpeta,$link);
 			break;
 
 		case 'buscarImpuestoArticulo':
@@ -80,12 +85,12 @@
 
 		case 'guardarArticulo':
 			verificaEstadoDocumento($id,$opcGrillaContable,$tablaPrincipal,$link);
-			guardarArticulo($consecutivo,$id,$cont,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_sucursal_item,$id_empresa,$mysql);
+			guardarArticulo($consecutivo,$id,$cont,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_empresa,$mysql);
 			break;
 
 		case 'actualizaArticulo':
 			verificaEstadoDocumento($id,$opcGrillaContable,$tablaPrincipal,$link);
-			actualizaArticulo($consecutivo,$id,$cont,$idInsertArticulo,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_sucursal_item,$id_empresa,$mysql);
+			actualizaArticulo($consecutivo,$id,$cont,$idInsertArticulo,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_empresa,$mysql);
 			break;
 
 		case 'guardarObservacion':
@@ -98,11 +103,29 @@
 			break;
 
 		case 'cancelarDocumento':
-			cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$id_sucursal,$id_empresa,$mysql);
+			cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$id_sucursal,$id_empresa,$link);
 			break;
 
 		case 'restaurarDocumento':
-			restaurarDocumento($id,$opcGrillaContable,$carpeta,$id_sucursal,$id_sucursal,$id_empresa,$tablaPrincipal,$mysql);
+			restaurarDocumento($id,$opcGrillaContable,$carpeta,$id_sucursal,$id_sucursal,$id_empresa,$tablaPrincipal,$link);
+			break;
+
+		case 'agregarDocumento':
+			verificaEstadoDocumento($id_factura,$opcGrillaContable,$tablaPrincipal,$link);
+			agregarDocumento($typeDoc,$codDocAgregar,$id_factura,$filtro_bodega,$id_sucursal,$id_empresa,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
+			break;
+
+		case 'reloadBodyAgregarDocumento':
+			reloadBodyAgregarDocumento($opcGrillaContable,$id_factura,$id_sucursal,$id_empresa,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
+			break;
+
+		case 'eliminaDocReferencia':
+			verificaEstadoDocumento($id_factura,$opcGrillaContable,$tablaPrincipal,$link);
+			eliminaDocReferencia($opcGrillaContable,$id_factura,$id_sucursal,$filtro_bodega,$id_empresa,$id_doc_referencia,$docReferencia,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
+			break;
+
+		case 'sincronizarCuentaNiif':
+			sincronizarCuentaNiif($id,$campoId,$campoText,$id_empresa,$link);
 			break;
 
 		case 'calculaValorDepreciacion':
@@ -543,6 +566,24 @@
 		}
 	}
 
+	//=========================== FUNCION PARA AGREGAR O QUITAR RETENCIONES A LA FACTURA ========================================================//
+	function checkboxRetenciones($id,$idRetencion,$accion,$opcGrillaContable,$tablaRetenciones,$idTablaPrincipal,$link){
+		//cadena con el query para insertar o eliminar una retencion de la factura
+		$sqlRetencion="";
+
+		//cadena para consultar el valor de la retencion y agregar o restar el valor a la variable retefuenteCompra de la factura de compra
+		$sqlValorRetencion      = "SELECT valor FROM retenciones WHERE id=".$idRetencion;
+		$querySqlValorRetencion = mysql_query($sqlValorRetencion,$link);
+		$arraySqlValorRetencion = mysql_fetch_array($querySqlValorRetencion);
+
+
+		if ($accion=="eliminar"){ $sqlRetencion="DELETE FROM $tablaRetenciones WHERE $idTablaPrincipal=$id AND id_retencion=$idRetencion"; }
+		else if ($accion=="insertar") { $sqlRetencion="INSERT INTO $tablaRetenciones ($idTablaPrincipal,id_retencion) VALUES ('$id','$idRetencion')"; }
+
+		$queryRetencion = mysql_query($sqlRetencion,$link);
+		if(!$queryRetencion){ echo'<script>alert("No se logro '.$accion.' la retencion");</script>'; }
+	}
+
 	//=========================== FUNCION PARA ACTUALIZAR LA FORMA DE PAGO ======================================================================//
 	function actualizaFechaDocumento($id,$fecha,$tablaPrincipal,$opcGrillaContable,$link){
 
@@ -558,44 +599,29 @@
 
 	//=========================== FUNCION PARA TERMINAR 'GENERAR' LA FACTURA, COTIZACION, PEDIDO Y CARGAR UNA NUEVA ==============================//
 	//CIERRA Y/O BLOQUEA, Y MUEVE LAS CUENTAS DE LOS DOCUMENTOS
-	function terminarGenerar($id,$id_sucursal,$observacion,$tablaPrincipal,$idTablaPrincipal,$tablaInventario,$opcGrillaContable,$mysql){
+	function terminarGenerar($id,$id_sucursal,$observacion,$tablaPrincipal,$idTablaPrincipal,$tablaInventario,$opcGrillaContable,$link){
 		global $id_empresa;
-
-		$sql   = "SELECT tercero FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa'";
-		$query=$mysql->query($sql,$mysql->link);
-		$tercero      = $mysql->result($query,0,'tercero');
-		if ($tercero=='') {
-			echo '<script>
-						alert("El documento no tiene tercero seleccionado");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
-		}
-
 		// ACTUALIZAR ELESTADO DEL DOCUMENTO
 		$sql="UPDATE activos_fijos_deterioro SET estado=1 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
-		$query=$mysql->query($sql,$mysql->link);
+		$query=mysql_query($sql,$link);
 		if ($query) {
 			// CONSULTAR EL CONSECUTIVO
 			$sql="SELECT consecutivo,fecha_inicio,id_sucursal FROM activos_fijos_deterioro WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
-			$query=$mysql->query($sql,$mysql->link);
-			$consecutivo = $mysql->result($query,0,'consecutivo');
-			$fecha       = $mysql->result($query,0,'fecha_inicio');
-			$id_sucursal = $mysql->result($query,0,'id_sucursal');
-
+			$query=mysql_query($sql,$link);
+			$consecutivo =mysql_result($query,0,'consecutivo');
+			$fecha       =mysql_result($query,0,'fecha_inicio');
+			$id_sucursal =mysql_result($query,0,'id_sucursal');
 			if ($consecutivo>0) {
 				// MOVER LOS ASIENTOS CONTABLES DE LOS ACTIVOS PARA LA DEPRECIACION
-				moverCuentasDocumento($id,$consecutivo,$fecha,'contabilizar',$id_sucursal,$id_empresa,$mysql);
+				moverCuentasDocumento($id,$consecutivo,$fecha,'contabilizar',$id_sucursal,$id_empresa,$link);
 
 				// ACTUALIZAR EL VALOR DE LA DEPRECIACION ACUMULADA DE LOS ACTIVOS DEL DOCUENTO
-				actualizaDepreciacionAcumuladaActivos($id,'agregar',$id_empresa,$mysql);
+				actualizaDepreciacionAcumuladaActivos($id,'agregar',$id_empresa,$link);
 
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
 
-				$sql = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							  VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','DTA','Deterioro Activos Fijos','".$_SESSION['SUCURSAL']."','".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-				$query=$mysql->query($sql,$mysql->link);
+				$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Depreciacion Activos Fijos',".$_SESSION['SUCURSAL'].",".$_SESSION['EMPRESA'].")";
+				$queryLog = mysql_query($sqlLog,$link);
 				echo '<script>
 					 	Ext.get("contenedor_'.$opcGrillaContable.'").load({
 							url     : "deterioro/bd/grillaContableBloqueada.php",
@@ -613,7 +639,7 @@
 			}
 			else{
 				$sql="UPDATE activos_fijos_deterioro SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
-				$query=$mysql->query($sql,$mysql->link);
+				$query=mysql_query($sql,$link);
 				echo '<script>
 						alert("No se genero consecutivo del documento\nIntentelo de nuevo");
 						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -622,110 +648,136 @@
 		}
 	}
 
+	//========================// VALIDA NOTA Y EJECUTA LA FUNCION TERMINAR //========================//
+	//***********************************************************************************************//
+	function validaNota($id,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$id_empresa,$id_sucursal,$opcGrillaContable,$link){
+		// VALIDACION DE LAS CUENTAS DE LOS ACTIVOS FIJOS CARGADOS
+		$sql   = "SELECT
+						codigo,
+						nombre,
+						cuenta_depreciacion,
+						contrapartida_depreciacion,
+						cuenta_depreciacion_niif,
+						contrapartida_depreciacion_niif
+					FROM $tablaInventario
+					WHERE
+						activo            = 1
+					AND $idTablaPrincipal = '$id'
+					AND id_sucursal       = '$id_sucursal'
+					AND id_empresa        = '$id_empresa'";
+		$query = mysql_query($sql,$link);
+		while ($row=mysql_fetch_array($query)) {
+			$codigo                          = $row['codigo'];
+			$nombre                          = $row['nombre'];
+			$cuenta_depreciacion             = $row['cuenta_depreciacion'];
+			$contrapartida_depreciacion      = $row['contrapartida_depreciacion'];
+			$cuenta_depreciacion_niif        = $row['cuenta_depreciacion_niif'];
+			$contrapartida_depreciacion_niif = $row['contrapartida_depreciacion_niif'];
+
+			if ($cuenta_depreciacion == ''
+				|| $contrapartida_depreciacion == ''
+				|| $cuenta_depreciacion_niif == ''
+				|| $contrapartida_depreciacion_niif == ''){
+				$activos_error .= '\n'.$codigo.' - '.$nombre;
+			}
+		}
+
+		if($activos_error <> '') {
+			echo '<script>
+					alert("Aviso,\nLos siguientes activos no tienen cuentas! '.$activos_error.'")
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
+				exit;
+		}
+
+		$sqlNota   = "SELECT tercero,fecha_inicio FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa'";
+		$queryNota = mysql_query($sqlNota,$link);
+
+		$tercero      = mysql_result($queryNota,0,'tercero');
+		$fecha_inicio = mysql_result($queryNota,0,'fecha_inicio');
+
+		$mes_fecha_nota  = date("m",strtotime($fecha_inicio));
+		$anio_fecha_nota = date("y",strtotime($fecha_inicio));
+
+		if ($mes_fecha_nota=='12') {
+			$anio_fecha_nota++;
+			$mes_fecha_nota='01';
+		}
+		else{ $mes_fecha_nota++; }
+
+		//FECHA A BUSCAR LAS NOTAS GENERADAS PARA VALIDAR
+		$fecha_buscar=$anio_fecha_nota.'/'.$mes_fecha_nota.'/01';
+
+		if($tercero==''){
+			echo '<script>
+					alert("Debe Seleccionar el tercero!");
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
+			exit;
+		}
+
+		$sqlNotaGenerada   = "SELECT COUNT(id) AS cont FROM $tablaPrincipal WHERE fecha_inicio>='$fecha_buscar' AND activo=1 AND estado=1 AND id_sucursal='$id_sucursal' AND id_empresa=$id_empresa";
+		$queryNotaGenerada = mysql_query($sqlNotaGenerada,$link);
+		$contNotaGenerada  = mysql_result($queryNotaGenerada,0,'cont');
+		//SI CONT ES MAYOR A CERO, HAY NOTAS GENERADAS EN EL MES SIGUIENTE, ASI QUE SE ADVERTIRA AL USUARIO
+		if ($cont>0) {
+			echo '<script>
+					if (confirm("Aviso!\nExiten '.$cont.' notas creadas del mes siguiente a la fecha de la nota!\nSi continua no coincidara el consecutivo con el mes\nDesea continuar de todos modos?")) {
+						validarNotaGeneral("terminar");
+					}
+				</script>';
+			return;
+		}
+		else{
+			terminarGenerar($id,$id_sucursal,$observacion,$tablaPrincipal,$idTablaPrincipal,$tablaInventario,$opcGrillaContable,$link);
+		}
+
+	}
+
 	// FUNCION PARA GENERAR LOS ASIENTOS DE LOS ACTIVOS, O ELIMINAR LOS ASIENTOS GENERADOS
-	function moverCuentasDocumento($id_documento,$consecutivo,$fecha,$accion,$id_sucursal,$id_empresa,$mysql){
+	function moverCuentasDocumento($id_documento,$consecutivo,$fecha,$accion,$id_sucursal,$id_empresa,$link){
 		if ($accion=='contabilizar') {
 
 			// CONSULTAR EL TERCERO DEL DOCUMENTO
 			$sql="SELECT id_tercero FROM activos_fijos_deterioro WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id_documento";
-			$query=$mysql->query($sql,$mysql->link);
-			$id_tercero = $mysql->result($query,0,'id_tercero' );
+			$query=mysql_query($sql,$link);
+			$id_tercero = mysql_result($query,0,'id_tercero' );
 
-			// CONSULTAR TODOS LOS ACTIVOS DEL DOCUMENTO
-			$sql="SELECT
-						id_activo_fijo,
-						code_bar,
-						codigo_activo,
-						nombre,
-						valor,
+			// CONSULTAR TODOS LOS ACTIVOS DEL DOCUMENTO CON LAS CUENTAS Y LOS VALORES DE DEPRECIACION
+			echo$sql="SELECT cuenta_deterioro,
+						contrapartida_deterioro,
 						costo,
-						deterioro_acumulado,
-						(SELECT id_centro_costos FROM activos_fijos WHERE activo=1 AND id=id_activo_fijo ) AS id_centro_costos
+						valor,
+						id_centro_costos
 					FROM activos_fijos_deterioro_inventario WHERE activo=1 AND id_deterioro=$id_documento AND id_empresa=$id_empresa";
-			$query=$mysql->query($sql,$mysql->link);
+			$query=mysql_query($sql,$link);
 			// ACUMULAR LAS CUENTAS CON SUS VALORES
-			while ($row=$mysql->fetch_array($query)){
-				if (($row['costo']-$row['valor'])<=0 || $row['valor']<=0) { continue; }
+			while ($row=mysql_fetch_array($query)){
+				$cuenta_deterioro             = $row['cuenta_deterioro'];
+				$contrapartida_deterioro      = $row['contrapartida_deterioro'];
+				$id_centro_costos                = $row['id_centro_costos'];
 
+				$whereCuentaColgaap .= ($whereCuentaColgaap=='')? " cuenta='$cuenta_deterioro' OR cuenta='$contrapartida_deterioro' " : " OR cuenta='$cuenta_deterioro' OR cuenta='$contrapartida_deterioro' " ;
+				$costo = $row['costo'];
+				$valor = $row['valor'];
+				if (($costo-$valor)<=0 || $valor<=0) { continue; }
+				$valor_deterioro = $costo-$valor;
 
-				$id_activo = $row['id_activo_fijo'];
-				$arrayActivo[$id_activo]['datos'] = array(
-														'code_bar'         => $row['code_bar'],
-														'codigo_activo'    => $row['codigo_activo'],
-														'nombre'           => $row['nombre'],
-														'valor'            => ($row['costo']-$row['valor']),
-														'costo'            => $row['costo'],
-														'id_centro_costos' => $row['id_centro_costos']
-														);
-
-				$whereIdActivos .= ($whereIdActivos=='')? " id_activo=$id_activo " : " OR id_activo=$id_activo " ;
-
-			}
-			// print_r($arrayActivo);
-			// CONSULTAR LAS CUENTAS DE LOS ACTIVOS
-			$sql="SELECT
-						id_activo,
-						descripcion,
-						estado,
-						id_cuenta,
-						cuenta,
-						descripcion_cuenta,
-						contabilidad
-					FROM activos_fijos_cuentas WHERE activo=1 AND id_empresa=$id_empresa AND ($whereIdActivos) AND contabilidad='niif' AND descripcion='deterioro' ";
-			$query=$mysql->query($sql,$mysql->link);
-			while ($row=$mysql->fetch_array($query)) {
-				$id_activo          = $row['id_activo'];
-				$whereCuentas .= ($whereCuentas=='')? " cuenta='$row[cuenta]' " : " OR cuenta='$row[cuenta]' " ;
-
-				$arrayActivo[$id_activo]['cuentas'][] = array(
-																'estado'             => $row['estado'],
-																'id_cuenta'          => $row['id_cuenta'],
-																'cuenta'             => $row['cuenta'],
-																'descripcion_cuenta' => $row['descripcion_cuenta'],
-															);
-
+				$arrayAsientosNiif[$id_centro_costos][$cuenta_deterioro]['debito']         += $valor_deterioro;
+				$arrayAsientosNiif[$id_centro_costos][$contrapartida_deterioro]['credito'] += $valor_deterioro;
 			}
 
 			// CONSULTAR SI LAS CUENTAS TIENEN CENTROS DE COSTOS
-			$sql = "SELECT cuenta,centro_costo FROM puc_niif WHERE activo=1 AND id_empresa=$id_empresa AND ( $whereCuentas ) ";
-			$query=$mysql->query($sql,$mysql->link);
-			while ($row=$mysql->fetch_array($query)) {
-				$arrayCuentasCcos[$row['cuenta']]   = $row['centro_costo'];
+			$sql = "SELECT cuenta,cuenta_niif,centro_costo FROM puc WHERE activo=1 AND id_empresa=$id_empresa AND ( $whereCuentaColgaap ) ";
+			$query = mysql_query($sql,$link);
+			while ($row=mysql_fetch_array($query)) {
+				$arrayCuentasCcosColgaap[$row['cuenta']]   = $row['centro_costo'];
 			}
 
-			// print_r($arrayActivo);
-			// VERIFICAR QUE TODOS LOS ACTIVOS TENGAN LAS CUENTAS
-			foreach ($arrayActivo as $id_activo => $arrayActivos) {
-				foreach ($arrayActivos['cuentas'] as $key => $arrayResult) {
-					print_r($arrayResult);
-					// VALIDAR QUE EL ACTIVO TENGA UNA CUENTA
-					if ($arrayResult['cuenta']=='' || $arrayResult['cuenta']==0) {
-						$sql="UPDATE activos_fijos_deterioro SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
-						$query=$mysql->query($sql,$mysql->link);
-						echo '<script>
-								alert("Error!\nEl activo '.$arrayActivos['datos']['codigo_activo'].' - '.$arrayActivos['datos']['nombre'].' no tiene cuentas contables configuradas!");
-								document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-							</script>';
-						exit;
-					}
-					// VALIDAR QUE LA CUENTA TENGA CENTRO DE COSTOS SI ES OBLIGATORIO
-					if ($arrayCuentasCcos[$arrayResult['cuenta']]=='Si' && ($arrayActivos['datos']['id_centro_costos']==0 || $arrayActivos['datos']['id_centro_costos']=='') ){
-							$sql="UPDATE activos_fijos_deterioro SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
-							$query=$mysql->query($sql,$mysql->link);
-							echo '<script>
-									alert("Error!\nEl activo '.$arrayActivos['datos']['codigo_activo'].' - '.$arrayActivos['datos']['nombre'].' no tiene centro de costos y la cuenta '.$arrayResult['cuenta'].' esta configurada para causar centro de costos!");
-									document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-								</script>';
-							exit;
-					}
+			// print_r($arrayAsientosNiif);
 
-					$arrayAsientos[$arrayActivos['datos']['id_centro_costos']][$arrayResult['cuenta']][$arrayResult['estado']] += $arrayActivos['datos']['valor'];
-				}
-			}
-
-			// print_r($arrayAsientos);
 			// ASIENTOS COLGAAP
-			foreach ($arrayAsientos as $id_centro_costos => $arrayAsientosNiifCuentas) {
+			foreach ($arrayAsientosNiif as $id_centro_costos => $arrayAsientosNiifCuentas) {
 				foreach ($arrayAsientosNiifCuentas as $cuenta => $arrayAsientosNiifResul) {
 					foreach ($arrayAsientosNiifResul as $caracter => $saldo) {
 						$id_centro_costos_insert = '';
@@ -739,18 +791,26 @@
 							$credito = $saldo;
 						}
 
-						$acumSaldo   += $saldo;
-						$acumDebito  += $debito;
-						$acumCredito += $credito;
+						$acumSaldo += $saldo;
 
-						$id_centro_costos_insert =($arrayCuentasCcos[$cuenta]=='Si')? $id_centro_costos : 0 ;
+						if ($arrayCuentasCcosColgaap[$cuenta]=='Si'){
+							if ($id_centro_costos==0 || $id_centro_costos=='') {
+								echo '<script>
+										alert("Error!\nLa cuenta '.$cuenta.' no tiene centro de costos, revise los activos fijos");
+										document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+									</script>';
+								exit;
+							}
+							$id_centro_costos_insert = $id_centro_costos;
+
+						}
 
 						$valueInsertAsientos .= "('$id_documento',
 													'$consecutivo',
-													'DTA',
+													'DT',
 													'$id_documento',
 													'$consecutivo',
-													'DTA',
+													'DT',
 													'Deterioro Activos Fijos',
 													'".$fecha."',
 													'".$debito."',
@@ -764,24 +824,13 @@
 				}
 			}
 
-
-			if ($acumDebito <> $acumCredito) {
-				echo '<script>
-						alert("Error!\nDiferencia en saldo debito y credito de '.($acumDebito-$acumCredit).' ");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				$sql   = "UPDATE activos_fijos_deterioro SET estado=0 WHERE id='$id_documento' AND id_empresa='$id_empresa' AND id_sucursal='$id_sucursal' AND activo=1";
-				$query=$mysql->query($sql,$mysql->link);
-				exit;
-			}
-
 			if ($acumSaldo<=0) {
 				echo '<script>
 						alert("Error!\nNo hay activos con deterioros a contabilizar!");
 						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 					</script>';
 				$sql   = "UPDATE activos_fijos_deterioro SET estado=0 WHERE id='$id_documento' AND id_empresa='$id_empresa' AND id_sucursal='$id_sucursal' AND activo=1";
-				$query=$mysql->query($sql,$mysql->link);
+				$query = mysql_query($sql,$link);
 				exit;
 			}
 
@@ -804,12 +853,15 @@
 										id_sucursal,
 										id_empresa)
 									VALUES $valueInsertAsientos";
-			$query=$mysql->query($sql,$mysql->link);
+			$query=mysql_query($sql,$link);
 
 			if (!$query) {
+				// DEVELVER EL VALOR ACUMULADOD DE LOS ACTIVOS
+				actualizaDepreciacionAcumuladaActivos($id_documento,'eliminar',$id_empresa,$link);
+
 				// ACTUALIZAR EL ESTADO DEL DOCUMENTO
 				$sql="UPDATE activos_fijos_deterioro SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
-				$query=$mysql->query($sql,$mysql->link);
+				$query=mysql_query($sql,$link);
 				echo '<script>
 						alert("Error!\nNo se insertaron los asientos Niif\nIntentelo de nuevo si el problema continua comuniquese con el administrador del sistema");
 						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -820,8 +872,8 @@
 		}
 		else if($accion=='descontabilizar'){
 			// BORRAR ASIENTOS COLGAAP
-			$sql="DELETE FROM asientos_niif WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id_documento=$id_documento AND tipo_documento='DTA' ";
-			$query=$mysql->query($sql,$mysql->link);
+			$sql="DELETE FROM asientos_niif WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id_documento=$id_documento AND tipo_documento='DT' ";
+			$query=mysql_query($sql,$link);
 			if (!$query) {
 				echo '<script>
 						alert("Error!\nNo se eliminaron los asientos colgaap\nIntentelo de nuevo");
@@ -833,9 +885,9 @@
 		}
 	}
 
-	function actualizaDepreciacionAcumuladaActivos($id_documento,$accion,$id_empresa,$mysql){
+	function actualizaDepreciacionAcumuladaActivos($id_documento,$accion,$id_empresa,$link){
 		if ($accion=='agregar') {
-			$sql="UPDATE activos_fijos AS AF,
+			echo$sql="UPDATE activos_fijos AS AF,
 						 (
 							SELECT
 								AFD.*
@@ -853,7 +905,7 @@
 						AND AF.id_empresa = $id_empresa";
 		}
 		else if ($accion=='eliminar') {
-			$sql="UPDATE activos_fijos AS AF,
+			echo$sql="UPDATE activos_fijos AS AF,
 						 (
 							SELECT
 								AFD.*
@@ -871,18 +923,10 @@
 						AND AF.id_empresa = $id_empresa";
 		}
 
-		$query=$mysql->query($sql,$mysql->link);
+		$query=mysql_query($sql,$link);
 		if (!$query) {
-			$sql="UPDATE activos_fijos_deterioro SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
-			$query=$mysql->query($sql,$mysql->link);
-
-			// CONSULTAR LA SUCURSAL DEL DOCUMENTO+
-			$sql="SELECT id_sucursal FROM activos_fijos_deterioro WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
-			$query=$mysql->query($sql,$mysql->link);
-			$id_sucursal = $mysql->result($query,0,'id_sucursal');
-
-			// DESCONTABILIZAR EL DOCUMENTO
-			moverCuentasDocumento($id,0,0,'descontabilizar',$id_sucursal,$id_empresa,$link);
+			// $sql="UPDATE activos_fijos_deterioro SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_documento";
+			// $query=mysql_query($sql,$link);
 			echo '<script>
 					alert("Error!\nNo se Actualizo el valor de la depreciacion acumulada de los activos");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -891,21 +935,25 @@
 		}
 	}
 
-	//=============================================== FUNCION EDITAR UN DOCUMENTO YA GENERADA ===============================================================//
-	function modificarDocumentoGenerado($idDocumento,$opcGrillaContable,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$carpeta,$mysql){
+	//=============================================== FUNCION EDITAR UNA FACTURA - REMISION YA GENERADA ===============================================================//
+	// AL EDITAR UNA FACTURA - REMISION YA GENERADA, SE DESCONTABILIZA, ES DECIR SE ELIMINAN LOS REGISTROS CONTABLES QUE GENERO (SOLO LA FACTURA), Y DEVOLVEMOS LOS ARTICULOS
+	// AL INVENTARIO, ADEMAS CAMBIAMOS SU ESTADO A CERO, QUEDANDO LA FACTURA COMO SI SE HUBIERA CREADO PERO NO SE HUBIERA TERMINADO
+	// ESTO SOLO SE CUMPLE SI LA FACTURA NO ESTA DENTRO DE UN CIERRE, SI ES ASI NO SE PODRA MODIFICAR EN NINGUNA MANERA
+
+	function modificarDocumentoGenerado($idDocumento,$opcGrillaContable,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$carpeta,$link){
 		// DEVELVER EL VALOR ACUMULADOD DE LOS ACTIVOS
-		actualizaDepreciacionAcumuladaActivos($idDocumento,'eliminar',$id_empresa,$mysql);
+		actualizaDepreciacionAcumuladaActivos($idDocumento,'eliminar',$id_empresa,$link);
 
 		// DESCONTABILIZAR EL DOCUMENTO
-		moverCuentasDocumento($idDocumento,0,0,'descontabilizar',$id_sucursal,$id_empresa,$mysql);
+		moverCuentasDocumento($idDocumento,0,0,'descontabilizar',$id_sucursal,$id_empresa,$link);
 
 		//ACTUALIZAMOS LA FACTURA DE COMPRA A ESTADO 0 'SIN GUARDAR'
 		$sql   = "UPDATE $tablaPrincipal SET estado=0 WHERE id='$idDocumento' AND id_empresa='$id_empresa' AND id_sucursal='$id_sucursal' AND activo=1";
-		$query=$mysql->query($sql,$mysql->link);
+		$query = mysql_query($sql,$link);
 
 		if (!$query) {
 			$sql   = "UPDATE $tablaPrincipal SET estado=1 WHERE id='$idDocumento' AND id_empresa='$id_empresa' AND id_sucursal='$id_sucursal' AND activo=1";
-			$query=$mysql->query($sql,$mysql->link);
+			$query = mysql_query($sql,$link);
 			echo '<script>
 					alert("Error!\nNo se modifico el documento para editarlo\nSi el problema persiste comuniquese con el administrador del sistema");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -913,13 +961,10 @@
 			return;
 		}
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sql = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					  VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','DTA','Deterioro Activos Fijos','$id_sucursal','$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-		$query=$mysql->query($sql,$mysql->link);
+		$sqlLog	  = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Depreciacion Activos Fijos','$id_sucursal','$id_empresa')";
+		$queryLog = mysql_query($sqlLog,$link);
 
 		echo'<script>
 			 	Ext.get("contenedor_'.$opcGrillaContable.'").load({
@@ -930,7 +975,7 @@
 					{
 						filtro_sucursal   : "'.$id_sucursal.'",
 						opcGrillaContable : "'.$opcGrillaContable.'",
-						id_deterioro      : "'.$idDocumento.'",
+						id_deterioro   : "'.$idDocumento.'",
 					}
 				});
 				document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -938,100 +983,13 @@
 			</script>';
 	}
 
-	//============================ FUNCION PARA CANCELAR UN PEDIDO - COTIZACION ====================================================================//
-	function cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$id_sucursal,$id_empresa,$mysql){
-
-
-		$sql   = "SELECT consecutivo,estado FROM $tablaPrincipal WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id";
-		$query=$mysql->query($sql,$mysql->link);
-		$estado      = $mysql->result($query,0,'estado');
-		$consecutivo = $mysql->result($query,0,'consecutivo');
-
-		$sql="UPDATE $tablaPrincipal SET estado=3 WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id";
-
-		if ($estado==3) {
-			echo '<script>
-					alert("El documento ya esta cancelado!");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-			exit;
-		}
-		else if ($estado==0 && $consecutivo=='') {
-			$sql="UPDATE $tablaPrincipal SET activo=0 WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id";
-		}
-		else if ($estado==1) {
-			// DEVELVER EL VALOR ACUMULADOD DE LOS ACTIVOS
-			actualizaDepreciacionAcumuladaActivos($id,'eliminar',$id_empresa,$mysql);
-			// DESCONTABILIZAR EL DOCUMENTO
-			moverCuentasDocumento($id,0,0,'descontabilizar',$id_sucursal,$id_empresa,$mysql);
-		}
-		// echo $sql;
-		$query=$mysql->query($sql,$mysql->link);				//EJECUTAMOS EL QUERY PARA ACTUALIZAR EL DOCUMENTO CON SU ESTADO COMO CANCELADO
-		if (!$query) {
-			echo '<script>
-					alert("Error!\nNo se logro cancelar el documento");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-			return;
-		}
-		else{
-
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-								 VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','DTA','Deterioro Activos Fijos',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-			$query=$mysql->query($sqlLog,$mysql->link);
-			echo'<script>
-					nueva'.$opcGrillaContable.'();
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-		}
-	}
-
- 	//============================ FUNCION PARA RESTAURAR UN DOCUMENTO CANCELADO ====================================================================//
- 	function restaurarDocumento($idDocumento,$opcGrillaContable,$carpeta,$id_sucursal,$id_sucursal,$id_empresa,$tablaPrincipal,$mysql){
-
-		$sqlUpdate   = "UPDATE $tablaPrincipal SET estado=0 WHERE activo=1 AND id='$idDocumento' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa' ";
-		$queryUpdate = mysql_query($sqlUpdate,$link);
-
-		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
-		if ($queryUpdate) {
-
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
-			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							   VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','DA','Depreciacion Activos Fijos',$id_sucursal,'".$_SESSION['EMPRESA']."','$fecha_actual','$hora_actual')";
-			$queryLog = mysql_query($sqlLog,$link);
-			echo'<script>
-					Ext.get("contenedor_'.$opcGrillaContable.'").load({
-						url     : "deterioro/grilla/grillaContable.php",
-						scripts : true,
-						nocache : true,
-						params  :
-						{
-							id_deterioro   : "'.$idDocumento.'",
-							opcGrillaContable : "'.$opcGrillaContable.'",
-							id_sucursal       : "'.$id_sucursal.'"
-						}
-					});
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-
-		}
-		else{
-			echo '<script>
-					alert("Error!\nNo se pudo restaurar el documento\nSi el problema persiste comuniquese con el administrador del sistema");
-					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-				</script>';
-				return;
-		}
- 	}
-
 	//=========================== FUNCION PARA GUARDAR UN ARTICULO DE LA GRILLA ==================================================================//
-	function guardarArticulo($consecutivo,$id,$cont,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_sucursal_item,$id_empresa,$mysql){
+	function guardarArticulo($consecutivo,$id,$cont,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_empresa,$mysql){
+		// CONSULTAR LA SUSUCURSAL DEL DOCUMENTO
+		$sql="SELECT id_sucursal FROM activos_fijos_deterioro WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
+		$query=$mysql->query($sql,$mysql->link);
+		$id_sucursal = mysql_result($query,0,'id_sucursal');
+
 		$sql = "INSERT INTO $tablaInventario(
 						  	$idTablaPrincipal,
 						  	id_activo_fijo,
@@ -1046,7 +1004,7 @@
 							'$valorActual',
 							'$deterioroAcumulado',
 							'$id_empresa ',
-							'$id_sucursal_item')";
+							'$id_sucursal')";
 
 		$query=$mysql->query($sql,$mysql->link);
 
@@ -1069,16 +1027,11 @@
 				</script>'.cargaDivsInsertUnidades('echo',$consecutivo,$opcGrillaContable);
 
 		}
-		else{
-			echo '<script>
-					alert("Error\n no se ha almacenado el articulo en el documento, si el problema persiste favor comuniquese con la administracion del sistema");
-					document.getElementById("bodyDivArticulosDeterioro_"+contArticulos'.$opcGrillaContable.').parentNode.removeChild(document.getElementById("bodyDivArticulosDeterioro_"+contArticulos'.$opcGrillaContable.'));
-				</script>  ';
-		}
+		else{ echo $sqlInsert." Error, no se ha almacenado el articulo en esta factura, si el problema persiste favor comuniquese con la administracion del sistema "; }
 	}
 
 	//=========================== FUNCION PARA ACTUALIZAR UN ARTICULO YA AGREGADO EN LA GRILLA ===================================================//
-	function actualizaArticulo($consecutivo,$id,$cont,$idInsertArticulo,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_sucursal_item,$id_empresa,$mysql){
+	function actualizaArticulo($consecutivo,$id,$cont,$idInsertArticulo,$idInventario,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$deterioroAcumulado,$costoArticulo,$valorActual,$valorDeterioro,$id_empresa,$mysql){
 		$sql   = "SELECT costo,valor FROM $tablaInventario WHERE id='$idInsertArticulo' AND $idTablaPrincipal='$id' ";
 		$sql   = $mysql->query($sql,$link);
 		$costo = $mysql->result($sql,0,'costo');
@@ -1130,6 +1083,273 @@
 
 		if (!$query) { echo 'false'; }
 		else { echo $cantidad;  }
+	}
+
+
+	//============================ FUNCION PARA CANCELAR UN PEDIDO - COTIZACION ====================================================================//
+	function cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$id_sucursal,$id_empresa,$link){
+
+
+		$sql   = "SELECT consecutivo,estado FROM $tablaPrincipal WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id";
+		$query = mysql_query($sql,$link);
+		$estado      = mysql_result($query,0,'estado');
+		$consecutivo = mysql_result($query,0,'consecutivo');
+
+		$sql="UPDATE $tablaPrincipal SET estado=3 WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id";
+
+		if ($estado==3) {
+			echo '<script>
+					alert("El documento ya esta cancelado!");
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
+			exit;
+		}
+		else if ($estado==0 && $consecutivo=='') {
+			$sql="UPDATE $tablaPrincipal SET activo=0 WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND id=$id";
+		}
+		else if ($estado==1) {
+			// DEVELVER EL VALOR ACUMULADOD DE LOS ACTIVOS
+			actualizaDepreciacionAcumuladaActivos($id,'eliminar',$id_empresa,$link);
+			// DESCONTABILIZAR EL DOCUMENTO
+			moverCuentasDocumento($id,0,0,'descontabilizar',$id_sucursal,$id_empresa,$link);
+		}
+		// echo $sql;
+		$queryUpdate = mysql_query($sql,$link);				//EJECUTAMOS EL QUERY PARA ACTUALIZAR EL DOCUMENTO CON SU ESTADO COMO CANCELADO
+		if (!$queryUpdate) {
+			echo '<script>
+					alert("Error!\nNo se logro cancelar el documento");
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
+			return;
+		}
+		else{
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Depreciacion Activos Fijos',$id_sucursal,".$_SESSION['EMPRESA'].")";
+			$queryLog = mysql_query($sqlLog,$link);
+			echo'<script>
+					nueva'.$opcGrillaContable.'();
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+					// Ext.get("contenedor_'.$opcGrillaContable.'").load({
+					// 	url     : "bd/grillaContableBloqueada.php",
+					// 	scripts : true,
+					// 	nocache : true,
+					// 	params  :
+					// 	{
+					// 		id_factura_venta  : "'.$id.'",
+					// 		opcGrillaContable : "'.$opcGrillaContable.'",
+					// 		filtro_bodega     : "'.$idBodega.'"
+					// 	}
+					// });
+				</script>';
+		}
+	}
+
+ 	//============================ FUNCION PARA RESTAURAR UN DOCUMENTO CANCELADO ====================================================================//
+ 	function restaurarDocumento($idDocumento,$opcGrillaContable,$carpeta,$id_sucursal,$id_sucursal,$id_empresa,$tablaPrincipal,$link){
+
+		$sqlUpdate   = "UPDATE $tablaPrincipal SET estado=0 WHERE activo=1 AND id='$idDocumento' AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa' ";
+		$queryUpdate = mysql_query($sqlUpdate,$link);
+
+		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
+		if ($queryUpdate) {
+			//INSERTAR EL LOG DE EVENTOS
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Depreciacion Activos Fijos',$id_sucursal,".$_SESSION['EMPRESA'].")";
+			$queryLog = mysql_query($sqlLog,$link);
+			echo'<script>
+					Ext.get("contenedor_'.$opcGrillaContable.'").load({
+						url     : "deterioro/grilla/grillaContable.php",
+						scripts : true,
+						nocache : true,
+						params  :
+						{
+							id_deterioro   : "'.$idDocumento.'",
+							opcGrillaContable : "'.$opcGrillaContable.'",
+							id_sucursal       : "'.$id_sucursal.'"
+						}
+					});
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
+
+		}
+		else{
+			echo '<script>
+					alert("Error!\nNo se pudo restaurar el documento\nSi el problema persiste comuniquese con el administrador del sistema");
+					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+				</script>';
+				return;
+		}
+ 	}
+
+ 	//============================== FUNCION PARA AGREGAR UN DOCUMENTO ==========================================================================//
+ 	function agregarDocumento($typeDoc,$codDocAgregar,$id_factura,$filtro_bodega,$id_sucursal,$id_empresa,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link){
+
+		$sqlDocumento       = "SELECT id_cliente, estado FROM $tablaPrincipal WHERE id='$id_factura' AND id_empresa='$id_empresa' AND activo=1";
+		$queryDocumento     = mysql_query($sqlDocumento,$link);
+
+		$idClienteDocumento= mysql_result($queryDocumento,0,'id_cliente');
+		$estadoDocumento    = mysql_result($queryDocumento,0,'estado');
+
+		if($estadoDocumento == 1){ echo '<script>alert("Error!,\nEl documento actual ha sido generada.");</script>'; return; }
+		if($estadoDocumento == 3){ echo '<script>alert("Error!,\nEl documento actual ha sido cancelada.");</script>'; return; }
+		else if($idClienteDocumento== '' || $idClienteDocumento== 0){ echo '<script>alert("Aviso!,\nSeleccione un cliente para la factura.");</script>'; return; }
+
+		switch ($typeDoc) {
+			case 'cotizacion':
+				$campoCantidad          = "cantidad";
+				$title                  = 'Eliminar los Articulos de la Cotizacion';
+				$referencia_input       = "C";
+				$referencia_consecutivo = "Cotizacion";
+				$tablaCarga             = "ventas_cotizaciones";
+				$idTablaCargar          = "id_cotizacion_venta";
+				$tablaCargaInventario   = "ventas_cotizaciones_inventario";
+				break;
+
+			case 'pedido':
+				$campoCantidad          = "saldo_cantidad";
+				$title                  = 'Eliminar los Articulos del Pedido';
+				$referencia_input       = "P";
+				$referencia_consecutivo = "Pedido";
+				$tablaCarga             = "ventas_pedidos";
+				$idTablaCargar          = "id_pedido_venta";
+				$tablaCargaInventario   = "ventas_pedidos_inventario";
+				break;
+		}
+
+		$whereDocumentoCarga = ($typeDoc == 'pedido')? "AND CO.unidades_pendientes > 0": "";
+
+		//VALIDACION ESTADO DE LA FACTURA
+		$idClienteDocAgregar    = '';
+		$estadoDocAgregar       = '';
+		$sqlValidateDocumento   = "SELECT id_cliente,estado,id FROM $tablaCarga WHERE consecutivo='$codDocAgregar' AND id_bodega='$filtro_bodega' AND id_empresa='$id_empresa'";
+		$queryValidateDocumento = mysql_query($sqlValidateDocumento,$link);
+
+		$idClienteDocAgregar = mysql_result($queryValidateDocumento,0,'id_cliente');
+		$idDocumentoAgregar  = mysql_result($queryValidateDocumento,0,'id');
+		$estadoDocAgregar    = mysql_result($queryValidateDocumento,0,'estado');
+
+		if($estadoDocAgregar == ''){ echo '<script>alert("Error!,\nEl consecutivo '.$codDocAgregar.' de '.$referencia_consecutivo.' no esta registrado");</script>'; return; }
+		else if($estadoDocAgregar == 3){ echo '<script>alert("Error!,\nEl consecutivo '.$codDocAgregar.' de '.$referencia_consecutivo.' esta cancelado");</script>'; return; }
+		else if($idClienteDocAgregar <> $idClienteDocumento){ echo '<script>alert("Aviso!,\nEl consecutivo '.$codDocAgregar.' de '.$referencia_consecutivo.' pertenese a un cliente diferente.");</script>'; return; }
+
+		//VALIDACION QUE EL DOCUMENTO NO HAYA SIDO INGRESADO
+		$sqlValidateRepetido = "SELECT COUNT(id) AS contDocRepetido
+								FROM $tablaInventario
+								WHERE activo=1  AND id_consecutivo_referencia='$idDocumentoAgregar'
+									AND nombre_consecutivo_referencia='$referencia_consecutivo'
+									AND $idTablaPrincipal='$id_factura'
+								GROUP BY id_tabla_inventario_referencia LIMIT 0,1";
+		$docRepetido = mysql_result(mysql_query($sqlValidateRepetido,$link),0,'contDocRepetido');
+		if($docRepetido > 0){ echo '<script>alert("Aviso!,\nEl consecutivo '.$codDocAgregar.' de '.$referencia_consecutivo.' ya ha sido agregado en el presente documento");</script>'; return; }
+
+		//GENERA CICLO PARA INSERTAR ARTICULOS DEL DOCUMENTO REFERENCIA A TABLA INVENTARIOS FACTURAS
+		$sqlConsultaInventario= "SELECT COI.id,COI.id_inventario,COI.codigo,COI.nombre,COI.$campoCantidad AS cantidad,COI.costo_unitario,
+                                        COI.tipo_descuento,COI.descuento,
+                                        COI.valor_impuesto,COI.observaciones, COI.nombre_unidad_medida,COI.cantidad_unidad_medida,
+                                        CO.id AS id_documento,CO.consecutivo AS consecutivo_documento
+                                FROM $tablaCargaInventario AS COI
+                                INNER JOIN  $tablaCarga AS CO ON COI.$idTablaCargar=CO.id
+                                WHERE CO.consecutivo     ='$codDocAgregar'
+                                    AND COI.activo       = 1
+                                    AND CO.id_sucursal   ='$id_sucursal'
+                                    AND CO.id_bodega     ='$filtro_bodega'
+                                    AND CO.id_empresa    ='$id_empresa'
+                                    $whereDocumentoCarga";
+        $queryConsultaInventario=mysql_query($sqlConsultaInventario,$link);
+
+        $contInsert=0;
+        while ($row = mysql_fetch_array($queryConsultaInventario)) {
+        	$contInsert++;
+        	$idDocCruce = $row['id_documento'];
+            $sqlInsertArticulos="INSERT INTO $tablaInventario
+                                            ($idTablaPrincipal,
+                                            id_inventario,
+                                            cantidad,
+                                            costo_unitario,
+                                            tipo_descuento,
+                                            descuento,
+                                            observaciones,
+                                            id_tabla_inventario_referencia,
+                                            id_consecutivo_referencia,
+                                            consecutivo_referencia,
+                                            nombre_consecutivo_referencia)
+                                VALUES ('$id_factura',
+                                        '".$row['id_inventario']."',
+                                        '".$row['cantidad']."',
+                                        '".$row['costo_unitario']."',
+                                        '".$row['tipo_descuento']."',
+                                        '".$row['descuento']."',
+                                        '".$row['observaciones']."',
+                                        '".$row['id']."',
+                                        '".$row['id_documento']."',
+                                        '".$row['consecutivo_documento']."',
+                                        '$referencia_consecutivo')";
+            $queryInsertArticulos=mysql_query($sqlInsertArticulos,$link);
+        }
+
+        if($contInsert > 0){
+
+    		$newDocReferencia  ='<div style="width:136px; margin-left:5px; float:left; overflow:hidden;height: 22px;" id="divDocReferencia'.$opcGrillaContable.'_'.$referencia_input.'_'.$idDocumentoAgregar.'">'
+							       .'<div class="contenedorInputDocReferenciaFactura">'
+							           .'<input type="text" class="inputDocReferenciaFactura" value="'.$referencia_input.' '.$codDocAgregar.'" style="border-bottom: 1px solid #d4d4d4;" readonly/>'
+							       .'</div>'
+							       .'<div title="'.$title.' # '.$codDocAgregar.' en la presente factura" onclick="eliminaDocReferencia'.$opcGrillaContable.'(\\\''.$idDocumentoAgregar.'\\\',\\\''.$referencia_input.'\\\',\\\''.$id_factura.'\\\')" style="float:left; width:18px; height:18px; margin:1px 0 0 -22px; background-image: url(img/MyGrillaFondo.png); border: 1px solid #d4d4d4;">'
+							           .'<div style="overflow:hidden; border-radius:35px; color:#fff; height:16px; width:16px; margin:1px;" id="btn'.$opcGrillaContable.'_'.$referencia_input.'_'.$idDocCruce.'">'
+	                                        .'<div style="width:7px; height:2px; background-color:#fff; margin:7px 4px;"></div>'
+	                                    .'</div>'
+							       .'</div>'
+							    .'</div>';
+
+			echo'<script>
+					divDocsReferenciaFactura = document.getElementById("contenedorDocsReferencia'.$opcGrillaContable.'").innerHTML;
+					document.getElementById("contenedorDocsReferencia'.$opcGrillaContable.'").innerHTML =divDocsReferenciaFactura+\''.$newDocReferencia.'\';
+	    			document.getElementById("cotizacionPedido'.$opcGrillaContable.'").value="";
+
+	    			Ext.get("renderizaNewArticulo'.$opcGrillaContable.'").load({
+			            url     : "bd/bd.php",
+			            scripts : true,
+			            nocache : true,
+			            params  :
+			            {
+							opc               : "reloadBodyAgregarDocumento",
+							opcGrillaContable : "'.$opcGrillaContable.'",
+							id_factura        : "'.$id_factura.'",
+			            }
+			        });
+        		</script>';
+        }
+        else{
+        	echo'<script>
+        			document.getElementById("cotizacionPedido'.$opcGrillaContable.'").blur();
+        			alert("Numero invalido!\nDocumento no terminado o ya asignado");
+        			setTimeout(function(){ document.getElementById("cotizacionPedido'.$opcGrillaContable.'").focus();}, 100);
+        		</script>';
+		}
+	}
+
+	function reloadBodyAgregarDocumento($opcGrillaContable,$id_factura,$id_sucursal,$id_empresa,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link){
+		include("functions_body_article.php");
+		echo cargaArticulosSave($id_factura,'',0,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
+	}
+
+	function eliminaDocReferencia($opcGrillaContable,$id_factura,$id_sucursal,$filtro_bodega,$id_empresa,$id_doc_referencia,$docReferencia,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link){
+		include("functions_body_article.php");
+		$campoDocReferencia = '';
+		if($docReferencia=='P'){ $campoDocReferencia = 'Pedido'; }
+		else if($docReferencia=='C'){ $campoDocReferencia = 'Cotizacion'; }
+		// else if($docReferencia=='R'){ $campoDocReferencia = 'Remision'; }
+
+		$sql   ="DELETE FROM $tablaInventario WHERE $idTablaPrincipal=$id_factura AND id_consecutivo_referencia=$id_doc_referencia  AND nombre_consecutivo_referencia='$campoDocReferencia'";
+		$query = mysql_query($sql,$link);
+
+		echo cargaArticulosSave($id_factura,'',0,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
+
+		if($query){
+			echo'<script>
+					document.getElementById("divDocReferencia'.$opcGrillaContable.'_'.$docReferencia.'_'.$id_doc_referencia.'").parentNode.removeChild(document.getElementById("divDocReferencia'.$opcGrillaContable.'_'.$docReferencia.'_'.$id_doc_referencia.'"));
+				</script>';
+		}
+		else{ echo'<script>alert("Error de conexion.\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; }
 	}
 
 	//FUNCION PARA VERIFICAR EL ESTADO DEL DOCUMENTO
@@ -1196,6 +1416,21 @@
 					</script>';
 			exit;
 		}
+	}
+
+	// SINCRONIZAR LA CUENTA NIIF
+	function sincronizarCuentaNiif($id,$campoId,$campoText,$id_empresa,$link){
+		$sqlNiif   = "SELECT cuenta_niif FROM puc WHERE activo=1 AND id_empresa=$id_empresa AND cuenta=$id";
+		$queryNiif = mysql_query($sqlNiif,$link);
+
+		$cuentaNiif      = mysql_result($queryNiif,0,'cuenta_niif');
+
+		if($cuentaNiif == 0 || $cuentaNiif==''){ echo'<script>alert("No existe una cuenta niif asociada a la cuenta colgaap No. '.$id.'");</script>'; }
+		else{ echo '<script>
+						document.getElementById("'.$campoText.'").innerHTML = "'.$cuentaNiif.'";
+					</script>'; }
+
+		echo'<img src="images/refresh.png" />';
 	}
 
  	// FUNCION PARA VERIFICAR SI EXISTE ALGUN CIERRE EN ESE PERIODO ANTES DE PROCESAR EL DOCUMENTO
@@ -1289,6 +1524,7 @@
 					}
 				});
 			</script>';
+
 	}
 
 ?>

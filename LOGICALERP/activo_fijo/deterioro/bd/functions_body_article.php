@@ -117,7 +117,7 @@
 		$sql="SELECT deterioro_niif FROM activos_fijos WHERE activo=1 AND id_empresa=";
 		$query=mysql_query($sql,$link);
 
-		$sql   = "SELECT id,id_activo_fijo,codigo_activo,nombre,unidad,costo,dias_depreciar,valor,deterioro_acumulado
+		$sql   = "SELECT id,id_activo_fijo,codigo,nombre,unidad,costo,dias_depreciar,valor,deterioro_acumulado
 						FROM $tablaInventario
 						WHERE $idTablaPrincipal='$id' AND activo = 1";
 		$query = mysql_query($sql,$link);
@@ -163,7 +163,7 @@
 
 				$cont++;
 				$body .='<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
-							'.cargaDivsUnidadesSave($cont,$opcGrillaContable, $row['id'], $row['id_activo_fijo'], $row['codigo_activo'], $row['nombre'], $row['unidad'], $row['dias_depreciar'], $row['costo'],$row['deterioro_acumulado'],$row['valor'], $estado).'
+							'.cargaDivsUnidadesSave($cont,$opcGrillaContable, $row['id'], $row['id_activo_fijo'], $row['codigo'], $row['nombre'], $row['unidad'], $row['dias_depreciar'], $row['costo'],$row['deterioro_acumulado'],$row['valor'], $estado).'
 						</div>';
 			}
 			$cont++;
@@ -182,7 +182,7 @@
 
 				$cont++;
 				$body .='<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
-							'.cargaDivsUnidadesBloqueadas($cont,$opcGrillaContable, $row['id'], $row['id_activo_fijo'], $row['codigo_activo'], $row['nombre'],$row['unidad'], $row['dias_depreciar'], $row['costo'],$row['deterioro_acumulado'],$row['valor'], $estado).'
+							'.cargaDivsUnidadesBloqueadas($cont,$opcGrillaContable, $row['id'], $row['id_activo_fijo'], $row['codigo'], $row['nombre'],$row['unidad'], $row['dias_depreciar'], $row['costo'],$row['deterioro_acumulado'],$row['valor'], $estado).'
 						</div>';
 			}
 

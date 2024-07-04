@@ -21,6 +21,7 @@
     $queryFecha   = mysql_query($sqlFecha,$link);
     $fechaDefault = mysql_result($queryFecha,0,'dias_vencimiento');
     if ($fechaDefault=='') { $fechaDefault='31'; }
+
 ?>
 <script>
 
@@ -28,7 +29,7 @@
     var subtotalAcumulado<?php echo $opcGrillaContable; ?>  = 0.00
     ,   total<?php echo $opcGrillaContable; ?>              = 0.00
     ,   contArticulos<?php echo $opcGrillaContable; ?>      = 1
-    ,   id_cliente_<?php echo $opcGrillaContable;?>         = 0
+    ,   id_cliente_<?php echo $opcGrillaContable;?>       = 0
 
     var timeOutObservacion<?php echo $opcGrillaContable; ?> = ''     // var time out autoguardado onkeydows campo observaciones
     ,   codigoCliente<?php echo $opcGrillaContable; ?>      = 0
@@ -43,7 +44,7 @@
     Ext.getCmp("Btn_restaurar_<?php echo $opcGrillaContable; ?>").disable();
     Ext.getCmp("BtnGroup_Estado1_<?php echo $opcGrillaContable; ?>").hide();
     Ext.getCmp("BtnGroup_Guardar_<?php echo $opcGrillaContable; ?>").show();
-    Ext.getCmp("BtnGroup_carga_activos_<?php echo $opcGrillaContable; ?>").show();
+    Ext.getCmp("BtnGroup_carga_activos_Deterioro").show();
 
     //variable con la fecha del dia mas treinta dias, para cargar por defecto la fecha de vencimiento
     var fechaVencimientoFactura<?php echo $opcGrillaContable;?>  = new Date();
@@ -53,12 +54,9 @@
 <?php
 
     $acumScript .= (user_permisos(205,'false') == 'true')? 'Ext.getCmp("Btn_guardar_'.$opcGrillaContable.'").enable();
-                                                            Ext.getCmp("btnNueva'.$opcGrillaContable.'").enable();
-                                                            Ext.getCmp("Btn_buscar_'.$opcGrillaContable.'").enable();'
-                                                         : 'Ext.getCmp("btnNueva'.$opcGrillaContable.'").disable();
-                                                            Ext.getCmp("BtnGroup_carga_activos_'.$opcGrillaContable.'").hide();
-                                                            document.getElementById("contenidoHijoDeterioro").style.display="none";';        //guardar
-
+                                                            Ext.getCmp("btnNueva'.$opcGrillaContable.'").enable();Ext.getCmp("Btn_buscar_'.$opcGrillaContable.'").enable();'
+                                                        : 'Ext.getCmp("btnNueva'.$opcGrillaContable.'").disable();Ext.getCmp("Btn_buscar_'.$opcGrillaContable.'").disable();
+                                                            document.getElementById("contenidoHijoDoc").style.display="none";';        //guardar
     $acumScript .= (user_permisos(207,'false') == 'true')? 'Ext.getCmp("Btn_cancelar_'.$opcGrillaContable.'").enable();' : '';       //cancelar
 
 
@@ -87,7 +85,7 @@
                             showToday  : false,
                             applyTo    : "fecha'.$opcGrillaContable.'",
                             editable   : false,
-                            value      : new Date(),
+                            value      : fechaVencimientoFactura'.$opcGrillaContable.',
                             listeners  : { select: function() { actualizaFechaDocumento(); } }
                         });
 
@@ -192,13 +190,14 @@
     }
 
     $tipoDocumento.='</select>';
+
 ?>
+
 <style type="text/css">
-  .contenedorGrilla{
-    margin-top: 0;
-  }
+    .contenedorGrilla{ margin-top: 0; }
 </style>
-<div class="contenedorOrdenCompra" id="contenidoHijoDeterioro">
+
+<div class="contenedorOrdenCompra" id="contenidoHijoDoc">
 
     <!-- Campo Izquierdo -->
     <div class="bodyTop">
@@ -255,6 +254,7 @@
         <div class="renderFilasArticulo" id="renderizaNewArticulo<?php echo $opcGrillaContable; ?>"><?php echo $bodyArticle; ?></div>
     </div>
 </div>
+
 <script>
 
     var observacion<?php echo $opcGrillaContable; ?> = '';
@@ -483,9 +483,8 @@
     function ventanaBuscarArticulo<?php echo $opcGrillaContable; ?>(cont){
         var myalto  = Ext.getBody().getHeight();
         var myancho = Ext.getBody().getWidth();
-        var id_sucursal = document.getElementById('filtro_sucursal_Deterioro').value;
-        var sql = 'AND id_sucursal='+id_sucursal;
 
+        var sql = 'AND id_sucursal=<?php echo $id_sucursal; ?> ';
         Win_Ventana_buscar_Articulo_factura = new Ext.Window({
             width       : myancho-100,
             height      : myalto-50,
@@ -525,44 +524,42 @@
     }
 
     function responseVentanaBuscarArticulo<?php echo $opcGrillaContable; ?>(id,cont){
-      document.getElementById('valorActual<?php echo $opcGrillaContable; ?>_'+cont).focus();
+        document.getElementById('valorActual<?php echo $opcGrillaContable; ?>_'+cont).focus();
 
-      var costoTotal                  = 0
-      ,   totalDescuento              = 0
-      ,   idArticulo                  = document.getElementById('id_activo_' + id).innerHTML
-      ,   codigo                      = document.getElementById('div_buscar_activo_fijo_code_bar_' + id).innerHTML
-      ,   costo                       = document.getElementById('div_buscar_activo_fijo_costo_' + id).innerHTML
-      ,   unidadMedida                = document.getElementById('unidad_medida_activo_' + id).innerHTML
-      ,   depreciacion_acumulada_niif = document.getElementById('div_buscar_activo_fijo_depreciacion_acumulada_niif_' + id).innerHTML
-      ,   deterioro_acumulado         = document.getElementById('div_buscar_activo_fijo_deterioro_acumulado_' + id).innerHTML
-      ,   nombreArticulo              = document.getElementById('div_buscar_activo_fijo_nombre_equipo_' + id).innerHTML
-      ,   cantidad                    = (document.getElementById('valorActual<?php echo $opcGrillaContable; ?>_' + cont).value) * 1
+        var costoTotal             = 0
+        ,   totalDescuento         = 0
+        ,   idArticulo             = document.getElementById('id_activo_'+id).innerHTML
+        ,   codigo                 = document.getElementById('div_buscar_activo_fijo_code_bar_'+id).innerHTML
+        ,   costo                  = document.getElementById('div_buscar_activo_fijo_costo_'+id).innerHTML
+        ,   unidadMedida           = document.getElementById('unidad_medida_activo_'+id).innerHTML
+        ,   depreciacion_acumulada = document.getElementById('div_buscar_activo_fijo_deterioro_acumulado_'+id).innerHTML
+        ,   nombreArticulo         = document.getElementById('div_buscar_activo_fijo_nombre_equipo_'+id).innerHTML
+        ,   cantidad               = (document.getElementById('valorActual<?php echo $opcGrillaContable; ?>_'+cont).value)*1
 
-      costo = costo - depreciacion_acumulada_niif;
+        document.getElementById('unidades<?php echo $opcGrillaContable; ?>_'+cont).value              = unidadMedida;
+        document.getElementById('deterioroAcumulada<?php echo $opcGrillaContable; ?>_'+cont).value = depreciacion_acumulada;
+        document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_'+cont).value            = id;
+        document.getElementById('eanArticulo<?php echo $opcGrillaContable; ?>_'+cont).value           = codigo;
+        document.getElementById('costoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value         = costo;
+        document.getElementById('nombreArticulo<?php echo $opcGrillaContable; ?>_'+cont).value        = nombreArticulo;
+        document.getElementById('ivaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value           = 0;
 
-      document.getElementById('unidades<?php echo $opcGrillaContable; ?>_' + cont).value           = unidadMedida;
-      document.getElementById('deterioroAcumulada<?php echo $opcGrillaContable; ?>_' + cont).value = deterioro_acumulado;
-      document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_' + cont).value         = id;
-      document.getElementById('eanArticulo<?php echo $opcGrillaContable; ?>_' + cont).value        = codigo;
-      document.getElementById('costoArticulo<?php echo $opcGrillaContable; ?>_' + cont).value      = costo;
-      document.getElementById('nombreArticulo<?php echo $opcGrillaContable; ?>_' + cont).value     = nombreArticulo;
-      document.getElementById('ivaArticulo<?php echo $opcGrillaContable; ?>_' + cont).value        = 0;
+        Ext.get('renderArticulo<?php echo $opcGrillaContable; ?>_'+cont).load({
+            url     : 'deterioro/bd/bd.php',
+            scripts : true,
+            nocache : true,
+            params  :
+            {
+                opc               : 'calculaValorDepreciacion',
+                opcGrillaContable : '<?php echo $opcGrillaContable ?>',
+                id_activo         : id,
+                accion            : 'mostrar',
+                cont              : cont,
+            }
+        });
 
-      Ext.get('renderArticulo<?php echo $opcGrillaContable; ?>_' + cont).load({
-        url     : 'deterioro/bd/bd.php',
-        scripts : true,
-        nocache : true,
-        params  : {
-                    opc               : 'calculaValorDepreciacion',
-                    opcGrillaContable : '<?php echo $opcGrillaContable ?>',
-                    id_activo         : id,
-                    accion            : 'mostrar',
-                    cont              : cont,
-                  }
-      });
-
-      Win_Ventana_buscar_Articulo_factura.close();
-      return;
+        Win_Ventana_buscar_Articulo_factura.close();
+        return;
     }
 
     //============================= FILTRO TECLA GUARDAR ARTICULO ==========================================================//
@@ -592,8 +589,7 @@
         ,   deterioroAcumulado = document.getElementById('deterioroAcumulada<?php echo $opcGrillaContable; ?>_'+cont).value
         ,   costoArticulo      = document.getElementById('costoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value
         ,   valorActual        = document.getElementById('valorActual<?php echo $opcGrillaContable; ?>_'+cont).value
-        ,   valorDeterioro     = ((costoArticulo - valorActual)<0)? 0: costoArticulo - valorActual
-        ,   id_sucursal        = document.getElementById('filtro_sucursal_<?php echo $opcGrillaContable; ?>').value;
+        ,   valorDeterioro     = ((costoArticulo - valorActual)<0)? 0: costoArticulo - valorActual;
 
 
         document.getElementById('valorDeterioro<?php echo $opcGrillaContable; ?>_'+cont).value = valorDeterioro;
@@ -638,7 +634,6 @@
                 valorActual       : valorActual,
                 valorDeterioro    : valorDeterioro,
                 id                : '<?php echo $id_deterioro; ?>',
-                id_sucursal_item  : id_sucursal,
             }
         });
 
@@ -722,7 +717,7 @@
         }).show();
     }
 
-    // CARGAR TODOS LOS ACTIVOS DE LA SUCURSAL
+    //
     function cargarActivosFijosSucursal() {
         Ext.get('renderizaNewArticulo<?php echo $opcGrillaContable; ?>').load({
             url     : 'deterioro/bd/bd.php',
@@ -860,17 +855,47 @@
          });
     }
 
+    //===================================== VALIDAR LA NOTA ANTES DE GENERARLA ========================================//
+    function validar<?php echo $opcGrillaContable; ?>(opcionGenerar){
+        opc = 'validaNota'
+
+        //VALIDACION CUENTAS POR GUARDAR
+        var validacion = validarArticulos<?php echo $opcGrillaContable; ?>();
+        if (validacion==0) {alert("No hay activos para generar el documento!"); return;}
+        else if (validacion==1) { alert("Hay activos pendientes por guardar!"); return; }
+        else if (validacion == 2 || validacion == 0) {
+            var observacion = document.getElementById("observacion<?php echo $opcGrillaContable; ?>").value;
+
+            if (opcionGenerar =='terminar') { opc = 'terminarGenerar'; document.getElementById('LabelCargando').innerHTML='Generado Documento...'; }
+            else{ cargando_documentos('Generando Documento...'); }
+
+            Ext.get('render_btns_<?php echo $opcGrillaContable; ?>').load({
+                url     : 'deterioro/bd/bd.php',
+                scripts : true,
+                nocache : true,
+                params  :
+                {
+                    opc               : opc,
+                    id                : '<?php echo $id_deterioro; ?>',
+                    id_tercero        : id_cliente_<?php echo $opcGrillaContable; ?>,
+                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+                }
+            });
+        }
+    }
+
     //===================================== FINALIZAR 'CERRAR' 'GENERAR' ===================================//
     function guardar<?php echo $opcGrillaContable; ?>(){
         var validacion = validarArticulos<?php echo $opcGrillaContable; ?>();
 
-        if (validacion==0) { alert("No hay articulos por guardar en el presente documento!"); return; }
+        if (validacion==0) { alert("No hay articulos por guardar en la presente cotizacion de venta!"); return; }
         else if (validacion==1) { alert("Hay articulos pendientes por guardar!"); return; }
         else if ( validacion== 2 ) {
 
             cargando_documentos('Generando Documento...');
 
-            var id_sucursal    = document.getElementById("filtro_sucursal_<?php echo $opcGrillaContable; ?>").value
+            var id_sucursal    = document.getElementById("filtro_sucursal_Depreciaciones").value
+            ,   observacion = document.getElementById("observacion<?php echo $opcGrillaContable; ?>").value;
 
             //Si se va a generar una cotizacion
             Ext.get('render_btns_<?php echo $opcGrillaContable; ?>').load({
@@ -879,10 +904,12 @@
                 nocache : true,
                 params  :
                 {
-                    opc               : 'terminarGenerar',
+                    opc               : 'validaNota',
+                    opc2              : 'cotizacion',
                     opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
                     id                : '<?php echo $id_deterioro; ?>',
                     sucursal          : id_sucursal,
+                    observacion       : observacion
                 }
             });
         }
