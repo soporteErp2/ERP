@@ -8,7 +8,7 @@ COMUN/
 soporte/
 source/
 SQL/
-
+LOGICALERP/nomina/documentos_tercero
 #ignorar el archivo de configuracion
 configuracion/conexion.php
 
