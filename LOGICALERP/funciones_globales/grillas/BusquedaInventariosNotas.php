@@ -9,15 +9,14 @@
 	/**/	$grilla = new MyGrilla();				/**/
 	/**/											/**/
 	/**//////////////////////////////////////////////**/
-
+	
 	//CONFIGURACION//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// echo $nombreTabla." activo = 1  ".$sql." AND id NOT IN (SELECT id_fila_cargada FROM $tablaInventario WHERE $idTablaPrincipal='$idNota' AND id_fila_cargada=id)";
+			// echo $nombreTabla." activo = 1  ".$sql." AND id NOT IN (SELECT id_fila_cargada FROM $tablaInventario WHERE $idTablaPrincipal='$idNota' AND id_fila_cargada=id)"; 
 		//NOMBRE DE LA GRILLA
 			$grilla->GrillaName	 		= $nombre_grilla;  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
 			$grilla->TableName			= $nombreTabla;		//NOMBRE DE LA TABLA DE CONSULTA EN LA BASE DE DATOS DE
-			$grilla->MyWhere			= "activo = 1  ".$sql." AND id NOT IN (SELECT id_fila_cargada FROM $tablaInventario
-																				WHERE $idTablaPrincipal='$idNota' AND id_fila_cargada=$nombreTabla.id)"; //WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->MyWhere			= "activo = 1  ".$sql." AND id NOT IN (SELECT id_fila_cargada FROM $tablaInventario WHERE $idTablaPrincipal='$idNota' AND id_fila_cargada=$nombreTabla.id)"; //WHERE DE LA CONSULTA A LA TABLA "$TableName"
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
 
 		//TAMANO DE LA GRILLA

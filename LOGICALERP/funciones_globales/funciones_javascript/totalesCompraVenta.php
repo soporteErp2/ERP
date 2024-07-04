@@ -39,7 +39,7 @@ echo "<script type='text/javascript'>
 
           if(iva > 0){
             ivaNeto = (parseFloat(arrayIva".$opcGrillaContable."[iva].valor) * parseFloat(subtotalNeto)) / 100; //IVA NETO
-            // ivaNeto = redondeo(ivaNeto,".$_SESSION['DECIMALESMONEDA'].");
+            ivaNeto = redondeo(ivaNeto,".$_SESSION['DECIMALESMONEDA'].");
           }
           else{
             ivaNeto = 0; //IVA NETO

@@ -22,7 +22,7 @@
 
 		var filtro_tipo_contabilidad = document.getElementById('filtro_tipo_contabilidad_<?php echo $opc; ?>').value;
 		var url_render        = ''
-		,	opcGrillaContable = '<?php echo $opcGrillaContable; ?>'
+		,	opcGrillaContable = ''
 		,	contenedor        = '';
 
 		if (filtro_tipo_contabilidad=='colgaap') { url_render = "<?php echo $url_render_colgaap; ?>"; }
@@ -31,7 +31,7 @@
 		//CONDICION PARA EL CONTENEDOR
 		if (document.getElementById('contenedor_<?php echo $opcGrillaContable_colgaap; ?>')) { contenedor='contenedor_<?php echo $opcGrillaContable_colgaap; ?>'; }
 		else{ contenedor='contenedor_<?php echo $opcGrillaContable_niif; ?>'; }
-		
+
 		Ext.get(contenedor).load({
 			url     : url_render,
 			scripts : true,
