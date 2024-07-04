@@ -447,7 +447,7 @@
 					$queryConsultaNiif = mysql_query($sqlConsultaNiif,$link);
 					$idConsultaNiif = mysql_result($queryConsultaNiif,0,'id');
 
-					if(($idConsultaNiif != "" || $idConsultaNiif != NULL) && $crearNiif == "Si"){
+					if($idConsultaNiif != "" || $idConsultaNiif != NULL){
 						echo "<script>alert('Error,La cuenta NIIF $newCodigo ya existe.');</script>";
 						return;
 					}

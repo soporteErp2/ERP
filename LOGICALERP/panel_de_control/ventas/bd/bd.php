@@ -18,9 +18,6 @@
 			guardarConsecutivosDocumentos($jsonData,$filtro_sucursal,$id_empresa,$link);
 			break;
 
-		case 'configurar_resolucion':
-			configurar_resolucion($id_resolucion,$id_empresa,$mysql);
-			break;
 	}
 
 	function guardarDiasFactura($dias,$id_empresa,$link){
@@ -117,6 +114,8 @@
 		}
 	}
 
+
+
 	function guardarConsecutivosDocumentos($jsonData,$filtro_sucursal,$id_empresa,$link){
 
 		$array = json_decode($jsonData,true);
@@ -148,136 +147,5 @@
 		echo '<script>Win_Panel_Sucursal.close();</script>';
 	}
 
-	function configurar_resolucion($id_resolucion,$id_empresa,$mysql){
-		//CONSULTAR RESOLUCION DE FACTURAS
-		$sql = "SELECT 
-							VFC.prefijo,
-							VFC.consecutivo_resolucion,
-							VFC.fecha_resolucion,
-							VFC.fecha_final_resolucion,
-							VFC.numero_inicial_resolucion,
-							VFC.numero_final_resolucion,
-							VFC.llave_tecnica,
-							E.token
-						FROM
-							ventas_facturas_configuracion AS VFC
-						LEFT JOIN
-							empresas AS E ON E.id = VFC.id_empresa
-						WHERE
-							VFC.activo = 1
-						AND
-							VFC.id_empresa = $id_empresa
-						AND
-							VFC.id = $id_resolucion";
-		$query = $mysql->query($sql,$mysql->link);
-		$prefijo_factura           = $mysql->result($query,0,'prefijo');	
-		$consecutivo_resolucion    = $mysql->result($query,0,'consecutivo_resolucion');	
-		$fecha_resolucion          = $mysql->result($query,0,'fecha_resolucion');	
-		$fecha_final_resolucion    = $mysql->result($query,0,'fecha_final_resolucion');	
-		$numero_inicial_resolucion = $mysql->result($query,0,'numero_inicial_resolucion');	
-		$numero_final_resolucion   = $mysql->result($query,0,'numero_final_resolucion');
-		$llave_tecnica             = $mysql->result($query,0,'llave_tecnica');
-		$token                     = $mysql->result($query,0,'token');
 
-		//JSON RESOLUCION FACTURA
-		$data = array(
-			"type_document_id" => 1,
-			"prefix" => "$prefijo_factura",
-			"resolution" => "$consecutivo_resolucion",
-			"resolution_date" => "2001-01-01",
-			"technical_key" => "$llave_tecnica",
-			"from" => (int) $numero_inicial_resolucion,
-			"to" => (int) $numero_final_resolucion,
-			"generate_to_date" => 0,
-			"date_from" => "$fecha_resolucion",
-			"date_to" => "$fecha_final_resolucion",
-		);
-
-		$data = json_encode($data,JSON_PRETTY_PRINT);
-
-		$params                   = [];
-		$params['request_url']    = "http://192.168.8.2/apidian2020/public/api/ubl2.1/config/resolution";
-		$params['request_method'] = "PUT";
-		$params['Authorization']  = "Authorization: Bearer $token";
-		$params['data']           = $data;
-
-		$respuesta = curlApi($params);
-		$respuesta = json_decode($respuesta,true);
-
-		if(strpos($respuesta["message"], "creada/actualizada con") !== false) {
-		  $respuestaAPI = "Resolucion de facturas configurada. \n";
-		}
-
-		// CONSULTAR SUCURSALES
-		$sql   = "SELECT id FROM empresas_sucursales WHERE activo = 1 AND id_empresa = $id_empresa";
-		$query = $mysql->query($sql,$mysql->link);
-
-		while($row = $mysql->fetch_array($query)){
-			if(strlen($row['id']) == 1){
-        $prefijo_resolucion = "DV0" . $row['id'];
-      }
-      else{
-        $prefijo_resolucion = "DV" . $row['id'];
-      }
-
-			//JSON RESOLUCION DEVOLUCION
-			$data = array(
-				"type_document_id" => 4,
-				"from" => 1,
-				"to" => 99999999,
-				"prefix" => "$prefijo_resolucion"
-			);
-
-			$data = json_encode($data,JSON_PRETTY_PRINT);
-
-			$params                   = [];
-			$params['request_url']    = "http://192.168.8.2/apidian2020/public/api/ubl2.1/config/resolution";
-			$params['request_method'] = "PUT";
-			$params['Authorization']  = "Authorization: Bearer $token";
-			$params['data']           = $data;
-
-			$respuesta = curlApi($params);
-			$respuesta = json_decode($respuesta,true);
-
-			if(strpos($respuesta["message"], "creada/actualizada con") !== false) {
-		  	$respuestaAPI .= "Resolucion de notas configurada. \n";
-			}
-		}
-
-		echo $respuestaAPI;
-	}
-
-	function curlApi($params){
-		$client = curl_init();
-		$options = array(
-											CURLOPT_HTTPHEADER     => array('Content-Type: application/json',"$params[Authorization]"),
-											CURLOPT_URL            => "$params[request_url]",
-											CURLOPT_CUSTOMREQUEST  => "$params[request_method]",
-											CURLOPT_RETURNTRANSFER => true,
-											CURLOPT_POSTFIELDS     => $params['data'],
-											CURLOPT_SSL_VERIFYPEER => false
-										);
-		curl_setopt_array($client,$options);
-		$response    = curl_exec($client);
-		$curl_errors = curl_error($client);
-
-		if(!empty($curl_errors)){
-			$response['status']               = 'failed';
-			$response['errors'][0]['titulo']  = curl_getinfo($client);
-			$response['errors'][0]['detalle'] = curl_error($client);
-		}
-
-		$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
-		curl_close($client);
-		return $response;
-	}
-
-	function quitarTildes($cadena){
-		$caracterEspecial = array("\t","\r","\n",chr(160));
-		$originales  = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ°ª&º/';
-    $modificadas = 'AAAAAAACEEEEIIIIDNOOOOOOUUUUYbsaaaaaaaceeeeiiiidnoooooouuuyybyoayo-';
-    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
-		$cadena = str_replace($caracterEspecial,"",$cadena);
-    return utf8_encode($cadena);
-	}
 ?>

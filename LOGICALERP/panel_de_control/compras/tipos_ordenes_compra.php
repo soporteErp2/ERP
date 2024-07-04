@@ -33,7 +33,6 @@
             $grilla->CamposBusqueda     = 'nombre';       //VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
             $grilla->DivActualiBusqueda = '' ;              //VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
         //CONFIGURACION DE CAMPOS EN LA GRILLA
-            $grilla->AddRow('Id','id',40);
             $grilla->AddRow('tipo','nombre',180);
             $grilla->AddRowImage('','<center><div style="float:left"></div></center>',18);
 

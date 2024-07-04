@@ -28,10 +28,6 @@
 		case 'saveEliminaCuentaBancos':
 			saveEliminaCuentaBancos($id,$link);
 			break;
-
-		case 'guardarConfiguracionARL':
-			guardarConfiguracionARL($codigo,$empresa,$mysql);
-			break;
 	}
 
 	//================================== INSERT NUEVA CUENTA DE BANCO =======================================//
@@ -113,28 +109,6 @@
 				Elimina_Div_panelControlBancos("'.$id.'");
 				Win_Ventana_Editar_panelControlBancos.close();
 			</script>';
-	}
-
-	function guardarConfiguracionARL($codigo,$id_empresa,$mysql){
-		$sql="SELECT id FROM configuracion_arl WHERE activo=1 AND id_empresa=$id_empresa";
-		$query=$mysql->query($sql,$mysql->link);
-		$id_config = $mysql->result($query,0,'id');
-
-		if ($id_config>0) {
-			$sql="UPDATE configuracion_arl SET codigo='$codigo' WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_config";
-			$query=$mysql->query($sql,$mysql->link);
-		}
-		else{
-			$sql="INSERT INTO configuracion_arl (codigo,id_empresa) VALUES ('$codigo',$id_empresa) ";
-			$query=$mysql->query($sql,$mysql->link);
-		}
-		if ($query) {
-			echo 'true';
-		}
-		else{
-			echo 'false';
-		}
-
 	}
 
 ?>

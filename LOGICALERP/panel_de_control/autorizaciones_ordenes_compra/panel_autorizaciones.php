@@ -5,7 +5,7 @@
 		<div class="IconoPanelControlimg"><img src="../../../temas/clasico/images/PanelControl/pagos.png" width="44" height="44"></div>
 		<div class="IconoPanelControltxt">Autorizacion por Costos</div>
 	</div>
-	<div class="IconoPanelControl" onClick="AbreVentanaPanelAutorizacionOC('autorizaciones_ordenes_compra/autorizaciones_ordenes_area','Autorizacion por Area',600,450,0,0);">
+	<div class="IconoPanelControl" onClick="AbreVentanaPanelAutorizacionOC('autorizaciones_ordenes_compra/autorizaciones_ordenes_area','Autorizacion por Area',500,450,0,0);">
 		<div class="IconoPanelControlimg"><img src="img/ubicacion.png" width="44" height="44"></div>
 		<div class="IconoPanelControltxt">Autorizacion por Areas</div>
 	</div>

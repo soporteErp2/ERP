@@ -13,10 +13,6 @@
 			guardarConsecutivosDocumentos($jsonData,$filtro_sucursal,$id_empresa,$link);
 		break;
 
-		case 'setNotificacionCorreoCartera':
-			setNotificacionCorreoCartera($jsonData,$id_empresa,$link);
-		break;
-
 	}
 
 	function guardarDiasOrdenes($dias,$opc,$id_empresa,$link){
@@ -89,12 +85,5 @@
 
 	}
 
-	function setNotificacionCorreoCartera($jsonData,$id_empresa,$link){
-        $array = json_decode($jsonData,true);
-		foreach ($array as $key => $value) {
-			$sql    ="UPDATE empleados SET notificacion_correo_cartera='$value' WHERE id=".$key." AND id_empresa='$id_empresa'";
-			// echo $sql."<br />";
-			$result =mysql_query($sql,$link);
-		}
-	}
+
 ?>

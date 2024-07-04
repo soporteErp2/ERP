@@ -30,7 +30,7 @@
 			$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
 
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
-			$grilla->AddRow('Id','id',25);
+			$grilla->AddRow('Codigo','id',40,'codigo');
 			$grilla->AddRowImage('','<center><img src="../../temas/clasico/images/Banderas/[iso2].png" width="16" height="16"></center>',25);
 			$grilla->AddRow('Pais','pais',150);
 			$grilla->AddRow('Continente','continente',100);

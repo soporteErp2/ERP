@@ -57,8 +57,6 @@
 			$grilla->VAutoScroll		= 'false';			//SI LA VENTANA TIENE O NO AUTOSCROLL
 			$grilla->VBotonEliminar		= 'true';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
 			$grilla->VComporEliminar	= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
-			$grilla->AddBotton('Codigo ARL','configurar_informe','ventanaConfiguracionArl();');
-
 		//CONFIGURACION DE LO FORMULARIOS DE CAPTURA Y EDICION
 			$grilla->AddTextField('Nombre','nombre',150,'true','false');
 			$grilla->AddTextField('Porcentaje(%)','porcentaje',150,'true','false');
@@ -88,66 +86,6 @@
 if(!isset($opcion)){  ?>
 	<script>
 
-		function ventanaConfiguracionArl() {
-			var myalto  = Ext.getBody().getHeight();
-			var myancho = Ext.getBody().getWidth();
-
-			Win_Ventana_confi_arl = new Ext.Window({
-			    width       : 300,
-			    height      : 200,
-			    id          : 'Win_Ventana_confi_arl',
-			    title       : 'Configuracion ARL',
-			    modal       : true,
-			    autoScroll  : false,
-			    closable    : true,
-			    autoDestroy : true,
-			    autoLoad    :
-			    {
-			        url     : 'niveles_riesgos_laborales/configuracion_arl.php',
-			        scripts : true,
-			        nocache : true,
-			        params  :
-			        {
-			            var1 : 'var1',
-			            var2 : 'var2',
-			        }
-			    },
-			    tbar        :
-			    [
-			        {
-			            xtype   : 'buttongroup',
-			            columns : 3,
-			            title   : 'Opciones',
-			            style   : 'border-right:none;',
-			            items   :
-			            [
-			                {
-			                    xtype       : 'button',
-			                    width       : 60,
-			                    height      : 56,
-			                    text        : 'Guardar',
-			                    scale       : 'large',
-			                    iconCls     : 'guardar',
-			                    iconAlign   : 'top',
-			                    hidden      : false,
-			                    handler     : function(){ BloqBtn(this); guardarConfiguracion() }
-			                },
-			                {
-			                    xtype       : 'button',
-			                    width       : 60,
-			                    height      : 56,
-			                    text        : 'Regresar',
-			                    scale       : 'large',
-			                    iconCls     : 'regresar',
-			                    iconAlign   : 'top',
-			                    hidden      : false,
-			                    handler     : function(){ BloqBtn(this); Win_Ventana_confi_arl.close(id) }
-			                }
-			            ]
-			        }
-			    ]
-			}).show();
-		}
 
 	</script>
 <?php } ?>

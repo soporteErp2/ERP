@@ -46,7 +46,7 @@
 			$grilla->VentanaAuto		= $ventanaAuto;			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
 			$grilla->TituloVentana		= 'Ventana Tributario'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
 			$grilla->VBarraBotones		= 'true';			//SI HAY O NO BARRA DE BOTONES
-			$grilla->VBotonNuevo		= 'false';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
+			$grilla->VBotonNuevo		= $ventanaAuto;			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
 			$grilla->VBotonNText		= 'Nuevo Tipo Empresa'; //TEXTO DEL BOTON DE NUEVO REGISTRO
 			$grilla->VBotonNImage		= 'add';			//IMAGEN CSS DEL BOTON
 			$grilla->AddBotton('Regresar','regresar','Win_Ventana_Terceros_Tributario.close();Actualiza_Div_Paises('.$id_pais.');');
@@ -56,8 +56,8 @@
 			$grilla->VQuitarAncho		= 70;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
 			$grilla->VQuitarAlto		= 160;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
 			$grilla->VAutoScroll		= 'false';			//SI LA VENTANA TIENE O NO AUTOSCROLL
-			$grilla->VBotonEliminar		= 'false';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
-			$grilla->VComporEliminar	= 'false';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
+			$grilla->VBotonEliminar		= 'true';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
+			$grilla->VComporEliminar	= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
 		//CONFIGURACION DE LOS FORMULARIOS DE CAPTURA Y EDICION
 			$grilla->AddTextField('Nombre','nombre',250,'true','false');
 			$grilla->AddTextField('','id_pais',200,'true','true',$id_pais);
@@ -82,15 +82,7 @@ if (!isset($opcion)) { ?>
 		<?php if($valorRol != 0) echo 'function Editar_TerceroTributario(){}'; ?>
 	</script>
 
-<?php }
-	if ($opcion =="Vupdate") {
-		?>
-			<script>
-				//MyEditar_TerceroTributario('2','2')
-			</script>
-		<?php
-	}
- ?>
+<?php } ?>
 
 
 

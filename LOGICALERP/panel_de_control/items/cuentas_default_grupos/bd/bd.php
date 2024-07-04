@@ -31,7 +31,7 @@
 
 			// SI EXISTE SE ACTUALIZA
 			if ($id>0) {
-				$sqlCuenta   = "UPDATE asientos_niif_default_grupos SET cuenta='$puc',estado='$estado' WHERE descripcion='$textoSql' AND id_empresa='$id_empresa' AND id_grupo=$id_grupo";
+				$sqlCuenta   = "UPDATE asientos_niif_default_grupos SET cuenta='$puc' WHERE descripcion='$textoSql' AND id_empresa='$id_empresa' AND id_grupo=$id_grupo";
 				$queryCuenta = mysql_query($sqlCuenta,$link);
 				if(!$queryCuenta){ echo '<script>alert("Error,\nNo se actualizo la cuenta parael grupo\nIntentelo de nuevo, si el problema continua comuniquese con el administrador del sistema")</script>'; return; }
 			}
@@ -53,7 +53,7 @@
 
 			// SI EXISTE SE ACTUALIZA
 			if ($id>0) {
-				$sqlCuenta   = "UPDATE asientos_colgaap_default_grupos SET cuenta='$puc',estado='$estado' WHERE descripcion='$texto' AND id_empresa='$id_empresa' AND id_grupo='$id_grupo'";
+				$sqlCuenta   = "UPDATE asientos_colgaap_default_grupos SET cuenta='$puc' WHERE descripcion='$texto' AND id_empresa='$id_empresa' AND id_grupo='$id_grupo'";
 				$queryCuenta = mysql_query($sqlCuenta,$link);
 				if(!$queryCuenta){ echo '<script>alert("Error,\nNo se actualizo la cuenta parael grupo\nIntentelo de nuevo, si el problema continua comuniquese con el administrador del sistema")</script>'; return; }
 			}
@@ -104,7 +104,7 @@
 			$id    = mysql_result($query,0,'id');
 			// SI EXISTE SE ACTUALIZA
 			if ($id>0) {
-				$sqlCuenta   = "UPDATE asientos_niif_default_grupos SET cuenta='$cuentaNiif',estado='$estado' WHERE descripcion='$texto' AND id_grupo=$id_grupo  AND id_empresa='$id_empresa'";
+				$sqlCuenta   = "UPDATE asientos_niif_default_grupos SET cuenta='$cuentaNiif' WHERE descripcion='$texto' AND id_grupo=$id_grupo  AND id_empresa='$id_empresa'";
 				$queryCuenta = mysql_query($sqlCuenta,$link);
 				if(!$queryCuenta){ echo '<script>alert("Error,\nNo se actualizo la cuenta parael grupo\nIntentelo de nuevo, si el problema continua comuniquese con el administrador del sistema")</script>'; return; }
 			}

@@ -17,10 +17,7 @@
 						telefono,
 						celular,
 						email,
-						tipo_persona_codigo,
-						software_facturacion,
-						tipo_responsabilidad,
-						id_software
+						tipo_persona_codigo
 					FROM
 						empresas
 					WHERE
@@ -40,9 +37,6 @@
 	$celular                    = $mysql->result($query,0,'celular');
 	$email                      = $mysql->result($query,0,'email');
 	$tipo_persona_codigo        = $mysql->result($query,0,'tipo_persona_codigo');
-	$software_facturacion       = $mysql->result($query,0,'software_facturacion');
-	$tipo_responsabilidad       = $mysql->result($query,0,'tipo_responsabilidad');
-	$id_software                = $mysql->result($query,0,'id_software');
 
 	// CONSULTAR LOS DEPARTAMENTOS
 	$sql = "SELECT id,departamento
@@ -123,39 +117,12 @@
 			<td><input type="text" value="<?php echo $celular; ?>" style="width:190px;" data-requiere="true" id="celular" data-value=""></td>
 		</tr>
 		<tr>
-			<td>Id Software</td>
-			<td><input type="text" value="<?php echo $id_software; ?>" style="width:190px;" data-requiere="true" id="software" data-value=""></td>
-		</tr>
-		<tr>
 			<td>Tipo Persona</td>
 			<td>
 				<select style="width:190px;" data-requiere="true" id="tipo_persona" data-value="">
 					<option value="">Seleccione...</option>
 					<option <?php if($tipo_persona_codigo == '1'){echo("selected");}?> value="1">Persona Juridica</option>
 					<option <?php if($tipo_persona_codigo == '2'){echo("selected");}?> value="2">Persona Natural</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Tipo Emisor</td>
-			<td>
-				<select style="width:190px;" data-requiere="true" id="tipo_responsabilidad" data-value="">
-					<option value="">Seleccione...</option>
-					<option <?php if($tipo_responsabilidad == '7'){echo("selected");}?> value="7">Gran Contribuyente</option>
-					<option <?php if($tipo_responsabilidad == '9'){echo("selected");}?> value="9">Autorretenedor</option>
-					<option <?php if($tipo_responsabilidad == '14'){echo("selected");}?> value="14">Agente de retencion en el impuesto sobre las ventas</option>
-					<option <?php if($tipo_responsabilidad == '112'){echo("selected");}?> value="112">Regimen Simple De Tributacion</option>
-					<option <?php if($tipo_responsabilidad == '117'){echo("selected");}?> value="117">No Responsable</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Software de F.E</td>
-			<td>
-				<select style="width:190px;" data-requiere="true" id="software_facturacion" data-value="">
-					<option value="">Seleccione...</option>
-					<option <?php if($software_facturacion == 'propio'){echo("selected");}?> value="propio">Propio</option>
-					<option <?php if($software_facturacion == 'facse'){echo("selected");}?> value="facse">Facse</option>
 				</select>
 			</td>
 		</tr>
@@ -183,14 +150,6 @@
 							iconCls		: 'guardar',
 							iconAlign	: 'top',
 							handler 	: function(){BloqBtn(this); actualiza_info_empresa();}
-						},
-						{
-							xtype			: 'button',
-							text			: 'Configurar F.E',
-							scale			: 'large',
-							iconCls		: 'sync',
-							iconAlign	: 'top',
-							handler 	: function(){BloqBtn(this); configurar_empresa();}
 						}
 					]
 				}
@@ -199,21 +158,18 @@
 	);
 
 	function actualiza_info_empresa(){
-		var nombre_empresa     = document.getElementById('nombre_empresa').value
-		,	razon_social         = document.getElementById('razon_social').value
-		,	regimen              = document.getElementById('regimen').value
-		,	actividad_economica  = document.getElementById('actividad_economica').value
-		,	id_departamento      = document.getElementById('id_departamento').value
-		,	id_ciudad            = document.getElementById('id_ciudad').value
-		,	direccion            = document.getElementById('direccion').value
-		,	telefono             = document.getElementById('telefono').value
-		,	celular              = document.getElementById('celular').value
-		, email                = document.getElementById('email').value
-		, tipo_persona_codigo  = document.getElementById('tipo_persona').value
-		, tipo_persona_nombre  = document.getElementById('tipo_persona').options[document.getElementById('tipo_persona').selectedIndex].innerHTML
-		, software_facturacion = document.getElementById('software_facturacion').value
-		, tipo_responsabilidad = document.getElementById('tipo_responsabilidad').value
-		, id_software          = document.getElementById('software').value
+		var nombre_empresa    = document.getElementById('nombre_empresa').value
+		,	razon_social        = document.getElementById('razon_social').value
+		,	regimen             = document.getElementById('regimen').value
+		,	actividad_economica = document.getElementById('actividad_economica').value
+		,	id_departamento     = document.getElementById('id_departamento').value
+		,	id_ciudad           = document.getElementById('id_ciudad').value
+		,	direccion           = document.getElementById('direccion').value
+		,	telefono            = document.getElementById('telefono').value
+		,	celular             = document.getElementById('celular').value
+		, email               = document.getElementById('email').value
+		, tipo_persona_codigo = document.getElementById('tipo_persona').value
+		, tipo_persona_nombre = document.getElementById('tipo_persona').options[document.getElementById('tipo_persona').selectedIndex].innerHTML
 
 		if(nombre_empresa == "" || razon_social == "" || actividad_economica == "" || id_departamento == "" || id_ciudad == "" || direccion == "" || telefono == "" || celular == "" || email == ""){
 			alert('Aviso\nFaltan algunos campos obligatorios');
@@ -228,22 +184,19 @@
 			nocache : true,
 			text 		: 'actualizando datos...',
 			params  :	{
-									opc                  : 'actualiza_info_empresa',
-									nombre_empresa       : nombre_empresa,
-									razon_social         : razon_social,
-									regimen              : regimen,
-									actividad_economica  : actividad_economica,
-									id_departamento      : id_departamento,
-									id_ciudad            : id_ciudad,
-									direccion            : direccion,
-									telefono             : telefono,
-									celular              : celular,
-									email                : email,
-									tipo_persona_codigo  : tipo_persona_codigo,
-									tipo_persona_nombre  : tipo_persona_nombre,
-									software_facturacion : software_facturacion,
-									tipo_responsabilidad : tipo_responsabilidad,
-									id_software          : id_software
+									opc                 : 'actualiza_info_empresa',
+									nombre_empresa      : nombre_empresa,
+									razon_social        : razon_social,
+									regimen             : regimen,
+									actividad_economica : actividad_economica,
+									id_departamento     : id_departamento,
+									id_ciudad           : id_ciudad,
+									direccion           : direccion,
+									telefono            : telefono,
+									celular             : celular,
+									email               : email,
+									tipo_persona_codigo : tipo_persona_codigo,
+									tipo_persona_nombre : tipo_persona_nombre
 								}
 		});
 	}
@@ -260,20 +213,6 @@
 									opc             : 'buscar_ciudad',
 									id_departamento : id_departamento,
 									id_ciudad       : '<?php echo $id_ciudad; ?>',
-								}
-		});
-	}
-
-	function configurar_empresa(){
-		MyLoading2('on');
-
-		Ext.get('loadForm').load({
-			url     : 'empresa/bd/bd.php',
-			scripts : true,
-			nocache : true,
-			text 		: 'Configurando...',
-			params  :	{
-									opc : 'configurar_empresa'
 								}
 		});
 	}

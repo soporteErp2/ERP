@@ -19,7 +19,7 @@
         <div style="width:100%; float:left">
 
             <div class="IconoPanelControl" onClick="AbreVentanaPanelSucursal('formatos_documentos','documentos/configuracion_documentos','Configuracion de Documentos',550,350,'true');">
-                <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/cuentas_predefinidas44.png" width="44" height="44"></div>
+                <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/disenador.png" width="44" height="44"></div>
                 <div class="IconoPanelControltxt">Dise&ntilde;ador de Formatos</div>
             </div>
 
@@ -58,10 +58,6 @@
                 <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/calendario44.png" width="44" height="44"></div>
                 <div class="IconoPanelControltxt">Notificaciones de Cartera</div>
             </div>
-            <!-- <div class="IconoPanelControl" onClick="AbreVentanaPanelSucursal('pos','configuracion_pos/panel_pos','Configuracion POS',933,520,'true');">
-               <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/pos.png" width="44" height="44"></div>
-               <div class="IconoPanelControltxt">Configurar Cajas</div>
-           </div> -->
 
         </div>
     </div>
