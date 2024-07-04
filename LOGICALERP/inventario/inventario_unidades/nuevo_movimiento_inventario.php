@@ -172,13 +172,8 @@ if($opc=='guardar_traslado'){
 		if ($contador_consulta>0) {
 		//en este punto que el contador vale mas q cero vamos a actualizar el item de esa bodega por que ya existe
 			//cadena para actualizar la cantidad de ese item en el inventario de esa bodega y/o sucursal
-			$actualiza_cantidad = "UPDATE inventario_totales
-									SET costos=((costos*cantidad)+($costoItem*$cantidad))/(cantidad+$cantidad),
-										cantidad=(cantidad+$cantidad),
-										debug=CONCAT('cantidad: ',cantidad,' costo: ',costos,'+',$costoItem),
-										id_documento_update          = '$id_nota',
-										tipo_documento_update        = 'Nota Contable'
-									WHERE id_item=$id_equipo AND id_sucursal=$sucursal_destino AND id_ubicacion=$bodega_destino AND  activo=1 AND id_empresa=".$_SESSION['EMPRESA'];
+			$actualiza_cantidad = "UPDATE inventario_totales SET costos=((costos*cantidad)+($costoItem*$cantidad))/(cantidad+$cantidad),cantidad=(cantidad+$cantidad),debug=CONCAT('cantidad: ',cantidad,' costo: ',costos,'+',$costoItem)
+										WHERE id_item=$id_equipo AND id_sucursal=$sucursal_destino AND id_ubicacion=$bodega_destino AND  activo=1 AND id_empresa=".$_SESSION['EMPRESA'];
 			$actualiza_sql      = mysql_query($actualiza_cantidad,$link);
 			if (!$actualiza_sql){die('no Actualizo'.mysql_error());}
 			// echo '<script>console.log("'.$cantidad.' - '.$costoItem.'");</script>';
@@ -192,15 +187,7 @@ if($opc=='guardar_traslado'){
 
 		//descontamos la cantidad trasladada al item
 		//$actualiza_cantidad_trasladada = "UPDATE inventario_totales SET cantidad=(cantidad-$cantidad),costos=(costos/(cantidad+$cantidad))*cantidad WHERE id_item=$id_equipo AND id_sucursal=$sucursal_origen AND id_ubicacion=$bodega_origen AND activo=1 AND id_empresa=".$_SESSION['EMPRESA'];
-		$actualiza_cantidad_trasladada = "UPDATE inventario_totales
-											SET cantidad=(cantidad-$cantidad) ,
-												id_documento_update          = '$id_nota',
-												tipo_documento_update        = 'Nota Contable'
-											WHERE id_item=$id_equipo
-											AND id_sucursal=$sucursal_origen
-											AND id_ubicacion=$bodega_origen
-											AND activo=1
-											AND id_empresa=".$_SESSION['EMPRESA'];
+		$actualiza_cantidad_trasladada = "UPDATE inventario_totales SET cantidad=(cantidad-$cantidad) WHERE id_item=$id_equipo AND id_sucursal=$sucursal_origen AND id_ubicacion=$bodega_origen AND activo=1 AND id_empresa=".$_SESSION['EMPRESA'];
 		$slq_actualiza                 = mysql_query($actualiza_cantidad_trasladada,$link);
 
 		echo"<script>

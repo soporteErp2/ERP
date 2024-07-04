@@ -109,7 +109,22 @@ class Inventario_pp
                 $params['accion_inventario'] =='reversar salida ajuste'                 
                 ) 
             {
-                $sql_costo = ",costos = costos";
+                $sql_costo_anterior = "SELECT
+                                        	MIN( id ),
+                                        	costo_anterior 
+                                        FROM
+                                        	logs_inventario
+                                        WHERE
+                                        	id_bodega = $item[bodega_id]
+                                        AND id_documento = $params[documento_id]
+                                        AND id_item = $item[id]
+                                        AND accion_documento = 'Generar'
+                                        AND tipo_documento = $params[documento_tipo]
+                                        AND accion_inventario like '%ajuste%'";
+                $query_costo_anterior = $mysql->query($sql_costo_anterior);
+                $costo_anterior = $mysql->result($query_costo_anterior,0,"costo_anterior");
+                
+                $sql_costo = $costo_anterior ? ",costos = $costo_anterior" : ",costos = costos";
             }
             
             $sql_update = "UPDATE inventario_totales 
