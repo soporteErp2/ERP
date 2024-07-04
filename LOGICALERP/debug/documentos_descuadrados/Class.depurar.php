@@ -436,11 +436,11 @@
 				}
 			}
 
-			$sql = "UPDATE asientos_niif SET activo=0,observacion='Depurados' WHERE activo=1 AND id_empresa=$this->id_empresa AND ($whereAsientos)";
+			echo$sql = "UPDATE asientos_niif SET activo=0,observacion='Depurados' WHERE activo=1 AND id_empresa=$this->id_empresa AND ($whereAsientos)";
 			$query=$this->mysql->query($sql,$this->mysql->link);
 
 			$valueInsert = substr($valueInsert, 0, -1);
-			$sql = "INSERT INTO asientos_niif
+			echo$sql = "INSERT INTO asientos_niif
 											(
 												id_documento,
 												consecutivo_documento,

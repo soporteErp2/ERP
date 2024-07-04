@@ -6,10 +6,10 @@
 			var $baseDatos;
 
 			function Conexion(){
-				$this->ruta       ="192.168.8.202"; //
+				$this->ruta       ="localhost"; //
 				$this->usuario    ="root"; //usuario que tengas definido
 				$this->contrasena ="serverchkdsk"; //contraseña que tengas definidad
-				$this->baseDatos  ="erp_bd"; //base de datos con los host
+				$this->baseDatos  ="erp_acceso"; //base de datos con los host
 			}
 
 			function conectarse($dataBase=NULL){
