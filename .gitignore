@@ -9,6 +9,7 @@ soporte/
 source/
 SQL/
 LOGICALERP/nomina/documentos_tercero
+LOGICALERP/pos/backend/pos_admin/informes/temp
 #ignorar el archivo de configuracion
 configuracion/conexion.php
 
