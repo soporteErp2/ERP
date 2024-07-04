@@ -80,7 +80,9 @@
 					FROM ventas_pos_inventario
 					WHERE activo=1 AND id_empresa=$this->id_empresa AND ($wherePos)";
 			$query = $this->mysql->query($sql);
+			$contItems = 0;
 			while ($row=$this->mysql->fetch_array($query)){
+				$contItems++;
 				$whereIdItems .= ($whereIdItems=='')? " I.id=$row[id_item] " : " OR I.id=$row[id_item] " ;
 				$arrayPos[$row['id_pos']]['items'][] = array(
 																'id_pos'       => $row['id_pos'],
@@ -104,7 +106,7 @@
 			while ($row=$this->mysql->fetch_array($query)){
 				$arrayItems[$row['id']] = $row['valor'];
 			}
-
+			//echo json_encode($arrayPos);
 			foreach ($arrayPos as $id_pos => $arrayResult){
 				$acumNeto = 0;
 				$acumImpuesto = 0;

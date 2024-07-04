@@ -76,7 +76,6 @@
 			},
 			failure : function(xhr){
 				console.log("fail");
-				// console.log(xhr);
 				$W.Loading();
 			}
 		})
