@@ -723,6 +723,84 @@
         // });
     }
 
+
+
+    //================== BUSCAR CENTRO DE COSTOS =======================//
+    // function ventanaCcos_<?php echo $opcGrillaContable; ?>(){
+    //     Win_Ventana_Ccos_<?php echo $opcGrillaContable; ?> = new Ext.Window({
+    //         width       : 550,
+    //         height      : 450,
+    //         id          : 'Win_Ventana_Ccos_<?php echo $opcGrillaContable; ?>',
+    //         title       : 'Seleccione el Centro de Costo',
+    //         modal       : true,
+    //         autoScroll  : false,
+    //         closable    : false,
+    //         autoDestroy : true,
+    //         autoLoad    :
+    //         {
+    //             url     : '../funciones_globales/grillas/grillaBuscarCentroCostos.php',
+    //             scripts : true,
+    //             nocache : true,
+    //             params  :
+    //             {
+    //                 opcGrillaContable     : '<?php echo $opcGrillaContable; ?>',
+    //                 cargaFunction : 'renderSelectedCcos_<?php echo $opcGrillaContable; ?>(id);return;'
+    //             }
+    //         },
+    //         tbar        :
+    //         [
+    //             {
+    //                 xtype   : 'buttongroup',
+    //                 columns : 3,
+    //                 title   : 'Opciones',
+    //                 items   :
+    //                 [
+    //                     {
+    //                         xtype       : 'button',
+    //                         width       : 60,
+    //                         height      : 56,
+    //                         text        : 'Regresar',
+    //                         scale       : 'large',
+    //                         iconCls     : 'regresar',
+    //                         iconAlign   : 'top',
+    //                         handler     : function(){ Win_Ventana_Ccos_<?php echo $opcGrillaContable; ?>.close() }
+    //                     }
+    //                 ]
+    //             }
+    //         ]
+    //     }).show();
+    // }
+
+    // //================= RENDERIZAR LA BUSQUEDA DEL CENTRO DE COSTO ================//
+    // function renderSelectedCcos_<?php echo $opcGrillaContable; ?>(id){
+
+    //     var nombre = ''
+    //     ,   codigo = '';
+
+    //     if(id > 0){
+    //         nombre = document.getElementById('div_CentroCostos_nombre_'+id).innerHTML
+    //         codigo = document.getElementById('div_CentroCostos_codigo_'+id).innerHTML;
+    //     }
+
+    //     Ext.get('renderSelectCcos').load({
+    //         url     : 'requisicion/bd/bd.php',
+    //         scripts : true,
+    //         nocache : true,
+    //         params  :
+    //         {
+    //             idCcos            : id,
+    //             nombre            : nombre,
+    //             codigo            : codigo,
+    //             opc               : 'updateCcos',
+    //             id                : '<?php echo $id_documento; ?>',
+    //             opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+    //         }
+    //     });
+
+    //     Win_Ventana_Ccos_<?php echo $opcGrillaContable; ?>.close();
+    // }
+
+
     //============================== FILTRO TECLA BUSCAR ARTICULO ==========================================================//
     function buscarArticulo<?php echo $opcGrillaContable; ?>(event,input){
         var contIdInput = (input.id).split('_')[1]
@@ -782,7 +860,7 @@
     function ventanaBuscarArticulo<?php echo $opcGrillaContable; ?>(cont){
         var myalto  = Ext.getBody().getHeight();
         var myancho = Ext.getBody().getWidth();
-        var sql     = ' AND estado_compra="true" ';
+        var sql     = 'AND id_sucursal=<?php echo $id_sucursal; ?> AND id_ubicacion=<?php echo $filtro_bodega; ?> AND estado_compra="true" ';
 
         Win_Ventana_buscar_Articulo_factura = new Ext.Window({
             width       : myancho-100,
@@ -795,14 +873,14 @@
             autoDestroy : true,
             autoLoad    :
             {
-                url     : '../funciones_globales/grillas/BusquedaInventarios.php',
+                url     : '../funciones_globales/grillas/BusquedaInventariosVentas.php',
                 scripts : true,
                 nocache : true,
                 params  :
                 {
                     sql           : sql,
                     nombre_grilla : 'ventanaBucarArticuloRequisicion',
-                    nombreTabla   : 'items',
+                    nombreTabla   : 'inventario_totales',
                     cargaFuncion  : 'responseVentanaBuscarArticulo<?php echo $opcGrillaContable; ?>(id,'+cont+');'
                 }
             },
@@ -825,36 +903,58 @@
 
         var costoTotal     = 0
         ,   totalDescuento = 0
-        ,   idArticulo     = id
+        ,   idArticulo     = document.getElementById('ventas_id_item_'+id).innerHTML
         ,   eanArticulo    = document.getElementById('div_ventanaBucarArticuloRequisicion_codigo_'+id).innerHTML
         ,   codigo         = document.getElementById('div_ventanaBucarArticuloRequisicion_code_bar_'+id).innerHTML
         ,   costo          = document.getElementById('div_ventanaBucarArticuloRequisicion_costos_'+id).innerHTML
         ,   unidadMedida   = document.getElementById('unidad_medida_grilla_'+id).innerHTML
         ,   nombreArticulo = document.getElementById('div_ventanaBucarArticuloRequisicion_nombre_equipo_'+id).innerHTML
         ,   cantidad       = (document.getElementById('cantArticulo<?php echo $opcGrillaContable; ?>_'+cont).value)*1
-        // ,   tipoDescuento  = ((document.getElementById('imgDescuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).getAttribute("src")).split('/')[1]).split('.')[0]
-        // ,   descuento      = (document.getElementById('descuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value)*1;
+        ,   tipoDescuento  = ((document.getElementById('imgDescuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).getAttribute("src")).split('/')[1]).split('.')[0]
+        ,   descuento      = (document.getElementById('descuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value)*1;
+      //  console.log(eanArticulo);
+        //SI EL TERCERO ESTA EXENTO DE IVA
+        // if(exento_iva_<?php echo $opcGrillaContable; ?> == 'Si'){
+        //     if(document.getElementById('idInsertArticulo<?php echo $opcGrillaContable; ?>_'+cont).value > 0){
+        //         document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+cont).style.display = 'inline';
+        //         document.getElementById("divImageSave<?php echo $opcGrillaContable; ?>_"+cont).style.display     = 'inline';
+        //     }
+        //     else{ document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+cont).style.display = "none"; }
 
-        Ext.get('renderArticulo<?php echo $opcGrillaContable; ?>_'+cont).load({
-            url     : 'requisicion/bd/bd.php',
-            scripts : true,
-            nocache : true,
-            params  :
-            {
-                opc               : 'buscarImpuestoArticulo',
-                id                : '<?php echo $id_documento; ?>',
-                id_inventario     : idArticulo,
-                opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
-                cont              : cont,
-                unidadMedida      : unidadMedida,
-                idArticulo        : idArticulo,
-                codigo            : codigo,
-                costo             : costo,
-                nombreArticulo    : nombreArticulo,
-                eanArticulo       : eanArticulo
+        //     document.getElementById('unidades<?php echo $opcGrillaContable; ?>_'+cont).value       = unidadMedida;
+        //     document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_'+cont).value     = idArticulo;
+        //     document.getElementById('eanArticulo<?php echo $opcGrillaContable; ?>_'+cont).value    = codigo;
+        //     document.getElementById('costoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value  = costo;
+        //     document.getElementById('nombreArticulo<?php echo $opcGrillaContable; ?>_'+cont).value = nombreArticulo;
+        //     document.getElementById('ivaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value    = 0;
 
-            }
-        });
+        //     Win_Ventana_buscar_Articulo_factura.close();
+        //     return;
+        // }
+        // else{
+
+
+            Ext.get('renderArticulo<?php echo $opcGrillaContable; ?>_'+cont).load({
+                url     : 'requisicion/bd/bd.php',
+                scripts : true,
+                nocache : true,
+                params  :
+                {
+                    opc               : 'buscarImpuestoArticulo',
+                    id                : '<?php echo $id_documento; ?>',
+                    id_inventario     : idArticulo,
+                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
+                    cont              : cont,
+                    unidadMedida      : unidadMedida,
+                    idArticulo        : idArticulo,
+                    codigo            : codigo,
+                    costo             : costo,
+                    nombreArticulo    : nombreArticulo,
+                    eanArticulo       : eanArticulo
+
+                }
+            });
+        // }
     }
 
     //============================= FILTRO CAMPO CANTIDAD ARTICULO ==========================================================//
@@ -980,63 +1080,63 @@
 
     //======================== VENTANA OBSERVACION POR ARTICULO EN ORDEN DE COMPRA ==========================================//
     function ventanaDescripcionArticulo<?php echo $opcGrillaContable; ?>(cont,idInsertArticulo,observacionArt){
-            var id = document.getElementById('idInsertArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
+             var id = document.getElementById('idInsertArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
 
-            Win_Ventana_descripcion_Articulo_factura = new Ext.Window({
-                width       : 330,
-                height      : 280,
-                id          : 'Win_Ventana_descripcion_Articulo_factura',
-                title       : 'Observacion articulo ',
-                modal       : true,
-                autoScroll  : false,
-                closable    : false,
-                autoDestroy : true,
-                autoLoad    :
+        Win_Ventana_descripcion_Articulo_factura = new Ext.Window({
+            width       : 330,
+            height      : 280,
+            id          : 'Win_Ventana_descripcion_Articulo_factura',
+            title       : 'Observacion articulo ',
+            modal       : true,
+            autoScroll  : false,
+            closable    : false,
+            autoDestroy : true,
+            autoLoad    :
+            {
+                url     : 'requisicion/bd/bd.php',
+                scripts : true,
+                nocache : true,
+                params  :
                 {
-                    url     : 'requisicion/bd/bd.php',
-                    scripts : true,
-                    nocache : true,
-                    params  :
-                    {
-                        opc               : 'ventanaDescripcionArticulo',
-                        opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
-                        idArticulo        : id,
-                        cont              : cont,
-                        id                : '<?php echo $id_documento; ?>',
+                    opc               : 'ventanaDescripcionArticulo',
+                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
+                    idArticulo        : id,
+                    cont              : cont,
+                    id                : '<?php echo $id_documento; ?>',
 
-                    }
-                },
+                }
+            },
 
-                tbar        :
-                [
-                    // {
-                    //     xtype       : 'button',
-                    //     text        : 'Guardar',
-                    //     scale       : 'large',
-                    //     iconCls     : 'guardar',
-                    //     iconAlign   : 'left',
-                    //     handler     : function(){ btnGuardarDescripcionArticulo<?php echo $opcGrillaContable; ?>(cont,id); }
-                    // },
-                    // {
-                    //     xtype       : 'button',
-                    //     text        : 'Guardar',
-                    //     scale       : 'large',
-                    //     iconCls     : 'guardar',
-                    //     iconAlign   : 'left',
-                    //     handler     : function(){ guardarObservacionArt<?php echo $opcGrillaContable; ?>(cont,id); }
-                    // },
-                    {
-                        xtype       : 'button',
-                        text        : 'Regresar',
-                        scale       : 'large',
-                        iconCls     : 'regresar',
-                        iconAlign   : 'left',
-                        handler     : function(){ Win_Ventana_descripcion_Articulo_factura.close(id) }
-                    }
-                ]
-            }).show();
+            tbar        :
+            [
+                // {
+                //     xtype       : 'button',
+                //     text        : 'Guardar',
+                //     scale       : 'large',
+                //     iconCls     : 'guardar',
+                //     iconAlign   : 'left',
+                //     handler     : function(){ btnGuardarDescripcionArticulo<?php echo $opcGrillaContable; ?>(cont,id); }
+                // },
+                // {
+                //     xtype       : 'button',
+                //     text        : 'Guardar',
+                //     scale       : 'large',
+                //     iconCls     : 'guardar',
+                //     iconAlign   : 'left',
+                //     handler     : function(){ guardarObservacionArt<?php echo $opcGrillaContable; ?>(cont,id); }
+                // },
+                {
+                    xtype       : 'button',
+                    text        : 'Regresar',
+                    scale       : 'large',
+                    iconCls     : 'regresar',
+                    iconAlign   : 'left',
+                    handler     : function(){ Win_Ventana_descripcion_Articulo_factura.close(id) }
+                }
+            ]
+        }).show();
     }
-    function ventanaBuscarCentroCostos_<?php echo $opcGrillaContable; ?>(cont) {
+ function ventanaBuscarCentroCostos_<?php echo $opcGrillaContable; ?>(cont) {
         Win_Ventana_Ccos_<?php echo $opcGrillaContable; ?> = new Ext.Window({
             width       : 600,
             height      : 450,
@@ -1155,6 +1255,7 @@
             }
         });
     }
+
 
 
     //===================== CANCELAR LOS CAMBIOS DE UN ARTICULO ===============================================//
@@ -1410,7 +1511,46 @@
 
     }
 
-
+    // function ventana_centros_costos_<?php echo $opcGrillaContable; ?>(){
+    //     Win_Ventana_Ccos_rc = new Ext.Window({
+    //         width       : 600,
+    //         height      : 450,
+    //         id          : 'Win_Ventana_Ccos_rc',
+    //         title       : 'Seleccione el Centro de Costo',
+    //         modal       : true,
+    //         autoScroll  : false,
+    //         closable    : false,
+    //         autoDestroy : true,
+    //         autoLoad    :
+    //         {
+    //             url     : 'requisicion/centro_costos.php',
+    //             scripts : true,
+    //             nocache : true,
+    //             params  : { }
+    //         },
+    //         tbar        :
+    //         [
+    //             {
+    //                 xtype   : 'buttongroup',
+    //                 columns : 3,
+    //                 title   : 'Opciones',
+    //                 items   :
+    //                 [
+    //                     {
+    //                         xtype       : 'button',
+    //                         width       : 60,
+    //                         height      : 56,
+    //                         text        : 'Regresar',
+    //                         scale       : 'large',
+    //                         iconCls     : 'regresar',
+    //                         iconAlign   : 'top',
+    //                         handler     : function(){ Win_Ventana_Ccos_rc.close() }
+    //                     }
+    //                 ]
+    //             }
+    //         ]
+    //     }).show();
+    // }
 
     function guardarObservacionArt(cont,idInsertArticulo,observacionArt){
         MyLoading2('on');

@@ -3262,8 +3262,7 @@
 			echo '<script>
 							alert("Aviso,\nSe encontraron las siguientes facturas con una numeracion igual a la ingresada: '.$facturasRepetidas.'");
 						</script>';
-						return true;
-			exit;
+			return true;
 		}
 		else{
 			return false;

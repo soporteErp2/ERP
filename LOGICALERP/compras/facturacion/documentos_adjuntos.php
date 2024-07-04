@@ -3,13 +3,9 @@
 	include("../../../configuracion/define_variables.php");
 
 	// VERIFICAR EL TAMAÑO DISPONIBLE PARA LA SESION DE ESA EMPRESA
-	if($_SERVER['SERVER_NAME'] != 'erp.plataforma.co'){
-		$size = getFolderSize($_SESSION['ID_HOST'],'../../../');
-		$porcentaje = $size*100/$_SESSION['ALMACENAMIENTO'];
-		$proporcion = 400*$porcentaje/100;
-	}
-	else{ $proporcion = 0; }
-
+	$size = getFolderSize($_SESSION['ID_HOST'],'../../../');
+	$porcentaje = $size*100/$_SESSION['ALMACENAMIENTO'];
+	$proporcion = 400*$porcentaje/100;
 
 
 	$id_empresa = $_SESSION['EMPRESA'];
@@ -71,7 +67,7 @@
 			nocache : true,
 			params  :
 			{
-				opc : 'mostrarAlmacenamiento',
+				opc : 'mostrarAlmacenamiento',					
 			}
 		});
 	}
@@ -82,7 +78,7 @@
 		<div class="close" title="Ver Almacenamiento" onclick="mostrar_ocultar_almacenamiento()" id="btn_almacenamiento" style="margin-right: 10px;background-image: url('img/almacenamiento.png');height: 40px;width: 40px;margin-top: -10px;" ></div>
 	</div>
 	<div class="content-almacenamiento" id="div_almacenamiento" style="display:none;">
-
+		
 	</div>
 	<div id="divAdjuntos">
 	<?php
@@ -90,7 +86,7 @@
 			echo '<script>
 					document.getElementById("div_almacenamiento").setAttribute("style","display:block;");
 					document.getElementById("btn_almacenamiento").setAttribute("style","display:none;");
-					loadAlmacenamiento();
+					loadAlmacenamiento();					
 				</script>';
 			exit;
 		}

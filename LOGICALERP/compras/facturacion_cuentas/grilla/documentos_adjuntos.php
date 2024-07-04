@@ -3,12 +3,10 @@
 	include("../../../../configuracion/define_variables.php");
 
 	// VERIFICAR EL TAMAÑO DISPONIBLE PARA LA SESION DE ESA EMPRESA
-	if($_SERVER['SERVER_NAME'] != 'erp.plataforma.co'){
-		$size = getFolderSize($_SESSION['ID_HOST'],'../../../../');
-		$porcentaje = $size*100/$_SESSION['ALMACENAMIENTO'];
-		$proporcion = 400*$porcentaje/100;
-	}
-	else{ $proporcion = 0; }
+	$size = getFolderSize($_SESSION['ID_HOST'],'../../../../');
+	$porcentaje = $size*100/$_SESSION['ALMACENAMIENTO'];
+	$proporcion = 400*$porcentaje/100;
+
 	$id_empresa = $_SESSION['EMPRESA'];
 	// CONSULTAR EL ESTADO DE LA FACTURA
 	$sql    = "SELECT estado FROM compras_facturas WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_factura_compra";

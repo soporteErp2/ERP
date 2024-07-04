@@ -509,13 +509,9 @@
 						}
 		    	}
 
-					// $arrayGlobalEstado[$estado] += $valArrayInventario['precio'];
-					// $arrayItemEstado[$estado]   += $valArrayInventario['precio'];
-					// $acumSubtotal               += $valArrayInventario['precio'];
-
-					$arrayGlobalEstado[$estado] += round($valArrayInventario['precio'],$_SESSION['DECIMALESMONEDA']);
-					$arrayItemEstado[$estado]   += round($valArrayInventario['precio'],$_SESSION['DECIMALESMONEDA']);
-					$acumSubtotal               += round($valArrayInventario['precio'],$_SESSION['DECIMALESMONEDA']);
+					$arrayGlobalEstado[$estado] += $valArrayInventario['precio'];
+					$arrayItemEstado[$estado]   += $valArrayInventario['precio'];
+					$acumSubtotal               += $valArrayInventario['precio'];
 
 					//===================================== CALC IMPUESTO ========================================//
 					if($cuentaImpuesto > 0 && $valArrayInventario['impuesto'] > 0){
@@ -664,44 +660,30 @@
 						else{
 							$arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio] = $totalContabilizacionItem;
 						}
+						
+						//REDONDEAMOS EL VALOR TOTAL DEL IMPUESTO DEL DOCUMENTO AL FINAL DEL CICLO
+						if($valArrayInventario === end($arrayInventarioFactura)){
+							if($arrayAnticipo['total'] > 0){
+								$arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio] = ROUND($arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio],$_SESSION['DECIMALESMONEDA']);
+							}
+							else{
+								$arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio] = $arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio];
+							}
+						}
 
 						//ARRAY ASIENTO CONTABLE IMPUESTO
 						if($valArrayInventario['cuenta_compra'] != "" && $valArrayInventario['cruzar_costo_activo_fijo'] == "false" && $valArrayInventario['check_opcion_contable'] == "activo_fijo"){
 							$estadoImpuesto = $arrayCuentasItems[$idItemArray]['impuesto']['estado'];
 							$cuentaImpuesto = $valArrayInventario['cuenta_compra'];
 
-							$array_cuentas_impuestos_activos_fijos[] = $cuentaImpuesto;
-
 							//VERIFICAMOS SI EL COSTO DLE ACTIVO FIJO SE CRUZA CON EL COSTO DEL IMPUESTO
 							$arrayAsiento[0][$cuentaPrecio][$estadoPrecio] = $arrayAsiento[0][$cuentaPrecio][$estadoPrecio] - $valArrayInventario['impuesto'];
 							$arrayAsiento[0][$cuentaImpuesto][$estadoImpuesto] += $valArrayInventario['impuesto'];
 
 							//REDONDEAMOS EL VALOR TOTAL DEL IMPUESTO DEL DOCUMENTO AL FINAL DEL CICLO
-							if($valArrayInventario === end($arrayInventarioFactura)){
-								$array_cuentas_impuestos_activos_fijos = array_unique($array_cuentas_impuestos_activos_fijos);
-								
-								if($arrayAnticipo['total'] > 0){
-									foreach($array_cuentas_impuestos_activos_fijos as $key => $value){
-										$arrayAsiento[0][$value][$estado] = ROUND($arrayAsiento[0][$value][$estado],$_SESSION['DECIMALESMONEDA']);
-									}
-								}
-								else{
-									foreach($array_cuentas_impuestos_activos_fijos as $key => $value){
-										$arrayAsiento[0][$value][$estado] = $arrayAsiento[0][$value][$estado];
-									}
-								}
+							if($valArrayInventario === end($arrayInventarioFactura)) {
+				        $arrayAsiento[0][$cuentaImpuesto][$estadoImpuesto] = ROUND($arrayAsiento[0][$cuentaImpuesto][$estadoImpuesto],$decimalesMoneda);
 				    	}
-						}
-
-						//REDONDEAMOS EL VALOR TOTAL DEL IMPUESTO DEL DOCUMENTO AL FINAL DEL CICLO
-						if($valArrayInventario === end($arrayInventarioFactura)){
-							if($arrayAnticipo['total'] > 0){
-								$arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio] = ROUND($arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio],$_SESSION['DECIMALESMONEDA']);
-								$arrayAsiento[0][$contraPrecio][$estado] = ROUND($arrayAsiento[0][$contraPrecio][$estado],$_SESSION['DECIMALESMONEDA']);
-							}
-							else{
-								$arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio] = $arrayAsiento[$cCosPrecio][$cuentaPrecio][$estadoPrecio];
-							}
 						}
 
 						$acumCuentaClientes   = $contraPrecio;
@@ -752,8 +734,8 @@
 						alert("Aviso.\nLos siguientes items no tienen centro de costo \n'.$msjErrorCcosto.'");
 						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 					</script>';
-				$sql   = "UPDATE compras_facturas SET estado=0 WHERE activo=1 AND id=$idFactura";
-				$query = mysql_query($sql,$link);
+					$sql   = "UPDATE compras_facturas SET estado=0 WHERE activo=1 AND id=$idFactura";
+					$query = mysql_query($sql,$link);
 				exit;
 			}
 		}
@@ -889,8 +871,8 @@
 											'FC',
 											'$consecutivoDocReferencia',
 											'$fechaInicioFactura',
-											'$arrayCampo[debito]',
-											'$arrayCampo[credito]',
+											'".$arrayCampo['debito']."',
+											'".$arrayCampo['credito']."',
 											'$cuenta',
 											'$idProveedor',
 											'$idSucursal',

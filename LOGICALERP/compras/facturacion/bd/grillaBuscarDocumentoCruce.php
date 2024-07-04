@@ -39,7 +39,7 @@
 			$grilla->GrillaName	 		= $nameGrillaLoad;  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
 			$grilla->TableName			= $tablaDocumentoCruce;	//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			= " activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND (estado=1 OR estado = 2) $whereIdDoc AND id_bodega=$filtro_bodega";
+			$grilla->MyWhere			= " activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal AND (estado=1 OR estado = 2) $whereIdDoc";
 			$grilla->OrderBy			= 'consecutivo DESC';			//LIMITE DE LA CONSULTA
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
 		//TAMANO DE LA GRILLA
@@ -61,9 +61,6 @@
 			// if ($tablaGrilla=='compras_ordenes') {
 				$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoOrdenCompra_[id]" /></center>','50');
 				$grilla->AddRow(utf8_decode('Doc N°'),'consecutivo',50);
-				if ($tablaDocumentoCruce=='compras_ordenes'){
-					$grilla->AddRow(utf8_decode('N° SIIP'),'consecutivo_siip',50);
-				}
 				$grilla->AddRow('Nit','nit',120);
 				$grilla->AddRow('Proveedor','proveedor',200);
 				$grilla->AddRow('Pendientes Facturar','pendientes_facturar',120);

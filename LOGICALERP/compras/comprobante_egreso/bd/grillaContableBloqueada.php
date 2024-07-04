@@ -68,7 +68,6 @@
     $estado         = mysql_result($query,0,'estado');
     $numeroCheque   = mysql_result($query,0,'numero_cheque');
     $cuenta         = mysql_result($query,0,'cuenta').' '.mysql_result($query,0,'descripcion_cuenta');
-    // $disponible     = mysql_result($query,0,'disponible_archivo_plano');
 
     $arrayReplaceString = array("\n", "\r","<br>");
     $observacion = str_replace($arrayReplaceString, "\\n", mysql_result($query,0,'observacion'));
@@ -92,70 +91,77 @@
     $bodyArticle = cargaArticulosSaveConTercero($id_comprobante_egreso,$observacion,$estado,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link);
 
     $habilita = ($estado=='1')? 'onclick="javascript: return false;" disabled ': '';
+
 ?>
-<div class="contenedorComprobanteEgresoCuentas">
-  <div class="bodyTop">
-    <div class="contInfoFact">
-      <div id="renderRestaurar<?php echo $opcGrillaContable; ?>"></div>
-      <div class="contTopFila">
-        <?php echo $divImagen; ?>
-        <div class="renglonTop">
-          <div class="labelTop">Sucursal</div>
-          <div class="campoTop"><input type="text" id="nombreSucursal<?php echo $opcGrillaContable; ?>" value="<?php echo $_SESSION['NOMBRESUCURSAL']; ?>" readonly/></div>
+
+<div class="contenedorComprobanteEgresoCuentas" >
+
+    <!-- Campo Izquierdo -->
+    <div class="bodyTop">
+        <div class="contInfoFact">
+            <div id="renderRestaurar<?php echo $opcGrillaContable; ?>"></div>
+            <div class="contTopFila">
+                 <?php echo $divImagen; ?>
+                <div class="renglonTop">
+                    <div class="labelTop">Sucursal</div>
+                    <div class="campoTop"><input type="text" id="nombreSucursal<?php echo $opcGrillaContable; ?>" value="<?php echo $_SESSION['NOMBRESUCURSAL']; ?>" readonly/></div>
+                </div>
+                <div class="renglonTop">
+                    <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
+                    <div class="labelTop">Fecha</div>
+                    <div class="campoTop"><input type="text" value="<?php echo $fecha_nota; ?>" readonly/></div>
+                </div>
+
+                <div style="float:left;max-width:20px;overflow:hidden;margin-top:17px;" id="cargarFecha"></div>
+                <div class="renglonTop" id="divCodigoTercero">
+                    <div class="labelTop">Codigo Proveedor</div>
+                    <div class="campoTop"><input type="text" value="<?php echo $codigo_tercero; ?>" readonly></div>
+                </div>
+
+                <div class="renglonTop" id="divIdentificacionTercero" >
+                    <div class="labelTop">Nit</div>
+                    <div class="campoTop" >
+                        <input type="text" value="<?php echo $nit_tercero; ?>" readonly/>
+                    </div>
+                </div>
+
+                <div class="renglonTop">
+                    <div class="labelTop">Proveedor</div>
+                    <div class="campoTop" style="width:277px;"><input type="text" value="<?php echo $tercero; ?>" readonly/></div>
+                </div>
+
+                <div class="renglonTop">
+                    <div class="labelTop">No. Cheque</div>
+                    <div class="campoTop"><input type="text" value="<?php echo $numeroCheque; ?>" readonly/></div>
+                </div>
+
+                <div class="renglonTop">
+                    <div class="labelTop">Usuario</div>
+                    <div class="campoTop"style="width:277px;"><input type="text" value="<?php echo $usuario; ?>" readonly/></div>
+                </div>
+
+                <div class="renglonTop">
+                    <div class="labelTop">Cuenta</div>
+                    <div class="campoTop">
+                        <input type="text" value="<?php echo $cuenta; ?>" readonly/>
+                    </div>
+                </div>
+
+                <div class="renglonTop">
+                    <div class="labelTop">Flujo de Efectivo</div>
+                    <div class="campoTop">
+                        <input type="text" value="<?php echo $flujo_efectivo; ?>" readonly/>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="renglonTop">
-          <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
-          <div class="labelTop">Fecha</div>
-          <div class="campoTop"><input type="text" value="<?php echo $fecha_nota; ?>" readonly/></div>
-        </div>
-        <div style="float:left;max-width:20px;overflow:hidden;margin-top:17px;" id="cargarFecha"></div>
-        <div class="renglonTop" id="divCodigoTercero">
-          <div class="labelTop">Codigo Proveedor</div>
-          <div class="campoTop"><input type="text" value="<?php echo $codigo_tercero; ?>" readonly></div>
-        </div>
-        <div class="renglonTop" id="divIdentificacionTercero" >
-          <div class="labelTop">Nit</div>
-          <div class="campoTop" >
-            <input type="text" value="<?php echo $nit_tercero; ?>" readonly/>
-          </div>
-        </div>
-        <div class="renglonTop">
-          <div class="labelTop">Proveedor</div>
-          <div class="campoTop" style="width:277px;"><input type="text" value="<?php echo $tercero; ?>" readonly/></div>
-        </div>
-        <div class="renglonTop">
-          <div class="labelTop">No. Cheque</div>
-          <div class="campoTop"><input type="text" value="<?php echo $numeroCheque; ?>" readonly/></div>
-        </div>
-        <div class="renglonTop">
-          <div class="labelTop">Usuario</div>
-          <div class="campoTop"style="width:277px;"><input type="text" value="<?php echo $usuario; ?>" readonly/></div>
-        </div>
-        <div class="renglonTop">
-          <div class="labelTop">Cuenta</div>
-          <div class="campoTop">
-            <input type="text" value="<?php echo $cuenta; ?>" readonly/>
-          </div>
-        </div>
-        <div class="renglonTop">
-          <div class="labelTop">Flujo de Efectivo</div>
-          <div class="campoTop">
-            <input type="text" value="<?php echo $flujo_efectivo; ?>" readonly/>
-          </div>
-        </div>
-        <div class="renglonTop">
-          <div class="labelTop">Disponible Archivo Plano</div>
-          <div class="campoTop">
-            <input type="text" value="<?php echo $disponible; ?>" readonly/>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <div class="bodyArticulos" id="bodyArticulos<?php echo $opcGrillaContable; ?>">
-    <div class="renderFilasArticulo" id="renderizaNewArticulo<?php echo $opcGrillaContable; ?>"><?php echo $bodyArticle; ?></div>
-  </div>
+
+    <div class="bodyArticulos" id="bodyArticulos<?php echo $opcGrillaContable; ?>">
+        <div class="renderFilasArticulo" id="renderizaNewArticulo<?php echo $opcGrillaContable; ?>"><?php echo $bodyArticle; ?></div>
+    </div>
 </div>
+
 <script>
     var observacion<?php echo $opcGrillaContable; ?> = '';
     <?php echo $acumScript; ?>
@@ -221,6 +227,7 @@
     }
 
     //============================ CANCELAR UN DOCUMENTO =========================================================================//
+
     function cancelar<?php echo $opcGrillaContable; ?>(){
         var contArticulos = 0;
 
@@ -358,24 +365,5 @@
          }).show();
     }
 
-    function ventanaDocumentosCruceComprobanteEgreso(){
-      Win_ventanaDocumentosCruceComprobanteEgreso = new Ext.Window({
-        width       : 550,
-        height      : 500,
-        id          : 'Win_ventanaDocumentosCruceComprobanteEgreso',
-        title       : '',
-        modal       : true,
-        autoScroll  : false,
-        closable    : false,
-        autoDestroy : true,
-        autoLoad    : {
-                        url     : 'comprobante_egreso/documentos_adjuntos.php',
-                        scripts : true,
-                        nocache : true,
-                        params  : {
-                                    id_comprobante_egreso : '<?php echo $id_comprobante_egreso; ?>',
-                                  }
-                      },
-      }).show();
-    }
+
 </script>

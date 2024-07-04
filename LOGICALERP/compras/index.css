@@ -279,7 +279,7 @@
 	border-right  : 1px solid #d4d4d4;
 }
 
-.contenedorOrdenCompra .labelNombreArticulo, .contenedorOrdenCompra .campoNombreArticulo{ width : calc((100% - 100px - 95px) / 10 * 3);  }
+.contenedorOrdenCompra .labelNombreArticulo, .contenedorOrdenCompra .campoNombreArticulo{ width : calc((100% - 40px - 95px) / 8 * 3); }
 .contenedorRequisicionCompra .labelNombreArticulo, .contenedorRequisicionCompra .campoNombreArticulo{ width : calc((100% - 40px - 95px) / 8 * 3); }
 .contenedorFacturaCompra .labelNombreArticulo, .contenedorFacturaCompra .campoNombreArticulo{ width : calc((100% - 100px - 95px) / 10 * 3); }
 .contenedorOrdenCompraBloqueada .labelNombreArticulo, .contenedorOrdenCompraBloqueada .campoNombreArticulo{ width : calc((100% - 80px) / 10 * 3); }
@@ -421,7 +421,7 @@ textarea{ width : 100%; border: none; height: 52px; }
 .contenedorOrdenCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
 .contenedorRequisicionCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 37px ); }
 .contenedorFacturaCompra .labelTotal{ width : calc(100% - 40px - 12% - 30% - 35px) !important; }
-.contenedorOrdenCompra .labelCheck, .contenedorOrdenCompra .campoOptionCheck,.contenedorFacturaCompra .labelCheck, .contenedorFacturaCompra .campoOptionCheck{ width : calc((100% - 40px - 95px) / 10 / 3); text-align: center; }
+.contenedorFacturaCompra .labelCheck, .contenedorFacturaCompra .campoOptionCheck{ width : calc((100% - 40px - 95px) / 10 / 3); text-align: center; }
 
 .contenedorFacturaCompra .labelCcos, .contenedorFacturaCompra .campoCcos{ width : 75px; text-align: center; }
 

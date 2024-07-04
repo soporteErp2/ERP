@@ -85,31 +85,60 @@
 				else if(consecutivoDoc != '' && estado == 'img/estado_doc/3.png'){  document.getElementById('titleDocuementoOrdenCompra').innerHTML='<span style="color:red;font-size:18px;font-weight: bold;}">Orden de compra<br>N. '+consecutivoDoc+'</span>';}
 				else{ document.getElementById('titleDocuementoOrdenCompra').innerHTML=''; }
 
-				//====================== CONTROL DE BOTONES ======================//
-	      		if(estado == 'img/estado_doc/3.png'){
-	      			Ext.getCmp('Btn_upload_orden_compra').disable();
-	      			Ext.getCmp('Btn_validar_orden_compra').disable();
-	      		}
-	      		else{
-	      			Ext.getCmp('Btn_upload_orden_compra').enable();
-	      			Ext.getCmp('Btn_validar_orden_compra').enable();
-	      		}
+			  var validado = '';
 
-	      		Ext.get("contenedor_ordenes_compra").load({
+			  //====================== CONTROL DEL BOTON VALIDAR =====================//
+
+			  if(validada == '../personal/images/false.png' && estado != 'img/estado_doc/3.png'){Ext.getCmp('Btn_validar_orden_compra').enable();}
+	      else {Ext.getCmp('Btn_validar_orden_compra').disable();}
+
+				//====================== CONTROL DEL BOTON ANEXAR ======================//
+
+	      if(estado == 'img/estado_doc/3.png'){  Ext.getCmp('Btn_upload_orden_compra').disable(); }
+	      else{ Ext.getCmp('Btn_upload_orden_compra').enable(); }
+
+	      Ext.get("contenedor_ordenes_compra").load({
 					url     : direccionRender,
 					scripts : true,
 					nocache : true,
 					params  :	{
-									id_orden_compra : id,
-									filtro_bodega   : '<?php echo $filtro_bodega; ?>'
-								}
+											id_orden_compra : id,
+											filtro_bodega   : '<?php echo $filtro_bodega; ?>'
+										}
 				});
+
+	    	// Ext.Ajax.request({
+	      //   url    	: 'ordenes_compra/bd/bd.php',
+	      //   method  : 'GET',
+	      //   params  : {
+				// 		        	opc         : 'btnValidarOrdenCompra',
+				// 		    			consecutivo : consecutivoDoc
+				// 		        },
+	      //   success : function(response){
+				// 																var responseJson = response.responseText
+				// 																,	arrayJson    = JSON.parse(responseJson)
+				// 																,	validate     = arrayJson.validate
+				// 																,	estado       = arrayJson.estado;
+				// 																botonValidar(validate,estado);
+	      //           										},
+	      //   failure : function(){ console.log("fail"); }
+	    	// });
 
 			  Win_Ventana_buscar_orden_compra.close();
 			}
 
 			function botonValidar(valor1,valor2){
-
+		    // if(valor1 == "false" && valor2 != "3"){Ext.getCmp('Btn_validar_orden_compra').enable();}
+		    // else {Ext.getCmp('Btn_validar_orden_compra').disable();}
+				//
+		    // if(valor2 == "3"){
+		    //  	Ext.getCmp('Btn_upload_orden_compra').disable();
+		    // }
+		    // else{
+				// 	Ext.getCmp('Btn_upload_orden_compra').enable();
+				// }
+				//
+		    // Win_Ventana_buscar_orden_compra.close();
 			}
 		</script>
 	<?php

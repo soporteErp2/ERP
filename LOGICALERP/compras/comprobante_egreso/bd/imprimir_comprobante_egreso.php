@@ -283,31 +283,16 @@
 		$mpdf->WriteHTML(utf8_encode($texto));
 
 		if( $PDF_GUARDA=='F'){
-            // $serv = $_SERVER['DOCUMENT_ROOT']."/";
-            // $url  = $serv.'ARCHIVOS_PROPIOS/adjuntos_compras/comprobante_egreso/';
-            // if(!file_exists($url)){ mkdir ($url); }
-
-            // $url = $url.'empresa_'.$_SESSION['ID_HOST'].'/';
-            // if(!file_exists($url)){ mkdir ($url); }
-
-            // $mpdf->Output($url.$documento.'_'.$id.".pdf",'F');      ///OUTPUT A ARCHIVO
-
             $serv = $_SERVER['DOCUMENT_ROOT']."/";
-            $id_host = $_SESSION['ID_HOST'];
+            $url  = $serv.'ARCHIVOS_PROPIOS/adjuntos_compras/comprobante_egreso/';
+            if(!file_exists($url)){ mkdir ($url); }
 
-            $ruta1 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/';
-             if(!file_exists($ruta1)){ mkdir ($ruta1); }
+            $url = $url.'empresa_'.$_SESSION['ID_HOST'].'/';
+            if(!file_exists($url)){ mkdir ($url); }
 
+            $mpdf->Output($url.$documento.'_'.$id.".pdf",'F');      ///OUTPUT A ARCHIVO
 
-            $ruta2 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/compras';
-            $url  = $ruta2.'/';
-            if(!file_exists($ruta2)){ mkdir ($ruta2); }
-
-            $ruta3 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/compras/archivos_temporales';
-            $url  = $ruta3.'/';
-            if(!file_exists($ruta3)){ mkdir ($ruta3); }
-            
-            $mpdf->Output($url.'comprobante_egreso_'.$id.".pdf",'F');
+            // $mpdf->Output($documento.".pdf",'D');
         }
         else{ $mpdf->Output($documento.".pdf",'I'); }
 
