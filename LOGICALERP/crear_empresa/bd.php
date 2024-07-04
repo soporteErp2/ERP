@@ -147,18 +147,19 @@
 
 			$id_host++;
 
-			echo "DEBE SELECCIONAR EL CONSECUTIVO DE SOPORTE PARA CREAR LA EMPRESA"; exit;
+			// echo "DEBE SELECCIONAR EL CONSECUTIVO DE SOPORTE PARA CREAR LA EMPRESA"; exit;
 
-			$id_host=12;
+			$id_host=1329;
 
+			// exit; 
 			$bd = 'erp_'.$id_host;
-
+			// exit;
 			//====================================// CREAR LA EMPRESA EN LA BASE DE DATOS PRINCIPAL //====================================//
 		    if(!isset($id_plan)){ $id_plan = 1; }
 			$sql   = "INSERT INTO host (id,nit,nombre,servidor,bd,id_plan,fecha_creacion,hora_creacion,fecha_vencimiento_plan,activo)
 						VALUES ($id_host,'$numero_documento','$nombre','$host','$bd','$id_plan',NOW(),NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1)";
 			$query = mysql_query($sql,$acceso);
-			if (!$query) { echo 'NO SE INSERTO LA NUEVA EMPRESA'; exit; }
+			if (!$query) { echo 'NO SE INSERTO LA NUEVA EMPRESA '.$sql; exit; }
 
 			//==============================================// CREAR LA BASE DE DATOS //==============================================//
 			$sql   = "CREATE DATABASE $bd DEFAULT CHARACTER SET latin1 DEFAULT COLLATE latin1_general_ci;";
@@ -329,7 +330,6 @@
 					$whereCuentas         .= ' OR cuenta = '.$cuentaColgaap;
 					$valueAsientosDefault .= "('".$arrayCuenta['detalle']."','".$arrayCuenta['estado']."','".$cuentaColgaap."',$id_empresa),";
 				}
-
 			}
 
 			$whereCuentas = substr($whereCuentas, 4);
