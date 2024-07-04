@@ -62,10 +62,15 @@
               <option value="comprobantes">Comprobantes de Egreso</option>
             </select>
         </p>
-
+        <div class="title">FILTRAR POR TIPO DE FACTURA</div>
+        <p>
+            <select data-width="input" id="discriminar_tipo_factura">
+            </select>
+        </p>
         <div class="title">FILTRAR POR CENTROS DE COSTOS</div>
         <div class="content-grilla-filtro">
             <div class="head">
+                <!-- <div class="cell" data-col="1"></div> -->
                 <div class="cell" data-col="2">Codigo</div>
                 <div class="cell" data-col="2">Nombre</div>
                 <div class="cell" data-col="1" data-icon="search" title="Buscar Centro de costos" onclick="ventanaBusquedaCentroCostosFC();"></div>
@@ -113,6 +118,9 @@
         if (localStorage.discriminar_items_facturas_compra!="")
             document.getElementById("discriminar_items_facturas_compra").value=localStorage.discriminar_items_facturas_compra;
 
+    if (typeof(localStorage.discriminar_tipo_factura)!="undefined")
+        if (localStorage.discriminar_tipo_factura!="")
+            document.getElementById("discriminar_tipo_factura").value=localStorage.discriminar_tipo_factura;    
 
 
     //RECORRER EL ARRAY PARA RENDERIZAR LOS PROVEEDORES DEL FILTRO

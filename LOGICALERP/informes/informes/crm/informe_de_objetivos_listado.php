@@ -16,7 +16,7 @@
 
 			$informe->InformeName			=	'informe_de_objetivos_listado';  						//NOMBRE DEL INFORME
 			$informe->InformeTitle			=	'Informe General de Objetivos';	//TITULO DEL INFORME
-			//$informe->BtnGenera             =   'false';
+			$informe->BtnGenera             =   'false';
 			//$informe->AddFiltroEmpresa('true','true','true','false','true');
 			$informe->FiltroClientesProspectos = 'true';
 			/*$informe->InformeEmpreSucuBode	=	'false';  //FILTRO EMPRESA, SUCURSAL, BODEGA

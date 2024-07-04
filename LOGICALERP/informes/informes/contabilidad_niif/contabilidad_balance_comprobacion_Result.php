@@ -23,6 +23,8 @@
     $td_head            = '';
     $bodyTable          = '';
     $idTercero          = 0;
+    $separador_decimales = ",";
+    $separador_miles     = ".";
     // $arraytercerosJSON = json_decode($arraytercerosJSON);
 
     // var_dump($arraytercerosJSON);
@@ -46,21 +48,20 @@
     // FILTRO POR TERCERO
     if (isset($arraytercerosJSON) && $arraytercerosJSON<>'[]') {
         if ($arraytercerosJSON=='todos') {
-            // $sql="SELECT id FROM terceros WHERE activo=1 AND id_empresa=$id_empresa";
-            // $query=$mysql->query($sql,$mysql->link);
-            // while ($row=$mysql->fetch_array($query)) {
-            //     $whereClientes.=($whereClientes=='')? "id_tercero = '$row[id]' " : " OR id_tercero = '$row[id]' " ;
-            // }
-        	$whereClientes = " ";
+            $sql="SELECT id FROM terceros WHERE activo=1 AND id_empresa=$id_empresa";
+            $query=$mysql->query($sql,$mysql->link);
+            while ($row=$mysql->fetch_array($query)) {
+                $whereClientes.=($whereClientes=='')? "id_tercero = '$row[id]' " : " OR id_tercero = '$row[id]' " ;
+            }
         }
         else{
             $arraytercerosJSON = json_decode($arraytercerosJSON);
             foreach ($arraytercerosJSON as $indice => $id_tercero) {
                 $whereClientes .= ($whereClientes=='')? ' id_tercero='.$id_tercero : ' OR id_tercero='.$id_tercero;
             }
-
-            $whereClientes = " AND (".$whereClientes.")";
         }
+
+        $whereClientes   = " AND (".$whereClientes.")";
 
         $groupBy .= ',id_tercero';
         $width_td = '170';
@@ -152,23 +153,17 @@
         $cuentaAuxiliar=substr($cuenta,0, 8);
         $arrayTotalesClase[$cuentaAuxiliar]['saldoAnterior']+=$rowAsientosAnterior['saldo'];
 
-        // $wherePuc .= ($wherePuc=='')? " cuenta = '$cuentaClase'
-        //                                 OR cuenta = '$cuentaGrupo'
-        //                                 OR cuenta = '$cuentaCuenta'
-        //                                 OR cuenta = '$cuentaSubCuenta'
-        //                                 OR cuenta = '$cuentaAuxiliar'" :
+        $wherePuc .= ($wherePuc=='')? " cuenta = '$cuentaClase'
+                                        OR cuenta = '$cuentaGrupo'
+                                        OR cuenta = '$cuentaCuenta'
+                                        OR cuenta = '$cuentaSubCuenta'
+                                        OR cuenta = '$cuentaAuxiliar'" :
 
-        //                                " OR cuenta = '$cuentaClase'
-        //                                  OR cuenta = '$cuentaGrupo'
-        //                                  OR cuenta = '$cuentaCuenta'
-        //                                  OR cuenta = '$cuentaSubCuenta'
-        //                                  OR cuenta = '$cuentaAuxiliar'" ;
-
-        $arrayWherePuc[$cuentaClase]     = $cuentaClase;
-        $arrayWherePuc[$cuentaGrupo]     = $cuentaGrupo;
-        $arrayWherePuc[$cuentaCuenta]    = $cuentaCuenta;
-        $arrayWherePuc[$cuentaSubCuenta] = $cuentaSubCuenta;
-        $arrayWherePuc[$cuentaAuxiliar]  = $cuentaAuxiliar;
+                                       " OR cuenta = '$cuentaClase'
+                                         OR cuenta = '$cuentaGrupo'
+                                         OR cuenta = '$cuentaCuenta'
+                                         OR cuenta = '$cuentaSubCuenta'
+                                         OR cuenta = '$cuentaAuxiliar'" ;
 
     }
 
@@ -230,23 +225,17 @@
         $arrayTotalesClase[$cuentaAuxiliar]['debe']   +=$rowAsientos['debe'];
         $arrayTotalesClase[$cuentaAuxiliar]['haber']  +=$rowAsientos['haber'];
 
-        // $wherePuc .= ($wherePuc=='')? " cuenta = '$cuentaClase'
-        //                                 OR cuenta = '$cuentaGrupo'
-        //                                 OR cuenta = '$cuentaCuenta'
-        //                                 OR cuenta = '$cuentaSubCuenta'
-        //                                 OR cuenta = '$cuentaAuxiliar'" :
+        $wherePuc .= ($wherePuc=='')? " cuenta = '$cuentaClase'
+                                        OR cuenta = '$cuentaGrupo'
+                                        OR cuenta = '$cuentaCuenta'
+                                        OR cuenta = '$cuentaSubCuenta'
+                                        OR cuenta = '$cuentaAuxiliar'" :
 
-        //                                " OR cuenta = '$cuentaClase'
-        //                                  OR cuenta = '$cuentaGrupo'
-        //                                  OR cuenta = '$cuentaCuenta'
-        //                                  OR cuenta = '$cuentaSubCuenta'
-        //                                  OR cuenta = '$cuentaAuxiliar'" ;
-
-        $arrayWherePuc[$cuentaClase]     = $cuentaClase;
-        $arrayWherePuc[$cuentaGrupo]     = $cuentaGrupo;
-        $arrayWherePuc[$cuentaCuenta]    = $cuentaCuenta;
-        $arrayWherePuc[$cuentaSubCuenta] = $cuentaSubCuenta;
-        $arrayWherePuc[$cuentaAuxiliar]  = $cuentaAuxiliar;
+                                       " OR cuenta = '$cuentaClase'
+                                         OR cuenta = '$cuentaGrupo'
+                                         OR cuenta = '$cuentaCuenta'
+                                         OR cuenta = '$cuentaSubCuenta'
+                                         OR cuenta = '$cuentaAuxiliar'" ;
     }
 
     // rsort($arrayAsiento);
@@ -262,8 +251,6 @@
     $totalSubcuenta  = '';
     $totalAuxiliares = '';
     $totalesCuenta   = '';
-
-    $wherePuc = "cuenta='".implode("' OR cuenta='", array_keys($arrayWherePuc))."'";
 
     // CONSULTAR LOS NOMBRES DE LAS CUENTAS SUPERIORES
     $sql="SELECT cuenta,descripcion
@@ -282,10 +269,10 @@
                                         <td>$cuenta</td>
                                         <td>".$arrayPuc[$cuenta]."</td>
                                         ".(($whereClientes<>'')? "<td>&nbsp;</td><td>&nbsp;</td>" : '')."
-                                        <td style='text-align:right;'>".$arrayTotalesClase[$cuenta]['saldoAnterior']."</td>
-                                        <td style='text-align:right;'>".$arrayTotalesClase[$cuenta]['debe']."</td>
-                                        <td style='text-align:right;'>".$arrayTotalesClase[$cuenta]['haber']."</td>
-                                        <td style='text-align:right;'>". ($arrayTotalesClase[$cuenta] ['saldoAnterior'] + $arrayTotalesClase[$cuenta] ['debe'] - $arrayTotalesClase[$cuenta] ['haber'] )."</td>
+                                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['saldoAnterior'],$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['debe'],$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['haber'],$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                        <td style='text-align:right;'>".number_format( ($arrayTotalesClase[$cuenta] ['saldoAnterior'] + $arrayTotalesClase[$cuenta] ['debe'] - $arrayTotalesClase[$cuenta] ['haber'] ),$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
                                     </tr>
                                     ";
             }
@@ -312,10 +299,10 @@
                                             <td >$descripcion</td>
                                             <td >$nit_tercero</td>
                                             <td >$tercero</td>
-                                            <td style='text-align:right;'>".$saldoAnterior."</td>
-                                            <td style='text-align:right;'>".$debe_actual."</td>
-                                            <td style='text-align:right;'>".$haber_actual."</td>
-                                            <td style='text-align:right;'>".$newSaldo."</td>
+                                            <td style='text-align:right;'>".number_format($saldoAnterior,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                            <td style='text-align:right;'>".number_format($debe_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                            <td style='text-align:right;'>".number_format($haber_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                            <td style='text-align:right;'>".number_format($newSaldo,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
                                         </tr>
                                         ";
                     }
@@ -323,10 +310,10 @@
                         $bodyTable .=   "<tr>
                                             <td >$cuenta</td>
                                             <td >$descripcion</td>
-                                            <td style='text-align:right;'>".$saldoAnterior."</td>
-                                            <td style='text-align:right;'>".$debe_actual."</td>
-                                            <td style='text-align:right;'>".$haber_actual."</td>
-                                            <td style='text-align:right;'>".$newSaldo."</td>
+                                            <td style='text-align:right;'>".number_format($saldoAnterior,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                            <td style='text-align:right;'>".number_format($debe_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                            <td style='text-align:right;'>".number_format($haber_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                                            <td style='text-align:right;'>".number_format($newSaldo,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
                                         </tr>
                                         ";
                     }
@@ -450,10 +437,10 @@
             <tr class="total">
                 <td align="center" colspan="2"><b>TOTAL</b></td>
                 <?php echo $td_body; ?>
-                <td style="text-align:right;"><b><?php echo $totalSaldoAnterior; ?></b></td>
-                <td style="text-align:right;"><b><?php echo $totalDebe; ?></b></td>
-                <td style="text-align:right;"><b><?php echo $totalHaber; ?></b></td>
-                <td style="text-align:right;"><b><?php echo $totalSaldoActual; ?></b></td>
+                <td style="text-align:right;"><b><?php echo number_format($totalSaldoAnterior,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
+                <td style="text-align:right;"><b><?php echo number_format($totalDebe,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
+                <td style="text-align:right;"><b><?php echo number_format($totalHaber,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
+                <td style="text-align:right;"><b><?php echo number_format($totalSaldoActual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
             </tr>
         </table>
     </div>
@@ -498,12 +485,10 @@
         $mpdf->simpleTables     = true;
         $mpdf->packTableData    = true;
 		$mpdf->SetAutoPageBreak(TRUE, 15);
-		//$mpdf->SetTitle ( $documento );
 		$mpdf->SetAuthor ( $_SESSION['NOMBREFUNCIONARIO']." // ".$_SESSION['NOMBREEMPRESA'] );
 		$mpdf->SetDisplayMode ( 'fullpage' );
 		$mpdf->SetHeader("");
-        // $mpdf->SetFooter('Pagina {PAGENO}/{nb}');
-
+        $mpdf->SetTitle("Balance De Comprobacion Niif");
 		$mpdf->WriteHTML(utf8_encode($texto));
 
 		if($PDF_GUARDA=='true'){ $mpdf->Output("balance_de_comprobacion.pdf",'D'); }

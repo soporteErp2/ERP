@@ -161,7 +161,7 @@
                         AND id_empresa=$this->id_empresa
                         -- AND tipo_documento<>'NCC'
                         AND fecha BETWEEN '$this->fecha-01-01' AND '$this->fecha-12-31'
-                        AND nit_tercero = '90009733'
+                        -- AND nit_tercero = '1124484270'
                         $this->whereAsientos
                         GROUP BY id_tercero,codigo_cuenta";
             $query=$this->mysql->query($sql,$this->mysql->link);
@@ -177,6 +177,7 @@
                 $whereTemp .=($whereTemp=='')? 'id='.$row['id_tercero'] : ' OR id='.$row['id_tercero'] ;
 
                 // RECORRER LA CONFIGURACION DE CUENTAS CONCEPTOS PARA ASIGNARLO AL ARRAY
+
                 foreach ($this->arrayConceptosCuentasFormato as $id_row => $arrayResul){
 
                     $search_ini = strpos($row['codigo_cuenta'],$arrayResul['cuenta_inicial']);
@@ -204,24 +205,54 @@
                         id_tercero,
                         nit_tercero,
                         tercero,
-                        SUM(debe-haber) AS saldo
+                        SUM(debe-haber) AS saldo,
+                        SUM(debe) as debito,
+                        SUM(haber) as credito
                     FROM
                         asientos_colgaap
                     WHERE
                         activo=1
                         AND id_empresa=$this->id_empresa
                         AND fecha < '$this->fecha-01-01'
-                        -- AND tipo_documento<>'NCC'
                         $this->whereAsientos
                         GROUP BY id_tercero,codigo_cuenta";
             $query=$this->mysql->query($sql,$this->mysql->link);
-            while ($row=$this->mysql->fetch_array($query)) {
+            while ($row=$this->mysql->fetch_array($query)) {                
+                if(is_null($arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['cuenta'])){
+                    $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']] = array(
+                                                                                 'cuenta'      => $row['cuenta'],
+                                                                                 'id_tercero'  => $row['id_tercero'],
+                                                                                 'nit_tercero' => $row['nit_tercero'],
+                                                                                 'tercero'     => $row['tercero'],
+                                                                                 'debito'      => 0,
+                                                                                 'credito'     => 0,
+                                                                                );
+                $whereTemp .=($whereTemp=='')? 'id='.$row['id_tercero'] : ' OR id='.$row['id_tercero'] ;
+                }
                 $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['saldo_anterior'] = $row['saldo'];
+
+                foreach ($this->arrayConceptosCuentasFormato as $id_row => $arrayResul){
+
+                    $search_ini = strpos($row['codigo_cuenta'],$arrayResul['cuenta_inicial']);
+                    $search_end = strpos($row['codigo_cuenta'],$arrayResul['cuenta_final']);
+
+                    // echo '<br>cuenta :<b>'.$row['codigo_cuenta'].'</b>';
+                    // echo '<br>cuenta_inicial :'.$arrayResul['cuenta_inicial'].' - cuenta_final '.$arrayResul['cuenta_final']." - search_ini ".var_dump($search_ini)." - search_end ".var_dump($search_end);
+
+                    // if ($search_ini===0 || $search_end===0) {
+                    //     $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['concepto'][$id_row] = $this->arrayConceptosCuentasFormato[$id_row];
+                    // }
+
+                    if ($row['codigo_cuenta']>=$arrayResul['cuenta_inicial'] && $row['codigo_cuenta']<=$arrayResul['cuenta_final']) {
+                        $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['concepto'][$id_row] = $this->arrayConceptosCuentasFormato[$id_row];
+                    }
+
+                }
             }
 
             $this->whereIdTerceros = " AND ($whereTemp)";
             $this->arrayAsientos   = $arrayTemp;
-            // print_r($this->arrayAsientos);
+            //echo json_encode($this->arrayAsientos);
         }
 
         /**

@@ -4,55 +4,56 @@
 	include('../../../../misc/MyInforme/class.MyInforme.php');
 
 	/**//////////////////////////////////////////////**/
-	/**///		    INICIALIZACION DE LA CLASE  	  ///**/
-	/**/											                      /**/
-	/**/	       $informe = new MyInforme();				/**/
-	/**/											                      /**/
+	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
+	/**/											/**/
+	/**/	$informe = new MyInforme();				/**/
+	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
-	$id_empresa                     = $_SESSION['EMPRESA'];
-	$id_sucursal_default            = $_SESSION['SUCURSAL'];
-	$informe->InformeName			      = 'contabilidad_estado_de_resultado';  //NOMBRE DEL INFORME
-	$informe->InformeTitle			    = 'Estado de Resultado'; //TITULO DEL INFORME
+	$id_empresa          = $_SESSION['EMPRESA'];
+	$id_sucursal_default = $_SESSION['SUCURSAL'];
+
+	$informe->InformeName			= 'contabilidad_estado_de_resultado';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			= 'Estado de Resultado'; //TITULO DEL INFORME
 	$informe->InformeEmpreSucuBode	= 'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu		  = 'false'; //FILTRO EMPRESA, SUCURSAL
+	$informe->InformeEmpreSucu		= 'false'; //FILTRO EMPRESA, SUCURSAL
 	$informe->InformeFechaInicioFin	= 'false';	 //FILTRO FECHA
-	$informe->InformeExportarPDF	  = "false";	//SI EXPORTA A PDF
-	$informe->InformeExportarXLS	  = "false";	//SI EXPORTA A XLS
+	$informe->InformeExportarPDF	= "false";	//SI EXPORTA A PDF
+	$informe->InformeExportarXLS	= "false";	//SI EXPORTA A XLS
 	$informe->BtnGenera             = 'false';
-	$informe->DefaultCls            =	''; 		//RESET STYLE CSS
-	$informe->HeightToolbar         =	80; 		//HEIGHT TOOLBAR
+
+	// CHANGE CSS
+	$informe->DefaultCls               = 	''; 		//RESET STYLE CSS
+	$informe->HeightToolbar            = 	80; 		//HEIGHT TOOLBAR
+
 	$informe->AddBotton('Exportar PDF','genera_pdf','generarPDF_Excel_principal("IMPRIME_PDF")','Btn_exportar_pdf');
 	$informe->AddBotton('Exportar Excel','excel32','generarPDF_Excel_principal("IMPRIME_XLS")','Btn_exportar_excel');
 	$informe->AddBotton('Configurar Informe','configurar_informe','ventanaConfigurarInforme()','Btn_configurar_cartera');
 
-	$array = '["Resumido","Resumido"],["Cuentas","Cuentas"],["Subcuentas","Subcuentas"]';
+	$array= '["Resumido","Resumido"],["Cuentas","Cuentas"],["Subcuentas","Subcuentas"]';
 
 	$informe->AreaInformeQuitaAncho = 0;
 	$informe->AreaInformeQuitaAlto  = 190;
 	if($modulo=='contabilidad'){ $informe->AreaInformeQuitaAlto = 230; }
 
 	/**//////////////////////////////////////////////////////////////**/
-	/**///				        INICIALIZACION DE LA GRILLA	    			  ///**/
-	/**/															                              /**/
-	/**/	   $informe->Link = $link;  	   //Conexion a la BD			  /**/
-	/**/	   $informe->inicializa($_POST); //Variables POST			    /**/
-	/**/	   $informe->GeneraInforme(); 	 //Inicializa la Grilla		/**/
-	/**/															                              /**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/															/**/
+	/**/	$informe->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$informe->inicializa($_POST);//variables POST			/**/
+	/**/	$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
+
 ?>
+
 <script>
+
 	contCentroCostos = 1;
 
-	id_pais = "<?php echo $_SESSION[PAIS]; ?>";
-	if(id_pais != 49){
-		url_variable = '../informes/informes/contabilidad/contabilidad_estado_de_resultado_paises_Result.php';
-	}
-	else{
-		url_variable = '../informes/informes/contabilidad/contabilidad_estado_de_resultado_Result.php';
-	}
-
 	//==========================// PDF Y EXCEL PRINCIPAL //==========================//
+	//*******************************************************************************//
+
 	function generarPDF_Excel_principal(tipo_documento){
 
 		var nivel_cuenta                 = ''
@@ -101,10 +102,14 @@
 					&sucursal=${sucursal}
 					`;
 
-		window.open(url_variable + "?" + data);
+		window.open("../informes/informes/contabilidad/contabilidad_estado_de_resultado_Result.php?"+data);
+
 	}
 
+
 	//=====================// VENTANA CONFIGURACION DE INFORME //=====================//
+	//********************************************************************************//
+
 	function ventanaConfigurarInforme(){
 
 		Win_Ventana_configurar_cartera_edades = new Ext.Window({
@@ -207,18 +212,19 @@
 	}
 
 	function resetFiltros(){
+
 		localStorage.nivel_cuentas_EstadoResultado             = "";
 		localStorage.tipo_balance_EstadoResultado              = "";
 		localStorage.MyInformeFiltroFechaFinalEstadoResultado  = "";
 		localStorage.MyInformeFiltroFechaInicioEstadoResultado = "";
 		localStorage.sucursales_estado_resultado               = "";
-		arrayCentroCostos.length                               = 0;
+		arrayCentroCostos.length                               =0;
 		Win_Ventana_configurar_cartera_edades.close();
 		ventanaConfigurarInforme();
 	}
 
 	function generarHtml(){
-		var nivel_cuenta               = document.getElementById('nivel_cuenta').value
+		var nivel_cuenta                 = document.getElementById('nivel_cuenta').value
 		,	tipo_balance_EstadoResultado = document.getElementById("tipo_balance").value
 		,	sucursal                     = document.getElementById('filtro_sucursal_sucursales_estado_resultado').value
 		,	MyInformeFiltroFechaFinal    = document.getElementById('MyInformeFiltroFechaFinal').value
@@ -228,14 +234,14 @@
 		,	arrayCcosJSON                = Array()
 		,	i                            = 0
 
-  	arrayCentroCostos.forEach(function(id_vendedor){ arrayCcosJSON[i] = id_vendedor; i++; });
-  	arrayCcosJSON = JSON.stringify(arrayCcosJSON);
+    	arrayCentroCostos.forEach(function(id_vendedor){ arrayCcosJSON[i] = id_vendedor; i++; });
+    	arrayCcosJSON=JSON.stringify(arrayCcosJSON);
 
-		if(checkBoxSelectAllCcosER == 'true'){ arrayCcosJSON = 'todos'; }
+		if (checkBoxSelectAllCcosER=='true') { arrayCcosJSON='todos'; }
 
 		Ext.get('RecibidorInforme_contabilidad_estado_de_resultado').load({
-			url     : url_variable,
-			text	  : 'Generando Informe...',
+			url     : '../informes/informes/contabilidad/contabilidad_estado_de_resultado_Result.php',
+			text	: 'Generando Informe...',
 			scripts : true,
 			nocache : true,
 			params  :
@@ -253,7 +259,6 @@
 		});
 
 		document.getElementById("RecibidorInforme_contabilidad_estado_de_resultado").style.padding = 20;
-
 		//GUARDAR VARIABLES PARA EL FILTRO POR FECHA DEL LOCALSTORAGE
 		localStorage.nivel_cuentas_EstadoResultado             = nivel_cuenta;
 		localStorage.tipo_balance_EstadoResultado              = tipo_balance_EstadoResultado;
@@ -263,7 +268,7 @@
 	}
 
 	function generarPDF_ExcelNiif(tipo_documento){
-		var nivel_cuenta               = document.getElementById('nivel_cuenta').value
+		var nivel_cuenta                 = document.getElementById('nivel_cuenta').value
 		,	tipo_balance_EstadoResultado = document.getElementById("tipo_balance").value
 		,	sucursal                     = document.getElementById('filtro_sucursal_sucursales_estado_resultado').value
 		,	MyInformeFiltroFechaFinal    = document.getElementById('MyInformeFiltroFechaFinal').value
@@ -287,9 +292,10 @@
 					&separador_decimales=${separador_decimales}
 					&nivel_cuentas=${nivel_cuenta}
 					&arrayCcosJSON=${arrayCcosJSON}
-					&sucursal=${sucursal}`;
+					&sucursal=${sucursal}
+					`;
 
-		window.open(url_variable + "?" + data);
+		window.open("../informes/informes/contabilidad/contabilidad_estado_de_resultado_Result.php?"+data);
 	}
 
 	function buscarCentroCostos(event,input) {
@@ -321,6 +327,7 @@
 	}
 
 	//=====================// VENTANA CENTROS DE COSTOS //=====================//
+	//*************************************************************************//
 	function ventanaBuscarCentroCostos() {
 
 		Win_Ventana_buscar_centro_cotos = new Ext.Window({

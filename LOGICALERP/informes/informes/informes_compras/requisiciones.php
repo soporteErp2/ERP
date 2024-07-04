@@ -13,21 +13,24 @@
 	$id_empresa  = $_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
 
-	$informe->InformeName						=	'requisiciones_compra';  		//NOMBRE DEL INFORME
-	$informe->InformeTitle					=	'Requisiciones'; 	//TITULO DEL INFORME
-	$informe->BtnGenera           	= 'false';										//BOTON PARA GENERAR INFORME
-	$informe->InformeEmpreSucuBode	=	'false'; 										//FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu			=	'false'; 										//FILTRO EMPRESA, SUCURSAL
-	$informe->InformeExportarPDF		= 'false';										//SI EXPORTA A PDF
-	$informe->InformeExportarXLS		= 'false';										//SI EXPORTA A XLS
-	$informe->InformeTamano 				= 'CARTA-HORIZONTAL';					//TAMAÑO DEL INFORME
+	$informe->InformeName			=	'requisiciones_compra';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			=	'Requisiciones de Compra'; //TITULO DEL INFORME
+	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
+	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
 	$informe->AddBotton('Exportar PDF','genera_pdf','generarPDF_Excel_principal("IMPRIME_PDF")','Btn_exportar_pdf');
 	$informe->AddBotton('Exportar Excel','excel32','generarPDF_Excel_principal("IMPRIME_XLS")','Btn_exportar_excel');
 	$informe->AddBotton('Configurar Informe','configurar_informe','ventanaConfigurarInforme()','Btn_configurar_informe_clientes');
 
+	$informe->InformeExportarPDF	= 	"false";	//SI EXPORTA A PDF
+	$informe->InformeExportarXLS	= 	"false";	//SI EXPORTA A XLS
+	$informe->BtnGenera             = 'false';
+
+	$informe->InformeTamano = "CARTA-HORIZONTAL";
+
 	// CHANGE CSS
 	$informe->DefaultCls            = 	''; 		//RESET STYLE CSS
 	$informe->HeightToolbar         = 	80; 		//HEIGHT TOOLBAR
+
 	$informe->AreaInformeQuitaAncho = 0;
 	$informe->AreaInformeQuitaAlto  = 190;
 	if($modulo == 'ventas'){ $informe->AreaInformeQuitaAlto = 230; }

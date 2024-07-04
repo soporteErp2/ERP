@@ -13,11 +13,10 @@
 	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
-	$informe->InformeName			= 'liquidacion';  //NOMBRE DEL INFORME
-	$informe->InformeTitle			= 'Liquidacion Empleados'; //TITULO DEL INFORME
-	$informe->InformeEmpreSucuBode	= 'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu		= 'false'; //FILTRO EMPRESA, SUCURSAL
-	$informe->BtnGenera             = 'false';
+	$informe->InformeName			=	'liquidacion';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			=	'Liquidacion Empleados'; //TITULO DEL INFORME
+	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
+	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
 	// $informe->InformeFechaInicio	=	'true';	 //FILTRO FECHA
 	// $informe->AddFiltroFechaInicioFin('false','true');
 	$informe->AddBotton('Exportar PDF','genera_pdf','generarPDF_Excel_principal("IMPRIME_PDF")','Btn_exportar_pdf');
@@ -130,7 +129,7 @@
 		var myancho = Ext.getBody().getWidth();
 
 		Win_Ventana_configurar_informe_facturas = new Ext.Window({
-		    width       : 700,
+		    width       : 560,
 		    height      : 560,
 		    id          : 'Win_Ventana_configurar_informe_facturas',
 		    title       : '',
@@ -229,22 +228,38 @@
 
 	function generarHtml(){
 
-		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
-		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
-		,	sucursal                   = document.getElementById('filtro_sucursal_liquidacion').value
-		,	tipo_contrato              = document.getElementById('tipo_contrato').value
-		,	agrupacion_nomina          = document.getElementById('agrupado').value
-		,	discrimina_planillas       = document.getElementById('discrimina_planillas').value
-		,	i                          = 0
-		,	arrayEmpleadosJSON         = Array()
-		,	arrayConceptosJSON         = Array()
+		var MyInformeFiltroFechaFinal  =document.getElementById('MyInformeFiltroFechaFinal').value;
+		var MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
+		var sucursal                   = document.getElementById('filtro_sucursal_liquidacion').value;
+		var idConceptos                = '';
+		var idEmpleados                = '';
+		var tipo_contrato              = document.getElementById('tipo_contrato').value;
 
+		//RECORREMOS EL ARRAY DE LOS CONCEPTOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayConceptosLiquidacion.length; i++) {
+			if (typeof(arrayConceptosLiquidacion[i])!="undefined" && arrayConceptosLiquidacion[i]!="") {
+				idConceptos=(idConceptos=='')? arrayConceptosLiquidacion[i] : idConceptos+','+arrayConceptosLiquidacion[i] ;
+			}
 
-		arrayEmpleadosLiquidacion.forEach(function(id_tercero) {  arrayEmpleadosJSON[i] = id_tercero; i++; });
-        arrayEmpleadosJSON=JSON.stringify(arrayEmpleadosJSON);
-		i = 0
-        arrayConceptosLiquidacion.forEach(function(id_centro_costo) {  arrayConceptosJSON[i] = id_centro_costo; i++; });
-        arrayConceptosJSON=JSON.stringify(arrayConceptosJSON);
+		}
+
+		//RECORREMOS EL ARRAY DE LOS EMPLEADOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayEmpleadosLiquidacion.length; i++) {
+			if (typeof(arrayEmpleadosLiquidacion[i])!="undefined" && arrayEmpleadosLiquidacion[i]!="") {
+				idEmpleados=(idEmpleados=='')? arrayEmpleadosLiquidacion[i] : idEmpleados+','+arrayEmpleadosLiquidacion[i] ;
+			}
+
+		}
+
+		// RECORRER LA AGRUPACION DEL INFORME
+		var elementos = document.getElementsByName("agrupado");
+
+		for(var i=0; i<elementos.length; i++) {
+			if (elementos[i].checked) {agrupacion_liquidacion=elementos[i].value;}
+		}
+
+		//
+		var discrimina_planillas_liquidacion = (document.getElementById('discrimina_planillas_liquidacion').checked)? true : false ;
 
 		Ext.get('RecibidorInforme_liquidacion').load({
 			url     : '../informes/informes/nomina/liquidacion_Result.php',
@@ -253,15 +268,15 @@
 			nocache : true,
 			params  :
 			{
-				nombre_informe              : 'Liquidacion de Empleados',
-				sucursal                    : sucursal,
-				MyInformeFiltroFechaFinal   : MyInformeFiltroFechaFinal,
-				MyInformeFiltroFechaInicio  : MyInformeFiltroFechaInicio,
-				arrayEmpleadosJSON          : arrayEmpleadosJSON,
-				arrayConceptosJSON          : arrayConceptosJSON,
-				discrimina_planillas 		: discrimina_planillas,
-				agrupacion_nomina        	: agrupacion_nomina,
-				tipo_contrato               : tipo_contrato,
+				nombre_informe                   : 'Liquidacion de Empleados',
+				sucursal                         : sucursal,
+				MyInformeFiltroFechaFinal        : MyInformeFiltroFechaFinal,
+				MyInformeFiltroFechaInicio       : MyInformeFiltroFechaInicio,
+				idConceptos                      : idConceptos,
+				idEmpleados                      : idEmpleados,
+				discrimina_planillas_liquidacion : discrimina_planillas_liquidacion,
+				agrupacion_liquidacion           : agrupacion_liquidacion,
+				tipo_contrato                    : tipo_contrato,
 			}
 		});
 
@@ -277,35 +292,51 @@
 	}
 
 	function generarPDF_Excel(tipo_documento){
-		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
-		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
-		,	sucursal                   = document.getElementById('filtro_sucursal_liquidacion').value
-		,	tipo_contrato              = document.getElementById('tipo_contrato').value
-		,	agrupacion_nomina          = document.getElementById('agrupado').value
-		,	discrimina_planillas       = document.getElementById('discrimina_planillas').value
-		,	i                          = 0
-		,	arrayEmpleadosJSON         = Array()
-		,	arrayConceptosJSON         = Array()
+		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value;
+		var MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
+		var sucursal                   = document.getElementById('filtro_sucursal_liquidacion').value;
+		var idConceptos                = '';
+		var idEmpleados                = '';
+		var tipo_contrato              = document.getElementById('tipo_contrato').value;
+
+		//RECORREMOS EL ARRAY DE LOS CONCEPTOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayConceptosLiquidacion.length; i++) {
+			if (typeof(arrayConceptosLiquidacion[i])!="undefined" && arrayConceptosLiquidacion[i]!="") {
+				idConceptos=(idConceptos=='')? arrayConceptosLiquidacion[i] : idConceptos+','+arrayConceptosLiquidacion[i] ;
+			}
+
+		}
+
+		//RECORREMOS EL ARRAY DE LOS EMPLEADOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayEmpleadosLiquidacion.length; i++) {
+			if (typeof(arrayEmpleadosLiquidacion[i])!="undefined" && arrayEmpleadosLiquidacion[i]!="") {
+				idEmpleados=(idEmpleados=='')? arrayEmpleadosLiquidacion[i] : idEmpleados+','+arrayEmpleadosLiquidacion[i] ;
+			}
+
+		}
+
+		// RECORRER LA AGRUPACION DEL INFORME
+		var elementos = document.getElementsByName("agrupado");
+
+		for(var i=0; i<elementos.length; i++) {
+			if (elementos[i].checked) {agrupacion_liquidacion=elementos[i].value;}
+		}
+
+		var discrimina_planillas_liquidacion = (document.getElementById('discrimina_planillas_liquidacion').checked)? true : false ;
+
+		var bodyVar = '&nombre_informe=Liquidacion de Empleados'+
+						'&sucursal='+sucursal+
+						'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
+						'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
+						'&idConceptos='+idConceptos+
+						'&idEmpleados='+idEmpleados+
+						'&discrimina_planillas_liquidacion='+discrimina_planillas_liquidacion+
+						'&agrupacion_liquidacion='+agrupacion_liquidacion+
+						'&tipo_contrato='+tipo_contrato;
 
 
-		arrayEmpleadosLiquidacion.forEach(function(id_tercero) {  arrayEmpleadosJSON[i] = id_tercero; i++; });
-        arrayEmpleadosJSON=JSON.stringify(arrayEmpleadosJSON);
-		i = 0
-        arrayConceptosLiquidacion.forEach(function(id_centro_costo) {  arrayConceptosJSON[i] = id_centro_costo; i++; });
-        arrayConceptosJSON=JSON.stringify(arrayConceptosJSON);
-
-		var bodyVar = ´&nombre_informe=Liquidacion de Empleados
-						&sucursal=${sucursal}
-						&MyInformeFiltroFechaInicio=${MyInformeFiltroFechaInicio}
-						&MyInformeFiltroFechaFinal=${MyInformeFiltroFechaFinal}
-						&arrayEmpleadosJSON=${arrayEmpleadosJSON}
-						&arrayConceptosJSON=${arrayConceptosJSON}
-						&discrimina_planillas=${discrimina_planillas}
-						&agrupacion_nomina=${agrupacion_nomina}
-						&tipo_contrato=${tipo_contrato}
-						´;
-		
 		window.open("../informes/informes/nomina/liquidacion_Result.php?"+tipo_documento+"=true"+bodyVar);
+
 	}
 
 	//========================== VENTANA PARA BUSCAR LOS TERCEROS ===============================//

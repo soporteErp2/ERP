@@ -1,85 +1,60 @@
-<style>
-    /*ESTILOS DEL WIZARD Y DE LA GRILLA ESTAN EN INDEX.CSS, ESTE ESTILO ES PARA PERSONALIZACION DE CONTENIDO*/
-    /*.sub-content[data-position="left"]{width: calc(100% - 3px); }*/
-    .sub-content[data-position="right"]{width: calc(50% - 3px); }
-    .sub-content[data-position="left"]{width: 50%; overflow:auto;}
-    .content-grilla-filtro { height: calc(50% - 45px);}
-    .content-grilla-filtro .cell[data-col="1"]{width: 22px;}
-    .content-grilla-filtro .cell[data-col="2"]{width: 89px;}
-    .content-grilla-filtro .cell[data-col="3"]{width: 190px;}
-    .sub-content [data-width="input"]{width: 120px;}
+<?php
+    $date = strtotime(date("Y-m-d"));
+    $anio = date("Y", $date);
+    $mes  = date("m", $date);
+    $dia  = date("d",$date);
 
-</style>
+    $fechaInicial=date("Y-m-d",(mktime(0,0,0,$mes,1,$anio)-1));
 
-<div class="main-content">
-    <div class="sub-content" data-position="right"> 
-        <div class="title">TIPO BALANCE</div>
-        <p>
-            <select data-width="input" id="tipo_balance" onchange="mostrarOcultarDivFechaInicio()">
-                <option value="clasificado">Clasificado</option>
-                <option value="comparativo">Comparativo</option>
+?>
+<div style="width:100%; height:100%; border-top:1px solid #8DB2E3; overflow:hidden;">
+    <div style="float:left; width:50%; height:100%; padding:10px; border-right:1px solid #8DB2E3; box-sizing:border-box;">
+        <div style="font-weight: bolder;font-size:12px; margin-bottom:15px; text-align:center;">Tipo de Balance</div>
+        <div>
+            <input type="radio" name="tipo_balance" value="clasificado" id="tipo_balance" onchange="mostrarOcultarDivFechaInicio(this.value);">
+            <label>Balance con corte</label>
+        </div>
+        <div style="margin-top:10px;">
+            <input type="radio" name="tipo_balance" value="comparativo" id="tipo_balance" onchange="mostrarOcultarDivFechaInicio(this.value);">
+            <label>Balance rango de fechas</label>
+        </div>
+        <div style="font-weight: bolder;font-size:12px; margin-bottom:15px; margin:15px 0; text-align:center; display:none;">Rango</div>
+        <div style="text-align:center; display:none;">
+            <select id="rango_balance" style="width:100px;">
+                <option value="anual">Anual</option>
+                <option value="mensual">Mensual</option>
             </select>
-        </p>
-
-        <div class="title">FORMATO DE DIGITOS</div>
-        <p>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Separador miles</td>
-                        <td>
-                            <select id="separador_miles" data-width="input">
-                                <option value=".">Punto (.)</option>
-                                <option value=",">Coma (,)</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Separador decimales</td>
-                        <td>
-                            <select id="separador_decimales" data-width="input">
-                                <option value=",">Coma (,)</option>
-                                <option value=".">Punto (.)</option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </p>
-
+        </div>
     </div>
-
-    <div class="sub-content" data-position="left">
-        
-        <div class="title">NIVEL DE CUENTAS</div>
-        <p>
-            <select id="nivel_cuenta" data-width="input">
+    <div style="float:left; width:50%; height:100%; padding:10px; text-align:center; box-sizing:border-box;">
+        <div style="font-weight: bolder;font-size:12px ;margin-bottom:10px;">Nivel de las cuentas</div>
+        <div>
+            <select id="nivel_cuenta" style="width:100px;">
                 <option value="Grupos">Grupo</option>
                 <option value="Cuentas">Cuenta</option>
                 <option value="Subcuentas">Subcuenta</option>
                 <option value="Auxiliares">Auxiliar</option>
             </select>
-        </p>
-        <div class="title">FECHAS DEL INFORME</div>
-        <p>
-            <table>
-                <tr id="trFechaInicio">
-                    <td>Fecha Inicial</td>
-                    <td><input type="text" id="MyInformeFiltroFechaInicio"/></td>
-                </tr>
-                <tr>
-                    <td>Fecha Final</td>
-                    <td><input type="text" id="MyInformeFiltroFechaFinal"/></td>
-                </tr>
-            </table>
-        </p>
-        
+        </div>
 
+        <div style="float:left;width:100%; margin-bottom:15px; margin-top:40px;text-align:center;font-weight: bolder;font-size:12px;">Fechas del Informe</div>
+        <div style="display:table; text-align:center; margin:auto;">
+            <div id="divFechaInicio">
+                Periodo Inicial:<br>
+                <input type="text" id="MyInformeFiltroFechaInicio"/>
+            </div>
+
+            <div style="margin-top:10px;">
+                Periodo final:<br>
+                <input type="text" id="MyInformeFiltroFechaFinal"/>
+            </div>
+        </div>
     </div>
 </div>
-<script>
-    var rows = '';
 
+
+
+<script>
     new Ext.form.DateField({
         format     : "Y-m-d",
         width      : 120,
@@ -88,8 +63,7 @@
         showToday  : false,
         applyTo    : "MyInformeFiltroFechaInicio",
         editable   : false,
-        // value      : "'.$fechaInicial.'"
-        // listeners  : { select: function() {   } }
+        value      : "<?php echo $fechaInicial ?>"
     });
 
     new Ext.form.DateField({
@@ -99,37 +73,47 @@
         showToday  : false,
         applyTo    : "MyInformeFiltroFechaFinal",
         editable   : false,
-        // value      : new Date(),
+        value      : new Date(),
         // listeners  : { select: function() {   } }
     });
 
-    function mostrarOcultarDivFechaInicio(){
-        var tipo_balance = document.getElementById('tipo_balance').value;
-        if (tipo_balance=="clasificado") { document.getElementById("trFechaInicio").style.visibility = "hidden"; }
-        else if (tipo_balance=="comparativo") { document.getElementById("trFechaInicio").style.visibility = "visible"; }
+    var elementos = document.getElementsByName("tipo_balance");
+
+    //SI LAS VARIABLES LOCALSTORAGE TIENEN VALORES, ENTONCES MOSTRAR EN LA CONFIGURACION DE IMPRESION DEL INFORME ESAS VARIABLES
+    //&& localStorage.MyInformeFiltroFechaFinal!="" && localStorage.generar!=""
+    if ( typeof(localStorage.tipo_balance)!="undefined" && localStorage.tipo_balance!="") {
+
+        for(var i=0; i<elementos.length; i++) {
+            if (elementos[i].value==localStorage.tipo_balance) {tipo_balance=elementos[i].checked=true;}
+        }
+
+        document.getElementById("nivel_cuenta").value=localStorage.generar;
+        document.getElementById("MyInformeFiltroFechaFinal").value=localStorage.MyInformeFiltroFechaFinal;
+
+        if (localStorage.tipo_balance=="comparativo") {
+            document.getElementById("MyInformeFiltroFechaInicio").value=localStorage.MyInformeFiltroFechaInicio;
+        }
     }
 
     if (localStorage.tipo_balance=="clasificado") {
-        document.getElementById('tipo_balance').value = "clasificado";
-        mostrarOcultarDivFechaInicio();
+        document.getElementById("divFechaInicio").style.display="none";
+        elementos[0].checked=true;
     }
     else if (localStorage.tipo_balance=="comparativo") {
-        document.getElementById('tipo_balance').value = "comparativo";
-        mostrarOcultarDivFechaInicio();
+        document.getElementById("divFechaInicio").style.display="block";
+        elementos[1].checked=true;
+    }else{
+        document.getElementById("divFechaInicio").style.display="none";
+        elementos[0].checked=true;
     }
-    else{ mostrarOcultarDivFechaInicio(); }
 
-    if (typeof(localStorage.generar)!="undefined")
-        if (localStorage.generar!="")
-            document.getElementById("nivel_cuenta").value=localStorage.generar;
+    function mostrarOcultarDivFechaInicio(value){
 
-    if (typeof(localStorage.MyInformeFiltroFechaInicio)!="undefined")
-        if (localStorage.MyInformeFiltroFechaInicio!="")
-            document.getElementById("MyInformeFiltroFechaInicio").value=localStorage.MyInformeFiltroFechaInicio;
+        if (value=="clasificado") { document.getElementById("divFechaInicio").style.display="none"; }
+        else if (value=="comparativo") { document.getElementById("divFechaInicio").style.display="block"; }
+        else{ Win_Ventana_configurar_balance_general.close(); }
+    }
 
-    if (typeof(localStorage.MyInformeFiltroFechaFinal)!="undefined")
-        if (localStorage.MyInformeFiltroFechaFinal!="")
-            document.getElementById("MyInformeFiltroFechaFinal").value=localStorage.MyInformeFiltroFechaFinal;
-    
-
+</script>
+<script>
 </script>

@@ -4,24 +4,29 @@
 	include('../../../../misc/MyInforme/class.MyInforme.php');
 
 	/**//////////////////////////////////////////////**/
-	/**///		    INICIALIZACION DE LA CLASE  	  ///**/
-	/**/											                      /**/
-	/**/	        $informe = new MyInforme();				/**/
-	/**/											                      /**/
+	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
+	/**/											/**/
+	/**/	$informe = new MyInforme();				/**/
+	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
-	$id_empresa                     = $_SESSION['EMPRESA'];
-	$id_sucursal_default            = $_SESSION['SUCURSAL'];
-	$informe->InformeName			      =	'contabilidad_libro_diario';  //NOMBRE DEL INFORME
-	$informe->InformeTitle			    =	'Libro Diario';               //TITULO DEL INFORME
-	$informe->InformeEmpreSucuBode	=	'false';                      //FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu		  =	'false';                      //FILTRO EMPRESA, SUCURSAL
-	$informe->InformeFechaInicioFin	=	'false';                      //FILTRO FECHA
-	$informe->DefaultCls            = ''; 		                      //RESET STYLE CSS
-	$informe->HeightToolbar         = 80; 		                      //HEIGHT TOOLBAR
-	$informe->InformeExportarPDF	  = "false";                      //SI EXPORTA A PDF
-	$informe->InformeExportarXLS	  = "false";                      //SI EXPORTA A XLS
-	$informe->InformeTamano 		    = "CARTA-HORIZONTAL";
+	$id_empresa          = $_SESSION['EMPRESA'];
+	$id_sucursal_default = $_SESSION['SUCURSAL'];
+
+	$informe->InformeName			=	'contabilidad_libro_diario';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			=	'Libro Diario'; //TITULO DEL INFORME
+	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
+	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
+	$informe->InformeFechaInicioFin	=	'false';	 //FILTRO FECHA
+
+	// EDIT CSS
+	$informe->DefaultCls            = 	''; 		//RESET STYLE CSS
+	$informe->HeightToolbar         = 	80; 		//HEIGHT TOOLBAR
+
+	$informe->InformeExportarPDF	= 	"false";	//SI EXPORTA A PDF
+	$informe->InformeExportarXLS	= 	"false";	//SI EXPORTA A XLS
+	$informe->InformeTamano 		= 	"CARTA-HORIZONTAL";
+
 	$informe->AreaInformeQuitaAncho = 	0;
 	$informe->AreaInformeQuitaAlto  = 	190;
 
@@ -31,27 +36,24 @@
 	$informe->AddBotton('Exportar Excel','excel32','generarPDF_Excel_principal("IMPRIME_XLS")','Btn_exportar_excel');
 	$informe->AddBotton('Configurar Informe','configurar_informe','ventanaConfigurarInforme()','Btn_configurar_balance_prueba');
 
+
 	/**//////////////////////////////////////////////////////////////**/
-	/**///				         INICIALIZACION DE LA GRILLA	  			  ///**/
-	/**/															                              /**/
-	/**/	   $informe->Link = $link;  	   //Conexion a la BD			  /**/
-	/**/	   $informe->inicializa($_POST); //Variables POST			    /**/
-	/**/	   $informe->GeneraInforme(); 	 //Inicializa la Grilla	  /**/
-	/**/															                              /**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/															/**/
+	/**/	$informe->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$informe->inicializa($_POST);//variables POST			/**/
+	/**/	$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
+
 ?>
+
 <script>
 	contTercero     = 1;
 	arraytercerosBC = new Array();
 
-	id_pais = "<?php echo $_SESSION[PAIS]; ?>";
-	if(id_pais != 49){
-		url_variable = '../informes/informes/contabilidad/contabilidad_libro_diario_paises_Result.php';
-	}
-	else{
-		url_variable = '../informes/informes/contabilidad/contabilidad_libro_diario_Result.php';
-	}
-
+	//=====================// VENTANA CONFIGURACION DE INFORME //=====================//
+	//********************************************************************************//
 	function ventanaConfigurarInforme(){
 		Win_Ventana_configurar_balance_prueba = new Ext.Window({
 		    width       : 500,
@@ -152,6 +154,7 @@
 	}
 
 	function resetFiltros(){
+
 		localStorage.MyInformeFiltroFechaFinalLibroDiario  = "";
 		localStorage.MyInformeFiltroFechaInicioLibroDiario = "";
 		localStorage.sucursal_libro_diario                 = "";
@@ -161,9 +164,14 @@
 		localStorage.cuenta_final_libro_diario             = "";
 		Win_Ventana_configurar_balance_prueba.close();
 		ventanaConfigurarInforme();
+
 	}
 
+	//==========================// PDF Y EXCEL PRINCIPAL //==========================//
+	//*******************************************************************************//
+
 	function generarPDF_Excel_principal(tipo_documento){
+
 		var fecha         = new Date();
 		var dia           = fecha.getDate();
 		var mes           = fecha.getMonth()+1;
@@ -224,10 +232,11 @@
 					+"&nivel_cuentas="+nivel_cuentas
 					+"&whereRangoCuentas="+whereRangoCuentas
 
-		window.open(url_variable + "?" + data);
+		window.open("../informes/informes/contabilidad/contabilidad_libro_diario_Result.php?"+data);
 	}
 
 	function generarHtml(){
+
 		var sucursal                   = document.getElementById('filtro_sucursal_libro_diario').value;
 		var MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
 		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value;
@@ -237,17 +246,17 @@
 		var cuenta_inicial             = document.getElementById('cuenta_inicial');
 		var cuenta_final               = document.getElementById('cuenta_final');
 
-		if(cuenta_inicial.value != "" && cuenta_final.value != ""){
-			whereRangoCuentas = ' AND (codigo_cuenta >= "' + cuenta_inicial.value + '" AND codigo_cuenta <= "' + cuenta_final.value + '" OR codigo_cuenta LIKE "' + cuenta_inicial.value + '{.}" OR codigo_cuenta LIKE "' + cuenta_final.value + '{.}")';
+		if (cuenta_inicial.value!="" && cuenta_final.value!="") {
+			whereRangoCuentas=' AND (codigo_cuenta >= "'+cuenta_inicial.value+'" AND codigo_cuenta <= "'+cuenta_final.value+'" OR codigo_cuenta LIKE "'+cuenta_inicial.value+'{.}" OR codigo_cuenta LIKE "'+cuenta_final.value+'{.}")';
 		}
-		else if(cuenta_inicial.value != "" || cuenta_final.value != ""){
+		else if (cuenta_inicial.value!="" || cuenta_final.value!="") {
 			alert("Error!\nDigite las dos cuentas para la consulta por rango de cuentas");
 			return;
 		}
 
 		Ext.get('RecibidorInforme_contabilidad_libro_diario').load({
-			url     : url_variable,
-			text	  : 'Generando Informe...',
+			url     : '../informes/informes/contabilidad/contabilidad_libro_diario_Result.php',
+			text	: 'Generando Informe...',
 			scripts : true,
 			nocache : true,
 			params  :
@@ -274,6 +283,7 @@
 	}
 
 	function generarPDF_Excel(tipo_documento){
+
 		var sucursal                   = document.getElementById('filtro_sucursal_libro_diario').value;
 		var MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
 		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value;
@@ -283,10 +293,10 @@
 		var cuenta_inicial             = document.getElementById('cuenta_inicial');
 		var cuenta_final               = document.getElementById('cuenta_final');
 
-		if(cuenta_inicial.value != "" && cuenta_final.value != ""){
-			whereRangoCuentas = ' AND (codigo_cuenta >= "' + cuenta_inicial.value + '" AND codigo_cuenta <= "' + cuenta_final.value + '" OR codigo_cuenta LIKE "' + cuenta_inicial.value + '{.}" OR codigo_cuenta LIKE "' + cuenta_final.value + '{.}")';
+		if (cuenta_inicial.value!="" && cuenta_final.value!="") {
+			whereRangoCuentas=' AND (codigo_cuenta >= "'+cuenta_inicial.value+'" AND codigo_cuenta <= "'+cuenta_final.value+'" OR codigo_cuenta LIKE "'+cuenta_inicial.value+'{.}" OR codigo_cuenta LIKE "'+cuenta_final.value+'{.}")';
 		}
-		else if(cuenta_inicial.value != "" || cuenta_final.value != ""){
+		else if (cuenta_inicial.value!="" || cuenta_final.value!="") {
 			alert("Error!\nDigite las dos cuentas para la consulta por rango de cuentas");
 			return;
 		}
@@ -300,47 +310,53 @@
 								+"&nivel_cuentas="+nivel_cuentas
 								+"&whereRangoCuentas="+whereRangoCuentas
 
-		window.open(url_variable + "?" + data);
+
+		window.open("../informes/informes/contabilidad/contabilidad_libro_diario_Result.php?"+data);
 	}
 
+	//================ VENTANA PARA BUSCAR LA CUENTA DEL PUC PARA EL RANGO DE CUENTAS ===========//
 	function ventanaBuscarCuentaPucLibroDiario(campo){
 		var myalto  = Ext.getBody().getHeight();
-    var myancho = Ext.getBody().getWidth();
+        var myancho = Ext.getBody().getWidth();
 
 		Win_Ventana_buscar_cuenta_puc_libro_diario = new Ext.Window({
-	    width       : 680,
-	    height      : 500,
-	    id          : 'Win_Ventana_buscar_cuenta_puc_libro_diario',
-	    title       : 'Consultar la cuenta del Puc',
-	    modal       : true,
-	    autoScroll  : false,
-	    closable    : true,
-	    autoDestroy : true,
-	    autoLoad    : {
-							        url     : '../funciones_globales/grillas/BuscarCuentaPuc.php',
-							        scripts : true,
-							        nocache : true,
-							        params  : {
-																	nombreGrilla : 'buscarCuentaBalancePrueba',
-																	cargaFuncion : 'renderizaResultadoVentanaPuc(id,"'+campo+'")',
-																	tabla_puc    : 'puc',
-												        }
-	    							},
-	    tbar        : [
-								      {
-								        xtype       : 'button',
-								        width       : 60,
-								        height      : 56,
-								        text        : 'Regresar',
-								        scale       : 'large',
-								        iconCls     : 'regresar',
-								        iconAlign   : 'top',
-								        handler     : function(){ Win_Ventana_buscar_cuenta_puc_libro_diario.close() }
-								      }
-								    ]
+		    width       : 680,
+		    height      : 500,
+		    id          : 'Win_Ventana_buscar_cuenta_puc_libro_diario',
+		    title       : 'Consultar la cuenta del Puc',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : true,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : '../funciones_globales/grillas/BuscarCuentaPuc.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+					nombreGrilla : 'buscarCuentaBalancePrueba',
+					cargaFuncion : 'renderizaResultadoVentanaPuc(id,"'+campo+'")',
+					tabla_puc    : 'puc',
+		        }
+		    },
+		    tbar        :
+		    [
+                {
+                    xtype       : 'button',
+                    width       : 60,
+                    height      : 56,
+                    text        : 'Regresar',
+                    scale       : 'large',
+                    iconCls     : 'regresar',
+                    iconAlign   : 'top',
+                    handler     : function(){ Win_Ventana_buscar_cuenta_puc_libro_diario.close() }
+                }
+		    ]
 		}).show();
 	}
 
+	//================== RENDERIZAR LOS RESULTADOS DE LA BUSQUEDA DE LA CUENTA =============================//
 	function renderizaResultadoVentanaPuc(id,campo){
 		input       = document.getElementById(campo);
 		input.value = document.getElementById('div_buscarCuentaBalancePrueba_cuenta_'+id).innerHTML;
@@ -349,12 +365,15 @@
 		Win_Ventana_buscar_cuenta_puc_libro_diario.close();
 
 		input.focus();
+
 	}
 
-	function validaCuentaPucLibroDiario(event,input){
+	//============== EVENTO KEY UP DE LOS CAMPOS CUENTA =================================//
+	function validaCuentaPucLibroDiario (event,input) {
 		tecla  = input ? event.keyCode : event.which;
 		patron = /[^\d]/g;
+        if(patron.test(input.value)){ input.value = (input.value).replace(/[^0-9]/g,''); }
 
-		if(patron.test(input.value)){ input.value = (input.value).replace(/[^0-9]/g,''); }
 	}
+
 </script>

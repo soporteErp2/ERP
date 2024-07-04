@@ -26,7 +26,7 @@
 		$limit2     =$limit2+$limit;
 	}
 
- 	$sql   = "SELECT id,descripcion,naturaleza,codigo
+ 	$sql   = "SELECT id,descripcion,naturaleza
 					FROM nomina_conceptos
 					WHERE activo=1
 					AND id_empresa = '$id_empresa'";
@@ -39,7 +39,6 @@
 		$filaInsertBoleta .= '<div class="filaBoleta" id="fila_concepto_'.$opcGrillaContable.'_'.$contFilaCuenta.'">
 
 								<div class="campoInforme0">'.$contFilaCuenta.'</div>
-								<div class="campoInforme1" style="width:80px;" id="codigo_concepto_'.$contFilaCuenta.'">'.$row['codigo'].'</div>
 								<div class="campoInforme1" style="width:200px;" id="descripcion_concepto_'.$contFilaCuenta.'">'.$row['descripcion'].'</div>
 								<div class="campoInforme2" style="border-left:0px;width:100px;" id="naturaleza_concepto_'.$contFilaCuenta.'" title="'.$row['naturaleza'].'">'.$row['naturaleza'].'</div>
 								<div class="campoInforme4" id="valor_anticipo_'.$opcGrillaContable.'_'.$contFilaCuenta.'">
@@ -79,7 +78,6 @@
 	<div id="contenedor_tabla_boletas">
 		<div class="headTablaBoletas">
 			<div class="campoInforme0"></div>
-			<div class="campoInforme1" style="width:80px">Codigo</div>
 			<div class="campoInforme1" style="width:200px">Concepto</div>
 			<div class="campoInforme2" style="border-left:0px;width:100px;">Naturaleza</div>
 			<div class="campoInforme4">Seleccione</div>

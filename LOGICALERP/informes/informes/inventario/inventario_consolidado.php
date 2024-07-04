@@ -4,10 +4,10 @@
 	include('../../../../misc/MyInforme/class.MyInforme.php');
 
 	/**//////////////////////////////////////////////**/
-	/**///		    INICIALIZACION DE LA CLASE	    ///**/
-	/**/										    										/**/
-	/**/		 			$informe = new MyInforme();	    	/**/
-	/**/																						/**/
+	/**///		 INICIALIZACION DE LA CLASE	      ///**/
+	/**/										    /**/
+	/**/		 $informe = new MyInforme();	  	/**/
+	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
 	$id_empresa  										= $_SESSION['EMPRESA'];
@@ -38,7 +38,10 @@
 	/**//////////////////////////////////////////////////////////////**/
 ?>
 <script>
+	contTercero  = 1;
+	contEmpleado = 1;
 	arrayItemsIC = [];
+	itemsConfiguradosIC = [];
 
 	//================ GENERAR ARCHIVO DESDE LA VISTA PRINCIPAL ================//
 	function generarPDF_Excel_principal(tipo_documento){

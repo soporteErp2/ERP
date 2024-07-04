@@ -13,10 +13,13 @@
     $id_empresa = $_SESSION['EMPRESA'];
     $desde            = $MyInformeFiltroFechaInicio;
     $hasta            = (isset($MyInformeFiltroFechaFinal))? $MyInformeFiltroFechaFinal : date("Y-m-d") ;
+    // $generar          = $MyInformeFiltro_0;
     $divTitleSucursal   = '';
     $whereSucursal      = '';
     $subtitulo_cabecera = '';
     $whereVendedores    = '';
+
+    // echo$MyInformeFiltroFechaFinal=(isset($MyInformeFiltroFechaFinal))? $MyInformeFiltroFechaFinal : date("Y-m-d") ;
 
     if (isset($MyInformeFiltroFechaFinal) && $MyInformeFiltroFechaFinal!='') {
         $whereFechas=" AND VF.fecha_inicio BETWEEN '".$MyInformeFiltroFechaInicio."' AND '".$MyInformeFiltroFechaFinal."'";

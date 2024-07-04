@@ -44,19 +44,20 @@
 	/**/	$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
 	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
+
 ?>
 
 <script>
 	contTercero = 1;
 
-	//======================== CONFIGURACION DEL INFORME =======================//
+	//=====================// VENTANA CONFIGURACION DE INFORME //=====================//
+	//********************************************************************************//
+
 	function ventanaConfigurarInforme(){
-		var myalto  = Ext.getBody().getHeight();
-    var myancho = Ext.getBody().getWidth();
 
 		Win_Ventana_configurar_ordenes_compra_archivos_adjuntos = new Ext.Window({
-				width       : myancho - (myancho * 35 / 100),
-				height      : myalto - (myalto * 30 / 100),
+		    width       : 750,
+		    height      : 550,
 		    id          : 'Win_Ventana_configurar_ordenes_compra_archivos_adjuntos',
 		    title       : 'Aplicar Filtros',
 		    modal       : true,
@@ -153,8 +154,8 @@
 		}).show();
 	}
 
-	//=========================== REINICIAR FILTROS ============================//
 	function resetFiltros(){
+
 		localStorage.MyInformeFiltroFechaFinalOrdenesCompraArchivosAdjuntos  = "";
 		localStorage.MyInformeFiltroFechaInicioOrdenesCompraArchivosAdjuntos = "";
 		localStorage.sucursal_ordenes_compra_archivos_adjuntos               = "";
@@ -164,7 +165,6 @@
 		ventanaConfigurarInforme();
 	}
 
-	//============================ GENERAR INFORME =============================//
 	function generarHtml(){
 
 		// CAPTURAR VARIABLES
@@ -202,7 +202,6 @@
 		document.getElementById("RecibidorInforme_ordenes_compra_archivos_adjuntos").style.padding = 20;
 	}
 
-	//==================== GENERAR ARCHIVO DESDE EL WIZARD =====================//
 	function generarPDF_Excel(tipo_documento){
 
 		// CAPTURAR VARIABLES
@@ -227,7 +226,7 @@
 		window.open("../informes/informes/informes_compras/ordenes_compra_archivos_adjuntos_Result.php?"+data);
 	}
 
-	//==================== VENTANA PARA BUSCAR LOS TERCEROS ====================//
+	//========================== VENTANA PARA BUSCAR LOS TERCEROS ===============================//
 	function ventanaBusquedaTercero(){
 		var myalto  = Ext.getBody().getHeight();
         var myancho = Ext.getBody().getWidth();
@@ -270,7 +269,6 @@
         }).show();
 	}
 
-	//============================ MOSTRAR TERCEROS ============================//
 	function checkGrilla(checkbox,cont){
 
 		if (checkbox.checked ==true) {
@@ -309,7 +307,7 @@
 		}
 	}
 
-	//============================ ELIMINAR TERCEROS ===========================//
+	//==================== FUNCION PARA ELIMINAR LOS CLIENTES AGREGADOS =========================//
 	function eliminaCliente(cont){
 
 		delete arraytercerosOC[cont];
@@ -317,4 +315,5 @@
 		delete tercerosConfiguradosOC[cont];
 		(document.getElementById("row_tercero_"+cont)).parentNode.removeChild(document.getElementById("row_tercero_"+cont));
 	}
+
 </script>

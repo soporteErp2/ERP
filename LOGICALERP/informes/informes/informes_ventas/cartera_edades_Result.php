@@ -126,7 +126,8 @@
                               GROUP BY id_documento_cruce
                               HAVING saldo > 0";
             $queryTempoTable = $this->mysql->query($sqlTempoTable,$this->mysql->link);
-           $sql = "SELECT
+            $whereSaldo = ($_SESSION['NITEMPRESA']==900474556)? "AND  A.saldo>0" : 'AND  VF.total_factura_sin_abono>1';
+            $sql = "SELECT
                         T.telefono1,
                         T.celular1,
                         VF.cuenta_pago AS codigo_cuenta,
@@ -150,7 +151,7 @@
                         AND A.codigo_cuenta = VF.cuenta_pago
                         AND VF.activo = 1
                         AND VF.estado = 1
-                        AND VF.total_factura_sin_abono>1
+                        $whereSaldo
                         AND VF.id_empresa = '$this->id_empresa'
                         $this->whereInnerJoin
                     )

@@ -484,6 +484,15 @@ function busquedaTerceroPaginacion($opcGrillaContable,$pagina,$limite,$limit,$ro
 								</div>
 							</div>';
 
+		// $filaInsertBoleta .= '<div class="filaBoleta" id="fila_concepto_'.$opcGrillaContable.'_'.$contFilaCuenta.'">
+
+		// 						<div class="campoInforme0">'.$contFilaCuenta.'</div>
+		// 						<div class="campoInforme1" style="width:200px;" id="descripcion_concepto_'.$contFilaCuenta.'">'.$row['descripcion'].'</div>
+		// 						<div class="campoInforme2" style="border-left:0px;width:100px;" id="naturaleza_concepto_'.$contFilaCuenta.'" title="'.$row['naturaleza'].'">'.$row['naturaleza'].'</div>
+		// 						<div class="campoInforme4" id="valor_anticipo_'.$opcGrillaContable.'_'.$contFilaCuenta.'">
+		// 							<input type="checkbox" id="checkbox_'.$row[$id_tercero].'" onchange="checkGrillaConceptos(this,\''.$contFilaCuenta.'\')" value="'.$row[$id_tercero].'">
+		// 						</div>
+		// 					</div>';
 	}
 
 	$filaInsertBoleta .= '<script>

@@ -28,7 +28,7 @@
     $whereSucursal = ($sucursal<>'global')? " AND EC.id_sucursal=$sucursal " : "" ;
 
     // CONSULTAR LAS VACACIONES
-    echo$sql="SELECT
+    $sql="SELECT
                 VC.documento_empleado,
                 VC.nombre_empleado,
                 VC.fecha_inicio_periodo_vacaciones,

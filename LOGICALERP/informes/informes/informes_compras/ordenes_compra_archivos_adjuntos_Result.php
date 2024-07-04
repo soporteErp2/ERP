@@ -77,7 +77,6 @@ $sqlCompras =  "SELECT
                   compras_ordenes.proveedor,
                   CONCAT(compras_ordenes_documentos.nombre,'.',compras_ordenes_documentos.ext) AS archivo,
                   compras_ordenes_documentos.id_orden_compra,
-                  compras_ordenes_documentos.fecha AS fecha_creacion,
                   compras_ordenes.tipo_nombre
                 FROM
                   compras_ordenes
@@ -109,7 +108,6 @@ $bodyTable .=   '<table class="table" style="border-collapse: collapse;">
                     <td><b>NIT</b></td>
                     <td><b>PROVEEDOR</b></td>
                     <td><b>ARCHIVO</b></td>
-                    <td style="width:8%;"><b>FECHA CREACION</b></td>
                     <td><b>FACTURA</b></td>
                     <td><b>TIPO</b></td>
                   </tr>';
@@ -124,7 +122,6 @@ while($row=mysql_fetch_array($queryCompras)) {
                        <td>'.$row['nit'].'</td>
                        <td>'.$row['proveedor'].'</td>
                        <td>'.$row['archivo'].'</td>
-                       <td>'.$row['fecha_creacion'].'</td>
                        <td>'.$row['id_orden_compra'].'</td>
                        <td>'.$row['tipo_nombre'].'</td>';
 }

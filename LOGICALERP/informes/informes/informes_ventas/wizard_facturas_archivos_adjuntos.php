@@ -56,10 +56,10 @@
         if(typeof(localStorage.sucursalFAA) != "undefined" && localStorage.sucursalFAA != ""){
           setTimeout(function(){
             document.getElementById("filtro_sucursal_facturas_archivos_adjuntos").value = localStorage.sucursalFAA;
-          },1000);
+          },200);
         }
       } catch{
-        setTimeout('carga_sucursal_guardada()',1500);
+        setTimeout('carga_sucursal_guardada()',500);
       }
     }
 

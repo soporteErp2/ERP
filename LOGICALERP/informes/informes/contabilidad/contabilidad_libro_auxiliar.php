@@ -385,18 +385,18 @@
 	function generarPDF_Excel(tipo_documento){
 
 		// CAPTURAR VARIABLES
-		var cuentaInicial              = document.getElementById('cuenta_inicial').value
+		var cuentaInicial            = document.getElementById('cuenta_inicial').value
 		,	cuentaFinal                = document.getElementById('cuenta_final').value
 		,	sucursal                   = document.getElementById('filtro_sucursal_sucursales_libro_auxiliar').value
 		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
 		,	MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
-		,   arraytercerosJSON          = Array()
+		, arraytercerosJSON          = Array()
 		,	arrayCentroCostosJSON      = Array()
 		,	totalizado                 = document.getElementById('totalizado').value
 		,	order                      = document.getElementById('order').value
 		,	by                         = document.getElementById('by').value
 		,	mostrar_observacion        = document.getElementById('mostrar_observacion').value
-		,	i                          = 0
+		,	i = 0
 
 		if (cuentaInicial!="" && cuentaFinal==""|| cuentaInicial=="" && cuentaFinal!="") {
 			alert("Error!\nDigite las dos cuentas para la consulta por rango de cuentas");
@@ -404,10 +404,10 @@
 		}
 
 		arraytercerosLA.forEach(function(id_tercero) {  arraytercerosJSON[i] = id_tercero; i++;  });
-    	arraytercerosJSON=JSON.stringify(arraytercerosJSON);
+    arraytercerosJSON=JSON.stringify(arraytercerosJSON);
 
-		arrayCentroCostosLA.forEach(function(id_centro_costo) {  arrayCentroCostosJSON[i] = id_centro_costo; i++; });
-		arrayCentroCostosJSON=JSON.stringify(arrayCentroCostosJSON);
+    arrayCentroCostosLA.forEach(function(id_centro_costo) {  arrayCentroCostosJSON[i] = id_centro_costo; i++; });
+    arrayCentroCostosJSON=JSON.stringify(arrayCentroCostosJSON);
 
 		var data = tipo_documento+"=true"
 									+"&nombre_informe=Libro_Auxiliar"

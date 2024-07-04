@@ -470,7 +470,8 @@ function cuerpoVentanaConfiguracionPedidosVenta(){
 		</script>';
 }
 
-//======================== VENTANA CONFIGURACION REMISION ====================//
+//==========================// VENTANA CONFIGURACION REMISION //=======================//
+//*************************************************************************************//
 function cuerpoVentanaConfiguracionResmisionesVenta(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -678,7 +679,8 @@ function cuerpoVentanaConfiguracionResmisionesVenta(){
 		</script>';
 }
 
-//======================== VENTANA CONFIGURACION ITEMS =======================//
+//==========================// VENTANA CONFIGURACION ITEMS //==========================//
+//*************************************************************************************//
 function ventana_configuracion_items(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -1111,7 +1113,8 @@ function ventana_configuracion_items(){
 		</script>';
 }
 
-//======================== VENTANA CONFIGURACION ITEMS =======================//
+//==========================// VENTANA CONFIGURACION ITEMS //==========================//
+//*************************************************************************************//
 function ventana_configuracion_itemsRemisionados(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -1540,7 +1543,8 @@ function ventana_configuracion_itemsRemisionados(){
 		</script>';
 }
 
-//======================= VENTANA CONFIGURACION FACTURA ======================//
+//==========================// VENTANA CONFIGURACION FACTURA //==========================//
+//***************************************************************************************//
 function cuerpoVentanaConfiguracionFacturas(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -1730,7 +1734,8 @@ function cuerpoVentanaConfiguracionFacturas(){
 		</script>';
 }
 
-//======================= VENTANA IMPUESTOS RETENCIONES ======================//
+//==========================// VENTANA IMPUESTOS RETENCIONES //==========================//
+//***************************************************************************************//
 function ventanaConfiguracion_FVIR(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -1858,7 +1863,6 @@ function ventanaConfiguracion_FVIR(){
 		</script>';
 }
 
-//================= CONFIGURACION DEL BALANCE DE COMPROBACION ================//
 function cuerpoVentanaConfiguracionFacturasCuentas(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -2061,7 +2065,8 @@ function cuerpoVentanaConfiguracionFacturasCuentas(){
 		</script>';
 }
 
-//================= CONFIGURACION DEL BALANCE DE COMPROBACION ================//
+
+//========================== CUERPO DE LA VENTANA DE CONFIGURACION DEL BALANCE DE COMPROBACION =======================//
 function cuerpoVentanaConfiguracionDevolucionVentas(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -2227,7 +2232,7 @@ function cuerpoVentanaConfiguracionDevolucionVentas(){
 		</script>';
 }
 
-//================= CONFIGURACION DEL BALANCE DE COMPROBACION ================//
+//========================== CUERPO DE LA VENTANA DE CONFIGURACION DEL BALANCE DE COMPROBACION =======================//
 function cuerpoVentanaConfiguracionReciboCaja(){
 
 	$date = strtotime(date("Y-m-d"));
@@ -2346,4 +2351,5 @@ function cuerpoVentanaConfiguracionReciboCaja(){
 
 		</script>';
 }
+
 ?>
