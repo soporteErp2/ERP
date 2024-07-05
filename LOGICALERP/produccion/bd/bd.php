@@ -935,12 +935,10 @@
 			$consecutivo = mysql_result(mysql_query($sqlSelect,$link),0,'consecutivo');
 
 			if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
 				//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','CV','Cotizacion de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+				$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES
+							($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Cotizacion de compra',$id_sucursal,".$_SESSION['EMPRESA'].")";
 				$queryLog = mysql_query($sqlLog,$link);
 
 				echo'<script>
@@ -1027,12 +1025,9 @@
 				if (!$query) { echo'<script> alert("No se guardo la '.$titulo.',\nPor favor intentelo de nuevo si el problema persiste comuniquese con el administrador del sistema"); </script>'; exit(); }
 			}
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//log
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','PV','Pedido de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Pedido de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1216,13 +1211,9 @@
 
 			$sqlSelect   = "SELECT consecutivo FROM $tablaPrincipal WHERE id='$id'";
 			$consecutivo = mysql_result(mysql_query($sqlSelect,$link),0,'consecutivo');
-
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','RV','Remision de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Remision de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			$queryLog = mysql_query($sqlLog,$link);
 			echo'<script>
 					Ext.get("contenedor_'.$opcGrillaContable.'").load({
@@ -1267,12 +1258,9 @@
 			// 			$sqlSelect   = "SELECT consecutivo FROM $tablaPrincipal WHERE id='$id'";
 			// 			$consecutivo = mysql_result(mysql_query($sqlSelect,$link),0,'consecutivo');
 
-			//      $fecha_actual = date('Y-m-d');
-			//      $hora_actual  = date('H:i:s');
-
-			// 			INSERTAR EL LOG DE EVENTOS
-			// 			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-			// 						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','RV','Remision de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			// 					//INSERTAR EL LOG DE EVENTOS
+			// 			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+			// 						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Remision de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
 			// 			$queryLog = mysql_query($sqlLog,$link);
 
 			// 			echo'<script>
@@ -1706,12 +1694,9 @@
 
 			moverCuentasDocumento($idDocumento,$id_sucursal,$id_bodega,$tablaInventario,$idTablaPrincipal,$opcGrillaContable,'descontabilizar',$link);
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','FV','Factura de Venta',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Factura de Venta',$id_sucursal,'$id_empresa')";
 		}
 		//==================================== EDITAR REMISIONES DE VENTA ===========================================//
 		/*************************************************************************************************************/
@@ -1753,12 +1738,9 @@
 			/**********************************************************************************/
 			sumarSaldoDocumentoCruce($idDocumento,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$id_empresa,$link); 		// VALIDACION REMISION
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','RV','Remision de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Remision de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
 		}
 
 		if ($opcGrillaContable == "FacturaVenta" || $opcGrillaContable == 'RemisionesVenta'){
@@ -1795,15 +1777,11 @@
 
 			if (!$query) { echo '<script>alert("Error!\nNo se modifico el documento para editarlo\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; return; }
 
-			$typeDocumento = ($opcGrillaContable == "CotizacionVenta")? 'CV': 'PV';
-			$descDocumento = ($opcGrillaContable == "CotizacionVenta")? 'Cotizacion de Venta': 'Pedido de Venta';
-
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
+			$typeDocumento = ($opcGrillaContable == "CotizacionVenta")? 'Cotizacion de Venta': 'Pedido de Venta';
 
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','$typeDocumento','$descDocumento','$id_sucursal','$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog	  = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','$typeDocumento','$id_sucursal','$id_empresa')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -2206,12 +2184,9 @@
 		if ($opcGrillaContable=='CotizacionVenta') {
 			$sqlUpdate="UPDATE $tablaPrincipal SET estado=3 WHERE id='$id' AND activo=1 AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa' ";
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','CV','Cotizacion de Venta',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Cotizacion de Venta',$id_sucursal,'$id_empresa')";
 		}
 		else if ($opcGrillaContable=='PedidoVenta') {
 
@@ -2223,12 +2198,9 @@
 			else if ($estado==3) { echo '<script>alert("Error!\nEste Pedido ya esta Cancelado!");</script>'; return; }
 			else{ $sqlUpdate="UPDATE $tablaPrincipal SET estado=3 WHERE id='$id' AND activo=1 AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa'"; }
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','PV','Pedido de Venta',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Pedido de Venta',$id_sucursal,'$id_empresa')";
 		}
 		else if ($opcGrillaContable=='RemisionesVenta') {
 
@@ -2300,12 +2272,9 @@
 			//SINO ES POSIBLE QUE SE HALLA CREADO A PARTIR DE UNA COTIZACION O SIN CARGAR NINGUN DOCUMENTO, EN CUALQUIERA DE LOS DOS CASOS SOLO SE EJECUTA LA ACTUALIZACION DE LA REMISION, POR QUE LA COTIZACION SE BLOQUEA POR TIEMPO
 			$sqlUpdate="UPDATE $tablaPrincipal SET estado=3 WHERE id='$id' AND activo=1 AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa'";
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','RV','Remision de Venta',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Remision de Venta',$id_sucursal,'$id_empresa')";
 		}
 		else if ($opcGrillaContable=='FacturaVenta') {
 
@@ -2343,12 +2312,9 @@
 			else if ($estado==3) { echo '<script>alert("Error!\nEsta factura ya esta Cancelada!");</script>'; return; }
 			else if ($estado==0 && ($numeroFactura=='' || $numeroFactura==0)) { $sqlUpdate = "UPDATE $tablaPrincipal SET activo=0 WHERE id='$id' AND activo=1 AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa'"; }
 
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','FV','Factura de Venta',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Factura de Venta',$id_sucursal,'$id_empresa')";
 		}
 
 		$queryUpdate = mysql_query($sqlUpdate,$link);				//EJECUTAMOS EL QUERY PARA ACTUALIZAR EL DOCUMENTO CON SU ESTADO COMO CANCELADO
@@ -2385,35 +2351,22 @@
 
  		if ($opcGrillaContable=='FacturaVenta') {
  			$sqlConsulDoc="SELECT numero_factura AS consecutivo FROM $tablaPrincipal WHERE id='$idDocumento' AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa' ";
-
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
-			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','FV','Factura de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+ 			//INSERTAR EL LOG DE EVENTOS
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Factura de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
  		}
  		else{
  			if ($opcGrillaContable=='CotizacionVenta') { 			//INSERTAR EL LOG DE EVENTOS
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-				
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','CV','Cotizacion de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+				$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Cotizacion de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
  			}
  			elseif ($opcGrillaContable=='PedidoVenta') { 			//INSERTAR EL LOG DE EVENTOS
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-				
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','PV','Pedido de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+				$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Pedido de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
  			}
  			elseif ($opcGrillaContable=='RemisionesVenta') { 		//INSERTAR EL LOG DE EVENTOS
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-				
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','RV','Remision de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+				$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+							VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Remision de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
  			}
 
  			$sqlConsulDoc="SELECT consecutivo FROM $tablaPrincipal WHERE id='$idDocumento' AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa' ";

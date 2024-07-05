@@ -404,13 +404,11 @@
 			}
 		}
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-								 VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','FV','Factura de Venta',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
-			$queryLog = mysql_query($sqlLog,$link);
+			$sqlLog="INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES
+					($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Factura de Venta',$id_sucursal,".$_SESSION['EMPRESA'].")";
+			$queryLog=mysql_query($sqlLog,$link);
 
 		echo'<script>
 				//PONER EL NUMERO DE LA FACTURA EN EL TITULO DEL DOCUMENTO
