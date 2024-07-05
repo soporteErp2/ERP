@@ -9,11 +9,14 @@
 		public $id_sucursal;
 		public $id_empresa;
 		public $mysql;
+		public $arrayEstado;
 
 		function __construct($id_sucursal,$id_empresa,$mysql){
-			$this->id_sucursal = $id_sucursal;
-			$this->id_empresa  = $id_empresa;
-			$this->mysql       = $mysql;
+			$this->id_sucursal 		= $id_sucursal;
+			$this->id_empresa  		= $id_empresa;
+			$this->mysql       		= $mysql;
+			$this->arrayEstado      = $this->setArrayEstado();
+
 			parent::__construct($id_sucursal,$id_empresa,$mysql);
 		}
 
@@ -147,21 +150,6 @@
 		 * @return Array Json con el estado de la mesa
 		 */
 		public function getEstadoMesa($id_restaurante,$id_caja,$id_mesa){
-			// CONSULTAR LOS ESTADOS DE LAS CAJAS
-			$sql="SELECT
-						id,
-						nombre,
-						color,
-						estado
-					FROM ventas_pos_mesas_estados
-					WHERE activo=1 AND id_empresa=$this->id_empresa";
-			$query=$this->mysql->query($sql);
-			while ($row=$this->mysql->fetch_array($query)) {
-				$arrayEstado['estado'][$row['estado']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
-				$arrayEstado['id'][$row['id']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
-			}
-
-
 
 			// CONSULTAR EL ESTADO ACTUAL DE LA MESA
 			$sql=" SELECT
@@ -186,7 +174,7 @@
 			if($query) {
 				$num_rows = $this->mysql->num_rows($query);
 				$disponible = ($num_rows>0)? false : true ;
-				$color = ($num_rows>0)? $this->mysql->result($query,0,'color_estado')   : $arrayEstado['estado']['disponible']['color'] ;
+				$color = ($num_rows>0)? $this->mysql->result($query,0,'color_estado')   : $this->arrayEstado['estado']['disponible']['color'] ;
 				$totalComensales = $this->mysql->result($query,0,'cantidad');
 				$id_cuenta = $this->mysql->result($query,0,'id');
 
@@ -307,6 +295,28 @@
 
 			echo json_encode($arrayResult);
 		}
+		/**
+		 * setEstadoMesas Establece el estado de las mesas
+		 * @param  Array $params Parametros necesarios para la apertura de la cuenta
+		 * @return Json          Respuesta de la peticion en formato JSON
+		 */
+		public function setArrayEstado(){
+			$sql="SELECT
+						id,
+						nombre,
+						color,
+						estado
+					FROM ventas_pos_mesas_estados
+					WHERE activo=1 AND id_empresa=$this->id_empresa";
+
+			$query=$this->mysql->query($sql);
+			while ($row=$this->mysql->fetch_array($query)) {
+				$arrayEstado['estado'][$row['estado']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
+				$arrayEstado['id'][$row['id']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
+			}
+
+			return $arrayEstado;
+		}
 
 		/**
 		 * openTableAccount Abrir una cuenta a una mesa libre
@@ -315,20 +325,6 @@
 		 */
 		public function openTableAccount($params){
 			$randomico = $this->randomico();
-			// CONSULTAR LOS ESTADOS DE LAS CAJAS
-			$sql="SELECT
-						id,
-						nombre,
-						color,
-						estado
-					FROM ventas_pos_mesas_estados
-					WHERE activo=1 AND id_empresa=$this->id_empresa";
-			$query=$this->mysql->query($sql);
-			while ($row=$this->mysql->fetch_array($query)) {
-				$arrayEstado['estado'][$row['estado']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
-				$arrayEstado['id'][$row['id']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
-			}
-
 
 			if(isset($params['id_cuenta'])){
 				$sql = "SELECT id FROM ventas_pos_mesas_cuenta WHERE id=".$params['id_cuenta'];
@@ -360,9 +356,9 @@
 						'$params[id_mesa]',
 						'$params[nombre_mesa]',
 						'2',
-						'".$arrayEstado['id']['2']['nombre']."',
+						'".$this->arrayEstado['id']['2']['nombre']."',
 						'no_disponible',
-						'".$arrayEstado['id']['2']['color']."',
+						'".$this->arrayEstado['id']['2']['color']."',
 						'".date("Y-m-d")."',
 						'".date("H:i:s")."',
 						'$params[id_usuario]',
@@ -587,6 +583,13 @@
 					$arrayResult = array('status' => 'success', 'id_cuenta_item'=>$id_cuenta_item);
 				}
 
+				$sql="UPDATE ventas_pos_mesas_cuenta
+					SET id_estado 	  = '2',
+						descripcion   = '".$this->arrayEstado['id']['2']['nombre']."',
+						estado_mesa   = 'no_disponible',
+						color_estado  = '".$this->arrayEstado['id']['2']['color']."'
+					WHERE activo=1 AND id_empresa=$this->id_empresa AND id = $params[id_cuenta] AND id_mesa=id_mesa ";
+				$query=$this->mysql->query($sql);
 				// id
 				// codigo
 				// nombre,
@@ -717,19 +720,6 @@
 				return;
 			}
 
-			$sql="SELECT
-						id,
-						nombre,
-						color,
-						estado
-					FROM ventas_pos_mesas_estados
-					WHERE activo=1 AND id_empresa=$this->id_empresa";
-			$query=$this->mysql->query($sql);
-			while ($row=$this->mysql->fetch_array($query)) {
-				$arrayEstado['estado'][$row['estado']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
-				$arrayEstado['id'][$row['id']] = array( 'id'=>$row['id'], 'nombre' => $row['codigo'], 'color'=>$row['color']  );
-			}
-
 			$randomico = $this->randomico();
 			$sql="INSERT INTO ventas_pos_comanda
 					(
@@ -786,10 +776,10 @@
 
 			$sql="UPDATE ventas_pos_mesas_cuenta
 					SET id_estado 	  = '3',
-						descripcion   = '".$arrayEstado['id']['2']['nombre']."',
+						descripcion   = '".$this->arrayEstado['id']['3']['nombre']."',
 						estado_mesa   = 'no_disponible',
-						color_estado  = '".$arrayEstado['id']['2']['color']."'
-					WHERE activo=1 AND id_empresa=$this->id_empresa AND id = $id_cuenta AND id_mesa=id_mesa ";
+						color_estado  = '".$this->arrayEstado['id']['3']['color']."'
+					WHERE activo=1 AND id_empresa=$this->id_empresa AND id = $params[id_cuenta] AND id_mesa=id_mesa ";
 			$query=$this->mysql->query($sql);
 
 			$arrayResult = array('status' => 'success', 'id_comanda'=>$id_comanda,"sql"=>$sql);
