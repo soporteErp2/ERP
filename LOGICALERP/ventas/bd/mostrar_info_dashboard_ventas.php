@@ -6,10 +6,6 @@
       $id_empresa = $_SESSION['EMPRESA'];
 
       //echo $bodega.$sucursal;
-    if ($opc='no_send') {
-      facturasPendientesDian($id_empresa,$sucursal,$bodega,$mysql);
-      exit;
-    }
 
   	if($bodega == 0){
 
@@ -169,79 +165,6 @@
 
     $head .='</div>';
     echo '<div style="width:100%; overflow:hidden;" class="informacion_dash_board">'.$head.$body.'</div>';
-
-    function facturasPendientesDian($id_empresa,$id_sucursal,$id_bodega,$mysql){
-      $sql="SELECT * FROM ventas_facturas_configuracion WHERE activo=1 AND id_empresa=$id_empresa AND tipo='FE' AND consecutivo_factura<numero_final_resolucion ";
-      $query=$mysql->query($sql,$mysql->link);
-      while ($row=$mysql->fetch_array($query)) {
-        $whereIdResolucion .= ($whereIdResolucion=='')? "id_configuracion_resolucion=$row[id]" : " OR id_configuracion_resolucion=$row[id] " ;
-      }
-
-      $sql="SELECT * FROM ventas_facturas
-          WHERE activo=1
-          $filtro_sucursal
-          $filtro_bodega
-          AND id_empresa=$id_empresa
-          AND estado=1
-          AND ($whereIdResolucion)
-          AND (ISNULL(response_FE) OR response_FE='')
-          ";
-      $query=$mysql->query($sql,$mysql->link);
-      while ($row=$mysql->fetch_array($query)) {
-        $bodyGrilla .= "<div class='row'>
-                          <div class='cell' data-col='1'></div>
-                          <div class='cell' data-col='2' title='$row[sucursal]'>$row[sucursal]</div>
-                          <div class='cell' data-col='2' title='$row[bodega]'>$row[bodega]</div>
-                          <div class='cell' data-col='3'>$row[fecha_inicio]</div>
-                          <div class='cell' data-col='3'>$row[numero_factura_completo] </div>
-                          <div class='cell' data-col='3'>$row[nit]</div>
-                          <div class='cell' data-col='4' title='$row[cliente]' >$row[cliente]</div>
-                        </div>";
-      }
-
-      ?>
-      <style>
-          /*ESTILOS DEL WIZARD Y DE LA GRILLA ESTAN EN INDEX.CSS, ESTE ESTILO ES PARA PERSONALIZACION DE CONTENIDO*/
-          .sub-content[data-position="right"]{width: 100%; height: 100%; }
-          .sub-content[data-position="left"]{width: 40%; overflow:auto;}
-          /*.content-grilla-filtro { height: 235px;}*/
-          .content-grilla-filtro .cell[data-col="1"]{width: 2px;}
-          .content-grilla-filtro .cell[data-col="2"]{width: 90px;}
-          .content-grilla-filtro .cell[data-col="3"]{width: 60px;}
-          .content-grilla-filtro .cell[data-col="4"]{width: 165px;}
-          .content-grilla-filtro .cell[data-col="5"]{width: 80px;}
-          .content-grilla-filtro .mainText{ font-weight: bold; text-align: center;}
-          /*.content-grilla-filtro .cell[data-col="6"]{width: 80px;}*/
-          .sub-content [data-width="input"]{width: 120px;}
-
-      </style>
-
-      <div class="main-content" style="overflow-y: auto;overflow-x: hidden;" >
-          <div class="sub-content" data-position="right">
-              <div class="title">FACTURAS PENDIENTES POR ENVIAR A LA DIAN</div>
-
-              <div class="content-grilla-filtro">
-                  <div class="head">
-                      <div class="cell" data-col="1"></div>
-                      <div class="cell" data-col="2">Sucursal</div>
-                      <div class="cell" data-col="2">Bodega</div>
-                      <div class="cell" data-col="3">Fecha</div>
-                      <div class="cell" data-col="3">Numero </div>
-                      <div class="cell" data-col="3">Nit</div>
-                      <div class="cell" data-col="4">Tercero</div>
-                  </div>
-                  <div class="body" id="body_grilla_filtro">
-                    <?php echo $bodyGrilla; ?>
-                  </div>
-              </div>
-
-          </div>
-
-      </div>
-      <?php
-
-    }
-
 ?>
 <style type="text/css">
     .informacion_dash_board .EmpSeparador {

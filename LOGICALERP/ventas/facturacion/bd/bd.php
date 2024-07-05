@@ -721,7 +721,7 @@
 						nombre,
 						nombre_unidad_medida AS unidad_medida,
 						cantidad_unidad_medida AS cantidad_unidades,
-						costo_unitario AS costo,
+						costo_inventario AS costo,
 						cantidad
 					FROM ventas_facturas_inventario 
 					WHERE id_factura_venta=$id_documento
@@ -756,7 +756,7 @@
 		];
 		$obj = new Inventario_pp();
 		$process = $obj->UpdateInventory($params);
-
+		var_dump($params);
 		// if ($opc=='eliminar'){
 		// 	$sql   = "UPDATE inventario_totales AS IT, (
 		// 					SELECT SUM(cantidad) AS total_factura_venta, id_inventario AS id_item
@@ -2085,6 +2085,4 @@
 			exit;
 		}
 	}
-
-	
 ?>

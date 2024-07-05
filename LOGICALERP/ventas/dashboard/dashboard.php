@@ -6,6 +6,8 @@
 
 	//-------------------------------------SELECTOR DE PERIODOS A MOSTRAR EN EL DASHBOARD-------------------------------------------------
 
+
+
 	$hoy           = date("Y-m-d");
 	$diaMes        = date("j");
 	$diaSemana     = date("N");
@@ -150,85 +152,6 @@
 	$IND5_2 = mysql_num_rows($SQL5_2);
 
 	$IMG3 = 'ok';
-
-	// COSULTAR LAS FACTURAS PENDIENTES DE ENVIO
-	$sql="SELECT * FROM ventas_facturas_configuracion WHERE activo=1 AND id_empresa=$id_empresa AND tipo='FE' AND consecutivo_factura<numero_final_resolucion ";
-	$query=$mysql->query($sql,$mysql->link);
-	while ($row=$mysql->fetch_array($query)) {
-		$whereIdResolucion .= ($whereIdResolucion=='')? "id_configuracion_resolucion=$row[id]" : " OR id_configuracion_resolucion=$row[id] " ;
-	}
-
-	$sql="SELECT COUNT(id) AS cont FROM ventas_facturas
-			WHERE activo=1
-			$filtro_sucursal
-			$filtro_bodega
-			AND id_empresa=$id_empresa
-			AND estado=1
-			AND ($whereIdResolucion)
-			AND (ISNULL(response_FE) OR response_FE='')
-			";
-	$query=$mysql->query($sql,$mysql->link);
-	$facturasPendientesDian = $mysql->result($query,0,'cont');
-
-	// CONSULTAR LAS FACTURAS QUE SE ENVIARON A FACSE PERO QUE NO PASARON LA VALIDACION
-	// include_once("../../web_service/nuSoap/nusoap.php");
-	// $objSoap = new nusoap_client("https://test.facse.net/conexion/comprobante.asmx?WSDL",true);
-	// // $objSoap = new nusoap_client("https://test.facse.net/conexion/comprobante.asmx?wsdl",true);
-	// $errorWs = $objSoap->getError();
-
-
-
-	// if ($errorWs) { echo "<h2>Constructor error</h2><pre>".$errorWs."</pre>"; exit; }
-	// $responseWs = $objSoap->call('ListaComprobantesPendientes', array('fechaInicial' => "2018-01-01","fechaFinal" => "2018-12-31", "emisor"=> "$_SESSION[NITEMPRESA]" ));
-	// // $responseWs = $objSoap->call('ListaComprobantesPendientes', '<ListaComprobantesPendientes xmlns="http://tempuri.org/">
-	// // 															      <fechaInicial>2018-01-01</fechaInicial>
-	// // 															      <fechaFinal>2018-12-31</fechaFinal>
-	// // 															      <emisor>'.$_SESSION['NITEMPRESA'].'</emisor>
-	// // 															    </ListaComprobantesPendientes>' );
-
-	// if ($objSoap->fault) {
-	// 	echo "<h2>Fault</h2><pre>";
-	// 	print_r($responseWs);
-	// 	echo "</pre>";
-	// }
-	// else {
-	// 	$errorWs = $objSoap->getError();
-	// 	if ($errorWs) { echo "<h2>Error</h2><pre>".$errorWs."</pre>"; }
-	// 	else {
-	// 		// echo "<br>";
-	// 		// $arrayResponse = json_decode($responseWs["ConsultarComprobanteResult"]);
-	// 		print_r($responseWs);
-
-	// 	}
-	// }
-	$nit = explode("-", $_SESSION['NITEMPRESA']);
-	// echo "$nit[0]<br>";
-	/*$curl = curl_init();
-
-	curl_setopt_array($curl, array(
-		CURLOPT_URL            => "https://test.facse.net/conexion/comprobante.asmx",
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_SSL_VERIFYHOST => 0,
-		CURLOPT_SSL_VERIFYPEER => 0,
-		CURLOPT_TIMEOUT        => 30,
-		CURLOPT_CUSTOMREQUEST  => "POST",
-		CURLOPT_POSTFIELDS     => "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <soap:Body>\r\n    <ListaComprobantesPendientes xmlns=\"http://tempuri.org/\">\r\n      <fechaInicial>2000-01-01</fechaInicial>\r\n      <fechaFinal>3019-01-01</fechaFinal>\r\n      <emisor>$nit[0]</emisor>\r\n    </ListaComprobantesPendientes>\r\n  </soap:Body>\r\n</soap:Envelope>",
-		CURLOPT_HTTPHEADER     => array( "Content-Type: text/xml", ),
-	));
-
-	$response = curl_exec($curl);
-	$err      = curl_error($curl);
-
-	curl_close($curl);
-
-	if ($err) {
-	  echo "cURL Error #:" . $err;
-	} else {
-  		echo $response;
-  		$response = json_decode($response, true);
-		var_dump($response);
-	}*/
-
 ?>
 <style>
 	#DashContenedor{
@@ -308,15 +231,6 @@
 		/*border-radius:0 0 10px 10px;*/
 	}
 
-	.DashIndicador1 .label3{
-		font-size : 11px;
-		width     : calc(100% - 40px);
-		height    : 15px;
-		padding   : 0 20px 0 20px;
-		float     : left;
-		color     : #ff9d00;
-	}
-
 	#DashContenedor .alert{
 		background:url(images/alert.png);
 		background-position:center;
@@ -348,7 +262,7 @@
 	    margin   : -75px 0 0 -135px;
 	}
 
-	/*=======================// MODAL UPLOAD FILE //=======================*/
+	/* MODAL UPLOAD FILE */
 
 	.fondo_modal_upload_file{
 		display          : none;
@@ -362,73 +276,70 @@
 	}
 
 	.fondo_modal_upload_file > div{
-	  position : absolute;
-	  display  : table;
-	  height   : 100%;
-	  width    : 100%;
-	  top      : 0;
-	  left     : 0;
+	    position : absolute;
+	    display  : table;
+	    height   : 100%;
+	    width    : 100%;
+	    top      : 0;
+	    left     : 0;
 	}
 
 	.fondo_modal_upload_file > div > div{
-	  display        : table-cell;
-	  vertical-align : middle;
-	  width          : 100%;
+	    display        : table-cell;
+	    vertical-align : middle;
+	    width          : 100%;
 	}
 
 	.fondo_modal_upload_file > div > div > div{
-	  width  : 400px;
-	  height : 300px;
-	  margin : 0px auto;
+	    width  : 400px;
+	    height : 300px;
+	    margin : 0px auto;
 	}
 
 
 	#div_upload_file{
-	  width         : 400px;
-	  height        : 300px;
-	  background    : #FFF;
-	  overflow      : hidden;
-	  position      : fixed;
-	  border        : 3px dashed #bcbcbc;
+	    width         : 400px;
+	    height        : 300px;
+	    background    : #FFF;
+	    overflow      : hidden;
+	    position      : fixed;
+	    border        : 3px dashed #bcbcbc;
 	}
 
-	#div_upload_file:hover{
-		border : 3px dashed #9e9e9e;
-	}
 
 	#div_upload_file > div{
-	  font-size: 23px;
-	  margin-top: 130px;
-	  text-align: center;
-	  color: #bcbcbc;
+	    font-size: 23px;
+	    margin-top: 130px;
+	    text-align: center;
+	    color: #bcbcbc;
 	}
 
 	.btn_div_upload_file1{
-	  width            : 26px;
-	  height           : 26px;
-	  position         : fixed;
-	  margin-top       : -10px;
-	  margin-left      : 390px;
-	  font-size        : 20px;
-	  font-weight      : bold;
-	  text-align       : center;
-	  background-color : #bcbcbc;
-	  border-radius    : 12px;
-	  cursor           : pointer;
+	    width            : 26px;
+	    height           : 26px;
+	    position         : fixed;
+	    margin-top       : -10px;
+	    margin-left      : 390px;
+	    font-size        : 20px;
+	    font-weight      : bold;
+	    text-align       : center;
+	    background-color : #bcbcbc;
+	    border-radius    : 12px;
+	    cursor           : pointer;
 	}
 
 	.btn_div_upload_file2{
-	  color            : #9e9e9e;
-	  width            : 22px;
-	  height           : 22px;
-	  position         : fixed;
-	  margin-top       : 6px;
-	  margin-left      : 375px;
-	  font-size        : 20px;
-	  font-weight      : bold;
-	  text-align       : center;
-	  background-color : #fff;
-	  cursor           : pointer;
+	    color            : #9e9e9e;
+	    width            : 22px;
+	    height           : 22px;
+	    position         : fixed;
+	    margin-top       : 6px;
+	    margin-left      : 375px;
+	    font-size        : 20px;
+	    font-weight      : bold;
+	    text-align       : center;
+	    background-color : #fff;
+	    cursor           : pointer;
 	}
 
 	.btn_div_upload_file2:hover{
@@ -437,72 +348,36 @@
 	}
 
 	#btn_cancel_doc_upload{
-	  cursor           : pointer;
-	  display          : none;
-	  float            : left;
-	  margin           : 7px -35px;
-	  height           : 23px;
-	  width            : 25px;
-	  border           : 1px solid;
-	  border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
-	  border-radius    : 2px;
-	  padding-top      : 2px;
-	  text-align       : center;
-	  font-weight      : bold;
-	  font-size        : 23px;
-	  color            : #32B1D9;
-	  background-color : #f3f3f3;
+	    cursor           : pointer;
+	    display          : none;
+	    float            : left;
+	    margin           : 7px -35px;
+	    height           : 23px;
+	    width            : 25px;
+	    border           : 1px solid;
+	    border-color     : #c4c4c4 #d1d1d1 #d4d4d4;
+	    border-radius    : 2px;
+	    padding-top      : 2px;
+	    text-align       : center;
+	    font-weight      : bold;
+	    font-size        : 23px;
+	    color            : #32B1D9;
+	    background-color : #f3f3f3;
+	}
+	.dashIndicador1 > .label {
+		border-right: none;
 	}
 
-	#div_upload_file > div {
-		margin: 0px !important;
-	}
-
-	#div_upload_file:before {
-	  content    : 'Arrastre el documento';
-	  width      : 100%;
-	  float      : left;
-	  font-size  : 23px;
-	  margin-top : 130px;
-	  text-align : center;
-	  color      : #bcbcbc;
-	}
-	.fondo_modal_upload_file .qq-uploader { position:relative; width: 100%; height:100%; }
-	.fondo_modal_upload_file .qq-upload-button { display:block; position:fixed !important; width:100px; height:34px; margin:5px; background-image:url(img/uploading.png); background-size: 100px; }
-	.fondo_modal_upload_file .qq-upload-button-hover { background-image:url(img/uploading_blue.png) }
-	.fondo_modal_upload_file .qq-upload-button-focus { }
-	.fondo_modal_upload_file .qq-upload-drop-area { position:absolute; top:40; left:0; width:100%; height:100%; min-height: 70px; background:none; text-align:center; display:none;  }
-	.fondo_modal_upload_file .qq-upload-drop-area span {  display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px; }
-	.fondo_modal_upload_file .qq-upload-drop-area-active { background:#FF0000; opacity: 0.3; filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; }
-	.fondo_modal_upload_file .qq-upload-list { height:100%; list-style:none; color:#333; text-align:center; }
-	.fondo_modal_upload_file .qq-upload-list li {  margin:0; padding:0; line-height:15px; font-size:12px; }
-	.fondo_modal_upload_file .qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {  margin-right: 7px; }
-	.fondo_modal_upload_file .qq-upload-file {  }
-
-	.fondo_modal_upload_file .qq-upload-spinner {
-	  display             : inline-block;
-	  background-image    : url("img/loading.gif");
-	  width               : 400px;
-	  height              : 400px;
-	  vertical-align      : text-bottom;
-	  position            : absolute;
-	  top                 : 0;
-	  left                : 0;
-	  background-repeat   : no-repeat;
-	  background-position : 100px 50px;
-	  background-color    : #fff;
-	}
-
-	.fondo_modal_upload_file .qq-upload-size,.qq-upload-cancel { font-size:11px; }
-	.fondo_modal_upload_file .qq-upload-failed-text { display:none; }
-	.fondo_modal_upload_file .qq-upload-fail .qq-upload-failed-text { display:inline; }
+	#div_upload_file > div {  margin: 0px !important;  }
 
 </style>
 <div id="DashContenedor">
 
 <?php
-	$mouseEvents = 'onmouseover="cambiarPunteroDiv()" onmouseout="devolverPunteroDiv()"';
-?>
+
+    		$mouseEvents = 'onmouseover="cambiarPunteroDiv()" onmouseout="devolverPunteroDiv()"';
+
+    ?>
 
     <div class="DashIndicador1">
         <div class="indicador"><?php echo $IND1 ?></div>
@@ -532,7 +407,6 @@
         <div class="label">Facturas de venta</div>
         <div class="label1"><div style="float:left"id="cancela4"><?php echo $IND4_1 ?></div><div style="float:left;margin-left:5px" <?php echo $mouseEvents; ?> onclick="mostrarInf('cancela4','cancel','ventas_facturas','facturas de venta canceladas')">Canceladas</div></div>
 	    <div class="label2"><div style="float:left"id="edicion4"><?php echo $IND4_2 ?></div><div style="float:left;margin-left:5px" <?php echo $mouseEvents; ?> onclick="mostrarInf('edicion4','edit','ventas_facturas','facturas de venta en edicion')">En edicion</div></div>
-	    <div class="label3"><div style="float:left"id="no_send4"><?php echo $facturasPendientesDian ?></div><div style="float:left;margin-left:5px" <?php echo $mouseEvents; ?> onclick="mostrarInf('no_send4','no_send','ventas_facturas','Pendientes')">Sin enviar a la Dian</div></div>
     </div>
      <div class="DashIndicador1">
         <div class="indicador"><?php echo $IND5 ?></div>
@@ -712,7 +586,6 @@
 
    			document.getElementById('divVisualizador').setAttribute('style','display:none;');
    }
-
    function cambiarPeriodoAdelante(){
 
 		var filtro_bodega   = document.getElementById('filtro_ubicacion_DashboardVenta').value
@@ -793,21 +666,5 @@
 		);
 	}
 
-	// CONSULTAR LAS FACTURAS DE FACSE PENDIENTES
-	// Ext.Ajax.request({
-	//     url     : 'https://test.facse.net/conexion/comprobante.asmx?wsdl',
-	//     params  :
-	//     {
-	// 		op           : "ListaComprobantesPendientes",
-	// 		fechaInicial : "2018-01-01",
-	// 		fechaFinal   : "2019-01-01",
-	// 		emisor       : "900467785",
-	//     },
-	//     success :function (result, request){
-	//                 if(result.responseText == 'true'){ console.log("true"); }
-	//                 else{ console.log("false"); }
-	//             },
-	//     failure : function(){ console.log("fail"); }
-	// });
 
 </script>

@@ -548,7 +548,7 @@
 
 		if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes){
 			if(!(in_array('301', $_SESSION["PERMISOS"])) || count($arrayAnticipo['anticipos']) > 1){echo'<script>
-					alert("Aviso.\nLos anticipos no pueden ser mayores a la factura de venta!");
+					alert("Aviso.\nLos anticipos no pueden ser mayores a la factura de venta! \n saldo clientes: '.$saldoClientes.'");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 				</script>';
 			exit;
@@ -684,7 +684,7 @@
 		$saldoGlobalFacturaSinAbono = ROUND($saldoGlobalFacturaSinAbono,$decimalesMoneda);
 		$totalDebito  = ROUND($totalDebito,$decimalesMoneda);
 		$totalCredito = ROUND($totalCredito,$decimalesMoneda);
-		if($totalDebito != $totalCredito){
+		if($totalDebito != $totalCredito && (ABS($totalDebito-$totalCredito)>1)){
 			echo '<script>
 					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida colgaap, Confirme su configuracion en el modulo panel de control.");
 					console.log("totalDebito: '.$totalDebito.' totalCredito: '.$totalCredito.'");

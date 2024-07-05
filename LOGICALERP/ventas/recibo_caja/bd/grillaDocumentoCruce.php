@@ -11,6 +11,7 @@
 	/**//////////////////////////////////////////////**/
 
 	$filtro_empresa  = $_SESSION['EMPRESA'];
+	$whereSaldo = ($_SESSION['NITEMPRESA']==900474556)? 'AND  total_factura_sin_abono>0' : 'AND  total_factura_sin_abono>1';
 
 	if ($tipo_documento_cruce == 'FV') {
 		$tablaBuscar = 'ventas_facturas';
@@ -27,7 +28,7 @@
 			$grilla->GrillaName	 		= $opcGrillaContable;  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
 			$grilla->TableName			= $tablaBuscar;			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			= "activo = 1 AND total_factura_sin_abono>1 AND estado=1 AND id_empresa='$filtro_empresa' AND id_sucursal= '$filtro_sucursal' $whereTercero $whereIdFV ";
+			$grilla->MyWhere			= "activo = 1 $whereSaldo AND estado=1 AND id_empresa='$filtro_empresa' AND id_sucursal= '$filtro_sucursal' $whereTercero $whereIdFV ";
 			$grilla->OrderBy			= 'id DESC';			//LIMITE DE LA CONSULTA
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
 		//TAMANO DE LA GRILLA

@@ -464,7 +464,6 @@
     <div class="bodyArticulos" id="bodyArticulos<?php echo $opcGrillaContable; ?>">
         <div class="renderFilasArticulo" id="renderizaNewArticulo<?php echo $opcGrillaContable; ?>"><?php echo $bodyArticle; ?></div>
     </div>
-    <div id="load<?php echo $opcGrillaContable; ?>" style="display: none;" ></div>
 </div>
 
 <script>
@@ -1022,8 +1021,9 @@
         }).show();
     }
 
+
     //====================================== VENTANA BUSCAR ARTICULO  =======================================================//
-    function ventanaBuscarArticulo<?php echo $opcGrillaContable; ?>(cont,callback='responseVentanaBuscarArticulo'){
+    function ventanaBuscarArticulo<?php echo $opcGrillaContable; ?>(cont){
         var myalto  = Ext.getBody().getHeight();
         var myancho = Ext.getBody().getWidth();
 
@@ -1047,7 +1047,7 @@
                     sql           : sql,
                     nombre_grilla : nombre_grilla,
                     nombreTabla   : 'inventario_totales',
-                    cargaFuncion  : callback+'<?php echo $opcGrillaContable; ?>(id,'+cont+');'
+                    cargaFuncion  : 'responseVentanaBuscarArticulo<?php echo $opcGrillaContable; ?>(id,'+cont+');'
                 }
             },
             tbar        :
@@ -1122,130 +1122,6 @@
         }
     }
 
-    function responseVentanaBuscarIngrediente<?php echo $opcGrillaContable; ?>(id,cont){
-        var cantidad = window.prompt("Cantidad del Ingrediente","1");
-        if(isNaN(`${cantidad}`)){
-            alert('La cantidad debe ser un valor numerico y si es decimal debe ser separado por punto');
-            return;
-        }
-        // alert(cantidad); return;
-        var div_ing = document.getElementById(`divIngredientes<?php echo $opcGrillaContable ?>_${cont}`);
-        if(!div_ing){ return; }
-        var costoTotal          = 0
-        ,   id_fila_item_receta = document.getElementById('idInsertArticulo<?php echo $opcGrillaContable ?>_'+cont).value
-        ,   totalDescuento      = 0
-        ,   idArticulo          = document.getElementById('ventas_id_item_'+id).innerHTML
-        ,   codigo              = document.getElementById('div_'+nombre_grilla+'_codigo_'+id).innerHTML
-        ,   precio              = document.getElementById('div_'+nombre_grilla+'_precio_venta_'+id).innerHTML
-        ,   costo_inventario    = document.getElementById('div_'+nombre_grilla+'_costos_'+id).innerHTML
-        ,   unidadMedida        = document.getElementById('unidad_medida_grilla_'+id).innerHTML
-        ,   nombreArticulo      = document.getElementById('div_'+nombre_grilla+'_nombre_equipo_'+id).innerHTML
-        ,   tipoDescuento       = ((document.getElementById('imgDescuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).getAttribute("src")).split('/')[1]).split('.')[0]
-        ,   descuento           = (document.getElementById('descuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value)*1
-        ,   total               = 0
-
-        costo=('<?php echo $tipo_valor ?>'=='CI')? costo_inventario : precio ;
-        if (costo<=0){
-            costo = window.prompt("El item no tiene costos, por favor digite el costo del item","");
-            if(isNaN(`${costo}`) || costo<=0 || costo==''){
-                alert('El costo debe ser un valor numerico y si es decimal debe ser separado por punto');
-                return;
-            }
-        }
-        total = costo*cantidad;
-
-        // CAPTURAR EL ULTIMO CONT DE LOS INGREDIENTES
-        var contIng = 0;
-        div_ing.childNodes.forEach(function(element) {
-            contIng = (element.id.split('_')[1]*1>contIng)? element.id.split('_')[1]*1 : contIng ;
-        });
-        contIng += 0.01;
-        var div_row_ing = `
-                            <div class='campo' style='width:40px !important; overflow:hidden;'>
-                            <div style='float:left; margin:3px 0 0 2px;'>${contIng}</div>
-                            <div style='float:left; width:18px; overflow:hidden;' id='renderArticulo<?php echo $opcGrillaContable ?>_${contIng}'></div>
-                            </div>
-                            <div class='campo' style='width:12%;'>
-                                <input type='text' id='eanArticulo<?php echo $opcGrillaContable ?>_${contIng}' value='${codigo}' onkeyup='buscarArticulo<?php echo $opcGrillaContable ?>(event,this);'>
-                            </div>
-                            <div class='campoNombreArticulo'><input type='text' value='${nombreArticulo}' id='nombreArticulo<?php echo $opcGrillaContable ?>_${contIng}' style='text-align:left;' readonly=''></div>
-                            <div onclick='ventanaBuscarArticulo<?php echo $opcGrillaContable ?>contIng});' title='Buscar Articulo' class='iconBuscarArticulo'>
-                                <img src='img/buscar20.png'>
-                            </div>
-                            <div class='campo'><input type='text' id='unidades<?php echo $opcGrillaContable ?>_${contIng}' style='text-align:left;' readonly='' value='${unidadMedida}'></div>
-                            <div class='campo'><input type='text' id='cantArticulo<?php echo $opcGrillaContable ?>_${contIng}' value='${cantidad}' onkeyup=\"validarNumberArticulo<?php echo $opcGrillaContable ?>(event,this,'double','${contIng}')\"></div>
-                            <div class='campo campoDescuento'>
-                                <div onclick='tipoDescuentoArticulo<?php echo $opcGrillaContable ?>(${contIng})' id='tipoDescuentoArticulo<?php echo $opcGrillaContable ?>_${contIng}' title='En porcentaje'>
-                                    <img src='img/porcentaje.png' id='imgDescuentoArticulo<?php echo $opcGrillaContable ?>_${contIng}'>
-                                </div>
-                                <input type='text' id='descuentoArticulo<?php echo $opcGrillaContable ?>_${contIng}' value='0' readonly onkeyup=\"validarNumberArticulo<?php echo $opcGrillaContable ?>(event,this,'double','${contIng}')\">
-                            </div>
-                            <div class='campo'><input type='text' id='costoArticulo<?php echo $opcGrillaContable ?>_${contIng}' onkeyup='guardarAuto<?php echo $opcGrillaContable ?>(event,this,${contIng});' value='${costo}'></div>
-                            <div class='campo'><input type='text' id='costoTotalArticulo<?php echo $opcGrillaContable ?>_${contIng}' readonly='' value='${total}'></div>
-                            <div style='float:right; min-width:80px;'>
-                                <div onclick='guardarNewArticulo<?php echo $opcGrillaContable ?>(${contIng})' id='divImageSave<?php echo $opcGrillaContable ?>_${contIng}' title='Actualizar Articulo' style='width: 20px; float: left; margin-top: 3px; cursor: pointer; display: none;'><img src='img/reload.png' id='imgSaveArticulo<?php echo $opcGrillaContable ?>_${contIng}'></div>
-                                <div onclick='retrocederArticulo<?php echo $opcGrillaContable ?>(${contIng})' id='divImageDeshacer<?php echo $opcGrillaContable ?>_${contIng}' title='Deshacer Cambios' style='width:20px; float:left; margin-top:3px;cursor:pointer;display:none'><img src='img/deshacer.png' id='imgDeshacerArticulo<?php echo $opcGrillaContable ?>_${contIng}'></div>
-                                <div onclick='ventanaDescripcionArticulo<?php echo $opcGrillaContable ?>(${contIng})' id='descripcionArticulo<?php echo $opcGrillaContable ?>_${contIng}' title='Agregar Observacion' style='width: 20px; float: left; margin-top: 3px; display: block; cursor: pointer;'><img src='img/edit.png'></div>
-                                <div onclick='deleteArticulo<?php echo $opcGrillaContable ?>(${contIng})' id='deleteArticulo<?php echo $opcGrillaContable ?>_${contIng}' title='Eliminar Articulo' style='width: 20px; float: left; margin-top: 3px; display: block; cursor: pointer;'><img src='img/delete.png'></div>
-                            </div>
-                            <input type='hidden' id='idRecetaArticulo<?php echo $opcGrillaContable ?>_${contIng}' value='${id_fila_item_receta}'>
-                            <input type='hidden' id='idArticulo<?php echo $opcGrillaContable ?>_${contIng}' value='${idArticulo}'>
-                            <input type='hidden' id='idInsertArticulo<?php echo $opcGrillaContable ?>_${contIng}' value=''>
-                            <input type='hidden' id='ivaArticulo<?php echo $opcGrillaContable ?>_${contIng}' value=''>
-                                `;
-
-        var div_content_ing = document.createElement('div')
-        div_content_ing.setAttribute('id',`bodyDivArticulos<?php echo $opcGrillaContable ?>_${contIng}`);
-        div_content_ing.setAttribute('class',`bodyDivArticulos<?php echo $opcGrillaContable ?>`);
-        div_content_ing.innerHTML = div_row_ing;
-        div_ing.appendChild(div_content_ing);
-
-        // Win_Ventana_buscar_Articulo_factura.close();
-
-        //SI EL TERCERO ESTA EXENTO DE IVA
-        if(exento_iva_<?php echo $opcGrillaContable; ?> == 'Si'){
-            if(document.getElementById('idInsertArticulo<?php echo $opcGrillaContable; ?>_'+cont).value > 0){                    //mostrar la imagen deshacer y actualizar
-                document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+cont).style.display = 'inline';
-                document.getElementById("divImageSave<?php echo $opcGrillaContable; ?>_"+cont).style.display     = 'inline';
-            }
-            else{ document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+cont).style.display = "none"; }
-
-            document.getElementById('unidades<?php echo $opcGrillaContable; ?>_'+cont).value       = unidadMedida;
-            document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_'+cont).value     = idArticulo;
-            document.getElementById('eanArticulo<?php echo $opcGrillaContable; ?>_'+cont).value    = codigo;
-            document.getElementById('costoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value  = costo;
-            document.getElementById('nombreArticulo<?php echo $opcGrillaContable; ?>_'+cont).value = nombreArticulo;
-            document.getElementById('ivaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value    = 0;
-
-            Win_Ventana_buscar_Articulo_factura.close();
-            return;
-        }
-        else{
-            Ext.get('renderArticulo<?php echo $opcGrillaContable; ?>_'+contIng).load({
-                url     : 'bd/bd.php',
-                scripts : true,
-                nocache : true,
-                params  :
-                {
-                    opc               : 'buscarImpuestoArticulo',
-                    id                : '<?php echo $id_factura_venta; ?>',
-                    id_inventario     : idArticulo,
-                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
-                    cont              : contIng,
-                    unidadMedida      : unidadMedida,
-                    idArticulo        : idArticulo,
-                    codigo            : codigo,
-                    costo             : costo,
-                    nombreArticulo    : nombreArticulo,
-
-                },
-                callback: function() {
-                    guardarNewArticulo<?php echo $opcGrillaContable; ?>(contIng);
-                }
-            });
-        }
-    }
-
     //============================= FILTRO CAMPO CANTIDAD ARTICULO ==========================================================//
     function cantidadArticulo<?php echo $opcGrillaContable; ?>(cantidad){ }
 
@@ -1272,20 +1148,14 @@
 
     function guardarNewArticulo<?php echo $opcGrillaContable; ?>(cont){
 
-        var idRecetaArticulo = 0;
         var idInsertArticulo                                   = document.getElementById('idInsertArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
         var idInventario<?php echo $opcGrillaContable; ?>      = document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
         var cantArticulo<?php echo $opcGrillaContable; ?>      = document.getElementById('cantArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
         var descuentoArticulo<?php echo $opcGrillaContable; ?> = document.getElementById('descuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
         var costoArticulo<?php echo $opcGrillaContable; ?>     = document.getElementById('costoArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
 
-        // VALIDAR SI ES UN INGREDIENTE DE UNA RECETA
-        if (document.getElementById('idRecetaArticulo<?php echo $opcGrillaContable; ?>_'+cont)){
-            idRecetaArticulo = document.getElementById('idRecetaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
-        }
-
         var opc       = 'guardarArticulo';
-        var divRender = 'load<?php echo $opcGrillaContable; ?>';
+        var divRender = '';
         var accion    = 'agregar';
         var iva       = document.getElementById('ivaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
         var tipoDesc  = ((document.getElementById('imgDescuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).getAttribute("src")).split('/')[1]).split('.')[0];
@@ -1311,13 +1181,14 @@
             return;
         }
 
+
         //VALIDACION SI ES UPDATE O INSERT
         if(idInsertArticulo > 0){
             opc       = 'actualizaArticulo';
             divRender = 'renderArticulo<?php echo $opcGrillaContable; ?>_'+cont;
             accion    = 'actualizar';
         }
-        else if(idRecetaArticulo==0){
+        else{
             //VALIDAMOS PARA NO REPETIR FILAS DE LAN GRILLA
             contArticulos<?php echo $opcGrillaContable; ?>++;
             divRender = 'bodyDivArticulos<?php echo $opcGrillaContable; ?>_'+contArticulos<?php echo $opcGrillaContable; ?>;
@@ -1326,6 +1197,7 @@
             div.setAttribute('class','bodyDivArticulos<?php echo $opcGrillaContable; ?>');
             document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>').appendChild(div);
         }
+
         Ext.get(divRender).load({
             url     : 'bd/bd.php',
             scripts : true,
@@ -1336,7 +1208,6 @@
                 opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
                 consecutivo       : contArticulos<?php echo $opcGrillaContable; ?>,
                 cont              : cont,
-                idRecetaArticulo  : idRecetaArticulo,
                 idInsertArticulo  : idInsertArticulo,
                 idInventario      : idInventario<?php echo $opcGrillaContable; ?>,
                 cantArticulo      : cantArticulo<?php echo $opcGrillaContable; ?>,
@@ -1354,7 +1225,7 @@
 
 
         //llamamos la funcion para calcular los totales de la facturan si accion = agregar
-        if (accion=="agregar" && idRecetaArticulo==0) {
+        if (accion=="agregar") {
             calcTotalDocCompraVenta<?php echo $opcGrillaContable ?>(cantArticulo<?php echo $opcGrillaContable; ?>,descuentoArticulo<?php echo $opcGrillaContable; ?>,costoArticulo<?php echo $opcGrillaContable; ?>,accion,tipoDesc,iva,cont);
         }
     }
@@ -1368,12 +1239,6 @@
 
         var iva      = document.getElementById('ivaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
         var tipoDesc = '';
-        var idRecetaArticulo = 0;
-
-        // VALIDAR SI ES UN INGREDIENTE DE UNA RECETA
-        if (document.getElementById('idRecetaArticulo<?php echo $opcGrillaContable; ?>_'+cont)){
-            idRecetaArticulo = document.getElementById('idRecetaArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
-        }
 
         if (document.getElementById('imgDescuentoArticulo<?php echo $opcGrillaContable; ?>_'+cont).getAttribute('src') == 'img/porcentaje.png') { tipoDesc='porcentaje';}
         else{ tipoDesc='pesos'; }
@@ -1392,9 +1257,7 @@
                     id                : '<?php echo $id_factura_venta; ?>'
                 }
             });
-            if (idRecetaArticulo==0) {
-                calcTotalDocCompraVenta<?php echo $opcGrillaContable ?>(cantArticulo<?php echo $opcGrillaContable; ?>,descuentoArticulo<?php echo $opcGrillaContable; ?>,costoArticulo<?php echo $opcGrillaContable; ?>,'eliminar',tipoDesc,iva,cont);
-            }
+            calcTotalDocCompraVenta<?php echo $opcGrillaContable ?>(cantArticulo<?php echo $opcGrillaContable; ?>,descuentoArticulo<?php echo $opcGrillaContable; ?>,costoArticulo<?php echo $opcGrillaContable; ?>,'eliminar',tipoDesc,iva,cont);
         }
     }
 
@@ -1465,6 +1328,7 @@
             }
         });
     }
+
 
     //===================== CANCELAR LOS CAMBIOS DE UN ARTICULO ===================//
     function retrocederArticulo<?php echo $opcGrillaContable; ?>(cont){

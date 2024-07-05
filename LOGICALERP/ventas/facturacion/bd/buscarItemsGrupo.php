@@ -58,7 +58,8 @@
 			$grilla->GrillaName	 		= 'buscarItemsGrupos'.$opcGrillaContable;  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
 			$grilla->TableName			= 'ventas_facturas_inventario';		//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			= "activo = 1 AND id_factura_venta='$id_documento'  $whereId ";		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->MyWhere			= "activo = 1 AND id_factura_venta='$id_documento' AND id_impuesto=$id_impuesto $whereId AND id NOT IN(
+												SELECT id_inventario_factura_venta AS id FROM ventas_facturas_inventario_grupos WHERE id_factura_venta = $id_documento)";		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
 			$grilla->OrderBy			= 'CAST(codigo AS CHAR) ASC';
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
 		//TAMANO DE LA GRILLA

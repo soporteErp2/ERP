@@ -881,7 +881,7 @@
         // Calculate the difference in days
         $days_difference = floor($seconds_difference / (60 * 60 * 24));
     }
-    if(($estado !== '' && $consecutivo !== '') || $days_difference > 7){
+    if(($estado !== '' && $consecutivo !== '') || $days_difference >= 7){
        echo "<script>if(document.querySelector('#titleRes') !==null){document.querySelector('#titleRes').innerHTML='';}</script>";
     }elseif($days_difference < 7){
     echo "<script>if(document.querySelector('#titleRes') !==null){ document.querySelector('#titleRes').innerHTML='<b>Fecha de vencimeinto resolucion</b><br>$fecha_res';}</script>";
