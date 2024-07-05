@@ -107,9 +107,9 @@
 				}
 				else if($row['ICR'] == 0 || $row['ICR'] == ''){ $color = ''; }
 
-				$body .= '<div class="bodyDivArticulosFactura" id="bodyDivArticulosFactura_'.$cont.'">
-										'.cargaDivsUnidadesSave($cont,$color,$row['id'],$row['id_inventario'],$row['codigo'],$row['nombre'],$row['cantidad'],$row['costo_unitario'],$row['tipo_descuento'], $row['descuento'],$row['id_impuesto'],$row['impuesto'], $row['valor_impuesto'],$estado,$row['nombre_unidad_medida'],$row['cantidad_unidad_medida'],$row['check_opcion_contable'],$row['opcion_costo'],$row['opcion_gasto'],$row['opcion_activo_fijo'],$row['NCR'],$row['ICR'],$row['CR']).'
-									</div>';
+				$body .='<div class="bodyDivArticulosFactura" id="bodyDivArticulosFactura_'.$cont.'">
+							'.cargaDivsUnidadesSave($cont,$color, $row['id'], $row['id_inventario'], $row['codigo'], $row['nombre'], $row['cantidad'], $row['costo_unitario'], $row['tipo_descuento'], $row['descuento'],$row['id_impuesto'],$row['impuesto'], $row['valor_impuesto'],$estado,$row['nombre_unidad_medida'],$row['cantidad_unidad_medida'],$row['check_opcion_contable'],$row['opcion_costo'],$row['opcion_gasto'],$row['opcion_activo_fijo'],$row['NCR'],$row['ICR'] ,$row['CR'] ).'
+						</div>';
 			}
 			$cont++;
 			if(user_permisos(60,'true') == 'false'){
@@ -194,7 +194,7 @@
 		return $body;
 	}
 	//==================================== CARGAR ARTICULOS EN FACTURA ABIERTA ==================================================================//
-	function cargaDivsUnidadesSave($cont,$color = '',$id = 0,$id_inventario = '',$codigo = '',$nombre = '',$cantidad = 0,$costo_unitario = 0,$tipoDescuento = '',$descuento = 0,$id_impuesto = 0,$impuesto = '', $valor_impuesto = 0,$estado = '',$nombre_unidad = '',$cantidad_unidad = '',$check_opcion_contable = '',$opcion_costo = '',$opcion_gasto = '',$opcion_activo_fijo = '',$NCR = '',$ICR = '',$CR = ''){
+	function cargaDivsUnidadesSave($cont,$color='',$id = 0,$id_inventario = '',$codigo = '',$nombre = '',$cantidad = 0,$costo_unitario = 0,$tipoDescuento='',$descuento = 0,$id_impuesto=0,$impuesto='', $valor_impuesto=0,$estado='',$nombre_unidad='',$cantidad_unidad='',$check_opcion_contable='',$opcion_costo='',$opcion_gasto='',$opcion_activo_fijo='',$NCR='',$ICR='',$CR=''){
 		//LA VARIABLE NCR ES EL nombre_consecutivo_referencia, SI ES orden de compra ENTONCES NO MOSTRAMOS EL BOTON BUSCAR ARTICULO, Y QUITAMOS EL EVENTO DE BUSCAR ARTICULO DEL CAMPO EAN
 		$eventoEan         = 'onKeyup="buscarArticuloFactura(event,this);"';
 		$btnBuscarArticulo = '<div onclick="ventanaBuscarArticuloFactura('.$cont.');" title="Buscar Articulo" class="iconBuscarArticulo" style="'.$mostrarImagen.'">
@@ -256,7 +256,6 @@
 		$check_contable_gasto  = '';
 
 		if($opcion_activo_fijo == 'true' ){
-			// echo "<script>console.log('check opcion contable $check_opcion_contable');</script>";
 			$checkedOpcionContable = ($check_opcion_contable == 'activo_fijo')? 'checked': '';
 			$check_contable_activo = '<input type="checkbox" id="check_factura_activo_fijo_'.$cont.'" class="optionCheckContable_'.$cont.'" '.$checkedOpcionContable.' onchange="changeCheckOptionContable('.$cont.',this)" '.(($NCR=='Entrada de Almacen')? 'disabled ' : '' ).'/>';
 		}
@@ -334,7 +333,7 @@
 		return $body;
 	}
 	//==================================== CARGAR ARTICULOS EN FACTURA TERMINADA 'BLOQUEADA' ====================================================//
-	function cargaDivsUnidadesBloqueadas($cont,$id = 0,$id_inventario = '',$codigo = '',$nombre = '',$cantidad = 0,$costo_unitario = 0,$tipoDescuento = '',$descuento  =  0,$id_impuesto = 0,$impuesto = '', $valor_impuesto = 0,$estado = '',$nombre_unidad = '',$cantidad_unidad = '',$check_opcion_contable = '',$centro_costo  =  '',$NCR = '',$ICR = '',$CR = '',$color = ''){
+	function cargaDivsUnidadesBloqueadas($cont,$id = 0,$id_inventario = '',$codigo = '',$nombre = '',$cantidad = 0,$costo_unitario = 0,$tipoDescuento='',$descuento = 0,$id_impuesto=0,$impuesto='', $valor_impuesto=0,$estado='',$nombre_unidad='',$cantidad_unidad='',$check_opcion_contable='',$centro_costo = '',$NCR='',$ICR='',$CR='',$color=''){
 
 		//OPCION CONTABLE
 		if($check_opcion_contable == 'activo_fijo'){
@@ -353,6 +352,7 @@
 			$scriptColor = '';
 		}
 		else{
+			//echo '<script>console.log("holaaalalala");</script>';
 			$titleBtnDelete = '('.substr($NCR, 0, 1).' '.$CR.')';
 			//doc_'.$row['string_cruce'].' '.$row['numero_cruce']
 
@@ -408,4 +408,6 @@
 
 		return $body;
 	}
+
+
 ?>

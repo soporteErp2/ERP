@@ -1203,19 +1203,10 @@
 
 			}
 
-      if(isset($_SESSION['TIMEZONE'])){
-        date_default_timezone_set($_SESSION['TIMEZONE']);
-      }
-      else{
-        date_default_timezone_set("America/Bogota");
-      }
-      
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-								 VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','RQ','Requisicion de Compra',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES
+						($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Requisicion de Compra',$id_sucursal,".$_SESSION['EMPRESA'].",'".$_SERVER['REMOTE_ADDR']."','RQ')";
 			$queryLog = $mysql->query($sqlLog,$mysql->link);
 
 			echo'<script>
@@ -1253,7 +1244,7 @@
 				$codigo = $row['codigo'];
 				$nombre = $row['nombre'];
 				if ($id_centro_costos<=0 || $id_centro_costos=='' || is_null($id_centro_costos)) {
-					rollback($id_requisicion,'compras_requisicion',"El item $codigo - $nombre no tiene centro de costos! ",$id_empresa,$mysql);
+					rollback($id_requisicion,'compras_requisicion',"El item $codigo - $nombre",$id_empresa,$mysql);
 				}
 			}
 		}
@@ -1327,7 +1318,7 @@
 		$query=mysql_query($sql,$link);
 		$autorizardores = mysql_result($query,0,'autorizardores');
 
-		if ($autorizado=='true' && $autorizardores>0) {
+		if ($autorizado=='true' && $autorizado>0) {
 			echo '<script>
 						alert("La Requisicion esta autorizada! por lo tanto no se puede alterar, deben quitar las autorizaciones para poder modificarla");
 						if(document.getElementById("modal")){
@@ -1360,12 +1351,9 @@
 		$sql="UPDATE $tablaPrincipal SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$idDocumento";
 		$query=mysql_query($sql,$link);
 		if ($query) {
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-								 VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','RQ','Requisicion de Compra',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+					VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Entrada de Almacen',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','EA')";
 			$queryLog=mysql_query($sqlLog,$link);
 
 			echo '<script>
@@ -1651,13 +1639,10 @@
 		else{
 			$sqlUpdate="UPDATE $tablaPrincipal SET activo=0 WHERE id='$id' AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa'";
 		}
-
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','RQ','Requisicion de Compra',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+					VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Cotizacion de Venta',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','CE')";
+
 
 		$queryUpdate = mysql_query($sqlUpdate,$link);				//EJECUTAMOS EL QUERY PARA ACTUALIZAR EL DOCUMENTO CON SU ESTADO COMO CANCELADO
 		if (!$queryUpdate) { echo '<script>alert("Error!\nSe proceso el documento pero no se cancelo\nSi el problema persiste comuniquese con el administrador del sistema");</script>'; return; }
@@ -1702,11 +1687,9 @@
 		$sqlUpdate   = "UPDATE $tablaPrincipal SET estado=0 WHERE activo=1 AND id='$idDocumento' AND id_sucursal='$id_sucursal' AND id_bodega='$idBodega' AND id_empresa='$id_empresa' ";
 		$queryUpdate = mysql_query($sqlUpdate,$link);
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
+		$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+							VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Remision de Venta',$id_sucursal,".$_SESSION['EMPRESA'].",'".$_SERVER['REMOTE_ADDR']."','CE')";
 
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							 VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','RQ','Requisicion de Compra',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
 
 		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
 		if ($queryUpdate) {
@@ -2086,20 +2069,27 @@
 		}
 
 		// CONSULTAR EL CUERPO DEL DOCUMENTO
-		$sql = "SELECT codigo,nombre,nombre_unidad_medida,cantidad_unidad_medida,cantidad,observaciones
-						FROM compras_requisicion_inventario WHERE activo = 1 AND id_requisicion_compra = $id_documento";
-		$query = $mysql->query($sql,$mysql->link);
-		while($row = $mysql->fetch_array($query)){
-			$bodyTable .= "<tr>
-											<td style='border:1px solid #D4D4D4;padding:3px;' >$row[codigo]</td>
-											<td style='border:1px solid #D4D4D4;padding:3px;' >$row[nombre]</td>
-											<td style='border:1px solid #D4D4D4;padding:3px;' >$row[nombre_unidad_medida] x $row[cantidad_unidad_medida]</td>
-											<td style='border:1px solid #D4D4D4;padding:3px;' >$row[cantidad]</td>
-											<td style='border:1px solid #D4D4D4;padding:3px;' >$row[observaciones]</td>
-										</tr>";
+		$sql="SELECT codigo,nombre,nombre_unidad_medida,cantidad_unidad_medida,cantidad,observaciones
+				FROM compras_requisicion_inventario WHERE activo=1 AND id_requisicion_compra = $id_documento";
+		$query=$mysql->query($sql,$mysql->link);
+		while ($row=$mysql->fetch_array($query)) {
+			$bodyTable .="<tr>
+							<td style='border:1px solid #D4D4D4;padding:3px;' >$row[codigo]</td>
+							<td style='border:1px solid #D4D4D4;padding:3px;' >$row[nombre]</td>
+							<td style='border:1px solid #D4D4D4;padding:3px;' >$row[nombre_unidad_medida] x $row[unidad_medida]</td>
+							<td style='border:1px solid #D4D4D4;padding:3px;' >$row[cantidad]</td>
+						</tr>
+						<tr>
+							<td style='border:1px solid #D4D4D4;padding:3px;font-size:10px;' colspan='4'><i>$row[observaciones]</i></td>
+						</tr>";
 		}
 
+		// $id_empleado = ($id_empleado=='solicitante')? $mysql->result($query,0,'id_solicitante') : $id_empleado ;
+
 		$mail->IsSMTP();
+		// $mail->SMTPDebug = true;
+
+
 		$mail->SMTPAuth   = true;                  				// enable SMTP authentication
 		$mail->SMTPSecure = $seguridad;                         // sets the prefix to the servier
 		$mail->Host       = $servidor;      				    // sets GMAIL as the SMTP server
@@ -2168,10 +2158,11 @@
 						<td style="font-weight:bold;border:1px solid #D4D4D4;padding:7px;background-color: #F3F3F3;">ITEM</td>
 						<td style="font-weight:bold;border:1px solid #D4D4D4;padding:7px;background-color: #F3F3F3;">UNIDAD MEDIDA</td>
 						<td style="font-weight:bold;border:1px solid #D4D4D4;padding:7px;background-color: #F3F3F3;">CANTIDAD</td>
-						<td style="font-weight:bold;border:1px solid #D4D4D4;padding:7px;background-color: #F3F3F3;">OBSERVACIONES</td>
 					</tr>
 					'.$bodyTable.'
+
 				</table>
+
 				<br>
 				<br>
 				<br>

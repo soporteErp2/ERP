@@ -132,6 +132,8 @@
     editable   : false,
   });
 
+
+
   if(typeof(localStorage.MyInformeFiltroFechaInicioOrdenesCompra) != "undefined")
     if(localStorage.MyInformeFiltroFechaInicioOrdenesCompra != "")
       document.getElementById("MyInformeFiltroFechaInicio").value = localStorage.MyInformeFiltroFechaInicioOrdenesCompra;

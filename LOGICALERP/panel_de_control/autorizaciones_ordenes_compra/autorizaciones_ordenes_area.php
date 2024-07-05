@@ -23,7 +23,7 @@
             $grilla->MySqlLimit         = '0,50';           //LIMITE DE LA CONSULTA
         //TAMANO DE LA GRILLA
             //$grilla->AutoResize         = 'false';           //SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-            $grilla->Ancho              = 570;              //ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
+            $grilla->Ancho              = 465;              //ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
             $grilla->Alto               = 320;              //ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
             //$grilla->QuitarAncho        = 70;               //AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
             //$grilla->QuitarAlto         = 220;              //AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
@@ -32,8 +32,8 @@
             $grilla->CamposBusqueda     = 'nombre';       //VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
             $grilla->DivActualiBusqueda = '' ;              //VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
         //CONFIGURACION DE CAMPOS EN LA GRILLA
-            $grilla->AddRow('Codigo','codigo',40);
-            $grilla->AddRow('Nombre','nombre',320);
+            $grilla->AddRow('Codigo','codigo',80);
+            $grilla->AddRow('Nombre','nombre',150);
             $grilla->AddRow('Modulo','modulo',80);
             $grilla->AddRowImage('Autorizadores','<center><img src="../../temas/clasico/images/BotonesTabs/user_check.png" onclick="ventana_autorizadores([id])" style="width:15px;height:15px;cursor:pointer;"></center>',80);
 

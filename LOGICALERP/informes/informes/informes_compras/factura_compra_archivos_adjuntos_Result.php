@@ -87,11 +87,9 @@ $sqlCompras =  "SELECT
                 LEFT JOIN
                   compras_facturas_archivos_adjuntos ON compras_facturas.id=compras_facturas_archivos_adjuntos.id_factura_compra
                 WHERE
-                  compras_facturas.activo = 1
+                  compras_facturas.activo=1
                 AND
-                  compras_facturas.estado = 1
-                AND
-                  compras_facturas.id_empresa = $id_empresa
+                  compras_facturas.id_empresa=$id_empresa
                   $whereTerceros
                   $whereContenido
                   $whereSucursal
@@ -112,7 +110,6 @@ $bodyTable .=   '<table class="table" style="border-collapse: collapse;">
                     <td><b>NIT</b></td>
                     <td><b>PROVEEDOR</b></td>
                     <td><b>ARCHIVO</b></td>
-                    <td style="width:8%;"><b>FECHA CREACION</b></td>
                     <td><b>FACTURA</b></td>
                     <td><b>TIPO</b></td>
                   </tr>';
@@ -127,7 +124,6 @@ while($row=mysql_fetch_array($queryCompras)) {
                        <td>'.$row['nit'].'</td>
                        <td>'.$row['proveedor'].'</td>
                        <td>'.$row['archivo'].'</td>
-                       <td>'.$row['fecha_creacion'].'</td>
                        <td>'.$row['prefijo_factura'] . $row['numero_factura'].'</td>';
                        if($row['factura_por_cuentas'] == 'false'){
                           $bodyTable .= '<td>Item</td></tr>';

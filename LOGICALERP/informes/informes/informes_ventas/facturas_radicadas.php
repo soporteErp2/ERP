@@ -418,7 +418,7 @@
 		}).show();
 	}
 
-	//======================== MOSTRAR CENTRO DE COSTO =========================//
+	//================== VENTANA BUSCAR LOS CENTROS DE COSTOS ==================//
 	function renderizaResultadoVentanaCentroCosto(id,codigo,nombre){
 		if(id != '' && codigo != '' && nombre != ''){
 			var cadenaBuscar = '';

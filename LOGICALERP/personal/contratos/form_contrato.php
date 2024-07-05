@@ -40,11 +40,11 @@
 
 		if ($estado==1) {
 			$titulo_estado = '<i>(CONTRATO FINALIZADO)</i>';
-			$acumscript = "$('.table-form input').attr('readonly',true);
-							$('.table-form select').attr('disabled',true);
-							document.getElementById('btn_buscar_ccos').style.display='none';
-							Ext.getCmp('btn_contrato').disable();
-							";
+			// $acumscript = "$('.table-form input').attr('readonly',true);
+			// 				$('.table-form select').attr('disabled',true);
+			// 				document.getElementById('btn_buscar_ccos').style.display='none';
+			// 				Ext.getCmp('btn_contrato').disable();
+			// 				";
 
 			$bodyTable="<tr>
 							<td>Fecha Retiro</td>

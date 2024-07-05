@@ -1,7 +1,7 @@
 <?php
 
-    // include_once('../../../../configuracion/conectar.php');
-    // include_once('../../../../configuracion/define_variables.php');
+    include_once('../../../../configuracion/conectar.php');
+    include_once('../../../../configuracion/define_variables.php');
     header('Content-Type: text/html; charset=UTF-8');
 
     if (!isset($arrayCentroCostosJSON) && $arrayCentroCostosJSON=='[]') { $arrayCentroCostosJSON=''; }
@@ -340,7 +340,7 @@
             // $arrayFilasCuentasFormato[$id_seccion][$id_columna][$id_fila]
 
             // COLUMNA 1
-            $sql="SELECT
+              $sql="SELECT
                         codigo_cuenta,
                         cuenta,
                         id_tercero,
@@ -360,6 +360,7 @@
                         $this->whereAsientos
                         $whereCcos
                         GROUP BY id_tercero,codigo_cuenta,codigo_centro_costos,tipo_documento;";
+
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
                 $arrayTemp[$row['codigo_cuenta']] = array(

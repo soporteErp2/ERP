@@ -1,49 +1,6 @@
 <?php
-    // CONSULTAR LOS GRUPOS EMPRESARIALES
-    include_once('../../../../configuracion/xml2array.php');
-    if (!isset($_SESSION)){session_start();}
-    $DIRECTORIO = explode ("/", $_SERVER['REQUEST_URI']);
-
-    if(file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/ARCHIVOS_PROPIOS/conexion.xml')){
-        $fichero  = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/ARCHIVOS_PROPIOS/conexion.xml'); //SI SE LLAMA DESDE LOCAL O EN CARPETA /SIIP
-    }
-    if(file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[0].'/ARCHIVOS_PROPIOS/conexion.xml')){
-        $fichero  = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[0].'/ARCHIVOS_PROPIOS/conexion.xml'); //SI SE LLAMA DESDE UN DOMINIO
-    }
-
-    $array = xml2array($fichero);
-
-    $servidor   = $array['configuracion']['database']['servidor'];
-    $usuario    = $array['configuracion']['database']['usuario'];
-    $password   = $array['configuracion']['database']['password'];
-    $bd         = $array['configuracion']['database']['bd'];
-    // var_dump($password);
-    $globalAccess = mysql_connect($servidor,$usuario,$password);
-    if(!$globalAccess){ echo 'Error Conectando a Mysql<br />'; };
-    mysql_select_db($bd,$globalAccess);
-    if(!@mysql_select_db($bd,$globalAccess)){ echo 'Error Conectando a la la base de datos "'.$bd.'" <br />'; };
-
-    $sql   = "SELECT nit,nombre,id_grupo_empresarial FROM host WHERE activo=1 ";
-    $query = mysql_query($sql,$globalAccess);
-    while ($row=mysql_fetch_array($query)) {
-        $arrayEmpresasGrupo[$row['nit']]  = array(
-                                                    'nombre'               => $row['nombre'],
-                                                    'id_grupo_empresarial' => $row['id_grupo_empresarial'],
-                                                );
-    }
-
-    $nitEmpresa = explode("-", $_SESSION['NITEMPRESA']);
-    $sql   = "SELECT id,nombre FROM grupos_empresariales WHERE activo=1 ";
-    $query = mysql_query($sql,$globalAccess);
-    while ($row=mysql_fetch_array($query)) {
-        $arrayGrupo[$row['id']] = $row['nombre'];
-    }
-    mysql_close($globalAccess);
-    // var_dump($mysql);
-    // var_dump($arrayEmpresasGrupo);
-
-    include_once('../../../../configuracion/conectar.php');
-    include_once('../../../../configuracion/define_variables.php');
+    include('../../../../configuracion/conectar.php');
+    include('../../../../configuracion/define_variables.php');
 
  ?>
 
@@ -55,7 +12,6 @@
     .content-grilla-filtro .cell[data-col="1"]{width: 22px;}
     .content-grilla-filtro .cell[data-col="2"]{width: 89px;}
     .content-grilla-filtro .cell[data-col="3"]{width: 190px;}
-    .content-grilla-filtro .cell[data-col="4"]{width: 220px;}
     .sub-content [data-width="input"]{width: 120px;}
 </style>
 
@@ -74,9 +30,8 @@
                 filtro_rango_fechas,
                 filtro_cuentas
                 FROM informes_formatos WHERE activo=1 AND id=$id_formato ";
-        $query=$mysql->query($sql,$mysql->link) or die(mysql_error());;
+        $query=$mysql->query($sql,$mysql->link);
 
-        // var_dump($query);
         $filtro_terceros      = $mysql->result($query,0,'filtro_terceros');
         $filtro_ccos          = $mysql->result($query,0,'filtro_ccos');
         $filtro_corte_mensual = $mysql->result($query,0,'filtro_corte_mensual');
@@ -85,40 +40,6 @@
 
      ?>
     <div class="sub-content" data-position="right">
-        <?php
-            // SI TIENE GRUPOS EMPRESARIALES
-            if ($arrayEmpresasGrupo[$nitEmpresa[0]]['id_grupo_empresarial']>0) {
-            ?>
-            <div class="title">EMPRESAS DEL GRUPO EMPRESARIAL <b><?= $arrayGrupo[$arrayEmpresasGrupo[$nitEmpresa[0]]['id_grupo_empresarial']]; ?></b> </div>
-            <div class="content-grilla-filtro">
-                <div class="head">
-                    <div class="cell" data-col="1"></div>
-                    <div class="cell" data-col="2">Documento</div>
-                    <div class="cell" data-col="4">Nombre</div>
-                </div>
-                <div class="body" id="body_grilla_grupos">
-                    <?php
-
-                        foreach ($arrayEmpresasGrupo as $nit => $arrayResult){
-                            if ($arrayResult['id_grupo_empresarial']==$arrayEmpresasGrupo[$nitEmpresa[0]]['id_grupo_empresarial'] && $nitEmpresa[0]<>$nit ) {
-                            ?>
-                                <div id="row_tercero_1" class="row">
-                                    <div class="row" id="row_tercero_1">
-                                       <div class="cell" data-col="1"></div>
-                                       <div class="cell" data-col="2"><?= $nit ?></div>
-                                       <div class="cell" data-col="4" title="<?= $arrayResult['nombre'] ?>"><?= $arrayResult['nombre'] ?></div>
-                                       <div class="cell" data-col="1" data-icon="" onclick="" title="Seleccionar empresa"> <input type="checkbox" class="checkboxGroup" data-nit="<?= $nit ?>" data-nombre="<?= $arrayResult['nombre'] ?>"></div>
-                                    </div>
-                                </div>
-                            <?php
-                            }
-                        }
-                    ?>
-                </div>
-            </div>
-            <?php
-            }
-        ?>
         <?php
             // SI TIENE HABILITADO EL FILTRO DE TERCEROS
             if ($filtro_terceros=='Si') {
@@ -320,67 +241,34 @@
         }
     ?>
 
-    var cargarInformeEmpresaGrupo = (params)=>{
-        Ext.get(`content-${params.nit}`).load({
-            url     : '../informes/informes/report/controller.php',
-            text    : 'Generando Informe...',
-            scripts : true,
-            nocache : true,
-            timeout : 99000000,
-            params  :
-            {
-                nit                        : `${params.nit}`,
-                id_formato                 : `${params.id_formato}`,
-                MyInformeFiltroFechaInicio : `${params.fechaInicio}`,
-                MyInformeFiltroFechaFinal  : `${params.fechaFinal}`,
-                separador_miles            : `${params.separador_miles}`,
-                separador_decimales        : `${params.separador_decimales}`,
-                sucursal                   : `${params.sucursal}`,
-                arrayCentroCostosJSON      : `${params.arrayCentroCostosJSON}`,
-                arrayGrupoJSON             : ``,
-                empresaGrupo               : true
+    // document.getElementById("cuenta_inicial").value=(typeof(localStorage.cuenta_inicialLA )!="undefined")? localStorage.cuenta_inicialLA  : "" ;
+    // document.getElementById("cuenta_final").value=(typeof(localStorage.cuenta_finalLA )!="undefined")? localStorage.cuenta_finalLA  : "" ;
 
-            }
-        });
-    }
+    // if (typeof(localStorage.sucursal_libro_auxiliar)!="undefined")
+        // if (localStorage.sucursal_libro_auxiliar!="")
+            // setTimeout(function(){document.getElementById("filtro_sucursal_sucursales_libro_auxiliar").value=localStorage.sucursal_libro_auxiliar;},100);
 
-    var ventanaCuentasSeccion = (params)=>{
-        // console.log(params);
-        // console.log(JSON.stringify(params));
-        // console.log(typeof(JSON.stringify(params)));
-        Win_Ventana_cuentas_seccion = new Ext.Window({
-            width       : 700,
-            height      : 500,
-            id          : 'Win_Ventana_cuentas_seccion',
-            title       : 'Cuentas de la seccion',
-            modal       : true,
-            autoScroll  : false,
-            closable    : false,
-            autoDestroy : true,
-            autoLoad    :
-            {
-                url     : 'informes/report/bd.php',
-                scripts : true,
-                nocache : true,
-                params  :
-                {
-                    opc    : 'valoresCuentasSeccion',
-                    params : JSON.stringify(params)
-                }
-            },
-            tbar        :
-            [
-                {
-                    xtype       : 'button',
-                    text        : 'Regresar',
-                    scale       : 'large',
-                    iconCls     : 'regresar',
-                    iconAlign   : 'left',
-                    handler     : function(){ Win_Ventana_cuentas_seccion.close(id) }
-                }
-            ]
-        }).show();
-    }
+    //
+//
+    // if (typeof(localStorage.totalizado_libro_auxiliar)!="undefined")
+        // if (localStorage.totalizado_libro_auxiliar!="")
+            // document.getElementById("totalizado").value=localStorage.totalizado_libro_auxiliar;
+//
+    // if (typeof(localStorage.order_libro_auxiliar)!="undefined")
+        // if (localStorage.order_libro_auxiliar!="")
+            // document.getElementById("order").value=localStorage.order_libro_auxiliar;
+//
+    // if (typeof(localStorage.by_libro_auxiliar)!="undefined")
+        // if (localStorage.by_libro_auxiliar!="")
+            // document.getElementById("by").value=localStorage.by_libro_auxiliar;
+//
+    // if (typeof(localStorage.mostrar_observacion)!="undefined")
+        // if (localStorage.mostrar_observacion!="")
+            // document.getElementById("mostrar_observacion").value=localStorage.mostrar_observacion;
+
+
+
+
 
 
 </script>

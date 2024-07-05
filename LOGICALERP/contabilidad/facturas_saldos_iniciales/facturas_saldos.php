@@ -325,7 +325,7 @@
     </div>
 
     <div class="bodyArticulos" id="bodyArticulos<?php echo $opcGrillaContable; ?>" style="background-color:rgba(255,255,255,0) !important;">
-    	<div class="contenedorGrilla" style="height:315px;">
+    	<div class="contenedorGrilla" style="height:380px;">
     		<div class="contenedorHeadArticulos" style="min-width:0 !important;">
 				<div class="headArticulos">
 					<div class="labelNotaGeneral" style="width:40px !important;"></div>
@@ -534,14 +534,14 @@
 	function createUploader(){
 
         var uploader = new qq.FileUploader({
-            element : document.getElementById('div_upload_file2'),
+            element : document.getElementById('div_upload_file'),
             action  : 'upload_file_saldos/upload_file.php',
             debug   : false,
             params  : { opcion: 'loadExcel', idSaldoInicial: <?php echo $id_saldo_inicial; ?> },
             button            : null,
             multiple          : false,
             maxConnections    : 3,
-            allowedExtensions : ['xls', 'ods','xlsx'],
+            allowedExtensions : ['xls', 'ods'],
             sizeLimit         : 10*1024*1024,
             minSizeLimit      : 0,
             onSubmit          : function(id, fileName){},
@@ -549,110 +549,26 @@
             onComplete        : function(id, fileName, responseJSON){
 
                                     var JsonText = JSON.stringify(responseJSON);
-                                    console.log(JsonText);
-                                    if(JsonText == '{}'){
-                                        alert("Aviso\nLo sentimos ha ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!");
-                                        return;
-                                    }
-                                    else if (responseJSON.success == true) {
-                                        document.getElementById('divPadreModalUploadFile2').setAttribute('style','');
-                                        // MyBusquedaitemsGeneral();
-                                        console.log(responseJSON.debug);
-                                        Ext.get("DivArticulos<?php echo $opcGrillaContable; ?>").load({
-										    url     : 'facturas_saldos_iniciales/bd/bd.php',
-										    scripts : true,
-										    nocache : true,
-										    params  :
-										    {
-										        opc               : 'reloadBody',
+
+                                    if(JsonText == '{}'){ alert("Aviso\nLo sentimos a ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!"); return; }
+                                    else{
+
+	                                    document.getElementById('div_upload_file').querySelector('.qq-upload-list').innerHTML='';
+	                                    document.getElementById('divPadreModalUploadFile').setAttribute('style','');
+
+	                                    Ext.get("DivArticulos<?php echo $opcGrillaContable; ?>").load({
+	                                        url     : 'facturas_saldos_iniciales/bd/bd.php',
+	                                        scripts : true,
+	                                        nocache : true,
+	                                        params  :
+	                                        {
+	                                            opc               : 'reloadBody',
 												opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
 												id_saldo_inicial  : '<?php echo $id_saldo_inicial; ?>',
 												tipo_factura      : '<?php echo $tipo_factura; ?>',
-										    }
-										});
-                                    }
-                                    else{
-                                        document.getElementById('divPadreModalUploadFile2').setAttribute('style','');
-                                        if (responseJSON.debug=='documentos') {
-                                            var errorsDetail = '';
-                                            for (var i in responseJSON.detalle){
-                                                errorsDetail += `<div class='row'>
-                                                                    <div class='cell' data-col='1'></div>
-                                                                    <div class='cell' data-col='2' style='width:515px;font-weight: bold;'>${i}</div>
-                                                                </div>`+responseJSON.detalle[i]
-                                            }
-
-                                            var contentHtml = `<style>
-                                                                    .sub-content[data-position="right"]{width: 100%; height: 386px; }
-                                                                    .content-grilla-filtro .cell[data-col="1"]{width: 2px;}
-                                                                    .content-grilla-filtro .cell[data-col="2"]{width: 85px;}
-                                                                    .content-grilla-filtro .cell[data-col="3"]{width: 419px;}
-                                                                    .content-grilla-filtro .cell[data-col="4"]{width: 211px;}
-                                                                    .sub-content [data-width="input"]{width: 120px;}
-                                                                </style>
-
-                                                                <div class="main-content" style="height: 409px;overflow-y: auto;overflow-x: hidden;">
-                                                                    <div class="sub-content" data-position="right">
-                                                                        <div class="title">DETALLE DE ERRORES POR FACTURA DEL EXCEL</div>
-                                                                        <div class="content-grilla-filtro">
-                                                                            <div class="head">
-                                                                                <div class="cell" data-col="1"></div>
-                                                                                <div class="cell" data-col="2">Factura</div>
-                                                                                <div class="cell" data-col="3">Detalle del error</div>
-                                                                            </div>
-                                                                            <div class="body" id="body_grilla_filtro">
-                                                                                ${errorsDetail}
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>`;
-                                        }
-                                        else{
-                                            var errorsDetail = '';
-                                            for (var i in responseJSON.detalle){
-                                                errorsDetail += responseJSON.detalle[i]
-                                            }
-                                            var contentHtml = `<style>
-                                                                    .sub-content[data-position="right"]{width: 100%; height: 386px; }
-                                                                    .content-grilla-filtro .cell[data-col="1"]{width: 2px;}
-                                                                    .content-grilla-filtro .cell[data-col="2"]{width: 220px;}
-                                                                    .content-grilla-filtro .cell[data-col="3"]{width: 268px;}
-                                                                    .content-grilla-filtro .cell[data-col="4"]{width: 211px;}
-                                                                    .sub-content [data-width="input"]{width: 120px;}
-                                                                </style>
-
-                                                                <div class="main-content" style="height: 409px;overflow-y: auto;overflow-x: hidden;">
-                                                                    <div class="sub-content" data-position="right">
-                                                                        <div class="title">DETALLE DE ERRORES</div>
-                                                                        <div class="content-grilla-filtro">
-                                                                            <div class="head">
-                                                                                <div class="cell" data-col="1"></div>
-                                                                                <div class="cell" data-col="2">Error generado</div>
-                                                                                <div class="cell" data-col="3">Detalle del error</div>
-                                                                            </div>
-                                                                            <div class="body" id="body_grilla_filtro">
-                                                                                ${errorsDetail}
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>`;
-                                        }
-
-                                        Win_Ventana_errors = new Ext.Window({
-                                            width       : 600,
-                                            height      : 400,
-                                            id          : 'Win_Ventana_errors',
-                                            title       : 'Detalle de errores',
-                                            modal       : true,
-                                            autoScroll  : false,
-                                            closable    : true,
-                                            autoDestroy : true,
-                                            html        : contentHtml
-                                        }).show();
-
-                                    }
+	                                        }
+	                                    });
+	                                }
                                 },
             onCancel : function(fileName){},
             messages :

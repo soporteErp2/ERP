@@ -696,12 +696,9 @@
 			$queryUpdate=mysql_query($sqlUpdate,$link);
 		}
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','NCC','Nota Contable Cierre',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
+					VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Nota Contable Cierre',$id_sucursal,'$id_empresa','NCC','".$_SERVER['REMOTE_ADDR']."')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 	   	echo'<script>
@@ -956,6 +953,7 @@
 		// 	';
 
 		if (!$query) {
+			$errormssg = mysql_error($link);
 			echo '<script>
 					alert("Error!\nNo se cargaron las cuentas a cerrar, intententelo de nuevo, si el problema continua comuniquese con el administrador del sistema");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -1206,12 +1204,9 @@
 		// moverDocumentosSaldos($id_empresa,$idDocumento,'agregar',$link);
 
 		if($query){
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','NCC','Nota Contable Cierre',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Nota Contable Cierre',$id_sucursal,'$id_empresa','NCC','".$_SERVER['REMOTE_ADDR']."')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>
@@ -1498,12 +1493,9 @@
 			return;
 		}
 		else{
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($id,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','NCC','Nota Contable Cierre',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
+						VALUES ($id,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Nota Contable Cierre',$id_sucursal,".$_SESSION['EMPRESA'].",'NCC','".$_SERVER['REMOTE_ADDR']."')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo '<script>nueva'.$opcGrillaContable.'();document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);</script>';
@@ -1535,8 +1527,7 @@
  			// MOVER EL KARDEX
  			$sql   = "UPDATE inventario_totales AS IT
 						SET IT.costos=IF(IT.cantidad-$cantidad = 0, 0, ((IT.cantidad * IT.costos) - ($costo_total))/(IT.cantidad-$cantidad)),
-							IT.cantidad=IT.cantidad-$cantidad,
-							IT.consecutivo_documento_update = ''
+							IT.cantidad=IT.cantidad-$cantidad
 						WHERE IT.id_item=$id_item
 	 						AND IT.activo = 1
 	 						AND IT.id_ubicacion = '$id_bodega'";
@@ -1551,8 +1542,7 @@
 			// MOVER EL KARDEX
  			$sql   = "UPDATE inventario_totales AS IT
 						SET IT.costos=((IT.cantidad * IT.costos)+($costo_total))/(IT.cantidad+$cantidad),
-							IT.cantidad=IT.cantidad+$cantidad,
-							IT.consecutivo_documento_update = ''
+							IT.cantidad=IT.cantidad+$cantidad
 						WHERE IT.id_item=$id_item
 	 						AND IT.activo = 1
 	 						AND IT.id_ubicacion = '$id_bodega'";
@@ -1583,12 +1573,9 @@
 
 		//VALIDAR QUE SE ACTUALIZO EL DOCUMENTO, Y CONTINUAR A MOSTRARLO
 		if ($queryUpdate) {
-			$fecha_actual = date('Y-m-d');
-			$hora_actual  = date('H:i:s');
-
 			//INSERTAR EL LOG DE EVENTOS
-			$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						     VALUES($idDocumento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','NCC','Nota Contable Cierre',$id_sucursal,'".$_SESSION['EMPRESA']."','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,tipo_documento,ip)
+						VALUES ($idDocumento,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Nota Contable Cierre',$id_sucursal,".$_SESSION['EMPRESA'].",'NCC','".$_SERVER['REMOTE_ADDR']."')";
 			$queryLog = mysql_query($sqlLog,$link);
 
 			echo'<script>

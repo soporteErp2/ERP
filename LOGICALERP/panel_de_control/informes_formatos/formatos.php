@@ -33,7 +33,10 @@
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 			$grilla->AddRow('Codigo','codigo',80);
 			$grilla->AddRow('Nombre','nombre',250);
-			$grilla->AddRowImage('Config.','<center><img src="img/informe0.png" style="cursor:pointer" width="16" height="16" title="Columnas del Formato" onclick="ventana_secciones(\'[id]\',\'[codigo]\',\'[nombre]\',\'[dinamico]\')"></center>',60);
+			$grilla->AddRowImage('Secciones','<center><img src="img/config16.png" style="cursor:pointer" width="16" height="16" title="Columnas del Formato" onclick="ventana_secciones(\'[id]\',\'[codigo]\')"></center>',60);
+			// $grilla->AddRowImage('Columnas','<center><img src="img/columns.png" style="cursor:pointer" width="16" height="16" title="Columnas del Formato" onclick="ventana_columnas(\'[id]\',\'[codigo]\')"></center>',56);
+			// $grilla->AddRowImage('Conceptos','<center><img src="img/page_edit.png" style="cursor:pointer" width="16" height="16" title="Columnas del Formato" onclick="ventana_conceptos(\'[id]\',\'[codigo]\')"></center>',60);
+
 
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 270;
@@ -44,17 +47,17 @@
 
 		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
 			$grilla->VentanaAuto		= 'true';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
-			$grilla->TituloVentana		= 'Configuracion Informe'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
+			$grilla->TituloVentana		= 'Ventana Grupos Conceptos'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
 			$grilla->VBarraBotones		= 'true';			//SI HAY O NO BARRA DE BOTONES
 			$grilla->VBotonNuevo		= 'true';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
 			$grilla->VBotonNText		= 'Nuevo Informe'; //TEXTO DEL BOTON DE NUEVO REGISTRO
 			$grilla->VBotonNImage		= 'add_new';			//IMAGEN CSS DEL BOTON
 			$grilla->AddBotton('Regresar','regresar','Win_Panel_Global.close();');
-			$grilla->VAutoResize		= 'false';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
+			$grilla->VAutoResize		= 'true';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
 			$grilla->VAncho		 		= 330;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
-			$grilla->VAlto		 		= 400;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
+			$grilla->VAlto		 		= 350;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
 			$grilla->VQuitarAncho		= 70;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
-			$grilla->VQuitarAlto		= 100;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
+			$grilla->VQuitarAlto		= 160;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
 			$grilla->VAutoScroll		= 'true';			//SI LA VENTANA TIENE O NO AUTOSCROLL
 			$grilla->VBotonEliminar		= 'true';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
 			$grilla->VComporEliminar	= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
@@ -72,9 +75,6 @@
 			$grilla->AddComboBox ('Corte Mensual:','filtro_corte_mensual',150,'true','false','Si:Si,No:No');
 			$grilla->AddComboBox ('Rango de fechas:','filtro_rango_fechas',150,'true','false','Si:Si,No:No');
 			$grilla->AddComboBox ('Rango de Cuentas:','filtro_cuentas',150,'true','false','Si:Si,No:No');
-			$grilla->AddComboBox ('Dinamico:','dinamico',150,'true','false','Si:Si,No:No');
-			$grilla->AddComboBox ('Comparativo anterior:','comparativo_misma_fecha',150,'true','false','Si:Si,No:No');
-			$grilla->AddComboBox ('Libro contable:','asientos',150,'true','false','Local:Local,Niif:Niif');
 
             $grilla->AddValidation('codigo','numero');
             $grilla->AddValidation('nombre','mayuscula');
@@ -95,106 +95,30 @@
 
 if(!isset($opcion)){  ?>
 	<script>
-		function ventana_secciones(id,codigo,nombre,dinamico){
+		function ventana_secciones(id,codigo){
 
-			if (dinamico=='No') {
-				Win_Ventana_secciones = new Ext.Window({
-				    width       : 600,
-				    height      : 500,
-				    id          : 'Win_Ventana_secciones',
-				    title       : 'Secciones del informe '+codigo,
-				    modal       : true,
-				    autoScroll  : false,
-				    closable    : false,
-				    autoDestroy : true,
-				    autoLoad    :
-				    {
-				        url     : 'informes_formatos/formatos_secciones.php',
-				        scripts : true,
-				        nocache : true,
-				        params  :
-				        {
-							id_formato : id,
-							codigo     : codigo,
-				        }
-				    }
+			Win_Ventana_secciones = new Ext.Window({
+			    width       : 600,
+			    height      : 500,
+			    id          : 'Win_Ventana_secciones',
+			    title       : 'Secciones del informe '+codigo,
+			    modal       : true,
+			    autoScroll  : false,
+			    closable    : false,
+			    autoDestroy : true,
+			    autoLoad    :
+			    {
+			        url     : 'informes_formatos/formatos_secciones.php',
+			        scripts : true,
+			        nocache : true,
+			        params  :
+			        {
+						id_formato : id,
+						codigo     : codigo,
+			        }
+			    }
 
-				}).show();
-			}
-			else{
-				var myalto  = Ext.getBody().getHeight();
-				var myancho = Ext.getBody().getWidth();
-
-				Win_Ventana_secciones = new Ext.Window({
-				    width       : myancho-100,
-				    height      : myalto-50,
-				    id          : 'Win_Ventana_secciones',
-				    title       : `Secciones del formato ${nombre}`,
-				    modal       : true,
-				    autoScroll  : false,
-				    closable    : true,
-				    autoDestroy : true,
-				    autoLoad    :
-				    {
-				        url     : 'informes_formatos/formatos_secciones_dinamico.php',
-				        scripts : true,
-				        nocache : true,
-				        params  :
-				        {
-							id_formato : id,
-							codigo     : codigo,
-							nombre     : nombre,
-				        }
-				    },
-				    tbar        :
-				    [
-				        {
-				            xtype   : 'buttongroup',
-				            columns : 3,
-				            title   : 'Opciones',
-				            style   : 'border-right:none;',
-				            items   :
-				            [
-				                {
-				                    xtype       : 'button',
-				                    width       : 60,
-				                    height      : 56,
-				                    text        : 'Nueva Fila',
-				                    scale       : 'large',
-				                    iconCls     : 'doc_filas',
-				                    iconAlign   : 'top',
-				                    hidden      : false,
-				                    handler     : function(){ BloqBtn(this); agregarModificarSeccion(); }
-				                },
-				                // {
-				                //     xtype       : 'button',
-				                //     width       : 60,
-				                //     height      : 56,
-				                //     text        : 'Nueva Fila ',
-				                //     scale       : 'large',
-				                //     iconCls     : 'doc_filas',
-				                //     iconAlign   : 'top',
-				                //     hidden      : false,
-				                //     handler     : function(){ BloqBtn(this); agregarModificarFila() }
-				                // },
-				                {
-				                    xtype       : 'button',
-				                    width       : 60,
-				                    height      : 56,
-				                    text        : 'Regresar',
-				                    scale       : 'large',
-				                    iconCls     : 'regresar',
-				                    iconAlign   : 'top',
-				                    hidden      : false,
-				                    handler     : function(){ BloqBtn(this); Win_Ventana_secciones.close(id) }
-				                }
-				            ]
-				        }
-				    ]
-
-				}).show();
-			}
-
+			}).show();
 		}
 
 		function ventana_conceptos(id,codigo){

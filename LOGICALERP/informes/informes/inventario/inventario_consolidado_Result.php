@@ -743,6 +743,7 @@
           </div>
         </div>
         <br>
+        <?php echo $cuerpoInforme; ?>
       </body>
       <?php
       $texto = ob_get_contents();

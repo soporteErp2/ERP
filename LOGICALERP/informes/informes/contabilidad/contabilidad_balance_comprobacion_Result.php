@@ -23,11 +23,8 @@
   $td_head            = '';
   $bodyTable          = '';
   $idTercero          = 0;
-
-  $sql = "SELECT digitos FROM puc_configuracion WHERE activo = 1 AND id_empresa = $_SESSION[EMPRESA] AND nombre = '$nivel_cuentas'";
-  $query = $mysql->query($sql,$mysql->link);
-
-  $nivel_cuentas = $mysql->result($query,0,'digitos');
+  $separador_decimales = ",";
+  $separador_miles     = ".";
 
   //NIVEL DE CUENTAS
   $groupBy     = ($nivel_cuentas > 0)? "LEFT(codigo_cuenta,$nivel_cuentas)": "codigo_cuenta";
@@ -102,11 +99,6 @@
 
 	$nombre_empresa	= $_SESSION['NOMBREEMPRESA'];
   $whereRangoCuentas=str_replace('{.}', "%", $whereRangoCuentas);
-
-  // FILTRO PARA MOSTRAR O NO LAS CUENTAS DE CIERRE
-  if($cuentas_cierre == "false"){
-    $whereCuentasCierre = " AND tipo_documento != 'NCC'";
-  }
 
   //=======================================// SALDO ANTERIOR //=======================================//
   //**************************************************************************************************//
@@ -290,10 +282,10 @@
                         <td>$cuenta</td>
                         <td>".$arrayPuc[$cuenta]."</td>
                         ".(($whereClientes<>'')? "<td>&nbsp;</td><td>&nbsp;</td>" : '')."
-                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['saldoAnterior'],2,$separador_decimales,$separador_miles)."</td>
-                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['debe'],2,$separador_decimales,$separador_miles)."</td>
-                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['haber'],2,$separador_decimales,$separador_miles)."</td>
-                        <td style='text-align:right;'>".number_format( ($arrayTotalesClase[$cuenta]['saldoAnterior'] + $arrayTotalesClase[$cuenta]['debe'] - $arrayTotalesClase[$cuenta]['haber'] ),2,$separador_decimales,$separador_miles)."</td>
+                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['saldoAnterior'],$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['debe'],$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                        <td style='text-align:right;'>".number_format($arrayTotalesClase[$cuenta]['haber'],$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                        <td style='text-align:right;'>".number_format( ($arrayTotalesClase[$cuenta]['saldoAnterior'] + $arrayTotalesClase[$cuenta]['debe'] - $arrayTotalesClase[$cuenta]['haber'] ),$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
                       </tr>";
     }
     foreach($arrayAsiento[$cuenta] as $idTercero => $arrayDatos){
@@ -315,20 +307,20 @@
                           <td>$descripcion</td>
                           <td>$nit_tercero</td>
                           <td>$tercero</td>
-                          <td style='text-align:right;'>".number_format($saldoAnterior,2,$separador_decimales,$separador_miles)."</td>
-                          <td style='text-align:right;'>".number_format($debe_actual,2,$separador_decimales,$separador_miles)."</td>
-                          <td style='text-align:right;'>".number_format($haber_actual,2,$separador_decimales,$separador_miles)."</td>
-                          <td style='text-align:right;'>".number_format($newSaldo,2,$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($saldoAnterior,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($debe_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($haber_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($newSaldo,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
                         </tr>";
       }
       else{
         $bodyTable .=  "<tr>
                           <td>$cuenta</td>
                           <td>$descripcion</td>
-                          <td style='text-align:right;'>".number_format($saldoAnterior,2,$separador_decimales,$separador_miles)."</td>
-                          <td style='text-align:right;'>".number_format($debe_actual,2,$separador_decimales,$separador_miles)."</td>
-                          <td style='text-align:right;'>".number_format($haber_actual,2,$separador_decimales,$separador_miles)."</td>
-                          <td style='text-align:right;'>".number_format($newSaldo,2,$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($saldoAnterior,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($debe_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($haber_actual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
+                          <td style='text-align:right;'>".number_format($newSaldo,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles)."</td>
                         </tr>";
       }
     }
@@ -434,10 +426,10 @@
       <tr class="total">
         <td align="center" colspan="2"><b>TOTAL</b></td>
         <?php echo $td_body; ?>
-        <td style="text-align:right;"><b><?php echo number_format($totalSaldoAnterior,2,$separador_decimales,$separador_miles); ?></b></td>
-        <td style="text-align:right;"><b><?php echo number_format($totalDebe,2,$separador_decimales,$separador_miles); ?></b></td>
-        <td style="text-align:right;"><b><?php echo number_format($totalHaber,2,$separador_decimales,$separador_miles); ?></b></td>
-        <td style="text-align:right;"><b><?php echo number_format($totalSaldoActual,2,$separador_decimales,$separador_miles); ?></b></td>
+        <td style="text-align:right;"><b><?php echo number_format($totalSaldoAnterior,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
+        <td style="text-align:right;"><b><?php echo number_format($totalDebe,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
+        <td style="text-align:right;"><b><?php echo number_format($totalHaber,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
+        <td style="text-align:right;"><b><?php echo number_format($totalSaldoActual,$_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles); ?></b></td>
       </tr>
     </table>
   </div>

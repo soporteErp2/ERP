@@ -291,7 +291,7 @@
 
 					if($contCcos == 0 || !$queryCcos){ rollback($numeroRecibo, $tablaPrincipal, $id_documento, $arrayWs['id_empresa'], $link, "El centro de costo $arrayCuenta[centro_costo] No existe!"); continue 2; }
 				}
-				else{ rollback($numeroRecibo, $tablaPrincipal, $id_documento, $arrayWs['id_empresa'], $link, "La cuenta $arrayCuenta[cuenta_colgaap] No tiene un centro de costo!"); continue 2; }
+				else{ rollback($numeroRecibo, $tablaPrincipal, $id_documento, $arrayWs['id_empresa'], $link, "La cuenta $arrayCuenta[cuenta_colgaap] - $arrayCuenta[centro_costo] No tiene un centro de costo!"); continue 2; }
 			}
 
 			// CONSULTAR EL ID DE LA CUENTA NIIF SI NO SE ENVIA EN EL ARRAY
@@ -416,12 +416,8 @@
 		$queryInsert = mysql_query($sqlInsert,$link);
 		if (!$queryInsert ) { rollback($numeroRecibo, $tablaPrincipal, $id_documento, $arrayWs['id_empresa'], $link, "no se insertaron los asientos niif!"); continue; }
 
-		// $fecha_actual = date('Y-m-d');
-		// $hora_actual  = date('H:i:s');
-		//
 		// INSERTAR EN EL LOG DE EVENTOS
-		// $sql = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-		//         VALUES($id_documento,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Sincronizado','RC','Recibo de Caja (SIHO)',$id_sucursal,$arrayWs[id_empresa],'".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		// $sql="INSERT INTO log_documentos_contables (id_documento,id_usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip) VALUES  ($id_documento,$arrayWs[id_empleado],'Sincronizado','RC','Recibo de Caja (SIHO)',$id_sucursal,$arrayWs[id_empresa],'".$_SERVER['REMOTE_ADDR']."')";
 		// $query=mysql_query($sql,$link);
 
 		response_error(array('factura' => $numeroRecibo,'estado' => 'true', 'msj' => 'Recibo de caja #'.$numeroRecibo.'  ok'),false);

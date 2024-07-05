@@ -27,8 +27,10 @@
             $grilla->MySqlLimit         = '0,100';           //LIMITE DE LA CONSULTA
         //TAMANO DE LA GRILLA
             $grilla->AutoResize         = 'false';           //SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
+            $grilla->Ancho              = 500;              //ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
             $grilla->Alto               = 310;              //ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
-            $grilla->QuitarAncho        = 550;               //AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+            // $grilla->QuitarAncho        = 550;               //AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+            // $grilla->QuitarAlto         = 560;              //AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
         //TOOLBAR Y CAMPO DE BUSQUEDA
             $grilla->Gtoolbar           = 'true';           //SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
             $grilla->CamposBusqueda     = 'consecutivo,fecha_inicio,fecha_final,usuario';       //VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA

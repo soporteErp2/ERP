@@ -72,20 +72,9 @@
         editable   : false,
     });
 
-    carga_sucursal_guardada();
-
-    //CARGAR SUCURSAL GUARDADA
-    function carga_sucursal_guardada(){
-      try{
-        if(typeof(localStorage.sucursal_ordenes_compra_archivos_adjuntos) != "undefined" && localStorage.sucursal_ordenes_compra_archivos_adjuntos != ""){
-          setTimeout(function(){
-            document.getElementById("filtro_sucursal_sucursales_ordenes_compra_archivos_adjuntos").value = localStorage.sucursal_ordenes_compra_archivos_adjuntos;
-          },1000);
-        }
-      } catch{
-        setTimeout('carga_sucursal_guardada()',1500);
-      }
-    }
+    if (typeof(localStorage.sucursal_ordenes_compra_archivos_adjuntos)!="undefined")
+        if (localStorage.sucursal_ordenes_compra_archivos_adjuntos!="")
+            setTimeout(function(){document.getElementById("filtro_sucursal_sucursales_ordenes_compra_archivos_adjuntos").value=localStorage.sucursal_ordenes_compra_archivos_adjuntos;},100);
 
     if (typeof(localStorage.MyInformeFiltroFechaInicioOrdenesCompraArchivosAdjuntos)!="undefined")
         if (localStorage.MyInformeFiltroFechaInicioOrdenesCompraArchivosAdjuntos!="")

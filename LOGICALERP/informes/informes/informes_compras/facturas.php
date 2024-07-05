@@ -13,34 +13,42 @@
 	$id_empresa  = $_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
 
-	$informe->InformeName						=	'facturas_compra';  //NOMBRE DEL INFORME
-	$informe->InformeTitle					=	'Facturas de Compra'; //TITULO DEL INFORME
+	$informe->InformeName			=	'facturas_compra';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			=	'Facturas de Compra'; //TITULO DEL INFORME
 	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu			=	'false'; //FILTRO EMPRESA, SUCURSAL
+	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
+	// $informe->InformeFechaInicio	=	'true';	 //FILTRO FECHA
+	// $informe->AddFiltroFechaInicioFin('false','true');
 	$informe->AddBotton('Exportar PDF','genera_pdf','generarPDF_Excel_principal("IMPRIME_PDF")','Btn_exportar_pdf');
 	$informe->AddBotton('Exportar Excel','excel32','generarPDF_Excel_principal("IMPRIME_XLS")','Btn_exportar_excel');
 	$informe->AddBotton('Configurar Informe','configurar_informe','ventanaConfigurarInforme()','Btn_configurar_informe_clientes');
-	$informe->InformeExportarPDF		= 	"false";	//SI EXPORTA A PDF
-	$informe->InformeExportarXLS		= 	"false";	//SI EXPORTA A XLS
+
+	$informe->InformeExportarPDF	= 	"false";	//SI EXPORTA A PDF
+	$informe->InformeExportarXLS	= 	"false";	//SI EXPORTA A XLS
 
 	$informe->InformeTamano = "CARTA-HORIZONTAL";
 
 	// CHANGE CSS
 	$informe->DefaultCls            = 	''; 		//RESET STYLE CSS
 	$informe->HeightToolbar         = 	80; 		//HEIGHT TOOLBAR
+
 	$informe->AreaInformeQuitaAncho = 0;
 	$informe->AreaInformeQuitaAlto  = 190;
 	if($modulo=='ventas'){ $informe->AreaInformeQuitaAlto = 230; }
 
 	/**//////////////////////////////////////////////////////////////**/
-	/**///							INICIALIZACION DE LA GRILLA	 			 			  ///**/
-	/**/																														/**/
-	/**/			$informe->Link = $link;  	//Conexion a la BD					/**/
-	/**/			$informe->inicializa($_POST);//variables POST					/**/
-	/**/			$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
-	/**/																														/**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/															/**/
+	/**/	$informe->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$informe->inicializa($_POST);//variables POST			/**/
+	/**/	$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
+
+	// CONSULTA PARA SELECT TIPO FACTURAS --  discriminar_tipo_factura
+	
 ?>
+
 <script>
 	contTercero    = 1;
 	contVendedores = 1;
@@ -49,24 +57,24 @@
 	function generarPDF_Excel_principal(tipo_documento){
 
 		var MyInformeFiltroFechaFinal  = ''
-			,	MyInformeFiltroFechaInicio = ''
-			,	sucursal                   = ''
-			,	discriminar_items          = ''
-			,	i                          = 0
-			,	arraytercerosJSON          = Array()
-			,	arrayVendedoresJSON        = Array()
-			,	arrayCcosJSON              = Array()
+		,	MyInformeFiltroFechaInicio = ''
+		,	sucursal                   = ''
+		,	discriminar_items          = ''
+		,	i                          = 0
+		,	arraytercerosJSON          = Array()
+		,	arrayVendedoresJSON        = Array()
+		,	arrayCcosJSON              = Array()
 
 		arraytercerosFC.forEach(function(id_tercero) {  arraytercerosJSON[i] = id_tercero; i++; });
-    arraytercerosJSON=JSON.stringify(arraytercerosJSON);
+        arraytercerosJSON=JSON.stringify(arraytercerosJSON);
 
-    i = 0
-    arrayvendedoresFC.forEach(function(id_vendedor) {  arrayVendedoresJSON[i] = id_vendedor; i++; });
-    arrayVendedoresJSON=JSON.stringify(arrayVendedoresJSON);
+        i = 0
+        arrayvendedoresFC.forEach(function(id_vendedor) {  arrayVendedoresJSON[i] = id_vendedor; i++; });
+        arrayVendedoresJSON=JSON.stringify(arrayVendedoresJSON);
 
-    i = 0
-    arrayCentroCostosFC.forEach(function(id_vendedor) {  arrayCcosJSON[i] = id_vendedor; i++; });
-    arrayCcosJSON=JSON.stringify(arrayCcosJSON);
+        i = 0
+        arrayCentroCostosFC.forEach(function(id_vendedor) {  arrayCcosJSON[i] = id_vendedor; i++; });
+        arrayCcosJSON=JSON.stringify(arrayCcosJSON);
 
 		if (typeof(localStorage.MyInformeFiltroFechaInicioFacturasCompra)!="undefined" && typeof(localStorage.MyInformeFiltroFechaFinalFacturasCompra)!="undefined") {
 			if (localStorage.MyInformeFiltroFechaInicioFacturasCompra!='' && localStorage.MyInformeFiltroFechaFinalFacturasCompra) {
@@ -87,6 +95,8 @@
 			}
 		}
 
+
+
 		var data = tipo_documento+"=true"
 					+"&sucursal="+sucursal
 					+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal
@@ -101,6 +111,7 @@
 	}
 
 	//=====================// VENTANA CONFIGURACION DE INFORME //=====================//
+	//********************************************************************************//
 
 	function ventanaConfigurarInforme(){
 
@@ -126,7 +137,7 @@
 		    tbar        :
 		    [
 
-		        		{
+		        {
                     xtype   : 'buttongroup',
                     columns : 3,
                     title   : 'Filtro Sucursal',
@@ -178,7 +189,7 @@
                     iconAlign   : 'top',
                     handler     : function(){ generarPDF_Excel('IMPRIME_XLS') }
                 },'-',
-                {
+                  {
                     xtype       : 'button',
                     width       : 60,
                     height      : 56,
@@ -189,53 +200,53 @@
                     handler     : function(){ resetFiltros() }
                 },'-',
                 {
-				            xtype       : 'button',
-				            width       : 60,
-				            height      : 56,
-				            text        : 'Regresar',
-				            scale       : 'large',
-				            iconCls     : 'regresar',
-				            iconAlign   : 'top',
-				            handler     : function(){ Win_Ventana_configurar_informe_facturas.close()
-								}
+		            xtype       : 'button',
+		            width       : 60,
+		            height      : 56,
+		            text        : 'Regresar',
+		            scale       : 'large',
+		            iconCls     : 'regresar',
+		            iconAlign   : 'top',
+		            handler     : function(){ Win_Ventana_configurar_informe_facturas.close() }
 		        }
 		    ]
 		}).show();
 	}
 
 	function resetFiltros(){
+
 		localStorage.MyInformeFiltroFechaFinalFacturasCompra  = "";
 		localStorage.MyInformeFiltroFechaInicioFacturasCompra = "";
 		localStorage.sucursal_facturas_compra                 = "";
 		arraytercerosFC.length                                = 0;
 		arrayvendedoresFC.length                              = 0;
-		arrayCentroCostosFC.length														= 0;
 
 		Win_Ventana_configurar_informe_facturas.close();
-    ventanaConfigurarInforme();
+        ventanaConfigurarInforme();
+
 	}
 
 	function generarHtml(){
 
-		var MyInformeFiltroFechaFinal   = document.getElementById('MyInformeFiltroFechaFinal').value
-		,   MyInformeFiltroFechaInicio 	= document.getElementById('MyInformeFiltroFechaInicio').value
-		,   sucursal                   	= document.getElementById('filtro_sucursal_facturas_compra').value
-		,   discriminar_items          	= document.getElementById('discriminar_items_facturas_compra').value
-		,   i                          	= 0
-		,   arraytercerosJSON          	= Array()
-		,   arrayVendedoresJSON        	= Array()
-		,   arrayCcosJSON              	= Array()
+		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
+		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
+		,	sucursal                   = document.getElementById('filtro_sucursal_facturas_compra').value
+		,	discriminar_items          = document.getElementById('discriminar_items_facturas_compra').value
+		,	i                          = 0
+		,	arraytercerosJSON          = Array()
+		,	arrayVendedoresJSON        = Array()
+		,	arrayCcosJSON              = Array()
 
 		arraytercerosFC.forEach(function(id_tercero) {  arraytercerosJSON[i] = id_tercero; i++; });
-    arraytercerosJSON=JSON.stringify(arraytercerosJSON);
+        arraytercerosJSON=JSON.stringify(arraytercerosJSON);
 
-    i = 0
-    arrayvendedoresFC.forEach(function(id_vendedor) {  arrayVendedoresJSON[i] = id_vendedor; i++; });
-    arrayVendedoresJSON=JSON.stringify(arrayVendedoresJSON);
+        i = 0
+        arrayvendedoresFC.forEach(function(id_vendedor) {  arrayVendedoresJSON[i] = id_vendedor; i++; });
+        arrayVendedoresJSON=JSON.stringify(arrayVendedoresJSON);
 
-    i = 0
-    arrayCentroCostosFC.forEach(function(id_vendedor) {  arrayCcosJSON[i] = id_vendedor; i++; });
-    arrayCcosJSON=JSON.stringify(arrayCcosJSON);
+        i = 0
+        arrayCentroCostosFC.forEach(function(id_vendedor) {  arrayCcosJSON[i] = id_vendedor; i++; });
+        arrayCcosJSON=JSON.stringify(arrayCcosJSON);
 
 		Ext.get('RecibidorInforme_facturas_compra').load({
 			url     : '../informes/informes/informes_compras/facturas_Result.php',
@@ -244,15 +255,14 @@
 			nocache : true,
 			params  :
 			{
-				nombre_informe             : 'FacturaCompra',
-				IMPRIME_HTML							 : 'true',
+				nombre_informe             : 'Cotizaciones',
 				sucursal                   : sucursal,
-				MyInformeFiltroFechaInicio : MyInformeFiltroFechaInicio,
 				MyInformeFiltroFechaFinal  : MyInformeFiltroFechaFinal,
-				arrayTercerosJSON          : arraytercerosJSON,
+				MyInformeFiltroFechaInicio : MyInformeFiltroFechaInicio,
+				arraytercerosJSON          : arraytercerosJSON,
 				arrayVendedoresJSON        : arrayVendedoresJSON,
 				arrayCcosJSON              : arrayCcosJSON,
-				discriminar_items          : discriminar_items
+				discriminar_items          : discriminar_items,
 			}
 		});
 
@@ -267,36 +277,39 @@
 
 	function generarPDF_Excel(tipo_documento){
 
-		var MyInformeFiltroFechaFinal	= document.getElementById('MyInformeFiltroFechaFinal').value
-		,	MyInformeFiltroFechaInicio 	= document.getElementById('MyInformeFiltroFechaInicio').value
-		,	sucursal                   	= document.getElementById('filtro_sucursal_facturas_compra').value
-		,	discriminar_items          	= document.getElementById('discriminar_items_facturas_compra').value
-		,	i                          	= 0
-		,	arraytercerosJSON          	= Array()
-		,	arrayVendedoresJSON        	= Array()
-		,	arrayCcosJSON              	= Array()
+		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
+		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
+		,	sucursal                   = document.getElementById('filtro_sucursal_facturas_compra').value
+		,	discriminar_items          = document.getElementById('discriminar_items_facturas_compra').value
+		,	i                          = 0
+		,	arraytercerosJSON          = Array()
+		,	arrayVendedoresJSON        = Array()
+		,	arrayCcosJSON              = Array()
 
 		arraytercerosFC.forEach(function(id_tercero) {  arraytercerosJSON[i] = id_tercero; i++; });
-    arraytercerosJSON=JSON.stringify(arraytercerosJSON);
+        arraytercerosJSON=JSON.stringify(arraytercerosJSON);
 
-    i = 0
-    arrayvendedoresFC.forEach(function(id_vendedor) {  arrayVendedoresJSON[i] = id_vendedor; i++; });
-    arrayVendedoresJSON=JSON.stringify(arrayVendedoresJSON);
+        i = 0
+        arrayvendedoresFC.forEach(function(id_vendedor) {  arrayVendedoresJSON[i] = id_vendedor; i++; });
+        arrayVendedoresJSON=JSON.stringify(arrayVendedoresJSON);
 
-    i = 0
-    arrayCentroCostosFC.forEach(function(id_vendedor) {  arrayCcosJSON[i] = id_vendedor; i++; });
-    arrayCcosJSON=JSON.stringify(arrayCcosJSON);
+        i = 0
+        arrayCentroCostosFC.forEach(function(id_vendedor) {  arrayCcosJSON[i] = id_vendedor; i++; });
+        arrayCcosJSON=JSON.stringify(arrayCcosJSON);
 
-    var data = tipo_documento+"=true"
-			+"&sucursal="+sucursal
-			+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal
-			+"&MyInformeFiltroFechaInicio="+MyInformeFiltroFechaInicio
-			+"&arraytercerosJSON="+arraytercerosJSON
-			+"&arrayVendedoresJSON="+arrayVendedoresJSON
-			+"&arrayCcosJSON="+arrayCcosJSON
-			+"&discriminar_items="+discriminar_items
+        var data = tipo_documento+"=true"
+					+"&sucursal="+sucursal
+					+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal
+					+"&MyInformeFiltroFechaInicio="+MyInformeFiltroFechaInicio
+					+"&arraytercerosJSON="+arraytercerosJSON
+					+"&arrayVendedoresJSON="+arrayVendedoresJSON
+					+"&arrayCcosJSON="+arrayCcosJSON
+					+"&discriminar_items="+discriminar_items
 
 		window.open("../informes/informes/informes_compras/facturas_Result.php?"+data);
+
+		// window.open("../informes/informes/informes_compras/facturas_Result.php?"+tipo_documento+"=true&sucursal="+sucursal+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal+"&MyInformeFiltroFechaInicio="+MyInformeFiltroFechaInicio+"&idTerceros="+idTerceros+"&idVendedores="+idVendedores+"&idCentroCostos="+idCentroCostos+"&discriminar_items="+discriminar_items);
+
 	}
 
 	//========================== VENTANA PARA BUSCAR LOS TERCEROS ===============================//

@@ -1,100 +1,115 @@
-<?php 
-
+<?php
     include('../../../../configuracion/conectar.php');
     include('../../../../configuracion/define_variables.php');
 
-    $id_empresa  = $_SESSION['EMPRESA'];
+    $id_empresa = $_SESSION['EMPRESA'];
 
-    // CONSULTAR LOS TIPOS DE CONTRATOS
     $sql="SELECT id,descripcion FROM nomina_tipo_contrato WHERE activo=1 AND id_empresa=$id_empresa";
-    $query = $mysql->query($sql,$mysql->link);
+    $query=$mysql->query($sql,$mysql->link);
     while ($row=$mysql->fetch_array($query)) {
-        $selected = ($tipo_contrato==$row['id'])? 'selected' : '' ;
-        $optionContratos .= "<option value='$row[id]' $selected >$row[descripcion]</option>";
+        $tipo_contrato.="<option value='$row[id]'>$row[descripcion]</option>";
     }
- 
- ?>
-<style>
-    /*ESTILOS DEL WIZARD Y DE LA GRILLA ESTAN EN INDEX.CSS, ESTE ESTILO ES PARA PERSONALIZACION DE CONTENIDO*/
-    .sub-content[data-position="right"]{width: calc(60% - 3px); }
-    .sub-content[data-position="left"]{width: 40%; overflow:auto;}
-    .content-grilla-filtro { height: calc(50% - 45px);}
-    .content-grilla-filtro .cell[data-col="1"]{width: 22px;}
-    .content-grilla-filtro .cell[data-col="2"]{width: 89px;}
-    .content-grilla-filtro .cell[data-col="3"]{width: 190px;}
-    .sub-content [data-width="input"]{width: 120px;}
 
-</style>
+?>
+<div style="border-top:1px solid #8DB2E3; width:100%; overflow:hidden;" id="informeBalancePrueba">
+    <!-- DIV MENU IZQUIERDO -->
+    <div style="width: calc(100% - 215px - 3px); padding:0; float:left; height:270px; margin-left:5px;float:left;">
 
-<div class="main-content">
-    <div class="sub-content" data-position="right">
-        <div class="title">FILTRAR POR EMPLEADOS</div>
+        <div style="float:left; width:100%; font-weight:bolder; font-size:12px; margin-bottom:10px; margin-top:10px; text-align:center;">FILTRAR POR EMPLEADO(S)</div>
 
-        <div class="content-grilla-filtro">
-            <div class="head">
-                <div class="cell" data-col="1"></div>
-                <div class="cell" data-col="2">Documento</div>
-                <div class="cell" data-col="3">Nombre</div>
-                <div class="cell" data-col="1" data-icon="search" title="Buscar Empleados" onclick="ventanaBusquedaGrillas('empleados');"></div>
-            </div>
-            <div class="body" id="body_grilla_filtro">
+        <!-- VENTANA BUSCAR TERCERO -->
+        <div style="display:none;background-color: #F3F3F3;border-right: 1px solid #D4D4D4;border-top: 1px solid #D4D4D4;float: left;height: 26px;width: 35px;border-top-right-radius: 5px;padding: 7 0 0 7;" >
+            <img src="img/buscar20.png" onclick="ventanaBusquedaTercero();" style="cursor: pointer;width:21px;height:21px;margin-top:0px;" title="Buscar tercero" id="imgBuscarTerceroBC5">
+        </div>
+
+        <div style="width:100%;height:180px;background-color: #CDDBF0;overflow:hidden;">
+            <div id="contenedor_formulario_configuracion" >
+                <div id="contenedor_tabla_configuracion" style="height:178px;">
+                    <div class="headTablaBoletas">
+                        <div class="campoInforme0">&nbsp;</div>
+                        <div class="campoInforme1">Documento</div>
+                        <div class="campoInforme2" style="width: 150px;">Empleado</div>
+                        <div class="campoInforme4" style="width:25px;"><img src="img/buscar20.png" onclick="ventanaBusquedaGrillas('empleados');" style="cursor: pointer;width:16px;height:16px;margin-top:0px;" title="Buscar tercero" id="imgBuscarTerceroBC"></div>
+                    </div>
+                    <div id="bodyTablaConfiguracion" style="height:140px;">
+
+                    </div>
+
+                </div>
             </div>
         </div>
 
-    <div class="title">FILTRAR POR CONCEPTOS</div>
-        <div class="content-grilla-filtro">
-            <div class="head">
-                <div class="cell" data-col="1"></div>
-                <div class="cell" data-col="2">Codigo</div>
-                <div class="cell" data-col="3">Nombre</div>
-                <div class="cell" data-col="1" data-icon="search" title="Buscar Concepto" onclick="ventanaBusquedaGrillas();"></div>
-            </div>
-            <div class="body" id="body_grilla_filtro_conceptos">
+        <div style="float:left; width:100%; font-weight:bolder; font-size:12px; margin-bottom:10px; margin-top:10px; text-align:center;">FILTRAR POR CONCEPTO(S)</div>
+
+        <!-- VENTANA BUSCAR TERCERO -->
+        <div style="display:none;background-color: #F3F3F3;border-right: 1px solid #D4D4D4;border-top: 1px solid #D4D4D4;float: left;height: 26px;width: 35px;border-top-right-radius: 5px;padding: 7 0 0 7;" >
+            <img src="img/buscar20.png" onclick="ventanaBusquedaTercero();" style="cursor: pointer;width:21px;height:21px;margin-top:0px;" title="Buscar tercero" id="imgBuscarTerceroBC5">
+        </div>
+
+        <div style="width:100%;height:180px;background-color: #CDDBF0;overflow:hidden;">
+            <div id="contenedor_formulario_configuracion" >
+                <div id="contenedor_tabla_configuracion" style="height:178px;">
+                    <div class="headTablaBoletas">
+                        <div class="campoInforme0">&nbsp;</div>
+                        <div class="campoInforme1" style="width:220px;">Concepto</div>
+                        <div class="campoInforme2" style="width: 30px;" title="Naturaleza del Concepto">Nat.</div>
+                        <div class="campoInforme4" style="width:25px;"><img src="img/buscar20.png" onclick="ventanaBusquedaGrillas();" style="cursor: pointer;width:16px;height:16px;margin-top:0px;" title="Buscar tercero" id="imgBuscarTerceroBC"></div>
+                    </div>
+                    <div id="bodyTablaConfiguracionVendedores" style="height:140px;">
+
+                    </div>
+
+                </div>
             </div>
         </div>
 
     </div>
 
-    <div class="sub-content" data-position="left">
-        <div class="title">TIPO DE CONTRATO</div>
-        <p>
-            <select data-width="input" id="tipo_contrato">
-                <option value="todos">Todos</option>
-                <?php echo $optionContratos; ?>
-            </select>
-        </p>
-        <div class="title">FECHAS DEL INFORME</div>
-        <p>
-            <table>
-                <tr>
-                    <td>Fecha Inicial</td>
-                    <td><input type="text" id="MyInformeFiltroFechaInicio"/></td>
-                </tr>
-                <tr>
-                    <td>Fecha Final</td>
-                    <td><input type="text" id="MyInformeFiltroFechaFinal"/></td>
-                </tr>
-            </table>
-        </p>
-        <div class="title">AGRUPAR POR</div>
-        <p>
-            <select data-width="input" id="agrupado">
-                <option value="Empleados">Empleados</option>
-                <option value="Conceptos">Conceptos</option>
-            </select>
-        </p>
-        <div class="title">DISCRIMINAR PLANILLAS</div>
-        <p>
-            <select data-width="input" id="discrimina_planillas">
-                <option value="No">No</option>
-                <option value="Si">Si</option>
-            </select>
-        </p>
+    <!-- DIV MENU DERECHO -->
+    <div style="float:right; width:210px; background-color: #eff3fa; height: 100%; border-left:1px solid #8DB2E3;">
+        <div style="margin-bottom:25px; font-weight: bolder; font-size:12px; text-align:center; border-right:0px; border-left:none;border-top:none;" class="x-panel-header">Fechas del Informe</div>
+        <div style="display:table; margin:auto;">
+            <div style="overflow:hidden;" id="divFechaInicio">
+                <div style="float:left; width:70px; margin-right:5px">Fecha Inicial:</div>
+                <div style="float:left; width:120px;"><input type="text" id="MyInformeFiltroFechaInicio"></div>
+            </div>
+            <div style="overflow:hidden; margin-top:20px;">
+                <div style="float:left; width:70px; margin-right:5px">Fecha Final:</div>
+                <div style="float:left; width:120px;"><input type="text" id="MyInformeFiltroFechaFinal"></div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:25px; margin-top:25px; font-weight: bolder; font-size:12px; text-align:center; border-right:0px; border-left:none;" class="x-panel-header">Tipo de contrato</div>
+        <div style="display:table; margin:auto;">
+            <div style="overflow:hidden;" id="divFechaInicio">
+                <div style="margin-bottom:15px; text-align:center;">
+                    <select type="text" id="tipo_contrato" style="width:120px">
+                        <option value="todos">Todos</option>
+                        <?php echo $tipo_contrato ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:25px; margin-top:25px; font-weight: bolder; font-size:12px; text-align:center; border-right:0px; border-left:none;" class="x-panel-header">Agrupado por</div>
+        <div style="float:left; width:100%; border-right:1px solid #8DB2E3;">
+            <div style="margin-left:18px;">
+                <input type="radio" name="agrupado" value="empleados" id="agrupado_empleados"  onchange="">
+                <label>Empleados</label>
+            </div>
+            <div style="margin-top:10px;margin-left:18px;">
+                <input type="radio" name="agrupado" value="conceptos" id="agrupado_conceptos" onchange="" >
+                <label>Conceptos</label>
+            </div>
+            <div style="margin-top:20px;margin-left:18px;" id="div_discriminar_planillas">
+                <input type="checkbox" id="discrimina_planillas" > Discriminar planillas
+            </div>
+        </div>
 
     </div>
 </div>
+
 <script>
-    var rows = '';
 
     new Ext.form.DateField({
         format     : "Y-m-d",
@@ -104,8 +119,7 @@
         showToday  : false,
         applyTo    : "MyInformeFiltroFechaInicio",
         editable   : false,
-        // value      : "'.$fechaInicial.'"
-        // listeners  : { select: function() {   } }
+        value      : "<?php echo $fechaInicial ?>"
     });
 
     new Ext.form.DateField({
@@ -115,46 +129,89 @@
         showToday  : false,
         applyTo    : "MyInformeFiltroFechaFinal",
         editable   : false,
-        // value      : new Date(),
-        // listeners  : { select: function() {   } }
+        value      : new Date(),
     });
 
-    //if (typeof(localStorage.sucursal_libro_auxiliar)!="undefined")
-    //    if (localStorage.sucursal_libro_auxiliar!="")
-    //        setTimeout(function(){document.getElementById("filtro_sucursal_sucursales_libro_auxiliar").value=localStorage.sucursal_libro_auxiliar;},100);
 
-    if (typeof(localStorage.MyInformeFiltroFechaInicioNomina)!="undefined")
-        if (localStorage.MyInformeFiltroFechaInicioNomina!="")
+    if (typeof(localStorage.sucursal_nomina)!="undefined") {
+        if (localStorage.sucursal_nomina!="") {
+            setTimeout(function(){document.getElementById("filtro_sucursal_nomina").value=localStorage.sucursal_nomina;},100);
+        }
+    }
+
+    if (typeof(localStorage.MyInformeFiltroFechaInicioNomina)!="undefined") {
+        if (localStorage.MyInformeFiltroFechaInicioNomina!="") {
             document.getElementById("MyInformeFiltroFechaInicio").value=localStorage.MyInformeFiltroFechaInicioNomina;
+        }
+    }
 
-    if (typeof(localStorage.MyInformeFiltroFechaFinalNomina)!="undefined")
-        if (localStorage.MyInformeFiltroFechaFinalNomina!="")
+    if (typeof(localStorage.MyInformeFiltroFechaFinalNomina)!="undefined") {
+        if (localStorage.MyInformeFiltroFechaFinalNomina!="") {
             document.getElementById("MyInformeFiltroFechaFinal").value=localStorage.MyInformeFiltroFechaFinalNomina;
+        }
+    }
 
-    if (typeof(localStorage.agrupacion_nomina)!="undefined")
-        if (localStorage.agrupacion_nomina!="")
-            document.getElementById("agrupado").value=localStorage.agrupacion_nomina;
+    if (typeof(localStorage.agrupacion_nomina)!="undefined") {
+        if (localStorage.agrupacion_nomina!="") {
+            if (localStorage.agrupacion_nomina=="empleados") {
+                document.getElementById("agrupado_empleados").checked = true;
+            }
+            else if (localStorage.agrupacion_nomina=="conceptos") {
+                document.getElementById("agrupado_conceptos").checked = true;
+            }
 
-    if (typeof(localStorage.discrimina_planillas)!="undefined")
-        if (localStorage.discrimina_planillas!="")
-            document.getElementById("discrimina_planillas").value=localStorage.discrimina_planillas;
+        }
+        else{
+            document.getElementById("agrupado_empleados").checked = true;
+        }
+    }
+    else{
+        document.getElementById("agrupado_empleados").checked = true;
+    }
 
-    //if (typeof(localStorage.by_libro_auxiliar)!="undefined")
-    //    if (localStorage.by_libro_auxiliar!="")
-    //        document.getElementById("by").value=localStorage.by_libro_auxiliar;
+    if (typeof(localStorage.discrimina_planillas)!="undefined") {
+        if (localStorage.discrimina_planillas!="") {
+            var check = (localStorage.discrimina_planillas=="true")? true : false ;
+            document.getElementById("discrimina_planillas").checked=check;
+        }
+    }
 
-    //if (typeof(localStorage.mostrar_observacion)!="undefined")
-    //    if (localStorage.mostrar_observacion!="")
-    //        document.getElementById("mostrar_observacion").value=localStorage.mostrar_observacion;
+    if (typeof(localStorage.tipo_contrato)!="undefined") {
+        if (localStorage.tipo_contrato!="") {
+            document.getElementById("tipo_contrato").value=localStorage.tipo_contrato;
+        }
+    }
 
 
-    // RECORRER EL ARRAY PARA RENDERIZAR LOS TERCEROS DEL FILTRO
-    arrayEmpleadosNomina.forEach(function(elemento) {rows += elemento;});
-    document.getElementById('body_grilla_filtro').innerHTML=rows;
+    //CREAMOS LOS DIV DE LOS TERCEROS AÑADIDOS RECORRIENDO EL ARRAY DE LOS TERCEROS GUARDADOS
+    for ( i = 0; i < arrayEmpleados.length; i++) {
+        if (typeof(arrayEmpleados[i])!="undefined" && arrayEmpleados[i]!="") {
 
-    rows = '';
-    // RECORRER EL ARRAY PARA RENDERIZAR LOS CENTROS DE COSTO DEL FILTRO
-    arrayConceptosNomina.forEach(function(elemento) {rows += elemento;});
-    document.getElementById('body_grilla_filtro_conceptos').innerHTML=rows;
+            //CREAMOS EL DIV DE LA FILA EN LA TABLA DE CONFIGURAR
+            var div   = document.createElement("div");
+            div.setAttribute("id","fila_empleado_"+i);
+            div.setAttribute("class","filaBoleta");
+            document.getElementById("bodyTablaConfiguracion").appendChild(div);
+
+            //CREAMOS LOS ELEMENTOS DEL ELEMENTO CREADO
+            document.getElementById("fila_empleado_"+i).innerHTML=arrayEmpleadosNomina[i];
+
+        }
+    }
+    //CREAMOS LOS DIV DE LOS TERCEROS AÑADIDOS RECORRIENDO EL ARRAY DE LOS VENDEDORES GUARDADOS
+    for ( i = 0; i < arrayConceptos.length; i++) {
+        if (typeof(arrayConceptos[i])!="undefined" && arrayConceptos[i]!="") {
+
+            //CREAMOS EL DIV DE LA FILA EN LA TABLA DE CONFIGURAR
+            var div   = document.createElement("div");
+            div.setAttribute("id","fila_concepto_"+i);
+            div.setAttribute("class","filaBoleta");
+            document.getElementById("bodyTablaConfiguracionVendedores").appendChild(div);
+
+            //CREAMOS LOS ELEMENTOS DEL ELEMENTO CREADO
+            document.getElementById("fila_concepto_"+i).innerHTML=arrayConceptosNomina[i];
+
+        }
+    }
 
 </script>

@@ -139,8 +139,7 @@ if(!isset($opcion)){ ?>
 			AbreVentanaGrillaPlanillaLiquidacion('');
 		}
 
-		Ext.QuickTips.init();
-		
+
 		//ABRIR LA VENTANA PARA AGREGAR O EDITAR LA PLANILLA
     	function AbreVentanaGrillaPlanillaLiquidacion(id_planilla){
     		var opcGrillaContable='PlanillaLiquidacion';
@@ -276,29 +275,7 @@ if(!isset($opcion)){ ?>
                                         iconCls     : 'restaurar32',
                                         iconAlign   : 'top',
                                         handler     : function(){ BloqBtn(this); restaurarPlanillaLiquidacion(); }
-                                    },
-																		{
-																			xtype     : "splitbutton",
-																			id        : 'btnExportarAjusteInventario',
-																			tooltip   : 'Descargar Archivo Plano',
-																			iconCls   : "abajo",
-																			scale     : "large",
-																			iconAlign : 'top',
-																			text      : 'Descargar',
-																			handler   : function(){ BloqBtn(this); },
-			            				            menu      : [
-								    								            		{
-								    																	text    : "Pago Bancolombia",
-								    																	iconCls : "doc16",
-								    																	handler : function(){ BloqBtn(this); generarArchivoPlanoBancolombia(); }
-								    								            		},
-								    								            		{
-								    																	text    : "Pago Davivienda",
-								    																	iconCls : "doc16",
-								    																	handler : function(){ BloqBtn(this); alert('Documentacion Pendiente'); }
-								    								            		}
-																			          	]
-									            		  }
+                                    }
                                 ]
                             },
                             {
@@ -343,3 +320,5 @@ if(!isset($opcion)){ ?>
 
 <?php
 } ?>
+
+

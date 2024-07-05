@@ -93,8 +93,8 @@ if(!isset($opcion)){  ?>
 					cuenta : cuenta
 			    },
 			    success :function (result, request){
-			    			console.log(result);
 			    			var result = result.responseText;
+
 			                if(result > 1){ alert("Aviso.\nNo se puede seleccionar una cuenta contable padre!"); return; }
 			                else if(result == 0){ alert("Aviso.\nLa cuenta contable "+codigo+" No existe!"); return; }
 			                else if(result != 1){ alert("Aviso.\nNo se comprobo la cuenta contable!"); return; }

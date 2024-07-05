@@ -34,7 +34,6 @@
             $grilla->CamposBusqueda     = 'nombre';       //VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
             $grilla->DivActualiBusqueda = '' ;              //VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
         //CONFIGURACION DE CAMPOS EN LA GRILLA
-            $grilla->AddRow('Id','id',40);
             $grilla->AddRow('Codigo','codigo',80);
             $grilla->AddRow('Nombre','nombre',150);
             $grilla->AddRow('Modulo','modulo',80);
@@ -79,7 +78,7 @@
             $grilla->AddComboBox('Modulo','modulo',170,'true','false','produccion:Produccion,general:General');//estatico
             $grilla->AddTextField('empresa','id_empresa',170,'true','true',$id_empresa);
 
-            $grilla->AddValidation('codigo','unico_global','id_empresa='.$id_empresa);
+            $grilla->AddValidation('codigo','unico_global');
             $grilla->AddValidation('codigo','mayuscula');
             $grilla->AddValidation('nombre','mayuscula');
 

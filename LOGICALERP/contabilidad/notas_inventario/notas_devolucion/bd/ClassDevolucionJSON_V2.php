@@ -632,7 +632,7 @@
 
         $numero_detalle++;
 
-        $subTotal += round($this->costo_subtotalDVI[$i],$_SESSION['DECIMALESMONEDA']);
+        $subTotal += $this->costo_subtotalDVI[$i];
 			}
 
       for($i = 0; $i < $this->contGruposArticulos; $i++){
@@ -716,7 +716,7 @@
 
         $numero_detalle++;
 
-        $subTotal += round($this->costo_subtotalDVIG[$i],$_SESSION['DECIMALESMONEDA']);
+        $subTotal += $this->costo_subtotalDVIG[$i];
 
         if($descripcionGeneralIVA == null){
           $descripcionGeneralIVA = array(
@@ -1016,9 +1016,9 @@
                             ),
         "Detalles" => $arrayDetalle,
         "Totales" => array(
-                            "Total"                       => (string) $totalDV,
+                            "Total"                       => ($totalIVA != null)? (string) ($subTotal + round($totalIVA,$_SESSION['DECIMALESMONEDA'])) : $subTotal,
                             "TotalEnLetras"               => $this->quitarTildes($this->num2letras($totalDV)),
-                            "SubTotal"                    => (string) round($subTotal,$_SESSION['DECIMALESMONEDA']),
+                            "SubTotal"                    => (float) $subTotal,
                             "Cargos"                      => "0",
                             "Descuentos"                  => "0",
                             "SubTotalSinCargosDescuentos" => (string) round($subTotal,$_SESSION['DECIMALESMONEDA']),

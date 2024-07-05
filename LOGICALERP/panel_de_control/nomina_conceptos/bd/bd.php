@@ -112,7 +112,7 @@
 			$whereNivel=' AND nivel_formula<'.$nivel;
 		}
 		// CONSULTAR LOS CONCEPTOS GUARDADOS EN EL SISTEMA
-		$sql="SELECT codigo,descripcion,tipo_concepto FROM nomina_conceptos WHERE activo=1 AND id_empresa=$id_empresa AND nivel_formula>0 $whereId $whereNivel";
+		echo $sql="SELECT codigo,descripcion,tipo_concepto FROM nomina_conceptos WHERE activo=1 AND id_empresa=$id_empresa AND nivel_formula>0 $whereId $whereNivel";
 		$query=mysql_query($sql,$link);
 		$bodyGeneral='';
 		$bodyPersonal='';

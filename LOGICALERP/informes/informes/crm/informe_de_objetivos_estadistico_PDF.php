@@ -1,22 +1,14 @@
 <?php
 	include('../../../../configuracion/conectar.php');
-<<<<<<< HEAD
-	include("../../../../configuracion/define_variables.php");	
-	include("../../../../misc/libchart1.2.1/libchart/classes/libchart.php");
-	
-=======
 	include("../../../../configuracion/define_variables.php");
 	include('../../../../misc/libchart1.3/libchart/classes/libchart.php');	
 
 	ob_start();	
 
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	/*--------------------------------------------------CABECERA INFORME---------------------------------------------------*/
 	$fechai = $MyInformeFiltroFechaInicio;
 	$fechaf = $MyInformeFiltroFechaFinal;	
 
-<<<<<<< HEAD
-=======
 	$nombre_informe = 'Informe estadistico de Objetivos';
 	$nombre_empresa = $_SESSION['NOMBREEMPRESA'];
 
@@ -35,7 +27,6 @@
 		$PathImg   = '../';
     } 
 	
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 ?>
 
 <style>
@@ -92,15 +83,7 @@
 		white-space         : 	nowrap;
         overflow            : 	hidden;
         text-overflow       : 	ellipsis;
-<<<<<<< HEAD
-	}
-	#chartdiv,#chartdiv2,#chartdiv3 {
-	  width: 100%;
-	  height: 500px;
-	}
-=======
 	}	
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 	.amcharts-export-menu-top-right {
 	  top: 10px;
@@ -153,11 +136,6 @@
     </div>
 
 <?php
-<<<<<<< HEAD
-
-	$arrayColor = array('#2b0af7','#000','#eb0af7','#faa96a','#889588','#330300','#54048a','#140af7','#0af7be','#737603','#2a0245','#f0f70a','#048080','#83048a','#0ccc00','#f7710a','#05024f','#033300','#ab39f8','#0af7f7','#510500','#8370ff','#060033','#c400cc','#f97aff','#996900','#008480','#b7fefc','#ffb25b','#a7a9a9');
-=======
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 	/*--------------------------------------------------ESTADO DE PROYECTO---------------------------------------------------*/
 
@@ -168,17 +146,6 @@
 							 FROM
 							 	crm_objetivos
 							 WHERE
-<<<<<<< HEAD
-							 	activo = 1
-							 AND fecha_creacion BETWEEN '$fechai'
-							 AND '$fechaf'
-							 GROUP BY
-							 	id_estado",$link);	
-
-	$objetivos  = $mysql->num_rows($consul);	
-
-	$i = 0;
-=======
 							    activo = 1
 							 AND id_empresa = '$_SESSION[EMPRESA]'
 							 AND fecha_creacion BETWEEN '$fechai 00-00-00'
@@ -187,13 +154,10 @@
 							 	id_estado",$link);	
 
 	$objetivos  = $mysql->num_rows($consul);
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 
 	$rowTable1 .= '<tr style="background: #aaccf6;">
     				  <td  style="">Estado</td><td  style="">Proyectos</td><td  style="">Valor</td>
     			  </tr>';
-<<<<<<< HEAD
-=======
 
 	$chart   = new VerticalBarChart(700, 350);
 	$chart->getConfig()->setUseMultipleColor(true);
@@ -206,7 +170,6 @@
 
 	));
 	$dataSet = new XYDataSet();	
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 	while($row1 = $mysql->fetch_array($consul)){
 
@@ -214,61 +177,23 @@
 			$row1['estado_proyecto'] = 'Ninguno';
 		}
 
-<<<<<<< HEAD
-		echo '<script>
-					arrayEstados['.$i.']={
-				   	   estado    : "'.$row1['estado_proyecto'].'",
-				   	   proyectos : "'.$row1['cantidad'].'",
-				   	   color     : "'.$arrayColor[rand(0,count($arrayColor)-1)].'"
-				   	};				   	
-			  
-			  </script>';
-=======
 		$dataSet->addPoint(new Point($row1['estado_proyecto'],$row1['cantidad']));
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 
 	    $rowTable1 .= '<tr style="background: #dfe8f6;">
 	    				  <td style="">'.$row1['estado_proyecto'].'</td><td style="">'.$row1['cantidad'].'</td><td style="">$ '.$row1['total'].'</td>
 	    			  </tr>';
-<<<<<<< HEAD
-
-		$i++;
-		
-	}
-
-	$chart = new VerticalBarChart(500, 250);
-
-	$dataSet = new XYDataSet();
-	$dataSet->addPoint(new Point("Jan 2005", 273));
-	$dataSet->addPoint(new Point("Feb 2005", 321));
-	$dataSet->addPoint(new Point("March 2005", 442));
-	$dataSet->addPoint(new Point("April 2005", 711));
-
-	$chart->setDataSet($dataSet);
-
-	$chart->setTitle("Monthly usage for www.example.com");
-	$chart->render("graficos/objetivos_barra1.png");
-
-=======
 		
 	}
 
 	$chart->setDataSet($dataSet);
 	$chart->setTitle("");
 	$chart->render("graficos/objetivos_grafico_estados.png");
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 ?>
 		<div class="InfTituloBloque">Estado del Proyecto</div>
         <div class="" style="float:left; width:100%; margin: 10px 0 0 0;">            
-<<<<<<< HEAD
-            <?php if($objetivos>0){ ?>                
-                <div id="chartdiv"></div>
-
-=======
             <?php if($objetivos>0){ ?>             
                 <img src="<?php echo $PathImg ?>/informes/informes/crm/graficos/objetivos_grafico_estados.png<?php echo $stringURL; ?>">
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
                 <div id="" class="tabla">
                 	<table style="">
                 		<?php echo $rowTable1 ?>
@@ -277,13 +202,7 @@
             <?php } ?>
         </div>
 
-<<<<<<< HEAD
-<?php      
-
-	exit;  
-=======
 <?php        
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 
 	/*--------------------------------------------------LINEAS DE NEGOCIO---------------------------------------------------*/
 
@@ -295,22 +214,6 @@
 							 	crm_objetivos
 							 WHERE
 							 	activo = 1
-<<<<<<< HEAD
-							 AND fecha_creacion BETWEEN '$fechai'
-							 AND '$fechaf'
-							 GROUP BY
-							 	id_linea",$link);	
-
-	$lineas  = $mysql->num_rows($consul);
-
-	echo '<script>
-			  var objLineas    = {};
-			  var arrayLineas  = new Array();
-			  var stringLineas = "";
-		  </script>';
-
-	$i = 0;
-=======
 							 AND id_empresa = '$_SESSION[EMPRESA]'
 							 AND fecha_creacion BETWEEN '$fechai 00-00-00'
 							 AND '$fechaf 23:59:59'	
@@ -318,13 +221,10 @@
 							 	id_linea",$link);	
 
 	$lineas  = $mysql->num_rows($consul);	
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 
 	$rowTable2 .= '<tr style="background: #aaccf6;">
     				  <td  style="">Linea</td><td  style="">Proyectos</td><td  style="">Valor</td>
     			  </tr>';
-<<<<<<< HEAD
-=======
 
     $chart   = new VerticalBarChart(700, 350);
     $chart->getConfig()->setUseMultipleColor(true);
@@ -337,7 +237,6 @@
 				
 	));
 	$dataSet = new XYDataSet();	
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 	while($row2 = $mysql->fetch_array($consul)){
 
@@ -345,24 +244,6 @@
 			$row2['linea_negocio'] = 'Ninguno';
 		}
 
-<<<<<<< HEAD
-		echo '<script>
-					arrayLineas['.$i.']={
-				   	   linea     : "'.$row2['linea_negocio'].'",
-				   	   proyectos : "'.$row2['cantidad'].'",
-				   	   color     : "'.$arrayColor[rand(0,count($arrayColor)-1)].'"
-				   	};   	
-			  
-			  </script>';
-
-		$rowTable2 .= '<tr style="background: #dfe8f6;">
-	    				  <td style="">'.$row2['linea_negocio'].'</td><td style="">'.$row2['cantidad'].'</td><td style="">$ '.$row2['total'].'</td>
-	    			  </tr>';
-
-		$i++;
-		
-	}
-=======
 		$dataSet->addPoint(new Point($row2['linea_negocio'],$row2['cantidad']));
 
 		$rowTable2 .= '<tr style="background: #dfe8f6;">
@@ -374,17 +255,12 @@
 	$chart->setDataSet($dataSet);
 	$chart->setTitle("");
 	$chart->render("graficos/objetivos_grafico_lineas.png");
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 ?>
 		<div class="InfTituloBloque">Lineas de Negocio</div>
         <div class="" style="float:left; width:100%; margin: 10px 0 0 0;">            
             <?php if($lineas>0){ ?>                
-<<<<<<< HEAD
-                <div id="chartdiv2"></div>
-=======
                 <img src="<?php echo $PathImg ?>/informes/informes/crm/graficos/objetivos_grafico_lineas.png<?php echo $stringURL; ?>">
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
                 <div id="" class="tabla">
                 	<table style="">
                 		<?php echo $rowTable2 ?>
@@ -405,22 +281,6 @@
 							 	crm_objetivos
 							 WHERE
 							 	activo = 1
-<<<<<<< HEAD
-							 AND fecha_creacion BETWEEN '$fechai'
-							 AND '$fechaf'
-							 GROUP BY
-							 	probabilidad_exito",$link);	
-
-	$probabilidades  = $mysql->num_rows($consul);
-
-	echo '<script>
-			  var objProbabilidad    = {};
-			  var arrayProbabilidad  = new Array();
-			  var stringProbabilidad = "";
-		  </script>';
-
-	$i = 0;
-=======
 							 AND id_empresa = '$_SESSION[EMPRESA]'
 							 AND fecha_creacion BETWEEN '$fechai 00-00-00'
 							 AND '$fechaf 23:59:59'							 
@@ -428,13 +288,10 @@
 							 	probabilidad_exito",$link);	
 
 	$probabilidades  = $mysql->num_rows($consul);		
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 
 	$rowTable3 .= '<tr style="background: #aaccf6;">
     				  <td  style="">Probabilidad</td><td  style="">Proyectos</td><td  style="">Valor</td>
     			  </tr>';
-<<<<<<< HEAD
-=======
 
 	$chart   = new PieChart(700, 400);
 	$chart->getConfig()->setUseMultipleColor(true);
@@ -447,7 +304,6 @@
 				
 	));
 	$dataSet = new XYDataSet();
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 	
 	$acumCant  = 0;
 	$acumValor = 0;
@@ -460,55 +316,20 @@
 			continue;			
 		}
 
-<<<<<<< HEAD
-		echo '<script>
-					arrayProbabilidad['.$i.']={
-				   	   probabilidad : "'.$row3['probabilidad_exito'].'",
-				   	   proyectos    : "'.$row3['cantidad'].'",
-				   	   color        : "'.$arrayColor[rand(0,count($arrayColor)-1)].'"
-				   	};   	
-			  
-			  </script>';
-=======
 		$dataSet->addPoint(new Point($row3['probabilidad_exito'].' ('.$row3['cantidad'].')', $row3['cantidad']));
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 
 	    $rowTable3 .= '<tr style="background: #dfe8f6;">
 	    				  <td style="">'.$row3['probabilidad_exito'].'</td><td style="">'.$row3['cantidad'].'</td><td style="">$ '.$row3['total'].'</td>
 	    			  </tr>';
-<<<<<<< HEAD
-
-		$i++;
-=======
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 		
 	}
 
 	if($acumCant > 0){
-<<<<<<< HEAD
-		echo '<script>
-					arrayProbabilidad['.$i.']={
-				   	   probabilidad : "Ninguna",
-				   	   proyectos    : "'.$acumCant.'",
-				   	   color        : "'.$arrayColor[rand(0,count($arrayColor)-1)].'"
-				   	};   	
-			  
-			  </script>';
-=======
 		
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
 		$rowTable3 .= '<tr style="background: #dfe8f6;">
 	    				  <td style="">Ninguna</td><td style="">'.$acumCant.'</td><td style="">$ '.$acumValor.'</td>
 	    			  </tr>';
 	}
-<<<<<<< HEAD
-	
-?>
-		<div class="InfTituloBloque">Probabilidad de Exito</div>
-        <div class="" style="float:left; width:100%; margin: 10px 0 0 0;">            
-            <?php if($probabilidades > 0){ ?>                
-                <div id="chartdiv3"></div>
-=======
 
 	$chart->setDataSet($dataSet);
 	$chart->setTitle("");
@@ -520,7 +341,6 @@
         <div class="" style="float:left; width:100%; margin: 10px 0 0 0;">            
             <?php if($probabilidades > 0){ ?>                
                 <img src="<?php echo $PathImg ?>/informes/informes/crm/graficos/objetivos_grafico_probabilidades.png<?php echo $stringURL; ?>">
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe
                 <div id="" class="tabla">
                 	<table style="">
                 		<?php echo $rowTable3 ?>
@@ -530,99 +350,6 @@
         </div>   
 
 
-<<<<<<< HEAD
-<?php
-	/*-----------------------------------------------------------------------------------------------------------------------*/
-?>
-</body>
-<script>	 
-
-	var chartEstados = AmCharts.makeChart("chartdiv", {
-	  "type": "serial",
-	  "theme": "light",
-	  "marginRight": 70,
-	  "dataProvider": arrayEstados,
-	  "valueAxes": [{
-	    "axisAlpha": 0,
-	    "position": "left",
-	    "title": "Proyectos"
-	  }],
-	  "startDuration": 1,
-	  "graphs": [{
-	    "balloonText": "<b>[[category]]: [[value]]</b>",
-	    "fillColorsField": "color",
-	    "fillAlphas": 0.9,
-	    "lineAlpha": 0.2,
-	    "type": "column",
-	    "valueField": "proyectos"
-	  }],
-	  "chartCursor": {
-	    "categoryBalloonEnabled": false,
-	    "cursorAlpha": 0,
-	    "zoomable": false
-	  },
-	  "categoryField": "estado",
-	  "categoryAxis": {
-	    "gridPosition": "start",
-	    "labelRotation": 45
-	  },
-	  "export": {
-	    "enabled": true
-	  }
-	
-	});
-
-	var chartLineasNegocio = AmCharts.makeChart("chartdiv2", {
-	  "type": "serial",
-	  "theme": "light",
-	  "marginRight": 70,
-	  "dataProvider": arrayLineas,
-	  "valueAxes": [{
-	    "axisAlpha": 0,
-	    "position": "left",
-	    "title": "Proyectos"
-	  }],
-	  "startDuration": 1,
-	  "graphs": [{
-	    "balloonText": "<b>[[category]]: [[value]]</b>",
-	    "fillColorsField": "color",
-	    "fillAlphas": 0.9,
-	    "lineAlpha": 0.2,
-	    "type": "column",
-	    "valueField": "proyectos"
-	  }],
-	  "chartCursor": {
-	    "categoryBalloonEnabled": false,
-	    "cursorAlpha": 0,
-	    "zoomable": false
-	  },
-	  "categoryField": "linea",
-	  "categoryAxis": {
-	    "gridPosition": "start",
-	    "labelRotation": 45
-	  },
-	  "export": {
-	    "enabled": true
-	  }
-	
-	});
-
-	var chartProbabilidades = AmCharts.makeChart( "chartdiv3", {
-  	  "type": "pie",
-  	  "theme": "light",
-  	  "dataProvider": arrayProbabilidad,
-  	  "valueField": "proyectos",
-  	  "titleField": "probabilidad",
-  	   "balloon":{
-  	   "fixedPosition":true
-  	  },
-  	  "export": {
-  	    "enabled": true
-  	  }
-	} );	
-
-</script>
-=======
 <?php	
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 ?>
@@ -667,4 +394,3 @@
 		echo $texto;
 	}
 ?>
->>>>>>> d379f6e6f4a9ce92191804e669f34ed11decdffe

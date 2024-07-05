@@ -166,7 +166,7 @@
 			$cont         = 0;
 			$compruebaCod = 0;
 
-			$sqlConfigPUC   = "SELECT nombre,digitos FROM puc_configuracion_niif WHERE id_empresa='$id_empresa' AND activo=1 GROUP BY id ASC";		//CONSULTA CONFIGURACION PUC
+			$sqlConfigPUC   = "SELECT nombre,digitos FROM puc_configuracion WHERE id_empresa='$id_empresa' AND activo=1 GROUP BY id ASC";		//CONSULTA CONFIGURACION PUC
 			$queryConfigPUC = mysql_query($sqlConfigPUC,$link);
 			$varAceptaAncho = 'false';
 

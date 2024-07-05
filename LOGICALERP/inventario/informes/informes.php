@@ -105,24 +105,24 @@
 								icon    : "arrow_downward",
 								text    : "Generar Excel",
 								handler : function(){$W.HtmlTableToExcel('InformeData','Informe_kardex')}
-							},
-							 {
-							 	xtype   : "button",
-							 	width   : 65,
-							 	icon    : "picture_as_pdf",
-							 	text    : "Generar PDF",
-							 	handler : function(){$W.HtmlToPdf({
-							 			capa    : "InformeFile_Informes_InfoKardex",
-							 			id      : "Informes_InfoKardex",
-							 			nombre  : "Informe_kardex",
-							 			//target  : 'download',
-							 			path    : "../informes/",
-							 			options :{
-							 				debug:"false"
-							 			}
-							 		})
-							 	}
-							 }
+							}
+							 //{
+							 //	xtype   : "button",
+							 //	width   : 65,
+							 //	icon    : "picture_as_pdf",
+							 //	text    : "Generar PDF",
+							 //	handler : function(){$W.HtmlToPdf({
+							 //			capa    : "InformeFile_Informes_InfoKardex",
+							 //			id      : "Informes_InfoKardex",
+							 //			nombre  : "Informe_kardex",
+							 //			//target  : 'download',
+							 //			path    : "../informes/",
+							 //			options :{
+							 //				debug:"false"
+							 //			}
+							 //		})
+							 //	}
+							 //}
 						]
 	 				}
 	 			]

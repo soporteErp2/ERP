@@ -4,28 +4,34 @@
 	include("../../../misc/MyGrilla/class.MyGrilla.php");
 
 	/**//////////////////////////////////////////////**/
-	/**///		     INICIALIZACION DE LA CLASE  	  ///**/
-	/**/											                      /**/
-	/**/	         $grilla = new MyGrilla();				/**/
-	/**/											                      /**/
+	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
+	/**/											/**/
+	/**/	$grilla = new MyGrilla();				/**/
+	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
 	$id_empresa = $_SESSION['EMPRESA'];
 	//CONFIGURACION//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		//NOMBRE DE LA GRILLA
-			$grilla->GrillaName	= 'cuentasPago';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
+			$grilla->GrillaName	 		= 'cuentasPago';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
-			$grilla->TableName	= 'configuracion_cuentas_pago';			          //NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere		= "activo = 1 AND id_empresa = $id_empresa";	//WHERE DE LA CONSULTA A LA TABLA "$TableName"
-			$grilla->MySqlLimit	= '0,50';			                                //LIMITE DE LA CONSULTA
+			$grilla->TableName			= 'configuracion_cuentas_pago';			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
+			$grilla->MyWhere			= "activo = 1 AND id_empresa = $id_empresa";		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->MySqlLimit			= '0,50';			//LIMITE DE LA CONSULTA
+
 		//TAMANO DE LA GRILLA
-			$grilla->AutoResize	= 'false';		//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			$grilla->Ancho		 	= 760;				//ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
+			$grilla->AutoResize	 		= 'false';			//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
+			$grilla->Ancho		 		= 760;				//ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
 			$grilla->Alto		 		= 310;				//ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
+			// $grilla->QuitarAncho		= 70;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+			// $grilla->QuitarAlto		= 160;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+
 		//TOOLBAR Y CAMPO DE BUSQUEDA
-			$grilla->Gtoolbar			      = 'true';			            //SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
-			$grilla->CamposBusqueda		  = 'nombre,cuenta,tipo';		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
-			$grilla->DivActualiBusqueda = '' ;				            //VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
+			$grilla->Gtoolbar			= 'true';			//SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
+			$grilla->CamposBusqueda		= 'nombre,cuenta,tipo';		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
+			$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
+
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 			$grilla->AddRow('Id','id',25);
 			$grilla->AddRowImage('','<center><div style="float:left; margin: 0 0 0 7px" onclick="ventanaCuentaPagoTercero([id],\'[tipo_tercero]\')"><img src="cuentas_pago/img/[tipo_tercero].png" style="cursor:pointer" width="16" height="16"></div></center>',35);
@@ -35,50 +41,52 @@
 			$grilla->AddRow('Modulo','tipo',80);
 			$grilla->AddRow('Estado','estado',80);
 			$grilla->AddRow('Sucursal','sucursal',120);
-			$grilla->AddRow('Tipo Cuenta Bancaria','tipo_cuenta_bancaria',120);
-			$grilla->AddRow('Numero Cuenta Bancaria','numero_cuenta_bancaria',120);
+
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 310;
 			$grilla->FColumnaGeneralAncho	= 310;
 			$grilla->FColumnaGeneralAlto	= 25;
 			$grilla->FColumnaLabelAncho		= 100;
 			$grilla->FColumnaFieldAncho		= 190;
+
 		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
-			$grilla->VentanaAuto		 = 'true';		//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
-			$grilla->TituloVentana	 = 'Cuentas de pago'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
-			$grilla->VBarraBotones	 = 'true';		//SI HAY O NO BARRA DE BOTONES
-			$grilla->VBotonNuevo		 = 'true';		//SI LLEVA EL BOTON DE AGREGAR REGISTRO
-			$grilla->VBotonNText		 = 'Nueva<br/>Cuenta de Pago'; //TEXTO DEL BOTON DE NUEVO REGISTRO
-			$grilla->VBotonNImage		 = 'add';			//IMAGEN CSS DEL BOTON
-			$grilla->VAutoResize		 = 'false';		//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			$grilla->VAncho		 		   = 300;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
-			$grilla->VAlto		 		   = 280;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
-			$grilla->VQuitarAncho		 = 70;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
-			$grilla->VQuitarAlto		 = 160;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
-			$grilla->VAutoScroll		 = 'false';		//SI LA VENTANA TIENE O NO AUTOSCROLL
-			$grilla->VBotonEliminar	 = 'true';		//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
-			$grilla->VComporEliminar = 'true';		//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
+			$grilla->VentanaAuto		= 'true';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
+			$grilla->TituloVentana		= 'Cuentas de pago'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
+			$grilla->VBarraBotones		= 'true';			//SI HAY O NO BARRA DE BOTONES
+			$grilla->VBotonNuevo		= 'true';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
+			$grilla->VBotonNText		= 'Nueva<br/>Cuenta de Pago'; //TEXTO DEL BOTON DE NUEVO REGISTRO
+			$grilla->VBotonNImage		= 'add';			//IMAGEN CSS DEL BOTON
+			$grilla->VAutoResize		= 'false';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
+			$grilla->VAncho		 		= 300;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
+			$grilla->VAlto		 		= 240;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
+			$grilla->VQuitarAncho		= 70;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
+			$grilla->VQuitarAlto		= 160;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
+			$grilla->VAutoScroll		= 'false';			//SI LA VENTANA TIENE O NO AUTOSCROLL
+			$grilla->VBotonEliminar		= 'true';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
+			$grilla->VComporEliminar	= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
+
 		//CONFIGURACION DE LO FORMULARIOS DE CAPTURA Y EDICION
 			$grilla->AddTextField('Nombre','nombre',150,'true','false');
-			$grilla->AddComboBox('Modulo','tipo',150,'true','false','Venta:Venta,Compra:Compra,Pos:Pos');
+			$grilla->AddComboBox('Modulo','tipo',150,'true','false','Venta:Venta,Compra:Compra');
 			$grilla->AddComboBox('Estado','estado',150,'true','false','Contado:Contado,Credito:Credito');
 			$grilla->AddTextField('Cuenta Colgaap','cuenta',150,'true','false');
 			$grilla->AddTextField('Cuenta Niif','cuenta_niif',150,'true','false');
-			$grilla->AddComboBox ('Banco','banco',150,'false','false','1051:Banco Davivienda SA,1007:Bancolombia');
 			$grilla->AddTextField('','id_empresa',150,'true','true',$id_empresa);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 	/**//////////////////////////////////////////////////////////////**/
-	/**///				         INICIALIZACION DE LA GRILLA	  			  ///**/
-	/**/															                              /**/
-	/**/	   $grilla->Link = $link;  	     //Conexion a la BD			  /**/
-	/**/	   $grilla->inicializa($_POST);  //Variables POST			    /**/
-	/**/	   $grilla->GeneraGrilla(); 	   //Inicializa la Grilla		/**/
-	/**/															                              /**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/															/**/
+	/**/	$grilla->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$grilla->inicializa($_POST);//variables POST			/**/
+	/**/	$grilla->GeneraGrilla(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
 
 
 if($opcion=='Vupdate' || $opcion=='Vagregar'){ ?>
+
 	<script>
 
 		codigo_puc      = document.getElementById("cuentasPago_cuenta");
@@ -146,7 +154,9 @@ if($opcion=='Vupdate' || $opcion=='Vagregar'){ ?>
 		}
 
 	</script>
+
 <?php }
+
 else if(!isset($opcion)){  ?>
 	<script>
 		document.getElementById("ContenedorPrincipal_cuentasPago").setAttribute("style","float:left; margin-top:10px;");

@@ -182,29 +182,28 @@
         ,   separador_decimales = document.getElementById('separador_decimales').value
 
         // CAPTURAR VARIABLES
-        var   id_sucursal                 = document.getElementById('filtro_sucursal_sucursales_report').value
+        // var cuentaInicial              = document.getElementById('cuenta_inicial').value
+        // ,   cuentaFinal                = document.getElementById('cuenta_final').value
+        var   sucursal                   = document.getElementById('filtro_sucursal_sucursales_report').value
         ,   MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
         ,   MyInformeFiltroFechaFinal  = (document.getElementById('MyInformeFiltroFechaFinal'))? document.getElementById('MyInformeFiltroFechaFinal').value : ''
+        // ,   arraytercerosJSON          = Array()
         ,   arrayCentroCostosJSON      = Array()
-        ,   arrayGrupo                 = Array()
-        ,   i                          = 0
+        ,   i = 0
+
+        // if (cuentaInicial!="" && cuentaFinal=="" || cuentaInicial=="" && cuentaFinal!="") {
+        //     alert("Error!\nDigite las dos cuentas para la consulta por rango de cuentas");
+        //     return;
+        // }
+
+        // arraytercerosLA.map(function(id_tercero) { arraytercerosJSON[i] = id_tercero; i++; });
+        // arraytercerosJSON=JSON.stringify(arraytercerosJSON);
 
         arrayCentroCostosERPR.forEach(function(id_centro_costo) {  arrayCentroCostosJSON[i] = id_centro_costo; i++; });
         arrayCentroCostosJSON=JSON.stringify(arrayCentroCostosJSON);
-        let checkboxGroup = document.getElementsByClassName("checkboxGroup")
-        i=0;
-        Object.keys(checkboxGroup).forEach(function(element){
-            if (checkboxGroup[element].checked==false) {return;}
-            arrayGrupo[i]           = {};
-            arrayGrupo[i]['nit']    = checkboxGroup[element].dataset.nit;
-            arrayGrupo[i]['nombre'] = checkboxGroup[element].dataset.nombre;
-            // console.log(checkboxGroup[element].dataset)
-            i++;
-        });
-        arrayGrupo=JSON.stringify(arrayGrupo);
 
 		Ext.get('RecibidorInforme_erp_report').load({
-			url     : '../informes/informes/report/controller.php',
+			url     : '../informes/informes/report/report_Result.php',
 			text	: 'Generando Informe...',
 			scripts : true,
 			nocache : true,
@@ -212,13 +211,15 @@
 			params  :
 			{
                 id_formato                 : id_formato,
+                // cuentaInicial           : cuentaInicial,
+                // cuentaFinal             : cuentaFinal,
                 MyInformeFiltroFechaInicio : MyInformeFiltroFechaInicio,
                 MyInformeFiltroFechaFinal  : MyInformeFiltroFechaFinal,
                 separador_miles            : separador_miles,
                 separador_decimales        : separador_decimales,
-                sucursal                   : id_sucursal,
+                sucursal                   : sucursal,
+                // arraytercerosJSON       : arraytercerosJSON,
                 arrayCentroCostosJSON      : arrayCentroCostosJSON,
-                arrayGrupoJSON             : arrayGrupo,
 			}
 		});
 

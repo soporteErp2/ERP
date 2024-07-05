@@ -137,14 +137,14 @@
                             <td  width="80" style="text-align:right;"> '.validar_numero_formato($arrayAsientoAnterior[$rowCuentas['cuenta']],$IMPRIME_XLS).'</td>
                             <td  width="80" style="text-align:right;"> '.validar_numero_formato($arrayAsientoActual[$rowCuentas['cuenta']]['debe'],$IMPRIME_XLS).'</td>
                             <td  width="80" style="text-align:right;"> '.validar_numero_formato($arrayAsientoActual[$rowCuentas['cuenta']]['haber'],$IMPRIME_XLS).'</td>
-                            <td  width="80" style="text-align:right;"> '.validar_numero_formato($arrayAsientoAnterior[$rowCuentas['cuenta']]-($arrayAsientoActual[$rowCuentas['cuenta']]['debe']-$arrayAsientoActual[$rowCuentas['cuenta']]['haber']),$IMPRIME_XLS).'</td>
+                            <td  width="80" style="text-align:right;"> '.validar_numero_formato($arrayAsientoAnterior[$rowCuentas['cuenta']]+($arrayAsientoActual[$rowCuentas['cuenta']]['debe']-$arrayAsientoActual[$rowCuentas['cuenta']]['haber']),$IMPRIME_XLS).'</td>
                         </tr>';
 
         $acumuladoSaldoAnterior += $arrayAsientoAnterior[$rowCuentas['cuenta']];
         $acumuladoDebe          += $arrayAsientoActual[$rowCuentas['cuenta']]['debe'];
         $acumuladoHaber         += $arrayAsientoActual[$rowCuentas['cuenta']]['haber'];
-        $acumuladoSaldoActual   += $arrayAsientoAnterior[$rowCuentas['cuenta']]-($arrayAsientoActual[$rowCuentas['cuenta']]['debe']-$arrayAsientoActual[$rowCuentas['cuenta']]['haber']);
-
+        $acumuladoSaldoActual   += $arrayAsientoAnterior[$rowCuentas['cuenta']]+($arrayAsientoActual[$rowCuentas['cuenta']]['debe']-$arrayAsientoActual[$rowCuentas['cuenta']]['haber']);
+        
     }//FIN WHILE
 
     if ($clase!=0 ) {

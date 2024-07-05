@@ -11,9 +11,7 @@
 	$divItemsCuenta = '';
 
 	//VALIDACION CUENTA DEVOLUCION VENTA
-	$sqlDevVenta   = "SELECT COUNT(id) AS contDevVenta FROM
-						asientos_colgaap_default
-						WHERE id_empresa='$id_empresa' AND descripcion='items_venta_devprecio' AND activo=1";
+	$sqlDevVenta   = "SELECT COUNT(id) AS contDevVenta FROM asientos_colgaap_default WHERE id_empresa='$id_empresa' AND descripcion='items_venta_devprecio' AND activo=1";
 	$queryDevVenta = mysql_query($sqlDevVenta,$link);
 	$contDevVenta  = mysql_result($queryDevVenta, 0, 'contDevVenta');
 
@@ -25,118 +23,95 @@
 		$queryInsert = mysql_query($sqlInsert,$link);
 	}
 
-	// print_r($arrayNaturaleza);
 	$sqlCuentasItems = "SELECT id,descripcion,estado,cuenta,detalle_cuenta
 						FROM asientos_colgaap_default
 						WHERE id_empresa='$id_empresa'";
 	$queryCuentasItems = mysql_query($sqlCuentasItems,$link);
 
 	while ($rowCuentasItems = mysql_fetch_array($queryCuentasItems)) {
-
+		$reload    = '';
 		$texto     = $rowCuentasItems['descripcion'];
-		$arraySaveCampos[$texto]['cuenta']      = $rowCuentasItems['cuenta'];
-		$arraySaveCampos[$texto]['descripcion'] = " - ".$rowCuentasItems['detalle_cuenta'];
+		$textIcon  = ($rowCuentasItems['estado'] != 'debito')? 'C': 'D';
+		$titleIcon = ($rowCuentasItems['estado'] != 'debito')? 'Credito': 'Debito';
+		$btnReload = $arrayNaturaleza[$id_pais][$texto]['btnSinc'];
+
+		if($btnReload != 'no'){
+			$reload = '<div id="reload_'.$texto.'" title="Homologar cuenta en niif" style="height:20px; width:20px; float:left; overflow:hidden; margin:0 10px 0 5px;">
+							<div class="btnItemsCuentas" style="margin:0;" onclick="homologarCuentaEnNiif(\''.$texto.'\')"><img src="cuentas_default/img/refresh.png" /></div>
+						</div>';
+		}
+		else{ $reload = '<div style="height:20px; width:20px; float:left; overflow:hidden; margin:0 10px 0 5px;"></div>'; }
+
+
+		$arraySaveCampos[$texto]['cuenta']         = $rowCuentasItems['cuenta'];
+		$arraySaveCampos[$texto]['detalle_cuenta'] = $rowCuentasItems['detalle_cuenta'];
+		$arraySaveCampos[$texto]['btns']           = '<div id="contenedorBtns_'.$texto.'" class="contenedorBtns">
+														<div id="estado_'.$texto.'" title="'.$titleIcon.'" class="btnItemsCuentasEstado">'.$textIcon.'</div>
+														'.$reload.'
+													</div>';
 	}
 
 	//================= COMPRA ================//
-	$arrayCuentasCompras[]= array('texto' => 'items_compra_precio', 'label' => 'SubTotal');
-	$arrayCuentasCompras[]= array('texto' => 'items_compra_impuesto', 'label' => 'Impuesto');
-	$arrayCuentasCompras[]= array('texto' => 'items_compra_activo_fijo', 'label' => 'SubTotal (Opcional - Activo Fijo)');
-	$arrayCuentasCompras[]= array('texto' => 'items_compra_gasto', 'label' => 'SubTotal (Opcional - Gasto)');
-	$arrayCuentasCompras[]= array('texto' => 'items_compra_costo', 'label' => 'SubTotal (Opcional - Costo)');
+	$arrayCuentasCompras[1]= array('texto' => 'items_compra_precio', 'label' => 'SubTotal');
+	$arrayCuentasCompras[2]= array('texto' => 'items_compra_impuesto', 'label' => 'Impuesto');
+	$arrayCuentasCompras[3]= array('texto' => 'items_compra_activo_fijo', 'label' => 'SubTotal (Opcional - Activo Fijo)');
+	$arrayCuentasCompras[4]= array('texto' => 'items_compra_gasto', 'label' => 'SubTotal (Opcional - Gasto)');
+	$arrayCuentasCompras[5]= array('texto' => 'items_compra_costo', 'label' => 'SubTotal (Opcional - costo)');
 
-	foreach ($arrayCuentasCompras as $key => $arrayResult) {
-		if ($arraySaveCampos[$arrayResult['texto']]['descripcion']==' - ') {
-			$arraySaveCampos[$arrayResult['texto']]['cuenta']      = '';
-			$arraySaveCampos[$arrayResult['texto']]['descripcion'] = "<i>Sin cuenta asignada</i>";
-		}
-		$tableBodyCompras .="<div class='row' id='row_tercero_14'>
-	                           	<div class='cell' data-col='1'></div>
-            					<div class='cell' data-col='2'>$arrayResult[label]</div>
-            					<div class='cell' data-col='3' id='estado_$arrayResult[texto]' data-value='".$arrayNaturaleza[$_SESSION['PAIS']][$arrayResult['texto']]['naturaleza']."'>".$arrayNaturaleza[$_SESSION['PAIS']][$arrayResult['texto']]['naturaleza']."</div>
-            					<div class='cell' data-col='4' id='cuenta_$arrayResult[texto]' data-cuenta='".$arraySaveCampos[$arrayResult['texto']]['cuenta']."' title='".$arraySaveCampos[$arrayResult['texto']]['cuenta']." ".$arraySaveCampos[$arrayResult['texto']]['descripcion']."'>".$arraySaveCampos[$arrayResult['texto']]['cuenta']." ".$arraySaveCampos[$arrayResult['texto']]['descripcion']."</div>
-	                           	<div class='cell' data-col='1' data-icon='search' onclick='buscarPuc(\"$arrayResult[texto]\")' title='Buscar Cuenta'></div>
-	                           	<div class='cell' data-col='1' data-icon='sinc' onclick='homologarCuentaEnNiif(\"$arrayResult[texto]\")' title='Sincronizar Niif'></div>
-	                        </div>";
+	$divItemsCuenta .= '<div class="item_cuenta_left">
+							<div class="titleItemsCuenta"><b>COMPRA</b></div>';
+
+	for ($i=1; $i <= 5 ; $i++) {
+		$label = $arrayCuentasCompras[$i]['label'];
+		$texto = $arrayCuentasCompras[$i]['texto'];
+
+		$divItemsCuenta .= 	'<div class="filaCuentasItems">
+								<div style="float:left; width:180px;">'.$label.'</div>
+								<div style="float:left; width:90px; margin-left:5px;">
+									<input type="text" class="myfield" id="input_'.$texto.'" onclick="buscarPuc(this)" readonly value="'.$arraySaveCampos[$texto]['cuenta'].'"/>
+								</div>
+								<div style="float:left; width:18px; overflow:hidden; margin-left:-18px;" id="render_'.$texto.'"></div>
+								'.$arraySaveCampos[$texto]['btns'].'
+								<div class="cuentaPuc" id="detalle_'.$texto.'">'.$arraySaveCampos[$texto]['detalle_cuenta'].'</div>
+							</div>';
 	}
+	$divItemsCuenta .=	'</div>';
 
 	//================= VENTA ================//
-	$arrayCuentasVentas[]= array('texto' => 'items_venta_precio', 'label' => 'SubTotal');
-	$arrayCuentasVentas[]= array('texto' => 'items_venta_impuesto', 'label' => 'Impuesto');
-	$arrayCuentasVentas[]= array('texto' => 'items_venta_costo', 'label' => 'Costo');
-	$arrayCuentasVentas[]= array('texto' => 'items_venta_contraPartida_costo', 'label' => 'inventario');
-	$arrayCuentasVentas[]= array('texto' => 'items_venta_devprecio', 'label' => 'SubTotal en Devolucion');
+	$arrayCuentasVentas[1]= array('texto' => 'items_venta_precio', 'label' => 'SubTotal');
+	$arrayCuentasVentas[2]= array('texto' => 'items_venta_impuesto', 'label' => 'Impuesto');
+	$arrayCuentasVentas[3]= array('texto' => 'items_venta_costo', 'label' => 'Costo');
+	$arrayCuentasVentas[4]= array('texto' => 'items_venta_contraPartida_costo', 'label' => 'inventario');
+	$arrayCuentasVentas[5]= array('texto' => 'items_venta_devprecio', 'label' => 'SubTotal en Devolucion');
 
-	foreach ($arrayCuentasVentas as $key => $arrayResult) {
-		if ($arraySaveCampos[$arrayResult['texto']]['descripcion']==' - ') {
-			$arraySaveCampos[$arrayResult['texto']]['cuenta']      = '';
-			$arraySaveCampos[$arrayResult['texto']]['descripcion'] = "<i>Sin cuenta asignada</i>";
-		}
-		$tableBodyVentas .="<div class='row' id='row_tercero_14'>
-	                           	<div class='cell' data-col='1'></div>
-            					<div class='cell' data-col='2'>$arrayResult[label]</div>
-            					<div class='cell' data-col='3' id='estado_$arrayResult[texto]' data-value='".$arrayNaturaleza[$_SESSION['PAIS']][$arrayResult['texto']]['naturaleza']."' >".$arrayNaturaleza[$_SESSION['PAIS']][$arrayResult['texto']]['naturaleza']."</div>
-            					<div class='cell' data-col='4' id='cuenta_$arrayResult[texto]' data-cuenta='".$arraySaveCampos[$arrayResult['texto']]['cuenta']."' title='".$arraySaveCampos[$arrayResult['texto']]['cuenta']." ".$arraySaveCampos[$arrayResult['texto']]['descripcion']."'>".$arraySaveCampos[$arrayResult['texto']]['cuenta']." ".$arraySaveCampos[$arrayResult['texto']]['descripcion']."</div>
-	                           	<div class='cell' data-col='1' data-icon='search' onclick='buscarPuc(\"$arrayResult[texto]\")' title='Buscar Cuenta'></div>
-	                           	<div class='cell' data-col='1' data-icon='sinc' onclick='homologarCuentaEnNiif(\"$arrayResult[texto]\")' title='Sincronizar Niif'  $arrayResult[styleBtnSinc]></div>
-	                        </div>";
+	$divItemsCuenta .= '<div class="item_cuenta_right">
+							<div class="titleItemsCuenta"><b>VENTA</b></div>';
+
+	for ($i=1; $i <= 5 ; $i++) {
+		$label = $arrayCuentasVentas[$i]['label'];
+		$texto = $arrayCuentasVentas[$i]['texto'];
+
+		$divItemsCuenta .= 	'<div class="filaCuentasItems">
+								<div style="float:left; width:180px;">'.$label.'</div>
+								<div style="float:left; width:90px; margin-left:5px;">
+									<input type="text" class="myfield" id="input_'.$texto.'" onclick="buscarPuc(this)" readonly value="'.$arraySaveCampos[$texto]['cuenta'].'"/>
+								</div>
+								<div style="float:left; width:18px; overflow:hidden; margin-left:-18px;" id="render_'.$texto.'"></div>
+								'.$arraySaveCampos[$texto]['btns'].'
+								<div class="cuentaPuc" id="detalle_'.$texto.'">'.$arraySaveCampos[$texto]['detalle_cuenta'].'</div>
+							</div>';
 	}
+	$divItemsCuenta .=	'</div>';
 
 ?>
 
-<style>
-    /*ESTILOS DEL WIZARD Y DE LA GRILLA ESTAN EN INDEX.CSS, ESTE ESTILO ES PARA PERSONALIZACION DE CONTENIDO*/
-    .sub-content[data-position="right"]{width: 100%; height: 420px; }
-    .sub-content[data-position="left"]{width: 40%; overflow:auto;}
-    .content-grilla-filtro { height: 165px; width: 98%; }
-    .content-grilla-filtro .cell[data-col="1"]{width: 22px;}
-    .content-grilla-filtro .cell[data-col="2"]{width: 180px;}
-    .content-grilla-filtro .cell[data-col="3"]{width: 65px; text-transform: capitalize;}
-    .content-grilla-filtro .cell[data-col="4"]{width: 211px;}
-    .sub-content [data-width="input"]{width: 120px;}
-
-</style>
-
-<div class="main-content" style="height: 420px;overflow-y: auto;overflow-x: hidden;">
-    <div class="sub-content" data-position="right">
-        <div class="title">CUENTAS EN COMPRA</div>
-
-        <div class="content-grilla-filtro">
-            <div class="head">
-                <div class="cell" data-col="1"></div>
-                <div class="cell" data-col="2">Tipo</div>
-                <div class="cell" data-col="3">Naturaleza</div>
-                <div class="cell" data-col="4">Cuenta</div>
-                <!-- <div class="cell" data-col="1" data-icon="search" title="Buscar Clientes" onclick="ventanaBusquedaTercero();"></div> -->
-            </div>
-            <div class="body" id="body_grilla_filtro">
-            	<?php echo $tableBodyCompras; ?>
-            </div>
-        </div>
-
-    	<div class="title">CUENTAS EN VENTA</div>
-        <div class="content-grilla-filtro">
-            <div class="head">
-                <div class="cell" data-col="1"></div>
-                <div class="cell" data-col="2">Tipo</div>
-                <div class="cell" data-col="3">Naturaleza</div>
-                <div class="cell" data-col="4">Cuenta</div>
-                <!-- <div class="cell" data-col="1" data-icon="search" title="Buscar Clientes" onclick="ventanaBusquedaTercero();"></div> -->
-            </div>
-            <div class="body" id="body_grilla_filtro">
-            	<?php echo $tableBodyVentas; ?>
-            </div>
-        </div>
-
-    </div>
-
-<div id="loadForm" style="display: none;"></div>
-</div>
-<!-- <div class="contenedor_items_cuentas"><?php echo $divItemsCuenta; ?></div> -->
+<div class="contenedor_items_cuentas"><?php echo $divItemsCuenta; ?></div>
 
 <script>
 
 	function buscarPuc(inputCuenta){
+		var idInput = inputCuenta.id;
+
 		Win_VentanaBuscarPucItems = new Ext.Window({
             width       : 500,
             height      : 500,
@@ -154,7 +129,7 @@
                 params  :
                 {
 					type_puc       : 'puc',
-					ejecutaFuncion : 'responseVentanaPucItems(id,"'+inputCuenta+'")'
+					ejecutaFuncion : 'responseVentanaPucItems(id,"'+idInput+'")'
 				}
             },
             tbar        :
@@ -173,7 +148,7 @@
 
 	function responseVentanaPucItems(idPuc,idInput){
 		var texto  = idInput.replace('input_','')
-		var	estado = document.getElementById('estado_'+idInput).dataset.value
+		,	estado = document.getElementById('estado_'+texto).innerHTML
 		,	puc    = document.getElementById('div_busquedaPucItems_cuenta_'+idPuc).innerHTML
 		,	nombre = document.getElementById('div_busquedaPucItems_descripcion_'+idPuc).innerHTML;
 
@@ -181,7 +156,7 @@
 		if(puc.length > 4){ Win_VentanaBuscarPucItems.close(); }
 		else{ alert("Aviso,\nSeleccione una subcuenta o una cuenta auxiliar."); return; }
 
-		Ext.get('loadForm').load({
+		Ext.get('render_'+texto).load({
 		    url		: 'cuentas_default/bd/bd.php',
 		    timeout : 180000,
 		    scripts	: true,
@@ -193,14 +168,15 @@
 				puc          : puc,
 				nombre       : nombre,
 				estado       : estado,
-				texto        : idInput,
+				texto        : texto,
 		    }
 		});
 	}
 
-	function homologarCuentaEnNiif(campo){
-		var cuenta = document.getElementById('cuenta_'+campo).dataset.cuenta
-		Ext.get('loadForm').load({
+	function homologarCuentaEnNiif(texto){
+		var cuenta = document.getElementById('input_'+texto).value;
+
+		Ext.get('reload_'+texto).load({
 			url     : 'cuentas_default/bd/bd.php',
 			scripts : true,
 			nocache : true,
@@ -208,7 +184,7 @@
 			{
 				op     : 'updateCuentaNiif',
 				cuenta : cuenta,
-				texto  : campo
+				texto  : texto
 			}
 		});
 	}

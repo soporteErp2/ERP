@@ -1,14 +1,3 @@
-<?php
-  include_once('../../../../configuracion/conectar.php');
-  include_once('../../../../configuracion/define_variables.php');
-
-  $sql = "SELECT nombre FROM puc_configuracion WHERE activo = 1 AND id_empresa = $_SESSION[EMPRESA] GROUP BY nombre ORDER BY digitos ASC";
-  $query = $mysql->query($sql,$mysql->link);
-
-  while($row = $mysql->fetch_array($query)){
-    $nivel_cuentas .= "<option value='$row[nombre]'>$row[nombre]</option>";
-  }
-?>
 <style>
   /*ESTILOS DEL WIZARD Y DE LA GRILLA ESTAN EN INDEX.CSS, ESTE ESTILO ES PARA PERSONALIZACION DE CONTENIDO*/
   .sub-content[data-position="right"]{width: calc(60% - 3px); }
@@ -38,8 +27,12 @@
   <div class="sub-content" data-position="left">
     <div class="title">NIVEL DE CUENTAS</div>
     <p>
-      <select data-width="input" id="nivel_cuentas_BC">
-        <?php echo $nivel_cuentas; ?>
+      <select data-width="input" id="nivel_cuentas_BC"
+        <option value="1">Clase</option>
+        <option value="2">Grupo</option>
+        <option value="4">Cuenta</option>
+        <option value="6">Subcuenta</option>
+        <option value="8">Auxiliares</option>
       </select>
     </p>
     <div class="title">FECHAS DEL INFORME</div>
@@ -163,10 +156,6 @@
   if(typeof(localStorage.separador_decimalesBC) != "undefined")
     if(localStorage.separador_decimalesBC != "")
       document.getElementById("separador_decimalesBC").value = localStorage.separador_decimalesBC;
-
-  if(typeof(localStorage.cuentas_cierreBC) != "undefined")
-    if(localStorage.cuentas_cierreBC != "")
-      document.getElementById("incluir_cuentas_cierre_BC").value = localStorage.cuentas_cierreBC;
 
   if(checkBoxSelectAllTercerosBC == "true")
     document.getElementById('div_check_terceros').dataset.icon = 'check';

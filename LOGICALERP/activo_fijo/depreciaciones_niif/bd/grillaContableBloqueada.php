@@ -13,6 +13,8 @@
     $estado      = '';
     $fecha       = date('Y-m-d');
     $exento_iva  = '';
+
+
 ?>
 <script>
 

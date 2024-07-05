@@ -18,7 +18,7 @@
 	$InstanciaName    = 'editarDocumentosErp';
 	$CKEditor         = new CKEditor();
 	$config['height'] = $myalto - 195;
-	// print_r($config);
+
  	$CKEditor->editor($InstanciaName, $texto, $config);
 
 ?>

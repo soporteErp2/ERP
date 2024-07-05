@@ -150,7 +150,7 @@
                                             // buscarEmpleadoCargado();
                                             console.log(responseJSON);
                                             console.log(responseJSON.success);
-                                            if(JsonText == '{}'){ alert("Aviso\nLo sentimos ha ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!"); return; }
+                                            if(JsonText == '{}'){ alert("Aviso\nLo sentimos a ocurrido un problema con la carga del archivo, por favor verifique si se logro subir el excel en caso contrario intentelo nuevamente!"); return; }
                                             else if (responseJSON.success==true){
                                                 var idUpload     = responseJSON.idUpload;
                                                 // document.getElementById('divPadreModalUploadFile').setAttribute('style','');

@@ -41,7 +41,7 @@
 			// $grilla->AddRow('Cuenta Colgaap','cuenta_colgaap',150);
 			// $grilla->AddRow('Cuenta Niif','cuenta_niif',150);
 			$grilla->AddRow('Sucursal','sucursal',150);
-			$grilla->AddRowImage('','<img src="img/config16.png" style="cursor:pointer" width="16" height="16" title="Agregar Facturas" onclick="ventana_detalle_facturas(\'[id]\',\'[tipo_factura]\')"><input type="hidden" id="estado_[id]" value="[estado]"><input type="hidden" id="filtro_sucursal_[id]" value="[id_sucursal]">',16);
+			$grilla->AddRowImage('','<img src="img/config16.png" style="cursor:pointer" width="16" height="16" title="Agregar Facturas" onclick="ventana_difinicion_tributaria(\'[id]\',\'[tipo_factura]\')"><input type="hidden" id="estado_[id]" value="[estado]"><input type="hidden" id="filtro_sucursal_[id]" value="[id_sucursal]">',16);
 			$grilla->AddRowImage('','<img src="img/estado_doc/[estado].png" id="img_saldos_iniciales_[id]" style="cursor:pointer" width="16" height="16">',16);
 
 
@@ -89,7 +89,7 @@
 if(!isset($opcion)){  ?>
 	<script>
 
-	function ventana_detalle_facturas(id,tipo_factura){
+	function ventana_difinicion_tributaria(id,tipo_factura){
 
 		var img    = document.getElementById('img_saldos_iniciales_'+id).getAttribute('src');
 		var hiden1 = (img == 'img/estado_doc/0.png')? false: true;
@@ -97,7 +97,7 @@ if(!isset($opcion)){  ?>
 
 		Win_Ventana_encabezado = new Ext.Window({
 			    width       : 890,
-			    height      : 550,
+			    height      : 600,
 			    id          : 'Win_Ventana_encabezado',
 			    title       : 'Facturas Saldos Iniciales ',
 			    modal       : true,
@@ -140,7 +140,7 @@ if(!isset($opcion)){  ?>
 								handler   : function(){ generar_saldo_inicial(); }
 			                },
 			                {
-								xtype     : 'splitbutton',
+								xtype     : 'button',
 								id        : 'btn_upload_excel_saldo',
 								width     : 60,
 								height    : 56,
@@ -148,15 +148,7 @@ if(!isset($opcion)){  ?>
 								scale     : 'large',
 								iconCls   : 'upload_file32',
 								iconAlign : 'top',
-								handler   : function(){ windows_upload_excel('SF'); },
-								menu:
-						            [
-					            		{
-											text    : "Descargar Formato",
-											iconCls : "xls16",
-											handler : function(){ BloqBtn(this); window.open('facturas_saldos_iniciales/bd/formato_facturas_iniciales.xlsx');  }
-					            		}
-						          	]
+								handler   : function(){ windows_upload_excel(); }
 			                },
 			                {
 			                    xtype       : 'button',

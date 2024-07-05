@@ -10,7 +10,7 @@
       public $IMPRIME_HTML                = '';
       public $IMPRIME_XLS                 = '';
       public $IMPRIME_PDF                 = '';
-      public $arrayTercerosJSON           = '';
+      public $arraytercerosJSON           = '';
       public $arrayVendedoresJSON         = '';
       public $arrayCcosJSON               = '';
       public $MyInformeFiltroFechaInicio  = '';
@@ -37,11 +37,11 @@
        * @param int $sucursal                     Filtro por sucursal
        * @param obj $mysql                        Objeto de conexion a la base de datos
        */
-      function __construct($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arrayTercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$mysql){
+      function __construct($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arraytercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$mysql){
         $this->IMPRIME_HTML               = $IMPRIME_HTML;
         $this->IMPRIME_XLS                = $IMPRIME_XLS;
         $this->IMPRIME_PDF                = $IMPRIME_PDF;
-        $this->arrayTercerosJSON          = json_decode($arrayTercerosJSON);
+        $this->arraytercerosJSON          = json_decode($arraytercerosJSON);
         $this->arrayVendedoresJSON        = json_decode($arrayVendedoresJSON);
         $this->arrayCcosJSON              = json_decode($arrayCcosJSON);
         $this->MyInformeFiltroFechaInicio = $MyInformeFiltroFechaInicio;
@@ -71,8 +71,8 @@
 
         $this->customWhere = " AND fecha_inicio BETWEEN '$this->MyInformeFiltroFechaInicio' AND '$this->MyInformeFiltroFechaFinal'";
 
-        if(!empty($this->arrayTercerosJSON)){
-          foreach ($this->arrayTercerosJSON as $indice => $id_tercero){
+        if(!empty($this->arraytercerosJSON)){
+          foreach ($this->arraytercerosJSON as $indice => $id_tercero){
             $whereTerceros .= ($whereTerceros == "")? " AND TP.id_proveedor = '$id_tercero'" : " OR TP.id_proveedor = '$id_tercero'";
           }
         }
@@ -1005,6 +1005,6 @@
       }
     }
 
-    $objectInform = new InformeFacturaCompra($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arrayTercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$mysql);
+    $objectInform = new InformeFacturaCompra($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arraytercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$mysql);
     $objectInform->generate();
 ?>

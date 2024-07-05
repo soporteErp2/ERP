@@ -1887,7 +1887,7 @@
 											  else{
 												date_default_timezone_set("America/Bogota");
 											  }
-										echo date("Y-m-01"); ?>", 
+										echo date("Y-m-d"); ?>", 
 									fecha_final : "<?php 
 										      if(isset($_SESSION['TIMEZONE'])){
 												date_default_timezone_set($_SESSION['TIMEZONE']);

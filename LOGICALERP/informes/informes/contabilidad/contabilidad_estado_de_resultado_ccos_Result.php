@@ -44,11 +44,10 @@
     }
     else{
         //NIVELES A GENERAR EL INFORME
-        if ($nivel_cuentas=='CLASE'){ $varCortar=1; }
-        else if ($nivel_cuentas=='GRUPO'){ $varCortar=2; }
-        else if ($nivel_cuentas=='CUENTA'){ $varCortar = 4; }
-        else if ($nivel_cuentas=='SUBCUENTA'){ $varCortar = 6; }
-        else if ($nivel_cuentas=='AUXILIARES'){ $varCortar = 8; }
+        if ($generar=='Grupos'){ $varCortar=2; }
+        else if ($generar=='Cuentas'){ $varCortar = 4; }
+        else if ($generar=='Subcuentas'){ $varCortar = 6; }
+        else if ($generar=='Auxiliares'){ $varCortar = 8; }
 
         if ($varCortar>0) { $whereNiveles=' AND LEFT(AC.codigo_cuenta,'.$varCortar.')= puc.cuenta '; }
         else{ $whereNiveles=' AND AC.codigo_cuenta=puc.cuenta '; }

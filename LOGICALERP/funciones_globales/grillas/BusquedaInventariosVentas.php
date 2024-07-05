@@ -54,14 +54,16 @@
 
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 
-			$grilla->AddRow('Codigo','codigo',80);
+
 			$grilla->AddRow('Codigo de Barras','code_bar',100);
-			$grilla->AddRow('Nombre Item','nombre_equipo',350);
+			$grilla->AddRow('Nombre item','nombre_equipo',350);
 			$grilla->AddRow('Grupo','grupo',200);
 			$grilla->AddRowImage('Subgrupo','<div>subgrupo</div><div id="ventas_id_item_[id]" style="display:none;" >[id_item]</div><div id="depreciacion_acumulada_[id]" style="display:none;" >[depreciacion_acumulada]</div>',200);
 			//$grilla->AddRow('Departamento','departamento',200);
 			if ($nombreTabla!='activos_fijos') {
+				$grilla->AddRow('Codigo','codigo',80);
 				$grilla->AddRowImage('Unidad de Medida','<div id="unidad_medida_grilla_[id]">[unidad_medida] x [cantidad_unidades]</div><div id="ventas_id_item_[id]" style="display:none;" >[id_item]</div><div id="div_'.$nombre_grilla.'_costos_[id]" style="display:none;" >[costos]</div>','120');
+
 				$grilla->AddRow('Stock','cantidad',80);
 				$grilla->AddRow('Precio','precio_venta',80);
 				$grilla->AddRow('Costo','costos',80);

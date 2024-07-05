@@ -302,7 +302,8 @@
     $query = $mysql->query($sql);
     while ($row=$mysql->fetch_array($query)) {
         $tipos .= "<option value='$row[id]' >$row[nombre]</option>";
-    }
+    }    
+
 ?>
 <style>
     .fondo_modal_saldos{

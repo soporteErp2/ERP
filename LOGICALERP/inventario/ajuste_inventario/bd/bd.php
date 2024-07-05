@@ -453,9 +453,13 @@
 		$sql="UPDATE inventario_ajuste SET estado=1 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id ";
 		$query=$mysql->query($sql,$mysql->link);
 
-		$sql   ="SELECT consecutivo,estado FROM inventario_ajuste WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
+		$sql   ="SELECT consecutivo,estado, fecha_documento, sucursal, bodega FROM inventario_ajuste WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
 		$query =$mysql->query($sql,$mysql->link);
 		$consecutivo = $mysql->result($query,0,'consecutivo');
+		$fecha = $mysql->result($query,0,'fecha_documento');
+		$sucursal = $mysql->result($query,0,'sucursal');
+		$bodega = $mysql->result($query,0,'bodega');
+
 
 		// CLASE PADRE CON LAS FUNCIONES DE DOCUMENTOS
 		include 'Class.DocumentFunctions.php';
@@ -468,6 +472,49 @@
 		include 'Class.EntradaAlmacen.php';
 		$objectEntrada = new ClassEntradaAlmacen($id,$id_empresa,$mysql);
 		$objectEntrada->generate();
+
+		include_once '../../Clases/Inventory.php';
+
+		$sql = "SELECT 
+					id_inventario AS id,
+						codigo,
+						nombre,
+						nombre_unidad_medida AS unidad_medida,
+						cantidad_unidad_medida AS cantidad_unidades,
+						costo_unitario AS costo,
+						(cantidad - cantidad_inventario) as cantidad
+				FROM inventario_ajuste_detalle
+				WHERE id_ajuste_inventario=$id
+				AND activo=1 
+				AND inventariable='true'
+				AND cantidad_inventario = cantidad ";
+
+		$query = $mysql->query($sql,$mysql->link);
+		$index = 0;
+		$items = array();
+		while ($row = $mysql->fetch_assoc($query)) {
+			$items[$index]                = $row;
+			$items[$index]["empresa_id"]  = $id_empresa;
+			$items[$index]["empresa"]     = NULL;
+			$items[$index]["sucursal_id"] = $id_sucursal;
+			$items[$index]["sucursal"]    = $sucursal;
+			$items[$index]["bodega_id"]   = $idBodega;
+			$items[$index]["bodega"]      = $bodega;
+			
+			$index++;
+		}
+		$params = [ 
+			"documento_id"          => $id,
+			"documento_tipo"        => 'AI',
+			"documento_consecutivo" => $consecutivo,
+			"fecha"                 => $fecha,
+			"accion_inventario"     => 'ingreso ajuste',
+			"accion_documento"      => 'Generar',    // accion del documento, generar, editar, etc
+			"items"                 => $items,
+			"mysql"                 => $mysql
+		];
+		$obj = new Inventario_pp();
+		$process = $obj->UpdateInventory($params);
 
 		// LOG DE EVENTOS
 		$sql = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
@@ -518,8 +565,60 @@
 			include 'Class.EntradaAlmacen.php';
 			$objectEntrada = new ClassEntradaAlmacen($id,$id_empresa,$mysql);
 			$objectEntrada->editCancel();
-		}
 
+			
+			$sql   ="SELECT consecutivo, fecha_documento, sucursal, id_bodega, bodega FROM inventario_ajuste WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
+			$query =$mysql->query($sql,$mysql->link);
+			$consecutivo = $mysql->result($query,0,'consecutivo');
+			$fecha = $mysql->result($query,0,'fecha_documento');
+			$sucursal = $mysql->result($query,0,'sucursal');
+			$id_bodega = $mysql->result($query,0,'id_bodega');
+			$bodega = $mysql->result($query,0,'bodega');
+
+			include_once '../../Clases/Inventory.php';
+
+			$sql = "SELECT 
+						id_inventario AS id,
+						codigo,
+						nombre,
+						nombre_unidad_medida AS unidad_medida,
+						cantidad_unidad_medida AS cantidad_unidades,
+						costo_unitario AS costo,
+						(cantidad - cantidad_inventario) as cantidad
+					FROM inventario_ajuste_detalle
+					WHERE id_ajuste_inventario=$id
+					AND activo=1 
+					AND inventariable='true'
+					AND cantidad_inventario = cantidad ";
+
+			$query = $mysql->query($sql,$mysql->link);
+			$index = 0;
+			$items = array();
+			while ($row = $mysql->fetch_assoc($query)) {
+				$items[$index]                = $row;
+				$items[$index]["empresa_id"]  = $id_empresa;
+				$items[$index]["empresa"]     = NULL;
+				$items[$index]["sucursal_id"] = $id_sucursal;
+				$items[$index]["sucursal"]    = $sucursal;
+				$items[$index]["bodega_id"]   = $id_bodega;
+				$items[$index]["bodega"]      = $bodega;
+
+				$index++;
+			}
+			$params = [ 
+				"documento_id"          => $id,
+				"documento_tipo"        => 'AI',
+				"documento_consecutivo" => $consecutivo,
+				"fecha"                 => $fecha,
+				"accion_inventario"     => 'reversar ingreso ajuste',
+				"accion_documento"      => 'Editar',    // accion del documento, generar, editar, etc
+				"items"                 => $items,
+				"mysql"                 => $mysql
+			];
+			$obj = new Inventario_pp();
+			$process = $obj->UpdateInventory($params);
+		}
+		
 		$sql = "UPDATE inventario_ajuste SET estado=0 WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
 		$query=$mysql->query($sql,$mysql->link);
 

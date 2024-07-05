@@ -16,9 +16,6 @@
     $divTitleSucursal = '';
     $whereSucursal    = '';
 
-    $arrayEmpleadosJSON = json_decode($arrayEmpleadosJSON);
-    $arrayConceptosJSON = json_decode($arrayConceptosJSON);  
-
     //SALDOS
     $acumuladoDebe          = 0;
     $acumuladoHaber         = 0;
@@ -54,6 +51,8 @@ if ($sucursal!='' && $sucursal!='global') {
     $sql="SELECT nombre FROM empresas_sucursales WHERE  id_empresa=$id_empresa AND id=".$sucursal;
     $query=mysql_query($sql,$link);
     $subtitulo_cabecera.='<b>Sucursal</b> '.mysql_result($query,0,'nombre').'<br>';
+
+
 }
 
 //SI NO EXISTE LA VARIABLE DE FECHA FINAL, QUIERE DECIR QUE SE ESTA GENERANDO EL INFORME DESDE LA INTERFAZ PRINCIPAL Y NO DE LA VENTANA DE CONFIGURACION

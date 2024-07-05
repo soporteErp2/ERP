@@ -220,7 +220,7 @@
     $arrayCampos[] = $_precio;
     $arrayCampos[] = $_costo;
 
-    if ($sucursal!='' && $sucursal!='todas') {
+    if ($sucursal!='' && $sucursal!='global') {
 
         $whereSucursal = ' AND F.id_sucursal='.$sucursal;
 

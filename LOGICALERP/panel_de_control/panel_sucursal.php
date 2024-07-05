@@ -1,36 +1,6 @@
 <?php
 	include('../../configuracion/conectar.php');
 	include("../../configuracion/define_variables.php");
-	error_reporting(E_ALL);
-	/**
-	 * 
-	 */
-	class ClassName 
-	{
-		
-		function __construct()
-		{
-			# code...
-		}
-
-		function destruct()
-		{
-			# code...
-		}
-	}
-
-	$obj = new ClassName();
-	$obj2 = new ClassName();
-
-	$obj->destruct();
-
-
-	// echo $_SESSION['NITEMPRESA'];
-	// $array = explode($_SESSION['NITEMPRESA'], "-");
-	// $array = explode("-", $_SESSION['NITEMPRESA']);
-	// print_r($array);
-	// echo $array[0];
-
 
 	//ESTILO DEL PERMISO
 	$style_permiso='style="display:none;"';

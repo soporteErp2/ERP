@@ -19,7 +19,7 @@
 	$totalFactura     = 0.00;
 	$campoTercero     = ($opcGrillaContable=='DevolucionCompra')? "id_proveedor": "id_cliente";
 
-	$sql    = "SELECT TP.*, T.dv
+	$sql    = "SELECT TP.*, T.dv,T.exento_iva
 				FROM $tablaPrincipal AS TP LEFT JOIN terceros AS T ON(
 						T.activo=1
 						AND T.id=TP.$campoTercero

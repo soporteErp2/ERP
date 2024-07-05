@@ -2,7 +2,7 @@
 	include("../../../../configuracion/conectar.php");
 	include("../../../../configuracion/define_variables.php");
 	include("../config_var_global.php");
-	include_once("../../../funciones_globales/funciones_php/contabilizacion_simultanea.php");
+
 	//============================================= ARCHIVO GLOBAL PARA LOS MODULOS DE COTIZACION, PEDIDO, FACTURAS ======================================//
 	$id_empresa  = $_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
@@ -3768,9 +3768,6 @@
 			exit;
 		}
 
-		// CUENTAS SIMULTANEAS DE LAS CUENTAS DEL DOCUMENTO
-		contabilizacionSimultanea($id_planilla,'PA',$id_sucursal,$id_empresa,$link);
-
 		//INSERT NIIF
 		$sqlNiif="INSERT INTO asientos_niif(
 										id_documento,
@@ -3804,12 +3801,9 @@
 
 		// moverSaldoDiasPlanillas('eliminar',$id_planilla,$id_empresa,$link);
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
-
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-					     VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','PA','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+					VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PA')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 		echo '<script>
@@ -3934,12 +3928,9 @@
     	$sql="UPDATE nomina_planillas_ajuste SET estado=0 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
     	$query=mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						       VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Editar','PA','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Editar','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PA')";
 			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_PlanillaAjusteNomina").load({
@@ -3987,12 +3978,9 @@
 
     	$query=mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						       VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Cancelar','PA','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Cancelar','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PA')";
 			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					// Ext.get("contenedor_PlanillaAjusteNomina").load({
@@ -4020,12 +4008,9 @@
    		$sql="UPDATE nomina_planillas_ajuste SET estado=0 WHERE activo=1 AND id='$id_planilla' AND id_empresa='$id_empresa' ";
     	$query=mysql_query($sql,$link);
     	if ($query) {
-				$fecha_actual = date('Y-m-d');
-				$hora_actual  = date('H:i:s');
-
     		//INSERTAR EL LOG DE EVENTOS
-				$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-						       VALUES($id_planilla,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Restaurar','PA','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+			$sqlLog   = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)
+						VALUES ($id_planilla,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Restaurar','Planilla Ajuste de Nomina',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','PA')";
 			$queryLog = mysql_query($sqlLog,$link);
     		echo '<script>
 					Ext.get("contenedor_PlanillaAjusteNomina").load({

@@ -67,11 +67,9 @@
       }
 
       if($this->contenido == "conArchivos"){
-        $whereContenido = " AND VFD.nombre IS NOT NULL AND VFD.activo = 1";
+        $whereContenido = " AND VFD.nombre IS NOT NULL";
       }elseif ($this->contenido == "sinArchivos"){
-        $whereContenido = " AND VFD.nombre IS NULL AND VFD.activo IS NULL";
-      } elseif($this->contenido == "todos"){
-        $whereContenido = " AND (VFD.activo IS NULL OR VFD.activo != 0)";
+        $whereContenido = " AND VFD.nombre IS NULL";
       }
 
       if($this->sucursal != '' && $this->sucursal != 'global'){
@@ -100,10 +98,7 @@
                 VF.fecha_inicio,
                 VF.nit,
                 VF.cliente,
-                VF.nombre_vendedor,
-                VF.centro_costo,
-                CONCAT(VFD.nombre,'.',VFD.ext) AS archivo,
-                VFD.fecha
+                CONCAT(VFD.nombre,'.',VFD.ext) AS archivo
               FROM
                 ventas_facturas AS VF
               LEFT JOIN
@@ -124,16 +119,13 @@
 
       while($row = $this->mysql->fetch_array($query)){
         $this->arrayDoc[] = array(
-                                    'sucursal'                => $row['sucursal'],
-                                    'numero_factura_completo' => $row['numero_factura_completo'],
-                                    'fecha_inicio'            => $row['fecha_inicio'],
-                                    'nit'                     => $row['nit'],
-                                    'cliente'                 => $row['cliente'],
-                                    'nombre_vendedor'         => $row['nombre_vendedor'],
-                                    'centro_costo'            => $row['centro_costo'],
-                                    'archivo'                 => $row['archivo'],
-                                    'fecha'                   => $row['fecha']
-                                  );
+                                              'sucursal'                => $row['sucursal'],
+                                              'numero_factura_completo' => $row['numero_factura_completo'],
+                                              'fecha_inicio'            => $row['fecha_inicio'],
+                                              'nit'                     => $row['nit'],
+                                              'cliente'                 => $row['cliente'],
+                                              'archivo'                 => $row['archivo']
+                                            );
       }
     }
 
@@ -157,10 +149,7 @@
                           <td style='text-align:center; font-size:11px; padding-left:4px; width:10%;'>$result[fecha_inicio]</td>
                           <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[nit]</td>
                           <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[cliente]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[nombre_vendedor]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[centro_costo]</td>
                           <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[archivo]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[fecha]</td>
                         </tr>";
 
         if($enableStyle == "true"){
@@ -196,10 +185,7 @@
           <td style='text-align:center; padding-left:4px; width:10%;'><b>FECHA</b></td>
           <td style='text-align:center; padding-left:4px; width:20%;'><b>NIT</b></td>
           <td style='text-align:center; padding-left:4px; width:20%;'><b>CLIENTE</b></td>
-          <td style='text-align:center; padding-left:4px; width:20%;'><b>VENDEDOR</b></td>
-          <td style='text-align:center; padding-left:4px; width:20%;'><b>CENTRO DE COSTO</b></td>
           <td style='text-align:center; padding-left:4px; width:20%;'><b>ARCHIVO</b></td>
-          <td style='text-align:center; padding-left:4px; width:20%;'><b>FECHA CREACION</b></td>
         </tr>
         <?php echo $bodyTable; ?>
       </table>
@@ -213,15 +199,12 @@
     public function getHtmlPdf(){
       //CABECERA DEL INFORME
       $headTable .=  "<tr class='thead' style='color: #f7f7f7;'>
-                        <td style='text-align:center; padding-left:4px;'><b>SUCURSAL</b></td>
-                        <td style='text-align:center; padding-left:4px;'><b>NUMERO FACTURA</b></td>
-                        <td style='text-align:center; padding-left:4px; width:8%;'><b>FECHA</b></td>
-                        <td style='text-align:center; padding-left:4px;'><b>NIT</b></td>
-                        <td style='text-align:center; padding-left:4px;'><b>CLIENTE</b></td>
-                        <td style='text-align:center; padding-left:4px;'><b>VENDEDOR</b></td>
-                        <td style='text-align:center; padding-left:4px;'><b>CENTRO DE COSTO</b></td>
-                        <td style='text-align:center; padding-left:4px;'><b>ARCHIVO</b></td>
-                        <td style='text-align:center; padding-left:4px; width:8%;'><b>FECHA CREACION</b></td>
+                        <td style='text-align:center; padding-left:4px; width:10%;'><b>SUCURSAL</b></td>
+                        <td style='text-align:center; padding-left:4px; width:20%;'><b>NUMERO FACTURA</b></td>
+                        <td style='text-align:center; padding-left:4px; width:10%;'><b>FECHA</b></td>
+                        <td style='text-align:center; padding-left:4px; width:20%;'><b>NIT</b></td>
+                        <td style='text-align:center; padding-left:4px; width:20%;'><b>CLIENTE</b></td>
+                        <td style='text-align:center; padding-left:4px; width:20%;'><b>ARCHIVO</b></td>
                       </tr>";
 
       //CUERPO DEL INFORME
@@ -234,15 +217,12 @@
         }
 
         $bodyTable .=  "<tr $style>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[sucursal]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[numero_factura_completo]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px; width:8%;'>$result[fecha_inicio]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[nit]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[cliente]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[nombre_vendedor]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[centro_costo]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px;'>$result[archivo]</td>
-                          <td style='text-align:center; font-size:11px; padding-left:4px; width:8%;'>$result[fecha]</td>
+                          <td style='text-align:center; font-size:11px; padding-left:4px; width:10%;'>$result[sucursal]</td>
+                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[numero_factura_completo]</td>
+                          <td style='text-align:center; font-size:11px; padding-left:4px; width:10%;'>$result[fecha_inicio]</td>
+                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[nit]</td>
+                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[cliente]</td>
+                          <td style='text-align:center; font-size:11px; padding-left:4px; width:20%;'>$result[archivo]</td>
                         </tr>";
 
         if($enableStyle == "true"){

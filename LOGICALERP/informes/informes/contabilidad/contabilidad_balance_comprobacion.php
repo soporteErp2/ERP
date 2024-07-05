@@ -24,7 +24,6 @@
 	$informe->InformeTamano 				= "CARTA-HORIZONTAL";
 	$informe->AreaInformeQuitaAncho = 0;
 	$informe->AreaInformeQuitaAlto  = 190;
-	$informe->BtnGenera             = 'false';
 
 	if($modulo == 'contabilidad'){
 		$informe->AreaInformeQuitaAlto = 230;
@@ -47,14 +46,6 @@
 	contTercero     = 1;
 	arraytercerosBC = new Array();
 
-	id_pais = "<?php echo $_SESSION[PAIS]; ?>";
-	if(id_pais != 49){
-		url_variable = '../informes/informes/contabilidad/contabilidad_balance_comprobacion_paises_Result.php';
-	}
-	else{
-		url_variable = '../informes/informes/contabilidad/contabilidad_balance_comprobacion_Result.php';
-	}
-
 	//============================ GENERAR INFORME =============================//
 	function generarHtml(){
 		var idTerceros               = ''
@@ -68,7 +59,6 @@
 		,	totalizadoBC               = document.getElementById('totalizadoBC').value
 		,	separador_miles            = document.getElementById('separador_milesBC').value
 		,	separador_decimales        = document.getElementById('separador_decimalesBC').value
-		, cuentas_cierre             = document.getElementById('incluir_cuentas_cierre_BC').value
 		,	arraytercerosJSON          = Array()
 		,	i                          = 0
 
@@ -93,7 +83,7 @@
 		}
 
 		Ext.get('RecibidorInforme_contabilidad_balance_comprobacion').load({
-			url     : url_variable,
+			url     : '../informes/informes/contabilidad/contabilidad_balance_comprobacion_Result.php',
 			text		: 'Generando Informe...',
 			scripts : true,
 			nocache : true,
@@ -109,7 +99,7 @@
 									totalizadoBC			 			   : totalizadoBC,
 									separador_miles 		   		 : separador_miles,
 									separador_decimales 	   	 : separador_decimales,
-									cuentas_cierre             : cuentas_cierre,
+									cuentas_cierre             : document.getElementById('incluir_cuentas_cierre_BC').value,
 								}
 		});
 
@@ -122,7 +112,6 @@
 		localStorage.totalizadoBC                                  = totalizadoBC;
 		localStorage.separador_milesBC                             = separador_miles;
 		localStorage.separador_decimalesBC                         = separador_decimales;
-		localStorage.cuentas_cierreBC                              = cuentas_cierre;
 
 		document.getElementById("RecibidorInforme_contabilidad_balance_comprobacion").style.padding = 20;
 	}
@@ -139,7 +128,6 @@
 		,	totalizadoBC               = document.getElementById('totalizadoBC').value
 		,	separador_miles            = document.getElementById('separador_milesBC').value
 		,	separador_decimales        = document.getElementById('separador_decimalesBC').value
-		, cuentas_cierre             = document.getElementById('incluir_cuentas_cierre_BC').value
 		,	arraytercerosJSON 				 = Array()
 		,	i                 				 = 0
 
@@ -172,9 +160,8 @@
 							+"&totalizadoBC="+totalizadoBC
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
-							+"&cuentas_cierre="+cuentas_cierre
 
-		window.open(url_variable + "?" + data);
+		window.open("../informes/informes/contabilidad/contabilidad_balance_comprobacion_Result.php?"+data);
 	}
 
 	//================ GENERAR ARCHIVO DESDE LA VISTA PRINCIPAL ================//
@@ -241,10 +228,6 @@
 			if(localStorage.separador_decimalesBC != "")
 				separador_decimales = localStorage.separador_decimalesBC
 
-		if(typeof(localStorage.cuentas_cierreBC))
-			if(localStorage.cuentas_cierreBC != "")
-				cuentas_cierre = localStorage.cuentas_cierreBC
-
 		var data = tipo_documento+"=true"
 							+"&nombre_informe=Balance de Comprobacion"
 							+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal
@@ -256,9 +239,8 @@
 							+"&totalizadoBC="+totalizadoBC
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
-							+"&cuentas_cierre="+cuentas_cierre
 
-		window.open(url_variable + "?" + data);
+		window.open("../informes/informes/contabilidad/contabilidad_balance_comprobacion_Result.php?" + data);
 	}
 
 	//======================== CONFIGURACION DEL INFORME =======================//

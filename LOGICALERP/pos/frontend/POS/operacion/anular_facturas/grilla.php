@@ -114,7 +114,7 @@
 								observacion  : observacion,
 								nit          : "<?= $arrayEmpresa[0] ?>"
 							},
-							timeout : 200000,
+							timeout : 2000,
 							success : function(result,xhr){
 								console.log(result.responseText); //lee respuesta como texto
 								console.log(JSON.parse(result.responseText)); //lee respuesta como json

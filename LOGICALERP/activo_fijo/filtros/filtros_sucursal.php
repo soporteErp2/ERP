@@ -51,9 +51,7 @@
 			{
 				opc             : "<?php echo $opc; ?>",
 				filtro_empresa  : filtro_empresa,
-				filtro_sucursal : filtro_sucursal,
-				imprimeVarPhp   : '<?php echo $imprimeVarPhp ?>',
-				url_render      : '<?php echo $url_render ?>'
+				filtro_sucursal : filtro_sucursal
 			}
 		});
 	}

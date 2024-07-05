@@ -51,29 +51,6 @@
 		if (document.getElementById('filtro_tipo_documento')) { tipo_documento_cruce=document.getElementById('filtro_tipo_documento').value; }
 		else{ tipo_documento_cruce='<?php echo $documento_cruce; ?>'; }
 
-	  if(document.getElementById('MyInformeFiltroFechaInicio') && document.getElementById('MyInformeFiltroFechaFinal')){
-			if(document.getElementById('MyInformeFiltroFechaInicio').value != "" && document.getElementById('MyInformeFiltroFechaFinal').value != ""){
-				fecha_inicial = document.getElementById('MyInformeFiltroFechaInicio').value;
-				fecha_final   = document.getElementById('MyInformeFiltroFechaFinal').value;
-			} else{
-				fecha_inicial = "";
-				fecha_final   = "";
-			}
-	  } else{
-			fecha_inicial = "";
-			fecha_final   = "";
-		}
-
-		if(document.getElementById('filtro_estado')){
-			if(document.getElementById('filtro_estado').value != "global"){
-				filtro_estado = document.getElementById('filtro_estado').value;
-			} else{
-				filtro_estado = "";
-			}
-	  } else{
-			filtro_estado = "";
-		}
-
 		Ext.get('<?php echo $contenedor; ?>').load({
 			url     : "<?php echo $url_render; ?>",
 			scripts : true,
@@ -89,9 +66,6 @@
 				tablaPrincipal       : "<?php echo $tablaPrincipal; ?>",
 				idTablaPrincipal     : "<?php echo $idTablaPrincipal; ?>",
 				tablaCuentasNota     : "<?php echo $tablaCuentasNota; ?>",
-				fecha_inicial        : fecha_inicial,
-				fecha_final          : fecha_final,
-				filtro_estado        : filtro_estado,
 				<?php echo $imprimeVarPhp; ?>
 			}
 		});

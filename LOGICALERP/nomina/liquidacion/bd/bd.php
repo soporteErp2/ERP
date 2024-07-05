@@ -257,7 +257,7 @@
 		}
 
 		// CONSULTAR SI EL EMPLEADO TIENE PLANILLAS DE LQUIDACION CREADAS EN ESE PERIODO DE TIEMPO PARA EXCLUIR ESAS FECHAS DE LA BASE DEL CONCEPTO
-		echo$sql="SELECT
+		$sql="SELECT
 					NP.id,
 					NP.consecutivo,
 					NPE.dias_laborados,
@@ -305,7 +305,7 @@
 		// print_r($arrayConceptosLiquidados);
 
 		//CONSULTAR LAS PLANILLAS DE NOMINA QUE ESTAN DENTRO DEL RANGO DE FECHAS DE LA LIQUIDACION PARA TRAER TODO LOS PROVISIONADO
-		echo$sql="SELECT
+		$sql="SELECT
 					NP.id,
 					NP.fecha_final,
 					NPE.dias_laborados,
@@ -5715,8 +5715,8 @@
     		$cont_conceptos++;
     		$arrayInfoConceptos[$row['id_empleado']][$row['id_concepto']][$row['id_prestamo']] = array('concepto'       => $row['concepto'],
 					    														 						'codigo_concepto' => $row['codigo_concepto'],
-					    														 						'valor_concepto' => $row['valor_concepto'],
-					    														 						'saldo'          => $row['valor_concepto'] );
+					    														 						'valor_concepto' => ROUND($row['valor_concepto'],$_SESSION['DECIMALESMONEDA']),
+					    														 						'saldo'          => ROUND($row['valor_concepto'],$_SESSION['DECIMALESMONEDA']) );
     	}
 
     	$sql="SELECT id_empleado,id_concepto,id_concepto_deducir,valor_deducir,cuenta_colgaap,cuenta_niif,id_prestamo
@@ -5724,24 +5724,24 @@
     				WHERE activo=1 AND id_empresa=$id_empresa AND id_planilla=$id_planilla AND ($whereIdEmpleados) AND ($whereIdConceptos)";
     	$query=mysql_query($sql,$link);
     	while ($row=mysql_fetch_array($query)) {
-    		$arrayInfoConceptos[$row['id_empleado']][$row['id_concepto']][$row['id_prestamo']]['saldo']-=$row['valor_deducir'];
+    		$arrayInfoConceptos[$row['id_empleado']][$row['id_concepto']][$row['id_prestamo']]['saldo']-=ROUND($row['valor_deducir'],$_SESSION['DECIMALESMONEDA']);
 
 
     		if($arrayDeduccionesColgaap[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_colgaap']]['valor_deducir'] > 0){
-				$arrayDeduccionesColgaap[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_colgaap']]['valor_deducir'] += $row['valor_deducir'];
+				$arrayDeduccionesColgaap[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_colgaap']]['valor_deducir'] += ROUND($row['valor_deducir'],$_SESSION['DECIMALESMONEDA']);
     		}
     		else{
     			$arrayDeduccionesColgaap[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_colgaap']] = array(
-																														'valor_deducir'  => $row['valor_deducir'],
+																														'valor_deducir'  => ROUND($row['valor_deducir'],$_SESSION['DECIMALESMONEDA']),
 																														);
     		}
 
     		if ($arrayDeduccionesNiif[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_niif']]['valor_deducir'] > 0) {
-    			$arrayDeduccionesNiif[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_niif']]['valor_deducir'] +=$row['valor_deducir'];
+    			$arrayDeduccionesNiif[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_niif']]['valor_deducir'] +=ROUND($row['valor_deducir'],$_SESSION['DECIMALESMONEDA']);
     		}
     		else{
     			$arrayDeduccionesNiif[$row['id_empleado']][$row['id_concepto_deducir']][$row['cuenta_niif']] = array(
-																											'valor_deducir'  => $row['valor_deducir'],
+																											'valor_deducir'  => ROUND($row['valor_deducir'],$_SESSION['DECIMALESMONEDA']),
 																											);
     		}
 
@@ -5752,7 +5752,7 @@
     		foreach ($arrayInfoConceptosArray as $id_concepto => $arrayInfoConceptosArray2) {
     			foreach ($arrayInfoConceptosArray2 as $id_prestamo => $arrayResul) {
 
-	    			if ($arrayResul['saldo']>0) {
+	    			if ($arrayResul['saldo']>0.00001) {
 	    				echo '<script>
 	    						alert("Aviso!\nEl concepto: '.$arrayResul['codigo_concepto'].' - '.$arrayResul['concepto'].'\ndel empleado: '.$arrayInfoEmpleados[$id_empleado]['documento_empleado'].' - '.$arrayInfoEmpleados[$id_empleado]['nombre_empleado'].'\nNo se configurado totalmente le resta un saldo de '.$arrayResul['saldo'].'");
 								document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);

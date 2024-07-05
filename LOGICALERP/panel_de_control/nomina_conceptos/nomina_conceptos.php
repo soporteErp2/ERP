@@ -1048,7 +1048,7 @@ if ($opcion=='Vupdate' || $opcion=='Vagregar') {
 		function cambiaCuentasConceptoAjusteado() {
 			var naturaleza         = document.getElementById('nominaConceptos_naturaleza').value;
 			var concepto_ajustable = document.getElementById('nominaConceptos_concepto_ajustable').value;
-			if ((naturaleza=='Deduccion' || naturaleza=='Apropiacion') && concepto_ajustable=='true') {
+			if (naturaleza=='Deduccion' && concepto_ajustable=='true') {
 				document.querySelectorAll('.EmpSeparador')[5].style.display = 'block';
 				document.getElementById('EmpConte_nominaConceptos_cuenta_colgaap_ajuste').setAttribute('style','display:block;');
 				document.getElementById('EmpConte_nominaConceptos_cuenta_niif_ajuste').setAttribute('style','display:block;');

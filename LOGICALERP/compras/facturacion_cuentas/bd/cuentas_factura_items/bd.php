@@ -153,12 +153,10 @@
 		contabilizar($arrayCuentaPago,$fechaInicioFactura,$consecutivoFactura,$idBodega,$id_sucursal,$id_empresa,$idFactura,$idProveedor,$link);
 		contabilizarNiif($arrayCuentaPago,$fechaInicioFactura,$consecutivoFactura,$idBodega,$id_sucursal,$id_empresa,$idFactura,$idProveedor,$link);
 
-		$fecha_actual = date('Y-m-d');
-		$hora_actual  = date('H:i:s');
 
 		//INSERTAR EL LOG DE EVENTOS
-		$sqlLog = "INSERT INTO log_documentos_contables(id_documento,id_usuario,usuario,actividad,tipo_documento,descripcion,id_sucursal,id_empresa,ip,fecha,hora)
-							 VALUES($idFactura,'".$_SESSION['IDUSUARIO']."','".$_SESSION['NOMBREUSUARIO']."','Generar','FC','Agregar configuracion de cuentas factura de compras',$id_sucursal,'$id_empresa','".$_SERVER['REMOTE_ADDR']."','$fecha_actual','$hora_actual')";
+		$sqlLog = "INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa)
+					VALUES ($idFactura,".$_SESSION['IDUSUARIO'].",'".$_SESSION['NOMBREUSUARIO']."','Generar','Agregar configuracion de cuentas factura de compras',$id_sucursal,'$id_empresa')";
 		$queryLog = mysql_query($sqlLog,$link);
 
 	}

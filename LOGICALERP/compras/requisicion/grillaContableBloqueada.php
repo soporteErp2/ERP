@@ -198,7 +198,7 @@
 
         //======================== VENTANA OBSERVACION POR ARTICULO EN ORDEN DE COMPRA ==========================================//
     function ventanaDescripcionArticulo<?php echo $opcGrillaContable; ?>(cont,idInsertArticulo){
-        var id = document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
+             var id = document.getElementById('idArticulo<?php echo $opcGrillaContable; ?>_'+cont).value;
 
         Win_Ventana_descripcion_Articulo_factura = new Ext.Window({
             width       : 330,
@@ -396,7 +396,7 @@
             autoDestroy : true,
             autoLoad    :
             {
-                url     : 'requisicion/bd/autorizaciones.php',
+                url     : 'requisicion/bd/bd.php',
                 scripts : true,
                 nocache : true,
                 params  :
@@ -451,6 +451,7 @@
                 opcGrillaContable  : '<?php echo $opcGrillaContable; ?>',
                 idBodega           : '<?php echo $filtro_bodega; ?>',
                 tipo_autorizacion  : tipo_autorizacion,
+                // id_autorizacion : id_autorizacion,
                 id_area            : id_area,
                 orden              : orden,
             }

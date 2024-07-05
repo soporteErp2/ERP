@@ -4,26 +4,30 @@
 	include('../../../../misc/MyInforme/class.MyInforme.php');
 
 	/**//////////////////////////////////////////////**/
-	/**///		    INICIALIZACION DE LA CLASE  	  ///**/
-	/**/																						/**/
-	/**/					$informe = new MyInforme();				/**/
-	/**/																						/**/
+	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
+	/**/											/**/
+	/**/	$informe = new MyInforme();				/**/
+	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
 	$id_empresa          = $_SESSION['EMPRESA'];
 	$id_sucursal_default = $_SESSION['SUCURSAL'];
 
-	$informe->InformeName			      =	'archivos_adjuntos';  //NOMBRE DEL INFORME
-	$informe->InformeTitle			    =	'Facturas De Compra Archivos Adjuntos'; //TITULO DEL INFORME
-	$informe->InformeEmpreSucuBode  =	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu		  =	'false'; //FILTRO EMPRESA, SUCURSAL
+	$informe->InformeName			=	'archivos_adjuntos';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			=	'Facturas De Compra Archivos Adjuntos'; //TITULO DEL INFORME
+	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
+	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
 	$informe->InformeFechaInicioFin	=	'false';	 //FILTRO FECHA
+
+	// EDIT CSS
 	$informe->DefaultCls            = 	''; 		//RESET STYLE CSS
 	$informe->HeightToolbar         = 	80; 		//HEIGHT TOOLBAR
-	$informe->InformeExportarPDF	  = "false";	//SI EXPORTA A PDF
-	$informe->InformeExportarXLS	  = "false";	//SI EXPORTA A XLS
-	$informe->InformeTamano 		    = "CARTA-HORIZONTAL";
+
+	$informe->InformeExportarPDF	= "false";	//SI EXPORTA A PDF
+	$informe->InformeExportarXLS	= "false";	//SI EXPORTA A XLS
+	$informe->InformeTamano 		= "CARTA-HORIZONTAL";
 	$informe->BtnGenera             = 'false';
+
 	$informe->AreaInformeQuitaAncho = 	0;
 	$informe->AreaInformeQuitaAlto  = 	190;
 
@@ -33,12 +37,12 @@
 
 
 	/**//////////////////////////////////////////////////////////////**/
-	/**///				         INICIALIZACION DE LA GRILLA	  			  ///**/
-	/**/															                              /**/
-	/**/	     $informe->Link = $link;  	   //Conexion a la BD		  /**/
-	/**/	     $informe->inicializa($_POST); //Variables POST			  /**/
-	/**/	     $informe->GeneraInforme(); 	 //Inicializa la Grilla /**/
-	/**/															                              /**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/															/**/
+	/**/	$informe->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$informe->inicializa($_POST);//variables POST			/**/
+	/**/	$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
 
 ?>
@@ -46,14 +50,14 @@
 <script>
 	contTercero = 1;
 
-	//======================== CONFIGURACION DEL INFORME =======================//
+	//=====================// VENTANA CONFIGURACION DE INFORME //=====================//
+	//********************************************************************************//
+
 	function ventanaConfigurarInforme(){
-		var myalto  = Ext.getBody().getHeight();
-    var myancho = Ext.getBody().getWidth();
 
 		Win_Ventana_configurar_archivos_adjuntos = new Ext.Window({
-				width       : myancho - (myancho * 35 / 100),
-				height      : myalto - (myalto * 30 / 100),
+		    width       : 750,
+		    height      : 550,
 		    id          : 'Win_Ventana_configurar_archivos_adjuntos',
 		    title       : 'Aplicar Filtros',
 		    modal       : true,
@@ -150,7 +154,6 @@
 		}).show();
 	}
 
-	//=========================== REINICIAR FILTROS ============================//
 	function resetFiltros(){
 
 		localStorage.MyInformeFiltroFechaFinalArchivosAdjuntos  = "";
@@ -162,7 +165,6 @@
 		ventanaConfigurarInforme();
 	}
 
-	//============================ GENERAR INFORME =============================//
 	function generarHtml(){
 
 		// CAPTURAR VARIABLES
@@ -205,7 +207,6 @@
 		document.getElementById("RecibidorInforme_archivos_adjuntos").style.padding = 20;
 	}
 
-	//==================== GENERAR ARCHIVO DESDE EL WIZARD =====================//
 	function generarPDF_Excel(tipo_documento){
 
 		// CAPTURAR VARIABLES
@@ -231,7 +232,7 @@
 		window.open("../informes/informes/informes_compras/factura_compra_archivos_adjuntos_Result.php?"+data);
 	}
 
-	//==================== VENTANA PARA BUSCAR LOS TERCEROS ====================//
+	//========================== VENTANA PARA BUSCAR LOS TERCEROS ===============================//
 	function ventanaBusquedaTercero(){
 		var myalto  = Ext.getBody().getHeight();
         var myancho = Ext.getBody().getWidth();
@@ -274,7 +275,6 @@
         }).show();
 	}
 
-	//============================ MOSTRAR TERCEROS ============================//
 	function checkGrilla(checkbox,cont){
 
 		if (checkbox.checked ==true) {
@@ -313,7 +313,7 @@
 		}
 	}
 
-	//============================ ELIMINAR TERCEROS ===========================//
+	//==================== FUNCION PARA ELIMINAR LOS CLIENTES AGREGADOS =========================//
 	function eliminaCliente(cont){
 
 		delete arraytercerosAA[cont];
@@ -321,4 +321,5 @@
 		delete tercerosConfiguradosAA[cont];
 		(document.getElementById("row_tercero_"+cont)).parentNode.removeChild(document.getElementById("row_tercero_"+cont));
 	}
+
 </script>

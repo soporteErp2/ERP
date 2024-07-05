@@ -2,7 +2,7 @@
 	include("../../../configuracion/conectar.php");
 	include("../../../configuracion/define_variables.php");
 
-
+	
 ?>
 <div id="PanelItem"></div>
 
@@ -12,7 +12,7 @@
 	new Ext.Panel({						//TAB PRINCIPAL
 		style 		: 'font-family:Tahoma, Geneva, sans-serif; font-size:12px;',
 		renderTo	: 'PanelItem',
-		border		: false,
+		border		: false,	
 		items:
 		[
 			{
@@ -29,7 +29,7 @@
 				margins			: '0 0 0 0',
 				deferredRender	: true,
 				border			: false,
-				activeTab		: 0,
+				//activeTab		: 0,
 				bodyStyle 		: 'background-color:<?php echo $_SESSION['COLOR_FONDO'] ?>;',
 				items			:
 				[
@@ -83,14 +83,14 @@
 	});
 
 
-
+	
 </script>
 
 <style type="text/css">
 
 	.contenedor_items_cuentas{
 		margin   : 0 5px 5px 5px;
-		width    : calc(100% - 10px);
+		width    : calc(100% - 10px); 
 		overflow : auto;
 	}
 
@@ -144,16 +144,16 @@
 	.contenedorBtns{ float : left; }
 
 	.cuentaPuc{
-		float         : left;
-		width         : 260px;
+		float         : left; 
+		width         : 260px; 
 		overflow      : hidden;
-		margin-left   : 10px;
-		text-overflow : ellipsis;
+		margin-left   : 10px; 
+		text-overflow : ellipsis; 
 		white-space   : nowrap;
 	}
 
 	.filaCuentasItems{
-		overflow : hidden;
+		overflow : hidden; 
 		margin   : 15px 5px;
 		height   : 20px;
 	}

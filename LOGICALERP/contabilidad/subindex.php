@@ -131,7 +131,7 @@ Ext.onReady
 									// {
 									// 	text		: 'Cartera',
 									// 	width       : 60,
-                  //   					height      : 56,
+         //            					height      : 56,
 									// 	scale		: 'small',
 									// 	iconCls		: 'doc',
 									// 	iconAlign	: 'top',

@@ -269,6 +269,7 @@
 			scripts : true,
 			nocache : true,
 			params  : {
+									nombre_informe             : 'Ordenes De Compra',
 									IMPRIME_HTML							 : 'true',
 									MyInformeFiltroFechaInicio : MyInformeFiltroFechaInicio,
 									MyInformeFiltroFechaFinal  : MyInformeFiltroFechaFinal,

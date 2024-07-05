@@ -18,7 +18,6 @@
 	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
 	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
 	// $informe->InformeFechaInicio	=	'true';	 //FILTRO FECHA
-	$informe->BtnGenera             = 'false';
 	// $informe->AddFiltroFechaInicioFin('false','true');
 	$informe->AddBotton('Exportar PDF','genera_pdf','generarPDF_Excel_principal("IMPRIME_PDF")','Btn_exportar_pdf');
 	$informe->AddBotton('Exportar Excel','excel32','generarPDF_Excel_principal("IMPRIME_XLS")','Btn_exportar_excel');
@@ -55,21 +54,31 @@
 	contVendedores=1;
 
 	function generarPDF_Excel_principal(tipo_documento){
-		var MyInformeFiltroFechaFinal  = ''
-		,	MyInformeFiltroFechaInicio = ''
-		,	sucursal                   = ''
-		,	tipo_contrato              = ''
-		,	agrupacion_nomina          = ''
-		,	discrimina_planillas       = ''
-		,	i                          = 0
-		,	arrayEmpleadosJSON         = Array()
-		,	arrayConceptosJSON         = Array()
 
-		arrayEmpleados.forEach(function(id_tercero) {  arrayEmpleadosJSON[i] = id_tercero; i++; });
-        arrayEmpleadosJSON=JSON.stringify(arrayEmpleadosJSON);
-		i = 0
-        arrayConceptos.forEach(function(id_centro_costo) {  arrayConceptosJSON[i] = id_centro_costo; i++; });
-        arrayConceptosJSON=JSON.stringify(arrayConceptosJSON);
+		var MyInformeFiltroFechaFinal  = '' ;
+		var MyInformeFiltroFechaInicio = '' ;
+		var sucursal                   = '';
+		var idConceptos                = '';
+		var idEmpleados                = '';
+		var discrimina_planillas       = '';
+		var agrupacion_nomina          = '';
+		var tipo_contrato              = '';
+
+		//RECORREMOS EL ARRAY DE LOS CONCEPTOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayConceptos.length; i++) {
+			if (typeof(arrayConceptos[i])!="undefined" && arrayConceptos[i]!="") {
+				idConceptos=(idConceptos=='')? arrayConceptos[i] : idConceptos+','+arrayConceptos[i] ;
+			}
+
+		}
+
+		//RECORREMOS EL ARRAY DE LOS EMPLEADOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayEmpleados.length; i++) {
+			if (typeof(arrayEmpleados[i])!="undefined" && arrayEmpleados[i]!="") {
+				idEmpleados=(idEmpleados=='')? arrayEmpleados[i] : idEmpleados+','+arrayEmpleados[i] ;
+			}
+
+		}
 
 		if (typeof(localStorage.MyInformeFiltroFechaInicioNomina)!="undefined" && typeof(localStorage.MyInformeFiltroFechaFinalNomina)!="undefined") {
 			if (localStorage.MyInformeFiltroFechaInicioNomina!='' && localStorage.MyInformeFiltroFechaFinalNomina) {
@@ -102,15 +111,15 @@
 			}
 		}
 
-		var bodyVar = `&nombre_informe=nomina
-						&sucursal=${sucursal}
-						&MyInformeFiltroFechaFinal=${MyInformeFiltroFechaFinal}
-						&MyInformeFiltroFechaInicio=${MyInformeFiltroFechaInicio}
-						&arrayConceptos=${arrayConceptos}
-						&arrayEmpleadosJSON=${arrayEmpleadosJSON}
-						&discrimina_planillas=${discrimina_planillas}
-						&agrupacion_nomina=${agrupacion_nomina}
-						&tipo_contrato=${tipo_contrato}`;
+		var bodyVar = '&nombre_informe=nomina'+
+						'&sucursal='+sucursal+
+						'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
+						'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
+						'&idConceptos='+idConceptos+
+						'&idEmpleados='+idEmpleados+
+						'&discrimina_planillas='+discrimina_planillas+
+						'&agrupacion_nomina='+agrupacion_nomina+
+						'&tipo_contrato='+tipo_contrato;
 
 		window.open("../informes/informes/nomina/nomina_Result.php?"+tipo_documento+"=true"+bodyVar);
 	}
@@ -121,7 +130,7 @@
 		var myancho = Ext.getBody().getWidth();
 
 		Win_Ventana_configurar_informe_facturas = new Ext.Window({
-		    width       : 700,
+		    width       : 560,
 		    height      : 560,
 		    id          : 'Win_Ventana_configurar_informe_facturas',
 		    title       : '',
@@ -220,21 +229,38 @@
 
 	function generarHtml(){
 
-		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
-		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
-		,	sucursal                   = document.getElementById('filtro_sucursal_nomina').value
-		,	tipo_contrato              = document.getElementById('tipo_contrato').value
-		,	agrupacion_nomina          = document.getElementById('agrupado').value
-		,	discrimina_planillas       = document.getElementById('discrimina_planillas').value
-		,	i                          = 0
-		,	arrayEmpleadosJSON         = Array()
-		,	arrayConceptosJSON         = Array()
+		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value;
+		var MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
+		var sucursal                   = document.getElementById('filtro_sucursal_nomina').value;
+		var idConceptos                = '';
+		var idEmpleados                = '';
+		var tipo_contrato              = document.getElementById('tipo_contrato').value;
 
-		arrayEmpleados.forEach(function(id_tercero) {  arrayEmpleadosJSON[i] = id_tercero; i++; });
-        arrayEmpleadosJSON=JSON.stringify(arrayEmpleadosJSON);
-		i = 0
-        arrayConceptos.forEach(function(id_centro_costo) {  arrayConceptosJSON[i] = id_centro_costo; i++; });
-        arrayConceptosJSON=JSON.stringify(arrayConceptosJSON);
+		//RECORREMOS EL ARRAY DE LOS CONCEPTOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayConceptos.length; i++) {
+			if (typeof(arrayConceptos[i])!="undefined" && arrayConceptos[i]!="") {
+				idConceptos=(idConceptos=='')? arrayConceptos[i] : idConceptos+','+arrayConceptos[i] ;
+			}
+
+		}
+
+		//RECORREMOS EL ARRAY DE LOS EMPLEADOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayEmpleados.length; i++) {
+			if (typeof(arrayEmpleados[i])!="undefined" && arrayEmpleados[i]!="") {
+				idEmpleados=(idEmpleados=='')? arrayEmpleados[i] : idEmpleados+','+arrayEmpleados[i] ;
+			}
+
+		}
+
+		// RECORRER LA AGRUPACION DEL INFORME
+		var elementos = document.getElementsByName("agrupado");
+
+		for(var i=0; i<elementos.length; i++) {
+			if (elementos[i].checked) {agrupacion_nomina=elementos[i].value;}
+		}
+
+		//
+		var discrimina_planillas = (document.getElementById('discrimina_planillas').checked)? true : false ;
 
 		Ext.get('RecibidorInforme_nomina').load({
 			url     : '../informes/informes/nomina/nomina_Result.php',
@@ -243,15 +269,15 @@
 			nocache : true,
 			params  :
 			{
-				nombre_informe            : 'nomina',
-				sucursal                  : sucursal,
-				MyInformeFiltroFechaFinal : MyInformeFiltroFechaFinal,
-				MyInformeFiltroFechaInicio: MyInformeFiltroFechaInicio,
-				arrayEmpleadosJSON        : arrayEmpleadosJSON,
-				arrayConceptosJSON        : arrayConceptosJSON,
-				discrimina_planillas      : discrimina_planillas,
-				agrupacion_nomina         : agrupacion_nomina,
-				tipo_contrato             : tipo_contrato,
+				nombre_informe             : 'nomina',
+				sucursal                   : sucursal,
+				MyInformeFiltroFechaFinal  : MyInformeFiltroFechaFinal,
+				MyInformeFiltroFechaInicio : MyInformeFiltroFechaInicio,
+				idConceptos                : idConceptos,
+				idEmpleados                : idEmpleados,
+				discrimina_planillas       : discrimina_planillas,
+				agrupacion_nomina          : agrupacion_nomina,
+				tipo_contrato              : tipo_contrato,
 			}
 		});
 
@@ -267,31 +293,47 @@
 	}
 
 	function generarPDF_Excel(tipo_documento){
-		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
-		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
-		,	sucursal                   = document.getElementById('filtro_sucursal_nomina').value
-		,	tipo_contrato              = document.getElementById('tipo_contrato').value
-		,	agrupacion_nomina          = document.getElementById('agrupado').value
-		,	discrimina_planillas       = document.getElementById('discrimina_planillas').value
-		,	i                          = 0
-		,	arrayEmpleadosJSON         = Array()
-		,	arrayConceptosJSON         = Array()
+		var MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value;
+		var MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
+		var sucursal                   = document.getElementById('filtro_sucursal_nomina').value;
+		var idConceptos                = '';
+		var idEmpleados                = '';
+		var tipo_contrato              = document.getElementById('tipo_contrato').value;
 
-		arrayEmpleados.forEach(function(id_tercero) {  arrayEmpleadosJSON[i] = id_tercero; i++; });
-        arrayEmpleadosJSON=JSON.stringify(arrayEmpleadosJSON);
-		i = 0
-        arrayConceptos.forEach(function(id_centro_costo) {  arrayConceptosJSON[i] = id_centro_costo; i++; });
-        arrayConceptosJSON=JSON.stringify(arrayConceptosJSON);
+		//RECORREMOS EL ARRAY DE LOS CONCEPTOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayConceptos.length; i++) {
+			if (typeof(arrayConceptos[i])!="undefined" && arrayConceptos[i]!="") {
+				idConceptos=(idConceptos=='')? arrayConceptos[i] : idConceptos+','+arrayConceptos[i] ;
+			}
 
-		var bodyVar = `&nombre_informe=nomina
-						&sucursal=${sucursal}
-						&MyInformeFiltroFechaFinal=${MyInformeFiltroFechaFinal}
-						&MyInformeFiltroFechaInicio=${MyInformeFiltroFechaInicio}
-						&arrayConceptos=${arrayConceptos}
-						&arrayEmpleadosJSON=${arrayEmpleadosJSON}
-						&discrimina_planillas=${discrimina_planillas}
-						&agrupacion_nomina=${agrupacion_nomina}
-						&tipo_contrato=${tipo_contrato}`;
+		}
+
+		//RECORREMOS EL ARRAY DE LOS EMPLEADOS PARA ENVIARLO A LA CONSULTA
+		for ( i = 0; i < arrayEmpleados.length; i++) {
+			if (typeof(arrayEmpleados[i])!="undefined" && arrayEmpleados[i]!="") {
+				idEmpleados=(idEmpleados=='')? arrayEmpleados[i] : idEmpleados+','+arrayEmpleados[i] ;
+			}
+
+		}
+
+		// RECORRER LA AGRUPACION DEL INFORME
+		var elementos = document.getElementsByName("agrupado");
+
+		for(var i=0; i<elementos.length; i++) {
+			if (elementos[i].checked) {agrupacion_nomina=elementos[i].value;}
+		}
+
+		var discrimina_planillas = (document.getElementById('discrimina_planillas').checked)? true : false ;
+
+		var bodyVar = '&nombre_informe=nomina'+
+						'&sucursal='+sucursal+
+						'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
+						'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
+						'&idConceptos='+idConceptos+
+						'&idEmpleados='+idEmpleados+
+						'&discrimina_planillas='+discrimina_planillas+
+						'&agrupacion_nomina='+agrupacion_nomina+
+						'&tipo_contrato='+tipo_contrato;
 
 
 		window.open("../informes/informes/nomina/nomina_Result.php?"+tipo_documento+"=true"+bodyVar);
@@ -356,90 +398,81 @@
 
 		if (checkbox.checked ==true) {
 
-			var div   = document.createElement('div');
-            div.setAttribute('id','row_empleados_'+cont);
-            div.setAttribute('class','row');
-            document.getElementById('body_grilla_filtro').appendChild(div);
+			//CREAMOS EL DIV EN LA TABLA DE CONFIGURAR
+        	var div   = document.createElement('div');
+        	div.setAttribute('id','fila_empleado_'+cont);
+        	div.setAttribute('class','filaBoleta');
+        	document.getElementById('bodyTablaConfiguracion').appendChild(div);
 
+        	//CAPTURAR LOS VALORES DE LA FILA PARA LUEGO MOSTRARLOS
+        	var nit=document.getElementById('nit_'+cont).innerHTML;
+        	var tercero=document.getElementById('tercero_'+cont).innerHTML;
+        	//LLENAMOS EL ARRAY CON ELCLIENTE CREADO
+        	var fila='<div class="campoInforme0">'+contVendedores+'</div><div class="campoInforme1" id="nit_'+cont+'">'+nit+'</div><div class="campoInforme2" style="width:150px;" id="tercero_'+cont+'" title="'+tercero+'">'+tercero+'</div><div class="campoInforme4" style="width:25px;"><img src="img/eliminar.png" style="margin-right:6px;margin-top:-1px;cursor:pointer;" onclick="eliminaClienteFV('+cont+',\''+tabla+'\')" title="Eliminar Cliente"></div>';
+        	arrayEmpleadosNomina[cont]=fila;
+        	//CREAMOS LOS ELEMENTOS DEL ELEMENTO CREADO
+        	document.getElementById('fila_empleado_'+cont).innerHTML=fila;
+        	contVendedores++;
 
-            //CAPTURAR LOS VALORES DE LA FILA PARA LUEGO MOSTRARLOS
-            var nit     = document.getElementById('nit_'+cont).innerHTML
-            ,   tercero = document.getElementById('tercero_'+cont).innerHTML;
+        	//LENAMOS UN ARRAY CON INDICE EL CONT Y COMO VALOR EL ID TERCERO
+        	arrayEmpleados[cont]=checkbox.value;
 
-            var fila = `<div class="row" id="row_empleados_${cont}">
-                           <div class="cell" data-col="1">${contVendedores}</div>
-                           <div class="cell" data-col="2">${nit}</div>
-                           <div class="cell" data-col="3" title="${tercero}">${tercero}</div>
-                           <div class="cell" data-col="1" data-icon="delete" onclick="eliminaRegistroGrilla(${cont},'${tabla}')" title="Eliminar Empleado"></div>
-                        </div>`;
-
-            //LLENAMOS EL ARRAY CON ELCLIENTE CREADO
-            arrayEmpleadosNomina[cont]=fila;
-            //CREAMOS LOS ELEMENTOS DEL ELEMENTO CREADO
-            document.getElementById('row_empleados_'+cont).innerHTML=fila;
-            contVendedores++;
-
-            //LENAMOS UN ARRAY CON INDICE EL CONT Y COMO VALOR EL ID TERCERO
-            arrayEmpleados[cont]=checkbox.value;
 
 		}
 		else if (checkbox.checked ==false) {
+
 			delete arrayEmpleados[cont];
 			delete arrayEmpleadosNomina[cont];
-			(document.getElementById("row_empleados_"+cont)).parentNode.removeChild(document.getElementById("row_empleados_"+cont));
+			(document.getElementById("fila_empleado_"+cont)).parentNode.removeChild(document.getElementById("fila_empleado_"+cont));
+
 		}
 	}
 
 	function checkGrillaConceptos(checkbox,cont){
-
 		if (checkbox.checked ==true) {
 
-			var div   = document.createElement('div');
-            div.setAttribute('id','row_conceptos_'+cont);
-            div.setAttribute('class','row');
-            document.getElementById('body_grilla_filtro_conceptos').appendChild(div);
+        	var div   = document.createElement('div');
+        	div.setAttribute('id','fila_concepto_'+cont);
+        	div.setAttribute('class','filaBoleta');
+        	document.getElementById('bodyTablaConfiguracionVendedores').appendChild(div);
 
+        	//CAPTURAR LOS VALORES DE LA FILA PARA LUEGO MOSTRARLOS
+        	var descripcion=document.getElementById('descripcion_concepto_'+cont).innerHTML;
+        	var naturaleza=document.getElementById('naturaleza_concepto_'+cont).innerHTML;
+        	//LLENAMOS EL ARRAY CON ELCLIENTE CREADO
+        	var fila='<div class="campoInforme0">'+contTercero+'</div><div class="campoInforme1" id="nits_'+cont+'" style="width:220px;">'+descripcion+'</div><div class="campoInforme2" style="width:30px;" id="terceros_'+cont+'" title="'+naturaleza+'"><img src="img/'+naturaleza+'.png"></div><div class="campoInforme4" style="width:25px;"><img src="img/eliminar.png" style="margin-right:6px;margin-top:-1px;cursor:pointer;" onclick="eliminaClienteFV('+cont+',\'Conceptos\')" title="Eliminar Cliente"></div>';
+        	arrayConceptosNomina[cont]=fila;
+        	//CREAMOS LOS ELEMENTOS DEL ELEMENTO CREADO
+        	document.getElementById('fila_concepto_'+cont).innerHTML=fila;
+        	contTercero++;
 
-            //CAPTURAR LOS VALORES DE LA FILA PARA LUEGO MOSTRARLOS
-            var codigo     = document.getElementById('codigo_concepto_'+cont).innerHTML
-            ,   nombre = document.getElementById('descripcion_concepto_'+cont).innerHTML;
+        	//LENAMOS UN ARRAY CON INDICE EL CONT Y COMO VALOR EL ID TERCERO
+        	arrayConceptos[cont]=checkbox.value;
 
-            var fila = `<div class="row" id="row_conceptos_${cont}">
-                           <div class="cell" data-col="1">${contTercero}</div>
-                           <div class="cell" data-col="2">${codigo}</div>
-                           <div class="cell" data-col="3" title="${nombre}">${nombre}</div>
-                           <div class="cell" data-col="1" data-icon="delete" onclick="eliminaRegistroGrilla(${cont},'Conceptos')" title="Eliminar Concepto"></div>
-                        </div>`;
-
-            //LLENAMOS EL ARRAY CON ELCLIENTE CREADO
-            arrayConceptosNomina[cont]=fila;
-            //CREAMOS LOS ELEMENTOS DEL ELEMENTO CREADO
-            document.getElementById('row_conceptos_'+cont).innerHTML=fila;
-            contTercero++;
-
-            //LENAMOS UN ARRAY CON INDICE EL CONT Y COMO VALOR EL ID TERCERO
-            arrayConceptos[cont]=checkbox.value;
 
 		}
 		else if (checkbox.checked ==false) {
+
 			delete arrayConceptos[cont];
 			delete arrayConceptosNomina[cont];
-			(document.getElementById("row_conceptos_"+cont)).parentNode.removeChild(document.getElementById("row_conceptos_"+cont));
+			(document.getElementById("fila_concepto_"+cont)).parentNode.removeChild(document.getElementById("fila_concepto_"+cont));
+
 		}
 	}
 
 	//============================ FUNCION PARA ELIMINAR LOS CLIENTES AGREGADOS =========================//
-	function eliminaRegistroGrilla(cont,tabla){
+	function eliminaClienteFV(cont,tabla){
 		if (tabla=='empleados') {
 			delete arrayEmpleados[cont];
 			delete arrayEmpleadosNomina[cont];
-			(document.getElementById("row_empleados_"+cont)).parentNode.removeChild(document.getElementById("row_empleados_"+cont));
+			(document.getElementById("fila_empleado_"+cont)).parentNode.removeChild(document.getElementById("fila_empleado_"+cont));
 		}
 		else{
 			delete arrayConceptos[cont];
 			delete arrayConceptosNomina[cont];
-			(document.getElementById("row_conceptos_"+cont)).parentNode.removeChild(document.getElementById("row_conceptos_"+cont));
+			(document.getElementById("fila_concepto_"+cont)).parentNode.removeChild(document.getElementById("fila_concepto_"+cont));
 		}
+		// console.log("fila_concepto_"+cont);
 
 	}
 

@@ -93,7 +93,7 @@
 if(!isset($opcion)){  ?>
 
 	<script>
-		function Editar_<?php echo $nombreGrilla; ?>(id){ <?php echo $cargaFuncion; ?>;	}
+		function Editar_<?php echo $nombreGrilla; ?>(id){ <?php echo $cargaFuncion; ?> }
 	</script>
 
 <?php

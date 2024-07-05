@@ -34,11 +34,10 @@
     $tipo_balance=(isset($tipo_balance))? $tipo_balance: 'clasificado';
 
     //=========== NIVEL CUENTA //===========//
-    if ($generar=='CLASE'){ $varCortar = 1; }
-    else if ($generar=='GRUPO'){ $varCortar = 2; }
-    else if ($generar=='CUENTA'){ $varCortar = 4; }
-    else if ($generar=='SUBCUENTA'){ $varCortar = 6; }
-    else if ($generar=='AUXILIARES'){ $varCortar = 8; }
+    if ($generar=='Grupos'){ $varCortar = 2; }
+    else if ($generar=='Cuentas'){ $varCortar = 4; }
+    else if ($generar=='Subcuentas'){ $varCortar = 6; }
+    else if ($generar=='Auxiliares'){ $varCortar = 8; }
 
     //===============================// BALANCE CLASIFICADO //===============================//
     //***************************************************************************************//
@@ -515,8 +514,7 @@
             $query=$mysql->query($sql,$mysql->link);
             $whereCuentaCierre = ($mysql->result($query,0,'cuenta')<>'')? " AND AC.codigo_cuenta<> '".$mysql->result($query,0,'cuenta')."' " : '' ;
 
-                        // --$whereCuentaCierre
-            echo$sql = "SELECT SUM(AC.debe - AC.haber) AS saldo
+            $sql = "SELECT SUM(AC.debe - AC.haber) AS saldo
                     FROM asientos_colgaap AS AC,puc
                     WHERE
                         AC.activo=1
@@ -527,6 +525,7 @@
                             OR AC.codigo_cuenta LIKE '5%'
                             OR AC.codigo_cuenta LIKE '6%'
                             OR AC.codigo_cuenta LIKE '7%')
+                        $whereCuentaCierre
                         AND $this->wherePyG
                         AND LEFT (AC.codigo_cuenta, 1) = puc.cuenta
                         ";

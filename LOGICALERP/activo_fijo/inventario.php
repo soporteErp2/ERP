@@ -64,18 +64,18 @@
 		//QUERY
 			$grilla->TableName			= 'activos_fijos';		//NOMBRE DE LA TABLA DE CONSULTA EN LA BASE DE DATOS DE
 			$grilla->TableName2			= 'activos_fijos';			//NOMBRE DE LA TABLA DE INSERT Y UPDATE EN LA BASE DE DATOS DE
-			$grilla->MyWhere				= "activo = 1 AND id_empresa = '$id_empresa' AND id_sucursal=$filtro_sucursal AND id_bodega=$filtro_ubicacion";			//WHERE DE LA CONSULTA A LA TABLA "$TableName"
-			$grilla->OrderBy 				= 'estado ASC, id DESC';
+			$grilla->MyWhere			= "activo = 1 AND id_empresa = '$id_empresa' AND id_sucursal=$filtro_sucursal AND id_bodega=$filtro_ubicacion";			//WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->OrderBy 			= 'estado ASC, id DESC';
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
 		//TAMANO DE LA GRILLA
 			$grilla->AutoResize	 		= 'true';			//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
 			//$grilla->Ancho		 	= 800;				//ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
 			//$grilla->Alto		 		= 220;				//ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
 			$grilla->QuitarAncho		= 40;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
-			$grilla->QuitarAlto			= 160;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
+			$grilla->QuitarAlto			= 260;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
 		//TOOLBAR Y CAMPO DE BUSQUEDA
-			$grilla->Gtoolbar						= 'true';			//SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
-			$grilla->CamposBusqueda			= 'nombre_equipo,grupo,subgrupo,centro_costos,bodega';		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
+			$grilla->Gtoolbar			= 'true';			//SI LA GRILLA LLEVA EL TOOLBAR DE BUSQUEDA
+			$grilla->CamposBusqueda		= 'nombre_equipo,grupo,subgrupo,centro_costos,bodega';		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
 			$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 	 		$grilla->AddRowImage('Estado','<center><img src="images\estado_activo/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center>','40');
@@ -84,45 +84,142 @@
 			$grilla->AddRow('Codigo Activo','codigo_activo',80);
 			$grilla->AddRow('Nombre del Activo','nombre_equipo',250);
 			$grilla->AddRow('Centro de Costo','centro_costos',100);
-			$grilla->AddRow('Familia','familia',100);
-			$grilla->AddRow('Grupo','grupo',100);
-			$grilla->AddRow('Subgrupo','subgrupo',100);
-			$grilla->FContenedorAncho			= 500;
+			$grilla->AddRow('Grupo','grupo',150);
+			$grilla->AddRow('Subgrupo','subgrupo',150);
+			$grilla->AddRow('Bodega','bodega',200);
+
+			$grilla->FContenedorAncho		= 500;
 			$grilla->FColumnaGeneralAncho	= 250;
 			$grilla->FColumnaGeneralAlto	= 25;
 			$grilla->FColumnaLabelAncho		= 250;
 			$grilla->FColumnaFieldAncho		= 250;
 		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
-			$grilla->VentanaAuto						= 'false';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
-			$grilla->TituloVentana					= 'Ventana Activo Fijo'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
+			$grilla->VentanaAuto			= 'false';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
+			$grilla->TituloVentana			= 'Ventana Activo Fijo'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
 			$grilla->CerrarDespuesDeAgregar = 'false';
-			$grilla->VBarraBotones					= 'false';			//SI HAY O NO BARRA DE BOTONES
-			$grilla->VBotonNuevo						= 'false';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
-			$grilla->VBotonNText						= 'Nuevo Activo Fijo'; 	//TEXTO DEL BOTON DE NUEVO REGISTRO
-			$grilla->VBotonNImage						= 'addequipo';		//IMAGEN CSS DEL BOTON
-			$grilla->VAutoResize						= 'false';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			$grilla->VAncho		 							= 100;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
-			$grilla->VAlto		 							= 100;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
+			$grilla->VBarraBotones			= 'true';			//SI HAY O NO BARRA DE BOTONES
+			$grilla->VBotonNuevo			= 'true';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
+			$grilla->VBotonNText			= 'Nuevo Activo Fijo'; 	//TEXTO DEL BOTON DE NUEVO REGISTRO
+			$grilla->VBotonNImage			= 'addequipo';		//IMAGEN CSS DEL BOTON
+			$grilla->VAutoResize			= 'false';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
+			$grilla->VAncho		 			= 100;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
+			$grilla->VAlto		 			= 100;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
 			// $grilla->VQuitarAncho		= 100;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
 			// $grilla->VQuitarAlto			= 50;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'true'
-			$grilla->VAutoScroll						= 'true';			//SI LA VENTANA TIENE O NO AUTOSCROLL
-			$grilla->VBotonEliminar					= 'false';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
-			$grilla->VComporEliminar				= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
+			$grilla->VAutoScroll			= 'true';			//SI LA VENTANA TIENE O NO AUTOSCROLL
+			$grilla->VBotonEliminar			= 'false';			//SI MUESTRA BOTON DE ELIMINAR EN LA VENTANA DE EDICION
+			$grilla->VComporEliminar		= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
+
 		//BOTONES ADICIONALES EN EL TOOLBAR DE LA VENTANA DE INSERT DELETE Y UPDATE
  			$grilla->AddBottonVentana('Eliminar','eliminar','ventana_eliminar_campo_inventario()','false','true');
+
  		//CONFIGURACION DEL MENU CONTEXTUAL
- 			$grilla->MenuContext					= 'false';		//MENU CONTEXTUAL
-	 		$grilla->MenuContextEliminar	= 'false';
+ 			$grilla->MenuContext		= 'true';		//MENU CONTEXTUAL
+	 		$grilla->MenuContextEliminar= 'false';
 
-	/**//////////////////////////////////////////////////////////////**/
-	/**///								INICIALIZACION DE LA GRILLA	  					///**/
-	/**/			$grilla->Link = $link;  			//Conexion a la BD			/**/
-	/**/			$grilla->inicializa($_POST);	//variables POST				/**/
-	/**/			$grilla->GeneraGrilla(); 			//Inicializa la Grilla	/**/
-	/**/																														/**/
-	/**//////////////////////////////////////////////////////////////**/
+		//OPCIONES ADICIONALES EN EL MENU CONTEXTUAL
+			$grilla->AddMenuContext('Imprimir Codigo de Barras','barcode16','ventana_codigo_barras([id])');
+			$grilla->AddMenuContext('Ficha tecnica','informe0','ventana_ficha_tecnica([id])');
+			$grilla->AddMenuContext('Historico del Activo','informe0','historico_activo([id])');
+			$grilla->AddMenuContext('Dar de baja el activo','baja_activo','ventana_baja_activo([id],\'[nombre_equipo]\')');
+			// $grilla->AddMenuContext('Documento Inventario','doc','inventario_documentos([id])');
+			// $grilla->AddMenuContext('Historico Inventario','doc','historico_inventario([id])');
 
-////////////////////////////////////////////////////////////////////////////////
+		//CONFIGURACION DE LOS FORMULARIOS DE CAPTURA Y EDICION
+
+			/*--------campos encadenados Grupo-SubGrupo-Tipo-------------*/
+			$grilla->AddSeparator('Clasificacion');
+
+			$grilla->AddTextField('','id_empresa',240,'false','hidden', $_SESSION['EMPRESA']);
+			$grilla->AddTextField('','id_usuario_creacion',240,'false','hidden', $_SESSION['IDUSUARIO']);
+
+			$grilla->AddComboBox ('Grupo de Inventario','id_grupo',240,'true','true','inventario_grupo,id,nombre_grupo','activo = 1');
+			$grilla->AddComboBox ('Subgrupo de Inventario','id_subgrupo',240,'true','true','inventario_grupo_subgrupo,id,nombre_subgrupo,true','activo = 1');
+
+			$grilla->AddTextField('','id_centro_costos',240,'false','hidden', '');
+			$grilla->AddTextField('Centro de Costos','centro_costos',240,'false','false');
+			// $grilla->AddTextField('Depreciable','depreciable',240,'false','false');
+			$grilla->AddComboBox('Depreciable','depreciable',240,'true','false','Si:Si,No:No');
+
+			/*------------------------- otros Campos ------------------------*/
+			$arrayTipoActivoFijo = 'terreno:Terreno,'.
+								   'equipo_oficina:Equipo de oficina,'.
+								   'maquinaria:Maquinaria y Equipo, '.
+								   'equipo_computo_comunicacion:Equipo de Computo y Comunicacion,'.
+								   'construcciones_edificaciones:Construcciones y edificaciones';
+
+			$grilla->AddSeparator('Informacion General');
+			$grilla->AddTextField('Nombre Del Activo','nombre_equipo',240,'true','false');
+			$grilla->AddComboBox('Tipo','tipo',240,'true','false',$arrayTipoActivoFijo);
+			$grilla->AddTextField('Fecha Compra','fecha_compra',240,'true');
+			$grilla->AddTextField('Documento de ingreso','documento_referencia',240,'true','false');
+			$grilla->AddTextField('Consecutivo documento de ingreso','documento_referencia_consecutivo',240,'true','false');
+			$grilla->AddTextField('Costo','costo',240,'true','false');
+
+			$grilla->AddTextField('Codigo de Barras','code_bar',240,'false','false');
+			// $grilla->AddTextField('Codigo del Activo','codigo_activo',240,'false','false');
+			$grilla->AddTextField('Codigo del Activo','codigo_activo',240,'true','false');
+			$grilla->AddTextField('Fecha Vencimiento Garantia','fecha_vencimiento_garantia',240,'true');
+			$grilla->AddTextField('Marca','marca',240,'false','false');
+			$grilla->AddTextField('Modelo','modelo',240,'false','false');
+			$grilla->AddComboBox ('Unidad de medida','unidad',240,'true','true','inventario_unidades,nombre,nombre','activo = 1 AND id_empresa='.$id_empresa);
+			$grilla->AddTextField('Numero de Piezas','numero_piezas',240,'false','false');
+			$grilla->AddTextField('Color','color',240,'false','false');
+			$grilla->AddTextArea('Descripci&oacute;n 1','descripcion1',240,50,'false');
+			$grilla->AddTextArea('Descripci&oacute;n 2','descripcion2',240,50,'false');
+
+			/*==================== DEPRECIACION ====================*/
+			$grilla->AddSeparator('Informacion Contable Colgaap');
+			$grilla->AddTextField('Fecha Inicio Depreciacion','fecha_inicio_depreciacion',240,'true');
+			$grilla->AddValidation('fecha_inicio_depreciacion','fecha');
+			$grilla->AddComboBox('Metodo Depreciacion Colgaap','metodo_depreciacion_colgaap',240,'true','false','linea_recta:Linea Recta,reduccion_saldos:Reduccion de Saldos,suma_digitos_year:Suma de los Digitos del A&ntilde;o');
+			$grilla->AddValidation('fecha_compra','fecha');
+			$grilla->AddValidation('fecha_vencimiento_garantia','fecha');
+
+			$grilla->AddTextField('Vida Util (en a&ntilde;os)','vida_util',240,'true','false');
+			$grilla->AddTextField('Valor de Salvamento','valor_salvamento',240,'false','false');
+			//:::::::::::::::::::::::::::::::::::::::: CUENTAS
+			$grilla->AddTextField('Cuenta colgaap depreciacion (activo)','cuenta_depreciacion',240,'true','false');
+			$grilla->AddTextField('ContraPartida colgaap Depreciacion (gasto)','contrapartida_depreciacion',240,'true','false');
+
+			$grilla->AddSeparator('Informacion Contable Niif');
+
+			$grilla->AddComboBox('Metodo Depreciacion Niif','metodo_depreciacion_niif',240,'true','false','linea_recta:Linea Recta,reduccion_saldos:Reduccion de Saldos,suma_digitos_year:Suma de los Digitos del A&ntilde;o');
+			// $grilla->AddComboBox('Metodo Depreciacion Niif','metodo_depreciacion_niif',240,'true','false','linea_recta:Linea Recta,reduccion_saldos:Reduccion de Saldos');
+			$grilla->AddTextField('Fecha Inicio Depreciacion','fecha_inicio_depreciacion_niif',240,'true');
+			$grilla->AddValidation('fecha_inicio_depreciacion_niif','fecha');
+			$grilla->AddTextField('Vida Util (en a&ntilde;os)','vida_util_niif',240,'true','false');
+			$grilla->AddTextField('Valor de Salvamento','valor_salvamento_niif',240,'false','false');
+
+			$grilla->AddTextField('Cuenta niif depreciacion (activo)','cuenta_depreciacion_niif',240,'true','false');
+			$grilla->AddTextField('ContraPartida niif Depreciacion (gasto)','contrapartida_depreciacion_niif',240,'true','false');
+
+			$grilla->AddTextField('','id_cuenta_depreciacion_niif',240,'true','true');//campo oculto
+			$grilla->AddTextField('','id_contrapartida_depreciacion_niif',240,'true','true');//campo oculto
+
+			$grilla->AddTextField('Cuenta niif deterioro (debito)','cuenta_deterioro_niif_debito',240,'true','false');
+			$grilla->AddTextField('ContraPartida niif deterioro (credito)','cuenta_deterioro_niif_credito',240,'true','false');
+
+			$grilla->AddTextField('','id_cuenta_deterioro_niif_debito',240,'true','true');//campo oculto
+			$grilla->AddTextField('','id_cuenta_deterioro_niif_credito',240,'true','true');//campo oculto
+
+			// $grilla->AddComboBox('Cuenta depreciacion (activo)','cuenta_depreciacion',150,'true','true','puc,id,cuenta,true',' id_empresa='.$id_empresa.' AND activo=1 AND cuenta like "1592%" AND cuenta>99999');
+			// $grilla->AddComboBox('ContraPartida Depreciacion (gasto)','contrapartida_depreciacion',150,'true','true','puc,id,cuenta,true',' id_empresa='.$id_empresa.' AND activo=1 AND cuenta like "5160%" AND cuenta>99999');
+
+			$grilla->AddValidation('vida_util','numero');
+			$grilla->AddValidation('vida_util_niif','numero');
+			$grilla->AddValidation('valor_salvamento','numero-real');
+			$grilla->AddValidation('valor_salvamento_niif','numero-real');
+			$grilla->AddValidation('documento_referencia_consecutivo','numero');
+	/**//////////////////////////////////////////////////////////////**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/	$grilla->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$grilla->inicializa($_POST);//variables POST			/**/
+	/**/	$grilla->GeneraGrilla(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
+	/**//////////////////////////////////////////////////////////////**/
+/***********************************************************************************/
+/////////////////////////////////////////////////////////////////////////////////////
 if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 
 <script>
@@ -152,6 +249,7 @@ if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 		}
 	}
 
+
 	//========================== CUENTAS DEPRECIACION ==========================//
 	agregarBtnBuscarCuenta(document.getElementById('ActivosFijos_cuenta_depreciacion'));
 	agregarBtnBuscarCuenta(document.getElementById('ActivosFijos_contrapartida_depreciacion'));
@@ -166,6 +264,79 @@ if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 	inputCentroCostos          = document.getElementById('ActivosFijos_centro_costos');
 	inputCentroCostos.readOnly = true;
 	inputCentroCostos.setAttribute("onclick","ventanaBuscarCentroCostos()");
+
+	function ventanaBuscarCentroCostos() {
+
+		Win_Ventana_buscar_centro_costos = new Ext.Window({
+		    width       : 540,
+		    height      : 450,
+		    id          : 'Win_Ventana_buscar_centro_costos',
+		    title       : 'Buscar Centro de Costos',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : false,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : '../funciones_globales/grillas/grillaBuscarCentroCostos.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+		            opc : 'ActivosFijos',
+		            carpeta_img : 'images',
+		        }
+		    },
+		    tbar        :
+		    [
+		        {
+		            xtype   : 'buttongroup',
+		            columns : 3,
+		            title   : 'Opciones',
+		            items   :
+		            [
+		                {
+		                    xtype       : 'button',
+		                    width       : 60,
+		                    height      : 56,
+		                    text        : 'Regresar',
+		                    scale       : 'large',
+		                    iconCls     : 'regresar',
+		                    iconAlign   : 'left',
+		                    handler     : function(){ Win_Ventana_buscar_centro_costos.close(id) }
+		                }
+		            ]
+		        }
+		    ]
+		}).show();
+	}
+
+	ActualizaCentroCostosItem();
+	function ActualizaCentroCostosItem(){
+		var MyParent = document.getElementById('ActivosFijos_centro_costos').parentNode;
+		Ext.get(MyParent).load({
+			url		: 'bd/bd.php',
+			timeout : 180000,
+			scripts	: true,
+			nocache	: true,
+			params	:
+			{
+				idItem : '<?php echo $id?>',
+				op     : 'OptionCentroCostos'
+			}
+		});
+	}
+
+	//ELIMINAR EL CENTRO DE COSTOS
+	function eliminaCcosItem () {
+		document.getElementById('imgEliminarCcos').setAttribute('onclick','ventanaBuscarCentroCostos()');
+		document.getElementById('imgEliminarCcos').style.backgroundImage="url('images/buscar20.png')";
+		document.getElementById('imgEliminarCcos').setAttribute('title','Buscar Centro de Costos');
+
+		document.getElementById('ActivosFijos_id_centro_costos').value = '';
+		document.getElementById('ActivosFijos_centro_costos').value    = '';
+
+	}
 
 	function agregarBtnBuscarCuenta(input){
 		input.readOnly = true;
@@ -195,6 +366,7 @@ if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 		btnSincronizarCuenta.innerHTML = '<img src="images/refresh.png" onclick="sincronizaCuentaEnNiif(\''+opcion+'\',\''+idInput+'\')"/>';
 		document.getElementById('DIV_'+idInput).appendChild(btnSincronizarCuenta);
 	}
+
 
 	<?php if($opcion == 'Vagregar'){ echo 'document.getElementById("ActivosFijos_documento_referencia").value = "NC";'; } ?>
 	<?php if($opcion == 'Vupdate'){
@@ -305,6 +477,8 @@ if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 	/*---------------------------------------------------- funcion del combo terreno --------------------------------------------------------*/
 	/* Un terreno no se deprecia, asi que no se requiere todo la informacion del forumulario */
 
+
+
 /*------------------------------------------------ Grupo, Subgrupo----------------------------------------------*/
 	var ComboGrupo = Ext.get('ActivosFijos_id_grupo');
 	ComboGrupo.addListener(
@@ -345,61 +519,61 @@ if(!isset($opcion)){
 
 		<script>
 
-			// var toolbar = Ext.getCmp('ToolBar_ActivosFijos').getTopToolbar();
+			var toolbar = Ext.getCmp('ToolBar_ActivosFijos').getTopToolbar();
 
-			// toolbar.add(
+			toolbar.add(
 
-			// 	{
-			// 		xtype: 'buttongroup',
-			// 		columns: 3,
-			// 		title: 'Herramientas',
-			// 		items: [
-			// 			{
-			// 				text		: 'Impresion en Lote</br /> Codigo de Barras',
-			// 				scale		: 'small',
-			// 				iconCls		: 'barcode16',
-			// 				iconAlign	: 'top',
-			// 				handler		: function(){nueva_ventana_Grupo_codigo_barras("varios_codigos_barras");}
-			// 			}
-			// 		]
-			// 	},
-			// 	{
-			// 		xtype: 'buttongroup',
-			// 		columns: 3,
-			// 		title: 'Actas',
-			// 		items: [
-			// 			{
-			// 				text		: '<br>Acta Activos Fijos',
-			// 				scale		: 'small',
-			// 				iconCls		: 'genera',
-			// 				iconAlign	: 'top',
-			// 				handler		: function(){window.open("imprimir_acta_inventario.php?filtro_empresa=<?php echo $id_empresa; ?>"+"&opc=imprimirActaParcial")}
-			// 			},
-			// 			{
-			// 				text		: '<br>Acta Parcial',
-			// 				scale		: 'small',
-			// 				iconCls		: 'genera',
-			// 				iconAlign	: 'top',
-			// 				handler		: function(){ver_acta_parcial_inventario();}
-			// 			}
-			// 		]
-			// 	},
-			// 	{
-			// 		xtype: 'buttongroup',
-			// 		columns: 3,
-			// 		title: 'Cargar',
-			// 		items: [
-			// 			{
-			// 				text		: '<br>Cargar activos fijos',
-			// 				scale		: 'small',
-			// 				iconCls		: 'upload_file32',
-			// 				iconAlign	: 'top',
-			// 				handler		: function(){VentanaSubirExcel();}
-			// 			},
-			// 		]
-			// 	}
-			// );
-			// toolbar.doLayout();
+				{
+					xtype: 'buttongroup',
+					columns: 3,
+					title: 'Herramientas',
+					items: [
+						{
+							text		: 'Impresion en Lote</br /> Codigo de Barras',
+							scale		: 'small',
+							iconCls		: 'barcode16',
+							iconAlign	: 'top',
+							handler		: function(){nueva_ventana_Grupo_codigo_barras("varios_codigos_barras");}
+						}
+					]
+				},
+				{
+					xtype: 'buttongroup',
+					columns: 3,
+					title: 'Actas',
+					items: [
+						{
+							text		: '<br>Acta Activos Fijos',
+							scale		: 'small',
+							iconCls		: 'genera',
+							iconAlign	: 'top',
+							handler		: function(){window.open("imprimir_acta_inventario.php?filtro_empresa=<?php echo $id_empresa; ?>"+"&opc=imprimirActaParcial")}
+						},
+						{
+							text		: '<br>Acta Parcial',
+							scale		: 'small',
+							iconCls		: 'genera',
+							iconAlign	: 'top',
+							handler		: function(){ver_acta_parcial_inventario();}
+						}
+					]
+				},
+				{
+					xtype: 'buttongroup',
+					columns: 3,
+					title: 'Cargar',
+					items: [
+						{
+							text		: '<br>Cargar activos fijos',
+							scale		: 'small',
+							iconCls		: 'upload_file32',
+							iconAlign	: 'top',
+							handler		: function(){VentanaSubirExcel();}
+						},
+					]
+				}
+			);
+			toolbar.doLayout();
 
 		</script>
 
@@ -498,6 +672,55 @@ if(!isset($opcion)){
 					}
 			    ]
 
+			}).show();
+		}
+
+		function ventana_ficha_tecnica(id) {
+			var myalto  = Ext.getBody().getHeight();
+			var myancho = Ext.getBody().getWidth();
+
+			Win_Ventana_ficha_tecnica = new Ext.Window({
+			    width       : 500,
+			    height      : 600,
+			    id          : 'Win_Ventana_ficha_tecnica',
+			    title       : '',
+			    modal       : true,
+			    autoScroll  : false,
+			    closable    : false,
+			    autoDestroy : true,
+			    autoLoad    :
+			    {
+			        url     : 'ficha_tecnica/ficha_tecnica.php',
+			        scripts : true,
+			        nocache : true,
+			        params  :
+			        {
+			            id_activo : id,
+			        }
+			    },
+			    // tbar        :
+			    // [
+			    //     {
+			    //         xtype   : 'buttongroup',
+			    //         columns : 3,
+			    //         title   : 'Opciones',
+			    //         style   : 'border-right:none;',
+			    //         items   :
+			    //         [
+			    //             {
+			    //                 xtype       : 'button',
+			    //                 width       : 60,
+			    //                 height      : 56,
+			    //                 text        : 'Regresar',
+			    //                 scale       : 'large',
+			    //                 iconCls     : 'regresar',
+			    //                 iconAlign   : 'top',
+			    //                 hidden      : false,
+			    //                 handler     : function(){ BloqBtn(this); Win_Ventana_ficha_tecnica.close(id) }
+			    //             }
+			    //         ]
+			    //     }
+			    // ]
 			}).show();
 		}
 
@@ -896,38 +1119,9 @@ if(!isset($opcion)){
 		function Editar_ActivosFijos(id){ VentanaAgregarActivosFijos(id); }
 		function Agregar_ActivosFijos(){ VentanaAgregarActivosFijos('false'); }
 
-		function VentanaAgregarActivosFijos(id){
+		function VentanaAgregarActivosFijos(cual){
 			var myalto  = Ext.getBody().getHeight();
 			var myancho = Ext.getBody().getWidth();
-
-			Win_ActivosFijos = new Ext.Window({
-					width		: 600,
-					id			: 'Win_ActivosFijos',
-					height		: myalto - 80,
-					// title		: 'Activo Fijo',
-					modal		: true,
-					autoScroll	: false,
-					resizable 	: false,
-					closable	: false,
-					autoDestroy : true,
-					autoLoad	:
-					{
-						url		: 'ficha_tecnica/ficha_tecnica.php',
-						scripts	: true,
-						nocache	: true,
-						params	:
-						{
-							id_activo   : id,
-							id_sucursal : document.getElementById('filtro_sucursal_inventario').value,
-							id_bodega   : document.getElementById('filtro_ubicacion_inventario').value,
-							// cual             : cual,
-							// opcion           : 'Vupdate',
-							// filtro_empresa   : '<?php echo $filtro_empresa ?>',
-						}
-					}
-				}).show();
-
-			return;
 			if(cual == 'false'){
 				Win_Agregar_ActivosFijos = new Ext.Window({
 					width		: 600,
@@ -1092,3 +1286,6 @@ if(!isset($opcion)){
 	</script>
 <?php
 } ?>
+
+
+

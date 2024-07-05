@@ -4,24 +4,30 @@
 	include('../../../../misc/MyInforme/class.MyInforme.php');
 
 	/**//////////////////////////////////////////////**/
-	/**///		    INICIALIZACION DE LA CLASE  	  ///**/
-	/**/											                      /**/
-	/**/	       $informe = new MyInforme();				/**/
-	/**/											                      /**/
+	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
+	/**/											/**/
+	/**/	$informe = new MyInforme();				/**/
+	/**/											/**/
 	/**//////////////////////////////////////////////**/
-	// $informe->InformeTamano 		= "CARTA-HORIZONTAL";
-	$id_empresa                     = $_SESSION['EMPRESA'];
-	$id_sucursal_default            = $_SESSION['SUCURSAL'];
-	$informe->InformeName			      =	'contabilidad_estado_de_resultado_ccos';  //NOMBRE DEL INFORME
-	$informe->InformeTitle			    =	'Estado de Resultado Por centro de costos'; //TITULO DEL INFORME
+
+	$id_empresa          = $_SESSION['EMPRESA'];
+	$id_sucursal_default = $_SESSION['SUCURSAL'];
+
+	$informe->InformeName			=	'contabilidad_estado_de_resultado_ccos';  //NOMBRE DEL INFORME
+	$informe->InformeTitle			=	'Estado de Resultado Por centro de costos'; //TITULO DEL INFORME
 	$informe->InformeEmpreSucuBode	=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
-	$informe->InformeEmpreSucu		  =	'false'; //FILTRO EMPRESA, SUCURSAL
+	$informe->InformeEmpreSucu		=	'false'; //FILTRO EMPRESA, SUCURSAL
 	$informe->InformeFechaInicioFin	=	'false';	 //FILTRO FECHA
-	$informe->InformeExportarPDF	  =	"false";	//SI EXPORTA A PDF
-	$informe->InformeExportarXLS	  =	"false";	//SI EXPORTA A XLS
+
+	$informe->InformeExportarPDF	= 	"false";	//SI EXPORTA A PDF
+	$informe->InformeExportarXLS	= 	"false";	//SI EXPORTA A XLS
+
+	// CHANGE CSS
+	$informe->DefaultCls               = 	''; 		//RESET STYLE CSS
+	$informe->HeightToolbar            = 	80; 		//HEIGHT TOOLBAR
 	$informe->BtnGenera             = 'false';
-	$informe->DefaultCls            =	''; 		//RESET STYLE CSS
-	$informe->HeightToolbar         =	80; 		//HEIGHT TOOLBAR
+	$informe->InformeTamano 		= "CARTA-HORIZONTAL";
+
 	$informe->AddBotton('Exportar PDF','genera_pdf','generarPDF_Excel_principal("IMPRIME_PDF")','Btn_exportar_pdf');
 	$informe->AddBotton('Exportar Excel','excel32','generarPDF_Excel_principal("IMPRIME_XLS")','Btn_exportar_excel');
 	$informe->AddBotton('Configurar Informe','configurar_informe','ventanaConfigurarInforme()','Btn_configurar_cartera');
@@ -33,63 +39,65 @@
 	if($modulo=='contabilidad'){ $informe->AreaInformeQuitaAlto = 230; }
 
 	/**//////////////////////////////////////////////////////////////**/
-	/**///				        INICIALIZACION DE LA GRILLA	    			  ///**/
-	/**/															                              /**/
-	/**/	   $informe->Link = $link;  	   //Conexion a la BD			  /**/
-	/**/	   $informe->inicializa($_POST); //Variables POST			    /**/
-	/**/	   $informe->GeneraInforme(); 	 //Inicializa la Grilla		/**/
-	/**/															                              /**/
+	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
+	/**/															/**/
+	/**/	$informe->Link = $link;  	//Conexion a la BD			/**/
+	/**/	$informe->inicializa($_POST);//variables POST			/**/
+	/**/	$informe->GeneraInforme(); 	// Inicializa la Grilla		/**/
+	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
+
 ?>
+
 <script>
+
 	contCentroCostos = 1;
 	contTercero      = 1;
 
-	id_pais = "<?php echo $_SESSION[PAIS]; ?>";
-	if(id_pais != 49){
-		url_variable = '../informes/informes/contabilidad/contabilidad_estado_de_resultado_ccos_paises_Result.php';
-	}
-	else{
-		url_variable = '../informes/informes/contabilidad/contabilidad_estado_de_resultado_ccos_Result.php';
-	}
-
 	//==========================// PDF Y EXCEL PRINCIPAL //==========================//
+	//*******************************************************************************//
+
 	function generarPDF_Excel_principal(tipo_documento){
-		var	arrayCentroCostosJSON = Array()
-		,	arrayTercerosJSON       = Array()
-		,	i                       = 0
-		,	bodyVars                = ''
+		var	arrayCentroCostosJSON        = Array()
+		,	arrayTercerosJSON        	 = Array()
+		,	i                            = 0
+		,	bodyVars                     = ''
 
-		arrayCentroCostosERC.forEach(function(centro_costos){ arrayCentroCostosJSON[i] = centro_costos; i++; });
-    arrayCentroCostosJSON = JSON.stringify(arrayCentroCostosJSON);
+		arrayCentroCostosERC.forEach(function(centro_costos) {  arrayCentroCostosJSON[i] = centro_costos; i++; });
+        arrayCentroCostosJSON=JSON.stringify(arrayCentroCostosJSON);
 
-    i = 0;
+        i = 0;
 
-    arraytercerosERC.forEach(function(id_tercero){ arrayTercerosJSON[i] = id_tercero; i++; });
-    arrayTercerosJSON = JSON.stringify(arrayTercerosJSON);
+        arraytercerosERC.forEach(function(id_tercero) {  arrayTercerosJSON[i] = id_tercero; i++; });
+        arrayTercerosJSON=JSON.stringify(arrayTercerosJSON);
 
-		if(checkBoxSelectAllERC == 'true'){ arrayCentroCostosJSON = 'todos'; }
-		if(checkBoxSelectAllTercerosERC == 'true'){ arrayTercerosJSON = 'todos'}
+		if (checkBoxSelectAllERC=='true') {arrayCentroCostosJSON='todos';}
+		if (checkBoxSelectAllTercerosERC=='true') {arrayTercerosJSON='todos';}
 
 		MyInformeFiltroFechaFinal    = (typeof(localStorage.MyInformeFiltroFechaFinalEstadoResultadoC)!='undefined')? localStorage.MyInformeFiltroFechaFinalEstadoResultadoC : '' ;
 		MyInformeFiltroFechaInicio   = (typeof(localStorage.MyInformeFiltroFechaInicioEstadoResultadoC)!='undefined')? localStorage.MyInformeFiltroFechaInicioEstadoResultadoC : '' ;
 		tipo_balance_EstadoResultado = (typeof(localStorage.tipo_balance_EstadoResultadoC)!='undefined')? localStorage.tipo_balance_EstadoResultadoC : 'mensual' ;
 		nivel_cuenta                 = (typeof(localStorage.nivel_cuentas_EstadoResultadoC)!='undefined')? localStorage.nivel_cuentas_EstadoResultadoC : 'Resumido' ;
-		sucursal                 	   = (typeof(localStorage.sucursales_estado_resultadoC)!='undefined')? localStorage.sucursales_estado_resultadoC : 'Resumido' ;
+		sucursal                 	 = (typeof(localStorage.sucursales_estado_resultadoC)!='undefined')? localStorage.sucursales_estado_resultadoC : 'Resumido' ;
 
-		bodyVars =  '&nombre_informe=Estado de Resultados por centro de costos'+
-								'&tipo_balance_EstadoResultado='+tipo_balance_EstadoResultado+
-								'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
-								'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
-								'&generar='+nivel_cuenta+
-								'&centro_costos='+arrayCentroCostosJSON+
-								'&terceros='+arrayTercerosJSON+
-								'&sucursal='+sucursal;
+		// window.open("../informes/informes/contabilidad/contabilidad_estado_de_resultado_Result.php?"+tipo_documento+"=true&nombre_informe=Estado de Resultados&tipo_balance_EstadoResultado="+tipo_balance_EstadoResultado+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal+"&MyInformeFiltroFechaInicio="+MyInformeFiltroFechaInicio+"&generar="+nivel_cuenta+"&centro_costos="+centro_costos);
 
-		window.open(url_variable + "?" + tipo_documento + "=true" + bodyVars);
+		bodyVars = '&nombre_informe=Estado de Resultados por centro de costos'+
+					'&tipo_balance_EstadoResultado='+tipo_balance_EstadoResultado+
+					'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
+					'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
+					'&generar='+nivel_cuenta+
+					'&centro_costos='+arrayCentroCostosJSON+
+					'&terceros='+arrayTercerosJSON+
+					'&sucursal='+sucursal;
+
+		window.open("../informes/informes/contabilidad/contabilidad_estado_de_resultado_ccos_Result.php?"+tipo_documento+"=true"+bodyVars);
+
 	}
 
 	//=====================// VENTANA CONFIGURACION DE INFORME //=====================//
+	//********************************************************************************//
+
 	function ventanaConfigurarInforme(){
 
 		Win_Ventana_configurar_cartera_edades = new Ext.Window({
@@ -192,46 +200,49 @@
 	}
 
 	function resetFiltros(){
+
+
 		localStorage.nivel_cuentas_EstadoResultado             = "";
 		localStorage.tipo_balance_EstadoResultado              = "";
 		localStorage.MyInformeFiltroFechaFinalEstadoResultado  = "";
 		localStorage.MyInformeFiltroFechaInicioEstadoResultado = "";
 		localStorage.sucursales_estado_resultado               = "";
-		arrayCentroCostos.length                               = 0;
+		arrayCentroCostos.length                               =0;
 		Win_Ventana_configurar_cartera_edades.close();
 		ventanaConfigurarInforme();
 	}
 
 	function generarHtml(){
-		var nivel_cuenta               = document.getElementById('nivel_cuenta').value
+		var nivel_cuenta                 = document.getElementById('nivel_cuenta').value
+		,	centro_costos                =''
 		,	tipo_balance_EstadoResultado = document.getElementById('tipo_informe').value
-		, sucursal                     = document.getElementById('filtro_sucursal_sucursales_estado_resultado').value
-		, MyInformeFiltroFechaFinal    = document.getElementById('MyInformeFiltroFechaFinal').value
-		,	centro_costos                = ''
 		,	arrayCentroCostosJSON        = Array()
 		,	arrayTercerosJSON            = Array()
 		,	i                            = 0
 
-		if(tipo_balance_EstadoResultado != 'rango_fechas'){
-			MyInformeFiltroFechaInicio = '';
+
+		var sucursal=document.getElementById('filtro_sucursal_sucursales_estado_resultado').value;
+		var MyInformeFiltroFechaFinal=document.getElementById('MyInformeFiltroFechaFinal').value;
+
+		if (tipo_balance_EstadoResultado!='rango_fechas') {
+			MyInformeFiltroFechaInicio='';
 		}
-		else if(tipo_balance_EstadoResultado == 'rango_fechas'){
-			MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
+		else if (tipo_balance_EstadoResultado=='rango_fechas') {
+			MyInformeFiltroFechaInicio=document.getElementById('MyInformeFiltroFechaInicio').value;
 		}
-		else{
-			return;
-		}
+		else{ return; }
 
-		arrayCentroCostosERC.forEach(function(centro_costos){ arrayCentroCostosJSON[i] = centro_costos; i++; });
-    arrayCentroCostosJSON = JSON.stringify(arrayCentroCostosJSON);
+		arrayCentroCostosERC.forEach(function(centro_costos) {  arrayCentroCostosJSON[i] = centro_costos; i++; });
+        arrayCentroCostosJSON=JSON.stringify(arrayCentroCostosJSON);
 
-    i = 0;
+        i = 0;
 
-    arraytercerosERC.forEach(function(id_tercero){ arrayTercerosJSON[i] = id_tercero; i++; });
-    arrayTercerosJSON = JSON.stringify(arrayTercerosJSON);
+        arraytercerosERC.forEach(function(id_tercero) {  arrayTercerosJSON[i] = id_tercero; i++; });
+        arrayTercerosJSON=JSON.stringify(arrayTercerosJSON);
 
-		if(checkBoxSelectAllERC == 'true'){ arrayCentroCostosJSON = 'todos'; }
-		if(checkBoxSelectAllTercerosERC == 'true'){ arrayTercerosJSON = 'todos'; }
+		if (checkBoxSelectAllERC=='true') {arrayCentroCostosJSON='todos';}
+		if (checkBoxSelectAllTercerosERC=='true') {arrayTercerosJSON='todos';}
+
 
 		//GUARDAR VARIABLES PARA EL FILTRO POR FECHA DEL LOCALSTORAGE
 		localStorage.nivel_cuentas_EstadoResultadoC             = nivel_cuenta;
@@ -241,8 +252,8 @@
 		localStorage.sucursales_estado_resultadoC               = sucursal;
 
 		Ext.get('RecibidorInforme_contabilidad_estado_de_resultado_ccos').load({
-			url     : url_variable,
-			text	  : 'Generando Informe...',
+			url     : '../informes/informes/contabilidad/contabilidad_estado_de_resultado_ccos_Result.php',
+			text	: 'Generando Informe...',
 			scripts : true,
 			nocache : true,
 			params  :
@@ -262,47 +273,47 @@
 	}
 
 	function generarPDF_Excel(tipo_documento){
-		var nivel_cuenta               = document.getElementById('nivel_cuenta').value
+		var nivel_cuenta                 = document.getElementById('nivel_cuenta').value
 		,	tipo_balance_EstadoResultado = document.getElementById('tipo_informe').value
 		,	arrayCentroCostosJSON        = Array()
-		,	arrayTercerosJSON        	   = Array()
+		,	arrayTercerosJSON        	 = Array()
 		,	sucursal                     = document.getElementById('filtro_sucursal_sucursales_estado_resultado').value
 		,	i                            = 0
 		,	bodyVars                     = ''
 
-		arrayCentroCostosERC.forEach(function(centro_costos){ arrayCentroCostosJSON[i] = centro_costos; i++; });
-    arrayCentroCostosJSON = JSON.stringify(arrayCentroCostosJSON);
+		arrayCentroCostosERC.forEach(function(centro_costos) {  arrayCentroCostosJSON[i] = centro_costos; i++; });
+        arrayCentroCostosJSON=JSON.stringify(arrayCentroCostosJSON);
 
-    i = 0;
+        i = 0;
 
-    arraytercerosERC.forEach(function(id_tercero){ arrayTercerosJSON[i] = id_tercero; i++; });
-    arrayTercerosJSON = JSON.stringify(arrayTercerosJSON);
+        arraytercerosERC.forEach(function(id_tercero) {  arrayTercerosJSON[i] = id_tercero; i++; });
+        arrayTercerosJSON=JSON.stringify(arrayTercerosJSON);
 
-		if(checkBoxSelectAllERC == 'true'){ arrayCentroCostosJSON = 'todos'; }
-		if(checkBoxSelectAllTercerosERC == 'true'){ arrayTercerosJSON = 'todos'; }
+		if (checkBoxSelectAllERC=='true') {arrayCentroCostosJSON='todos';}
+		if (checkBoxSelectAllTercerosERC=='true') {arrayTercerosJSON='todos';}
 
-		MyInformeFiltroFechaFinal = document.getElementById('MyInformeFiltroFechaFinal').value;
+		MyInformeFiltroFechaFinal=document.getElementById('MyInformeFiltroFechaFinal').value;
 
-		if(tipo_balance_EstadoResultado != 'rango_fechas'){
-			MyInformeFiltroFechaInicio = '';
+		if (tipo_balance_EstadoResultado!='rango_fechas') {
+			MyInformeFiltroFechaInicio='';
 		}
-		else if(tipo_balance_EstadoResultado == 'rango_fechas'){
-			MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value;
+		else if (tipo_balance_EstadoResultado=='rango_fechas') {
+			MyInformeFiltroFechaInicio=document.getElementById('MyInformeFiltroFechaInicio').value;
 		}
 		else{
 			return;
 		}
 
-		bodyVars =  '&nombre_informe=Estado de Resultados por centro de costos'+
-								'&tipo_balance_EstadoResultado='+tipo_balance_EstadoResultado+
-								'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
-								'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
-								'&generar='+nivel_cuenta+
-								'&centro_costos='+arrayCentroCostosJSON+
-								'&terceros='+arrayTercerosJSON+
-								'&sucursal='+sucursal;
+		bodyVars = '&nombre_informe=Estado de Resultados por centro de costos'+
+					'&tipo_balance_EstadoResultado='+tipo_balance_EstadoResultado+
+					'&MyInformeFiltroFechaFinal='+MyInformeFiltroFechaFinal+
+					'&MyInformeFiltroFechaInicio='+MyInformeFiltroFechaInicio+
+					'&generar='+nivel_cuenta+
+					'&centro_costos='+arrayCentroCostosJSON+
+					'&terceros='+arrayTercerosJSON+
+					'&sucursal='+sucursal;
 
-		window.open(url_variable + "?" + tipo_documento + "=true" + bodyVars);
+		window.open("../informes/informes/contabilidad/contabilidad_estado_de_resultado_ccos_Result.php?"+tipo_documento+"=true"+bodyVars);
 	}
 
 	function buscarCentroCostos(event,input) {
@@ -334,6 +345,7 @@
 	}
 
 	//=====================// VENTANA CENTROS DE COSTOS //=====================//
+	//*************************************************************************//
 	function ventanaBusquedaCcos() {
 
 		Win_Ventana_buscar_centro_cotos = new Ext.Window({
@@ -415,6 +427,7 @@
 
 	//============================ FUNCION PARA ELIMINAR LOS CLIENTES AGREGADOS =========================//
 	function eliminaCentroCostos(id){
+
 		delete arrayCentroCostosERC[id];
 		delete centroCostosConfiguradosERC[id];
 		(document.getElementById("row_centro_costo_"+id)).parentNode.removeChild(document.getElementById("row_centro_costo_"+id));
@@ -503,9 +516,11 @@
 
 	//============================ FUNCION PARA ELIMINAR LOS CLIENTES AGREGADOS =========================//
 	function eliminaCliente(cont){
+
 		delete arraytercerosERC[cont];
 
 		delete tercerosConfiguradosERC[cont];
 		(document.getElementById("row_tercero_"+cont)).parentNode.removeChild(document.getElementById("row_tercero_"+cont));
 	}
+
 </script>

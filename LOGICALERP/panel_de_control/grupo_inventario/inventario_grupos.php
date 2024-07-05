@@ -34,7 +34,6 @@
 			$grilla->AddRow('Codigo','codigo_grupo',80);
 			$grilla->AddRow('Nombre','nombre_grupo',250);
 			$grilla->AddRowImage('','<center><div style="float:left; margin: 0 0 0 7px"><img src="../../../temas/clasico/images/BotonesTabs/config16.png?" style="cursor:pointer" width="16" height="16" onclick="VentanaSubGrupo([id]);"></div></center>',30);
-			$grilla->AddRowImage('Cuentas','<center title="Configurar cuentas contables por grupo"><img src="../../temas/clasico/images/BotonesTabs/table_gear.png?" style="cursor:pointer" width="16" height="16" onclick="ventanaCuentasGrupos([id],\'[nombre]\');"></center>',50);
 
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 350;
@@ -160,36 +159,5 @@
 				}
 			).show();
 		}
-
-		function ventanaCuentasGrupos(id,grupo){
-
-	    	Win_Panel_Global = new Ext.Window({
-	            width       : 600,
-	            height      : 500,
-	            title       : 'Cuentas Contables '+grupo,
-	            modal       : true,
-	            autoScroll  : false,
-	            autoDestroy : true,
-	            resizable   : true,
-	            // bodyStyle   : color,
-	            items       :
-				[
-					{
-						xtype		: 'panel',
-						id			: 'contenedor_Win_Panel_Global',
-						border		: false,
-						// bodyStyle 	: color,
-						autoLoad	:
-						{
-							url		: 'grupo_inventario/configuracion_cuentas.php',
-							scripts	: true,
-							nocache	: true,
-							params	: { id_grupo : id,	}
-						}
-					}
-				]
-			}).show();
-	    }
-
     </script>
 <?php } ?>

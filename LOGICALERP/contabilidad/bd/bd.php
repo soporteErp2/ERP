@@ -75,7 +75,7 @@
 
 					<optgroup label="VENTAS">
 						<option value="RV">Remisiones</option>
-						<option selected="selected" value="FV">Facturas de Venta</option>
+						<option value="FV">Facturas de Venta</option>
 						<option value="RC">Recibo de Caja</option>
 					</optgroup>
 					<optgroup></optgroup>

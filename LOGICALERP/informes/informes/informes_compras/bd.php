@@ -8,7 +8,6 @@ switch ($opc) {
 	case 'busquedaTerceroPaginacion':
 		busquedaTerceroPaginacion($opcGrillaContable,$pagina,$limite,$limit,$rows_registros,$paginas,$id_tercero,$tercero,$nit,$whereSum,$tabla,$estado,$imprimeVar,$filtro,$link,$id_empresa);
 		break;
-
 	case 'cuerpoVentanaConfiguracionOrdenesCompra':
 		cuerpoVentanaConfiguracionOrdenesCompra();
 		break;
@@ -27,10 +26,6 @@ switch ($opc) {
 
 	case 'ventanaConfiguracion_FCIR':
 		ventanaConfiguracion_FCIR();
-		break;
-
-	case 'cargarTercerosGuardados':
-		cargarTercerosGuardados($arrayTercerosJSON,$id_empresa,$mysql);
 		break;
 }
 
@@ -936,34 +931,5 @@ function ventanaConfiguracion_FCIR(){
 		</script>';
 }
 
-function cargarTercerosGuardados($arrayTercerosJSON,$id_empresa,$mysql){
-	$arrayTercerosJSON = json_decode($arrayTercerosJSON);
 
-	if(!empty($arrayTercerosJSON)){
-		foreach($arrayTercerosJSON as $indice => $id_tercero){
-			$terceros .= ($terceros == "")? "id = '$id_tercero'" : " OR id = '$id_tercero'";
-		}
-		$whereTerceros .= " AND ($terceros)";
-
-		$sql = "SELECT id,numero_identificacion,nombre FROM terceros WHERE activo = 1 AND id_empresa = $id_empresa $whereTerceros";
-		$query = $mysql->query($sql,$mysql->link);
-
-		$cont = 1;
-		while($row = $mysql->fetch_array($query)){
-			$grillaItems .=  "<div class='row' id='row_tercero_$row[id]'>
-													<div class='cell' data-col='1'></div>
-													<div class='cell' data-col='2'>$row[numero_identificacion]</div>
-													<div class='cell' data-col='3' title='$row[nombre]'>$row[nombre]</div>
-													<div class='cell' data-col='1' data-icon='delete' onclick='eliminaTercero($row[id])' title='Eliminar Tercero'></div>
-												</div>
-												<script>
-													arrayTercerosCEAA[$row[id]] = $row[id];
-												</script>";
-
-			$cont++;
-		}
-
-		echo $grillaItems;
-	}
-}
 ?>

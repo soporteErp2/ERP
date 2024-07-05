@@ -39,8 +39,6 @@
 			$grilla->AddRow('Detalle','cuenta',250);
 			$grilla->AddRow('Debito','debe',100);
 			$grilla->AddRow('Credito','haber',100);
-			$grilla->AddRow('Cod. Costos','codigo_centro_costos',80);
-			$grilla->AddRow('C. Costos','centro_costos',100);
 
 		//CONFIGURACION CSS X COLUMNA
 			$grilla->AddColStyle('codigo_cuenta','text-align:right; width:75px !important; padding-right:5px');

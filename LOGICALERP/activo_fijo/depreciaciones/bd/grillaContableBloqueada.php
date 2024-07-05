@@ -13,6 +13,8 @@
     $estado      = '';
     $fecha       = date('Y-m-d');
     $exento_iva  = '';
+
+
 ?>
 <script>
 
@@ -35,7 +37,7 @@
     Ext.getCmp("Btn_editar_<?php echo $opcGrillaContable; ?>").disable();
     Ext.getCmp("Btn_cancelar_<?php echo $opcGrillaContable; ?>").disable();
     Ext.getCmp("Btn_restaurar_<?php echo $opcGrillaContable; ?>").disable();
-    Ext.getCmp("BtnGroup_Estado1_<?php echo $opcGrillaContable; ?>").show();
+    Ext.getCmp("BtnGroup_Estado1_<?php echo $opcGrillaContable; ?>").show();BtnGroup_carga_activos_Depreciaciones
     Ext.getCmp("BtnGroup_Guardar_<?php echo $opcGrillaContable; ?>").hide();
     Ext.getCmp("BtnGroup_carga_activos_Depreciaciones").hide();
 

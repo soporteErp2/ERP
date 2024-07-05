@@ -5,18 +5,16 @@
 
     if($IMPRIME_XLS=='true'){
        header('Content-type: application/vnd.ms-excel');
-       header("Content-Disposition: attachment; filename=balance_general_".date("Y_m_d").".xls");
+       header("Content-Disposition: attachment; filename=balance_general.xls");
        header("Pragma: no-cache");
        header("Expires: 0");
     }
 
-    $id_empresa          = $_SESSION['EMPRESA'];
-    $desde               = $MyInformeFiltroFechaInicio;
-    $hasta               = (isset($MyInformeFiltroFechaFinal))? $MyInformeFiltroFechaFinal : date("Y-m-d") ;
-    $divTitleSucursal    = '';
-    $whereSucursal       = '';
-    $separador_decimales = ($separador_decimales=='')? "." : $separador_decimales ;
-    $separador_miles     = ($separador_miles=='')? "," : $separador_miles ;
+    $id_empresa       = $_SESSION['EMPRESA'];
+    $desde            = $MyInformeFiltroFechaInicio;
+    $hasta            = (isset($MyInformeFiltroFechaFinal))? $MyInformeFiltroFechaFinal : date("Y-m-d") ;
+    $divTitleSucursal = '';
+    $whereSucursal    = '';
 
     if (isset($MyInformeFiltroFechaFinal) && isset($generar)) {
         $MyInformeFiltroFechaFinal=$MyInformeFiltroFechaFinal;
@@ -34,11 +32,10 @@
     $tipo_balance=(isset($tipo_balance))? $tipo_balance: 'clasificado';
 
     //=========== NIVEL CUENTA //===========//
-    if ($generar=='CLASE'){ $varCortar = 1; }
-    else if ($generar=='GRUPO'){ $varCortar = 2; }
-    else if ($generar=='CUENTA'){ $varCortar = 4; }
-    else if ($generar=='SUBCUENTA'){ $varCortar = 6; }
-    else if ($generar=='AUXILIARES'){ $varCortar = 8; }
+    if ($generar=='Grupos'){ $varCortar = 2; }
+    else if ($generar=='Cuentas'){ $varCortar = 4; }
+    else if ($generar=='Subcuentas'){ $varCortar = 6; }
+    else if ($generar=='Auxiliares'){ $varCortar = 8; }
 
     //===============================// BALANCE CLASIFICADO //===============================//
     //***************************************************************************************//
@@ -66,7 +63,7 @@
             $cuerpoActivosT .= '<tr>
                                     <td width="100" class="defaultFont" style="padding-right:10px; text-align:right;">'.$cuenta.'</td>
                                     <td class="defaultFont">'.$rowActivos['descripcion'].'</td>
-                                    <td class="defaultFont" style="text-align:right;">'.number_format($rowActivos['saldo'], $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;">'.validar_numero_formato($rowActivos['saldo'], $IMPRIME_XLS).'</td>
                                 </tr>';
             $acumActivos += $rowActivos['saldo'];
         }
@@ -77,7 +74,7 @@
             $cuerpoPasivosT .= '<tr class="defaultFont">
                                     <td width="100" class="defaultFont" style="padding-right:10px; text-align:right;">'.$cuenta.'</td>
                                     <td class="defaultFont">'.$rowPasivos['descripcion'].'</td>
-                                    <td class="defaultFont" style="text-align:right;">'.number_format($rowPasivos['saldo'], $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;">'.validar_numero_formato($rowPasivos['saldo'], $IMPRIME_XLS).'</td>
                                 </tr>';
 
             $acumPasivos += $rowPasivos['saldo'];
@@ -89,7 +86,7 @@
             $cuerpoPatrimonioT .= '<tr class="defaultFont">
                                         <td width="100" class="defaultFont" style="padding-right:10px; text-align:right;">'.$cuenta.'</td>
                                         <td class="defaultFont">'.$rowPatrimonio['descripcion'].'</td>
-                                        <td class="defaultFont" style="text-align:right;">'.number_format($rowPatrimonio['saldo'], $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                        <td class="defaultFont" style="text-align:right;">'.validar_numero_formato($rowPatrimonio['saldo'], $IMPRIME_XLS).'</td>
                                     </tr>';
 
             $acumPatrimonio += $rowPatrimonio['saldo'];
@@ -99,17 +96,17 @@
         $cuerpoInforme= '<table style="width:95%" cellspacing="10">
                             <tr><td colspan="3" class="labelResult">ACTIVO</td></tr>
                             '.$cuerpoActivosT.'
-                            <tr><td>&nbsp;</td><td class="labelResult2">TOTAL ACTIVO</td><td class="labelResult3">'.number_format($acumActivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td></tr>
+                            <tr><td>&nbsp;</td><td class="labelResult2">TOTAL ACTIVO</td><td class="labelResult3">'.validar_numero_formato($acumActivos, $IMPRIME_XLS).'</td></tr>
 
                             <tr><td colspan="3" class="labelResult"> PASIVO</td></tr>
                             '.$cuerpoPasivosT.'
-                            <tr><td>&nbsp;</td><td class="labelResult2">TOTAL PASIVO</td><td class="labelResult3">'.number_format($acumPasivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td></tr>
+                            <tr><td>&nbsp;</td><td class="labelResult2">TOTAL PASIVO</td><td class="labelResult3">'.validar_numero_formato($acumPasivos, $IMPRIME_XLS).'</td></tr>
 
                             <tr><td colspan="3" class="labelResult"> PATRIMONIO</td></tr>
                             '.$cuerpoPatrimonioT.'
-                            <tr><td>&nbsp;</td><td class="labelResult2">TOTAL PATRIMONIO</td><td class="labelResult3">'.number_format($acumPatrimonio, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td></tr>
+                            <tr><td>&nbsp;</td><td class="labelResult2">TOTAL PATRIMONIO</td><td class="labelResult3">'.validar_numero_formato($acumPatrimonio, $IMPRIME_XLS).'</td></tr>
 
-                            <tr><td>&nbsp;</td><td class="labelResult2" style="width:40%;" >SUMA DEL PASIVO Y EL PATRIMONIO</td><td class="labelResult3">'.number_format(($acumPatrimonio+$acumPasivos), $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td></tr>
+                            <tr><td>&nbsp;</td><td class="labelResult2" style="width:40%;" >SUMA DEL PASIVO Y EL PATRIMONIO</td><td class="labelResult3">'.validar_numero_formato(($acumPatrimonio+$acumPasivos), $IMPRIME_XLS).'</td></tr>
                         </table>
 
                         <table align="center" style="text-align:center; width:70%;">
@@ -168,10 +165,10 @@
             $cuerpoActivosT .= '<tr class="defaultFont">
                                     <td class="defaultFont" style="width:60px; padding-right:10px; text-align:right;">'.$cuenta.'</td>
                                     <td class="defaultFont" style="width:300px;">'.$nombre.'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($saldoInicial, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($saldoFinal, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($diferenciaActivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($porcentaje, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($saldoInicial, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($saldoFinal, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($diferenciaActivos, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($porcentaje, $IMPRIME_XLS).'</td>
                                 </tr>';
         }
 
@@ -204,10 +201,10 @@
             $cuerpoPasivosT .= '<tr class="defaultFont">
                                     <td class="defaultFont" style="width:60px; padding-right:10px; text-align:right;">'.$cuenta.'</td>
                                     <td class="defaultFont" style="width:300px;">'.$nombre.'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($saldoInicial, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($saldoFinal, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($diferenciaPasivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($porcentajePasivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($saldoInicial, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($saldoFinal, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($diferenciaPasivos, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($porcentajePasivos, $IMPRIME_XLS).'</td>
                                 </tr>';
         }
 
@@ -242,10 +239,10 @@
             $cuerpoPatrimonioT .= '<tr class="defaultFont">
                                         <td class="defaultFont" style="width:60px; padding-right:10px; text-align:right;">'.$cuenta.'</td>
                                         <td class="defaultFont" style="width:300px;">'.$nombre.'</td>
-                                        <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($saldoInicial, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                        <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($saldoFinal, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                        <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($diferenciaPatrimonio, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                        <td class="defaultFont" style="text-align:right;width:100px;">'.number_format($porcentajePatrimonio, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                        <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($saldoInicial, $IMPRIME_XLS).'</td>
+                                        <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($saldoFinal, $IMPRIME_XLS).'</td>
+                                        <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($diferenciaPatrimonio, $IMPRIME_XLS).'</td>
+                                        <td class="defaultFont" style="text-align:right;width:100px;">'.validar_numero_formato($porcentajePatrimonio, $IMPRIME_XLS).'</td>
                                     </tr>';
         }
 
@@ -267,9 +264,9 @@
                                  <tr>
                                     <td>&nbsp;</td>
                                     <td class="labelResult2" style="width:100px;">TOTAL ACTIVO</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumSaldoInicialActivo, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumSaldoActualActivo, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumDiferenciaActivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumSaldoInicialActivo, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumSaldoActualActivo, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumDiferenciaActivos, $IMPRIME_XLS).'</td>
                                     <td class="defaultFont" style="text-align:right;width:100px;">&nbsp;</td>
 
                                 </tr>
@@ -282,9 +279,9 @@
                                  <tr>
                                     <td>&nbsp;</td>
                                     <td class="labelResult2" style="width:100px;">TOTAL PASIVO</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumSaldoInicialPasivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumSaldoActualPasivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumDiferenciaPasivos, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumSaldoInicialPasivos, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumSaldoActualPasivos, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumDiferenciaPasivos, $IMPRIME_XLS).'</td>
                                     <td class="defaultFont" style="text-align:right;width:100px;">&nbsp;</td>
 
                                 </tr>
@@ -297,9 +294,9 @@
                                  <tr>
                                     <td>&nbsp;</td>
                                     <td class="labelResult2" style="width:100px;">TOTAL PATRIMONIO</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumSaldoInicialPatrimonio, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumSaldoActualPatrimonio, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format($acumDiferenciaPatrimonio, $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumSaldoInicialPatrimonio, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumSaldoActualPatrimonio, $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato($acumDiferenciaPatrimonio, $IMPRIME_XLS).'</td>
                                     <td class="defaultFont" style="text-align:right;width:100px;">&nbsp;</td>
                                 </tr>
 
@@ -310,9 +307,9 @@
                                 <tr>
                                     <td class="labelResult2" style="border:1px; solid;width:100px;" colspan="2">SUMA DEL PASIVO Y EL PATRIMONIO</td>
 
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format(($acumSaldoInicialPasivos+$acumSaldoInicialPatrimonio), $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format(($acumSaldoActualPasivos+$acumSaldoActualPatrimonio), $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
-                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.number_format(($acumSaldoActualPasivos+$acumSaldoActualPatrimonio)-($acumSaldoInicialPasivos+$acumSaldoInicialPatrimonio), $_SESSION['DECIMALESMONEDA'],$separador_decimales,$separador_miles).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato(($acumSaldoInicialPasivos+$acumSaldoInicialPatrimonio), $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato(($acumSaldoActualPasivos+$acumSaldoActualPatrimonio), $IMPRIME_XLS).'</td>
+                                    <td class="defaultFont" style="text-align:right;width:100px;font-weight:bold;">'.validar_numero_formato(($acumSaldoActualPasivos+$acumSaldoActualPatrimonio)-($acumSaldoInicialPasivos+$acumSaldoInicialPatrimonio), $IMPRIME_XLS).'</td>
                                 </tr>
 
                             </table>
@@ -465,7 +462,7 @@
             $this->configWhereFecha();
 
             $this->ArrayQuery = $this->cuentasBalance($id_empresa,$varCortar,$mysql);       //ARRAY CUENTAS 1,2,3
-            $arraySaldoPyg    = $this->saldoPyg($id_empresa,$varCortar,$mysql);                        //SALDO PYG
+            $arraySaldoPyg    = $this->saldoPyg($id_empresa,$mysql);                        //SALDO PYG
             $arrayUtilidad    = $this->cuentaUtilidad($arraySaldoPyg['cuenta'],$id_empresa,$varCortar,$mysql);  //CUENTA PATRIMONIO UTILIDAD
             $cuentaPyg        = $arrayUtilidad['cuenta'];
 
@@ -508,13 +505,13 @@
         /**
         * @return array resultado pyg
         */
-        private function saldoPyg($id_empresa,$varCortar,$mysql){
+        private function saldoPyg($id_empresa,$mysql){
 
             $sql = "SELECT SUM(AC.debe - AC.haber) AS saldo
                     FROM asientos_colgaap AS AC,puc
                     WHERE
                         AC.activo=1
-                        /*AND puc.activo=1*/
+                        AND puc.activo=1
                         AND AC.id_empresa=$id_empresa
                         AND puc.id_empresa=$id_empresa
                         AND ( AC.codigo_cuenta LIKE '4%'
@@ -522,7 +519,7 @@
                             OR AC.codigo_cuenta LIKE '6%'
                             OR AC.codigo_cuenta LIKE '7%')
                         AND $this->wherePyG
-                        AND LEFT (AC.codigo_cuenta, 1) = puc.cuenta
+                        AND AC.codigo_cuenta = puc.cuenta
                         ";
 
             $query    = $mysql->query($sql,$mysql->link);
