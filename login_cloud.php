@@ -159,7 +159,7 @@
 
 		$permisos = array();
 		if($support=='true'){
-			$permiso = 1;
+			$permiso = 0;
 			while ($permiso<500) {
 				$permisos[]=$permiso;
 				$permiso++;

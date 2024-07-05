@@ -11,10 +11,6 @@ if($opcion == 'GeneraCombo'){
 		$rol = mysql_result($consul_dat_user,0,'id_rol');
 		$ID	= mysql_result($consul_dat_user,0,'id');
 
-		# Si el usuario es de soporte permitir cambio de sucursal
-		if($rol == 1 && $empresa == 0){
-			$empresa = $_SESSION["EMPRESA"];
-		}
 		//DEFINE SI TIENE PERMISOS PARA ENTRA A LAS SUCURSALES Y EMPRESAS//////////////////////////////////////////////
 		$consul_permisos = mysql_query("SELECT id_permiso FROM empleados_roles_permisos WHERE id_rol = $rol",$link);
 		$permisos = array();
