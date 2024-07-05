@@ -61,7 +61,7 @@ async function login(){
     }
 
     if (response.success) {
-        window.location = "app.php";
+        window.location = "app.php";    
     }
     console.log(response)
 }
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('close_modal').addEventListener('click', function() {
         show_hide();
     });
+
 
     document.getElementById('btn_submit').addEventListener('click', function() {
         login();

@@ -78,7 +78,7 @@
                 <h1 class="text-title-10 text-brand-blue600 text-blue-dark text-4xl font-semibold">Welcome</h1>
                 <p class="text-body-30-regular text-neutral-black leading-[17.5px] max-w-[367px]">Ingrese todos los campos para iniciar sesion en el software contable</p>
                 <div>
-                    <form  class="grid gap-5 max-w-[500px]">
+                    <form  class="grid gap-5 max-w-[500px]" onsubmit="return false;">
                         <div class="grid w-full">
                             <div class="h-[48px] relative">
                                 <label class="translate-y-3 text-body-30-regular absolute left-[45px] flex items-center text-neutral-mediumGray transition-all" for="nit">
@@ -95,12 +95,13 @@
                                     placeholder="Nit / CODE"
                                     id="n_documento"
                                     value="900542975"
+                                    required 
                                 >
                             </div>
                         </div>
                         <div class="grid">
                             <div class="max-w-[367px] h-[48px] relative">
-                                <label class="translate-y-3 text-[16px] absolute left-[45px] flex items-center text-neutral-mediumGray transition-all" for="hotel">
+                                <label class="translate-y-3 text-[16px] absolute left-[45px] flex items-center text-neutral-mediumGray transition-all" >
                                 </label>
                                 <div class="text-[20px] flex items-center absolute top-0 bottom-0 left-[16px] m-auto text-neutral-mediumGray">
                                     <svg width=".8em" height=".8em" viewBox="0 0 32 32" fill="currentColor"  xmlns="http://www.w3.org/2000/svg">
@@ -112,7 +113,7 @@
                                         <path fill-rule="evenodd" clip-rule="evenodd"  d="M4.33474 12.3347C4.78105 11.8884 5.50467 11.8884 5.95098 12.3347L20 26.3838L34.049 12.3347C34.4953 11.8884 35.219 11.8884 35.6653 12.3347C36.1116 12.781 36.1116 13.5047 35.6653 13.951L21.6187 27.9976C21.4121 28.2135 21.1643 28.386 20.8899 28.5048C20.609 28.6264 20.3061 28.6892 20 28.6892C19.6939 28.6892 19.391 28.6264 19.1101 28.5048C18.8357 28.386 18.5879 28.2135 18.3813 27.9976L4.33474 13.951C3.88842 13.5047 3.88842 12.781 4.33474 12.3347Z" fill="currentColor"></path>
                                     </svg>
                                 </button> -->
-                                <select id="sucursal" class="absolute bg-transparent w-full h-full border border-neutral-pureGray  rounded-[12px] ps-10 pe-3 text-[16px] focus:text-brand-blue600 focus:border-brand-blue400 outline-none" name="hotel" >
+                                <select required  id="sucursal" class="absolute bg-transparent w-full h-full border border-neutral-pureGray  rounded-[12px] ps-10 pe-3 text-[16px] focus:text-brand-blue600 focus:border-brand-blue400 outline-none">
                                     <option value="">Sucursal...</option>
                                 </select>
                             </div>
@@ -131,6 +132,7 @@
                                     value=""
                                     placeholder="Usuario"
                                     id="usuario"
+                                    required 
                                 >
                             </div>
                         </div>
@@ -153,6 +155,7 @@
                                     value=""
                                     placeholder="Contraseña"
                                     id="password"
+                                    required 
                                 >
                             </div>
                         </div>

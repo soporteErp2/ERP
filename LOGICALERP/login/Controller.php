@@ -53,15 +53,86 @@ class Login
         }
     }
 
-    public function load_company($n_documento){
-        $sql = "SELECT id,bd FROM host WHERE nit=$n_documento";
+    public function get_host($nit_code){
+        $sql = "SELECT
+                    id,
+                    nit,
+                    nombre,
+                    servidor,
+                    bd,
+                    id_plan,
+                    fecha_creacion,
+                    hora_creacion,
+                    fecha_vencimiento_plan,
+                    timezone,
+                    almacenamiento,
+                    activo,
+                    usuario_nombre1,
+                    usuario_nombre2,
+                    usuario_apellido1,
+                    usuario_apellido2
+                FROM host WHERE nit=$nit_code";
         $result = $this->mysqli->query($sql);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $this->session_connect($row['bd']);
-            $sql = "SELECT id,nombre FROM empresas WHERE documento=$n_documento";
-            $result = $this->session_mysqli->query($sql);
-            $company = $result->fetch_assoc();
+        $host = $result->fetch_assoc();
+        return $host;
+        
+    }
+
+    public function get_subscription($subscription_id){
+        $sql = "SELECT id,plan,usuarios,sucursales FROM planes WHERE activo=1 AND id=$subscription_id";
+        $result = $this->session_mysqli->query($sql);
+        $subscription = $result->fetch_assoc();
+        return $subscription;
+    }
+
+    public function get_company($nit_code){
+        $sql = "SELECT 
+                    nombre,
+                    id,
+                    id_pais,
+                    pais,
+                    id_moneda,
+                    documento,
+                    nit_completo,
+                    simbolo_moneda,
+                    decimales_moneda,
+                    grupo_empresarial,
+                    descripcion_moneda
+                FROM empresas WHERE documento=$nit_code";
+        $result = $this->session_mysqli->query($sql);
+        $company = $result->fetch_assoc();
+        return $company;
+    }
+
+    public function get_branch($branch_id){
+        $sql = "SELECT id, nombre  FROM empresas_sucursales WHERE id=$branch_id";
+        $result = $this->session_mysqli->query($sql);
+        $branch = $result->fetch_assoc();
+        return $branch;
+    }
+
+    public function get_support_licence($company_id){
+        $sql = "SELECT id, id_unico,autorizado  FROM licencia_soporte WHERE id=$company_id";
+        $result = $this->session_mysqli->query($sql);
+        $licence = $result->fetch_assoc();
+        return $licence;
+        
+    }
+
+    public function get_permissions($rol_id){
+        $sql = "SELECT id_permiso FROM empleados_roles_permisos WHERE id_rol =  $rol_id";
+        $result = $this->session_mysqli->query($sql);
+        while ($row = $result->fetch_assoc()) {
+            $permissions[] = $row["id_permiso"];
+        }
+        return $permissions;
+    }
+
+    public function load_company($n_documento){
+        $host = self::get_host($n_documento);
+        if (count($host) > 0) {
+            $this->session_connect($host['bd']);
+            $company = self::get_company($n_documento);
             $sql = "SELECT id,nombre FROM empresas_sucursales WHERE id_empresa=$company[id] AND activo=1";
             $result = $this->session_mysqli->query($sql);
             $branches = [];
@@ -94,7 +165,7 @@ class Login
             $this->session_connect($row['bd']);
             
             // Consultar el empleado
-            $sql = "SELECT id, nombre, id_rol, id_sucursal FROM empleados WHERE activo = 1 AND username = ? AND password = ?";
+            $sql = "SELECT id, documento, nombre, id_rol, id_sucursal, username,email_empresa,id_empresa FROM empleados WHERE activo = 1 AND username = ? AND password = ?";
             $stmt = $this->session_mysqli->prepare($sql);
             $hashed_password = md5($password);
             $stmt->bind_param("ss", $usuario, $hashed_password);
@@ -112,10 +183,10 @@ class Login
                 $result = $stmt->get_result();
                 
                 if ($result->num_rows > 0) {
-                    return $this->start_session();
+                    return $this->start_session($employee_data,$n_documento,$sucursal);
                 } else {
                     if ($employee_data["id_sucursal"] == $sucursal) {
-                        return $this->start_session();
+                        return $this->start_session($employee_data,$n_documento,$sucursal);
                     } else {
                         return ["error" => "No tiene permisos para ingresar a esta sucursal"];
                     }
@@ -128,9 +199,63 @@ class Login
         }
     }
 
-    public function start_session(){
+    public function start_session($employee_data,$nit_code,$branch_id){
+        session_start();
+        $host = self::get_host($nit_code);
+        $company = self::get_company($nit_code);
+        $branch = self::get_branch($branch_id);
+        $licence = self::get_support_licence($company["id"]);
+        $subscription = self::get_subscription($host["id_plan"]);
+        $permissions = self:: get_permissions( $employee_data["id_rol"]);
+        
+        $sql = "SELECT valor FROM empleados_roles WHERE id =  $employee_data[id_rol]";
+        $result = $this->session_mysqli->query($sql);
+        $rol = $result->fetch_assoc();
+
+        $_SESSION["ROL"]                    = $employee_data['id_rol'];
+        $_SESSION["ROLVALOR"]               = $rol["valor"];
+        $_SESSION["PERMISOS"]               = $permissions;
+        $_SESSION["COLOR_VENTANA"]          = '#157FCC';
+        $_SESSION["COLOR_CONTRASTE"]        = '#DFE8F6';
+        $_SESSION["COLOR_FONDO"]            = '#CDDBF0';
+        $_SESSION["COLOR_LINEA"]            = '#8DB2E3';
+        $_SESSION["COLOR_FUENTE"]           = '#033999';
+        $_SESSION['BD']                     = $host["bd"];
+        $_SESSION['SERVIDOR']               = $host["servidor"];
+        $_SESSION['ID_HOST']                = $host["id"];
+        $_SESSION['TIMEZONE']               = $host["timezone"];
+        $_SESSION['ALMACENAMIENTO']         = $host["almacenamiento"];
+        $_SESSION['PLAN_FECHA_VENCIMIENTO'] = $host["fecha_vencimiento_plan"];
+        $_SESSION['PLAN_USUARIOS']          = $subscription["usuarios"];
+        $_SESSION['PLAN_SUCURSALES']        = $subscription["sucursales"];
+        $_SESSION["IDUSUARIO"]              = $employee_data["id"];
+        $_SESSION["CEDULAFUNCIONARIO"]      = $employee_data["documento"];
+        $_SESSION["NOMBREFUNCIONARIO"]      = $employee_data["nombre"];
+        $_SESSION["NOMBREUSUARIO"]          = $employee_data["username"];
+        $_SESSION["EMAIL"]                  = $employee_data["email_empresa"];
+        $_SESSION["SUCURSAL"]               = $branch["id"];
+        $_SESSION["NOMBRESUCURSAL"]         = $branch["nombre"];
+        $_SESSION["EMPRESA"]                = $company["id"];
+        $_SESSION["NOMBREEMPRESA"]          = $company["nombre"];
+        $_SESSION["NITEMPRESA"]             = $company["nit_completo"];
+        $_SESSION["GRUPOEMPRESARIAL"]       = $company["grupo_empresarial"];
+        $_SESSION["PAIS"]                   = $company["id_pais"];
+        $_SESSION["MONEDA"]                 = $company["id_moneda"];
+        $_SESSION["DESCRIMONEDA"]           = $company["descripcion_moneda"];
+        $_SESSION["SIMBOLOMONEDA"]          = $company["simbolo_moneda"];
+        $_SESSION["DECIMALESMONEDA"]        = $company["decimales_moneda"];
+        $_SESSION["SUCURSALORIGEN"]         = $employee_data["id_sucursal"];
+        $_SESSION["EMPRESAORIGEN"]          = $employee_data["id_empresa"];
+        $_SESSION["CONEXIONSIIP3"]          = "";
+        $_SESSION["APIGOOGLE"]              = "";
+        $_SESSION["LICENCIASOPORTE"]        = $licence["id_unico"];
+        $_SESSION["PRODUCTO"]               = 4;
+        $SESSION['APP']                     = 'LogicalSoft-ERP';
+
         return ["success" => true];
     }
+
+    
 
 }
 header('Content-Type: application/json; charset=utf-8');
