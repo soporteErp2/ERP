@@ -1,20 +1,3 @@
-<?php
-
-	// include("../../configuracion/conectar.php");
-	// include("../../configuracion/define_variables.php");
-	switch ($_SESSION['PAIS']) {
-		case '140': // MEXICO
-			$url = "../erp_paises_global/$_SESSION[PAIS]/terceros/terceros/terceros.php";
-			break;
-
-		default:
-			$url = "terceros/terceros.php";
-			break;
-	}
-
-	// echo $_SESSION['PAIS']." ddddddd";
-
-?>
 <script>
 	//////////////////////////////////   VARIABLES PARA LOS INFORMES  /////////////////////////////////////////
 	var my_fecha_desde = '<?php $fecha = date("Y-m-d"); echo date("Y-m-d", strtotime("$fecha -5 day")); ?>';
@@ -54,7 +37,7 @@
 							border			: false,
 							bodyStyle		: 'background-color:<?php echo $_SESSION['COLOR_FONDO'] ?>;',
 							autoLoad    : {
-								url		: '<?= $url ?>',
+								url		: 'terceros/terceros.php',
 								scripts	: true,
 								nocache	: true,
 								params	: { }
