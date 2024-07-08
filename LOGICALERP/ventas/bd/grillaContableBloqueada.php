@@ -423,8 +423,12 @@
                 <?php echo $divImagen ; ?>
                 <?php echo $divResolucion; ?>
                 <div class="renglonTop">
-                    <div class="labelTop">Fecha</div>
-                    <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>" value="<?php echo $fecha; ?>" Readonly /></div>
+                  <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
+                  <div class="labelTop">Fecha</div>
+                  <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>" value="<?php echo $fecha; ?>" readonly/></div>
+                  <div class="iconBuscarProveedor hideFE" onclick="abrirVentanaUpdateFechaBloqueada<?php echo $opcGrillaContable; ?>(this)" title="Editar Fecha">
+                    <img src="img/config16.png" style="margin: 2px 0 0 2px;"/>
+                  </div>
                 </div>
                 <div class="renglonTop">
                      <div class="labelTop">Vencimiento</div>
@@ -566,7 +570,85 @@
 	function windows_upload_file(){
 		document.getElementById('divPadreModalUploadFile').setAttribute('style','display:block;');
 	}
+    
+    function abrirVentanaUpdateFechaBloqueada<?php echo $opcGrillaContable; ?>(inputFechaFactura){
 
+        Win_Ventana_update_fecha_<?php echo $opcGrillaContable; ?> = new Ext.Window({
+            width       : 275,
+            height      : 235,
+            id          : 'Win_Ventana_update_fecha_<?php echo $opcGrillaContable; ?>',
+            title       : 'Validacion de usuario',
+            modal       : true,
+            autoScroll  : false,
+            closable    : false,
+            autoDestroy : true,
+            autoLoad    :
+            {
+                url     : 'facturacion/bd/bd.php',
+                scripts : true,
+                nocache : true,
+                params  : { opc : 'ventanaUpdateFecha' }
+            },
+            tbar        :
+            [
+                {
+                    xtype   : 'buttongroup',
+                    columns : 3,
+                    title   : 'Opciones',
+                    items   :
+                    [
+                        {
+                            xtype     : 'button',
+                            text      : 'Guardar',
+                            scale     : 'large',
+                            iconCls   : 'guardar',
+                            width     : 60,
+                            height    : 56,
+                            iconAlign : 'top',
+                            handler   : function(){ cambiar_update_fecha_bloqueada_<?php echo $opcGrillaContable; ?>() }
+                        },
+                        {
+                            xtype     : 'button',
+                            text      : 'Regresar',
+                            scale     : 'large',
+                            iconCls   : 'regresar',
+                            width     : 60,
+                            height    : 56,
+                            iconAlign : 'top',
+                            handler   : function(){ Win_Ventana_update_fecha_<?php echo $opcGrillaContable; ?>.close(id) }
+                        }
+                    ]
+                }
+            ]
+        }).show();
+    }
+
+    function cambiar_update_fecha_bloqueada_<?php echo $opcGrillaContable; ?>(){
+        var fecha    = document.getElementById('fecha_updateFechafactura').value
+        ,   usuario  = document.getElementById('usuario_updateFechafactura').value
+        ,   password = document.getElementById('password_updateFechafactura').value;
+
+        usuario  = usuario.replace(/[\#\<\>\'\"]/g, '');
+        password = password.replace(/[\#\<\>\'\"]/g, '');
+
+        if(usuario.length <= 5){ alert("Aviso,\nInserte un usuario valido"); return; }
+        else if(password.length <= 1){ alert("Aviso,\nInserte su codigo password valido"); return; }
+
+        Ext.get('loadValidaUpdatefecha').load({
+            url     : 'facturacion/bd/bd.php',
+            scripts : true,
+            nocache : true,
+            params  :
+            {
+                opc               : 'QuickFechaUpdate',
+                fecha             : fecha,
+                usuario           : usuario,
+                password          : password,
+                idFacturaVenta    : '<?php echo $id_factura_venta; ?>',
+                opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
+            }
+        });
+    }
   //==================== CERRAR MODAL PARA ANEXAR ARCHIVOS ===================//
 	function close_ventana_upload_file(){
 		document.getElementById('divPadreModalUploadFile').setAttribute('style','');
