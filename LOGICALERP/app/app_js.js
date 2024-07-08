@@ -10,6 +10,12 @@ function toggle_perfil(){
     profile.classList.toggle("z-50")
 }
 
+async function load_modules(){
+    let request = await fetch(`LOGICALERP/app/Controller.php?method=load_modules`);
+    let response = await request.json();
+}
+
+
 //listeners
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('nav-btn').addEventListener('click', function() {
