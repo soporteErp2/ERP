@@ -357,17 +357,4 @@
 
 	}
 
-	// ELIMINAR LA ORDEN DE COMPRA
-	function deleteOrdenCompraError($conexion, $estadoError, $idOrden=0, $msjError=''){
-		$sql   = "DELETE FROM compras_ordenes WHERE id='$idOrden'";
-		$query = mysql_query($sql,$conexion);
-		if($estadoError == 'ErrorValidateReplace')return array("estado" => "error", "msj" => "$msjError");
-
-		$sql   = "DELETE FROM compras_ordenes_inventario WHERE id_orden_compra='$idOrden'";
-		$query = mysql_query($sql,$conexion);
-		if($estadoError == 'ErrorValidateItem')return array("estado" => "error", "msj" => "$msjError");
-		else if($estadoError == 'ErrorUpdateInventario')return array("estado" => "error", "msj" => "$msjError");
-
-	}
-
 ?>

@@ -31,7 +31,6 @@
     ,   nombre_grilla                                        = 'ventanaBucarCuenta<?php echo $opcGrillaContable; ?>';//nombre de la grilla cunado se busca un articulo
 
     //Bloqueo todos los botones
-    Ext.getCmp("Btn_upload_<?php echo $opcGrillaContable; ?>").disable();
     Ext.getCmp("Btn_guardar_<?php echo $opcGrillaContable; ?>").disable();
     Ext.getCmp("Btn_editar_<?php echo $opcGrillaContable; ?>").disable();
     Ext.getCmp("Btn_cancelar_<?php echo $opcGrillaContable; ?>").disable();
@@ -46,7 +45,6 @@
     $user_permiso_editar    = (user_permisos(28,'false') == 'true')? 'Ext.getCmp("Btn_editar_'.$opcGrillaContable.'").enable();' : '';        //editar
     $user_permiso_cancelar  = (user_permisos(29,'false') == 'true')? 'Ext.getCmp("Btn_cancelar_'.$opcGrillaContable.'").enable();' : '';      //calcelar
     $user_permiso_restaurar = (user_permisos(30,'false') == 'true')? 'Ext.getCmp("Btn_restaurar_'.$opcGrillaContable.'").enable();Ext.getCmp("btnExportar'.$opcGrillaContable.'").enable();' : '';     //restaurar
-    $user_permiso_anexar    = 'Ext.getCmp("Btn_upload_'.$opcGrillaContable.'").enable();';
 
     include("../bd/functions_body_article.php");
 
@@ -65,7 +63,7 @@
     $cuenta         = mysql_result($query,0,'cuenta').' - '.mysql_result($query,0,'descripcion_cuenta');
 
     if ($estado == 0) { $acumScript .= $user_permiso_editar.$user_permiso_cancelar; }         //documento por editar
-    if ($estado == 1) { $acumScript .= $user_permiso_editar.$user_permiso_cancelar.'Ext.getCmp("btnExportar'.$opcGrillaContable.'").enable();'.$user_permiso_anexar; }         //documento generado
+    if ($estado == 1) { $acumScript .= $user_permiso_editar.$user_permiso_cancelar.'Ext.getCmp("btnExportar'.$opcGrillaContable.'").enable();'; }         //documento generado
     else if($estado == 2){  $divImagen ='<img src="img/candado44.png" style="float:right; width: 20px; height: 30px; margin:10px 0 10px 2px;" title="Documento de venta Cruzado">'; $acumScript .='Ext.getCmp("btnExportar'.$opcGrillaContable.'").enable();'; }     //documento cruzado con otro
     else if($estado == 3){  $acumScript .= $user_permiso_restaurar; }      //documento cancelado
 
@@ -144,237 +142,179 @@
     </div>
 </div>
 <script>
-  var observacion<?php echo $opcGrillaContable; ?> = '';
-  <?php echo $acumScript; ?>
 
-  //=============== ANEXAR ARCHIVOS ADJUNTOS AL RECIBO DE CAJA ===============//
-	function anexaReciboCaja(){
-		Win_Ventana_Documentos = new Ext.Window({
-	    width       	: 546,
-	    height      	: 500,
-	    id          	: 'Win_Ventana_Documentos',
-	    title       	: 'Formulario subir documentos',
-	    modal       	: true,
-	    autoScroll  	: false,
-	    closable    	: false,
-	    autoDestroy 	: true,
-	    autoLoad    	: {
-                        url  		   	: 'recibo_caja/ventana_documentos_recibo_caja.php',
-                        scripts 		: true,
-                        nocache 		: true,
-                        params  		: {
-                                        id_documento : <?php echo $id_recibo_caja; ?>
-                                      }
-                	    },
-	    tbar          :	[
-              	        {
-                          xtype   : 'buttongroup',
-                          columns : 3,
-                          title   : 'Opciones',
-                          style   : 'border-right:none;',
-                          items   : [
-                                      {
-                                        xtype       : 'button',
-                                        width       : 60,
-                                        height      : 56,
-                                        text        : 'Regresar',
-                                        scale       : 'large',
-                                        iconCls     : 'regresar',
-                                        iconAlign   : 'top',
-                                        hidden      : false,
-                                        handler     : function(){ BloqBtn(this); Win_Ventana_Documentos.close(id) }
-                                      },
-                                      {
-                                        xtype       : 'button',
-                                        width       : 60,
-                                        height      : 56,
-                                        text        : 'Anexar',
-                                        scale       : 'large',
-                                        iconCls     : 'upload_file32',
-                                        iconAlign   : 'top',
-                                        hidden      : false,
-                                        handler     : function(){ BloqBtn(this); windows_upload_file(); }
-                                      }
-                                    ]
-              	        }
-              	    	]
-		}).show();
-	}
+    var observacion<?php echo $opcGrillaContable; ?> = '';
+    <?php echo $acumScript; ?>
 
-	//==================== ABRIR MODAL PARA ANEXAR ARCHIVOS ====================//
-	function windows_upload_file(){
-		document.getElementById('divPadreModalUploadFile').setAttribute('style','display:block;');
-	}
+    //=================================================  BUSCAR NOTA ================================================//
+    function buscar<?php echo $opcGrillaContable; ?>(){ ventanaBuscar<?php echo $opcGrillaContable; ?>(); }
 
-	//==================== CERRAR MODAL PARA ANEXAR ARCHIVOS ===================//
-	function close_ventana_upload_file(){
-		document.getElementById('divPadreModalUploadFile').setAttribute('style','');
-	}
+    function ventanaBuscar<?php echo $opcGrillaContable; ?>(){
+        var myalto  = Ext.getBody().getHeight();
+        var myancho = Ext.getBody().getWidth();
 
-  //========================== BUSCAR RECIBO DE CAJA =========================//
-  function buscar<?php echo $opcGrillaContable; ?>(){ ventanaBuscar<?php echo $opcGrillaContable; ?>(); }
-
-  function ventanaBuscar<?php echo $opcGrillaContable; ?>(){
-      var myalto  = Ext.getBody().getHeight();
-      var myancho = Ext.getBody().getWidth();
-
-      Win_Ventana_buscar_<?php echo $opcGrillaContable; ?> = new Ext.Window({
-          width       : myancho-100,
-          height      : myalto-50,
-          id          : 'Win_Ventana_buscar_<?php echo $opcGrillaContable; ?>',
-          title       : 'Seleccionar ',
-          modal       : true,
-          autoScroll  : false,
-          closable    : false,
-          autoDestroy : true,
-          autoLoad    :
-          {
-              url     : 'recibo_caja/bd/buscarGrillaContable.php',
-              scripts : true,
-              nocache : true,
-              params  :
-              {
-                  opc               : 'buscar_<?php echo $opcGrillaContable; ?>',
-                  opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
-              }
-          },
-          tbar        :
-          [
-              {
-                  xtype   : 'buttongroup',
-                  columns : 3,
-                  title   : 'Opciones',
-                  items   :
-                  [
-                      {
-                           xtype      : 'button',
-                          text        : 'Regresar',
-                          scale       : 'large',
-                          iconCls     : 'regresar',
-                          height      : 56,
-                          iconAlign   : 'top',
-                          handler     : function(){ Win_Ventana_buscar_<?php echo $opcGrillaContable; ?>.close(id) }
-                      }
-                  ]
-              }
-          ]
-      }).show();
-  }
-
-  //================================== IMPRIMIR EN PDF ==================================================================//
-  function imprimir<?php echo $opcGrillaContable; ?> (){
-      window.open("recibo_caja/bd/imprimir_recibo_caja.php?id=<?php echo $id_recibo_caja; ?>&opc=cuentas&IMPRIME_PDF=true");
-  }
-
-  //================================== IMPRIMIR EN EXCEL =================================================================//
-  function imprimir<?php echo $opcGrillaContable; ?>Excel (){
-     window.open("recibo_caja/bd/imprimir_recibo_caja.php?id=<?php echo $id_recibo_caja; ?>&opc=cuentas&IMPRIME_XLS=true");
-  }
+        Win_Ventana_buscar_<?php echo $opcGrillaContable; ?> = new Ext.Window({
+            width       : myancho-100,
+            height      : myalto-50,
+            id          : 'Win_Ventana_buscar_<?php echo $opcGrillaContable; ?>',
+            title       : 'Seleccionar ',
+            modal       : true,
+            autoScroll  : false,
+            closable    : false,
+            autoDestroy : true,
+            autoLoad    :
+            {
+                url     : 'recibo_caja/bd/buscarGrillaContable.php',
+                scripts : true,
+                nocache : true,
+                params  :
+                {
+                    opc               : 'buscar_<?php echo $opcGrillaContable; ?>',
+                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+                }
+            },
+            tbar        :
+            [
+                {
+                    xtype   : 'buttongroup',
+                    columns : 3,
+                    title   : 'Opciones',
+                    items   :
+                    [
+                        {
+                             xtype      : 'button',
+                            text        : 'Regresar',
+                            scale       : 'large',
+                            iconCls     : 'regresar',
+                            height      : 56,
+                            iconAlign   : 'top',
+                            handler     : function(){ Win_Ventana_buscar_<?php echo $opcGrillaContable; ?>.close(id) }
+                        }
+                    ]
+                }
+            ]
+        }).show();
+    }
 
 
-  //============================ CANCELAR UN DOCUMENTO =========================================================================//
-  function cancelar<?php echo $opcGrillaContable; ?>(){
-      var contArticulos = 0;
+     //================================== IMPRIMIR EN PDF ==================================================================//
 
-      if(!document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>')){ return; }
+    function imprimir<?php echo $opcGrillaContable; ?> (){
+        window.open("recibo_caja/bd/imprimir_recibo_caja.php?id=<?php echo $id_recibo_caja; ?>&opc=cuentas&IMPRIME_PDF=true");
+    }
 
-      arrayIdsArticulos = document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>').querySelectorAll('.campoNombreArticulo');
+    //================================== IMPRIMIR EN EXCEL =================================================================//
+    function imprimir<?php echo $opcGrillaContable; ?>Excel (){
+       window.open("recibo_caja/bd/imprimir_recibo_caja.php?id=<?php echo $id_recibo_caja; ?>&opc=cuentas&IMPRIME_XLS=true");
+    }
 
-      for(i in arrayIdsArticulos){
-          if(arrayIdsArticulos[i].innerHTML != '' ){ contArticulos++; }
-      }
 
-      if(contArticulos > 0){
-          if(confirm('Esta seguro de Eliminar el presente Documento y su contenido relacionado')){
-              cargando_documentos('Cancelando Documento...','');
-              Ext.get("terminar<?php echo $opcGrillaContable; ?>").load({
-                  url  : 'recibo_caja/bd/bd.php',
-                  scripts : true,
-                  nocache : true,
-                  params  :
-                  {
-                      opc               : 'cancelarDocumento',
-                      id                : '<?php echo $id_recibo_caja; ?>',
-                      opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
-                  }
-              });
-          };
-      }
-  }
+    //============================ CANCELAR UN DOCUMENTO =========================================================================//
 
-  function ventanaObservacionCuenta<?php echo $opcGrillaContable; ?>(cont){
-      var id = document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_'+cont).value;
+    function cancelar<?php echo $opcGrillaContable; ?>(){
+        var contArticulos = 0;
 
-      Win_Ventana_descripcion_cuenta = new Ext.Window({
-          width       : 330,
-          height      : 240,
-          id          : 'Win_Ventana_descripcion_cuenta',
-          title       : 'Observacion Cuenta',
-          modal       : true,
-          autoScroll  : false,
-          closable    : false,
-          autoDestroy : true,
-          autoLoad    :
-          {
-              url     : 'recibo_caja/bd/bd.php',
-              scripts : true,
-              nocache : true,
-              params  :
-              {
-                  opc               : 'ventanaObservacionCuenta',
-                  opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
-                  idCuenta          : id,
-                  cont              : cont,
-                  id                : '<?php echo $id_recibo_caja; ?>',
-                  readonly          : 'readonly'
-              }
-          },
-          tbar        :
-          [
-              {
-                  xtype       : 'button',
-                  text        : 'Regresar',
-                  scale       : 'large',
-                  iconCls     : 'regresar',
-                  iconAlign   : 'left',
-                  handler     : function(){ Win_Ventana_descripcion_cuenta.close(id) }
-              }
-          ]
-      }).show();
-  }
+        if(!document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>')){ return; }
 
-  //=============== FUNCION PARA EDITAR UN DOCUMENTO TERMINADO ==============================================//
-  function modificarDocumento<?php echo $opcGrillaContable ?>(){
+        arrayIdsArticulos = document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>').querySelectorAll('.campoNombreArticulo');
 
-      if (confirm("Aviso!\nEsta seguro que quiere modificar el documento?\nSi lo hace se eliminara el movimiento contable del mismo")) {
-          cargando_documentos('Editando Documento...','');
-          Ext.get('terminar<?php echo $opcGrillaContable; ?>').load({
-              url     : 'recibo_caja/bd/bd.php',
-              scripts : true,
-              nocache : true,
-              params  :
-              {
-                  opc : 'modificarDocumentoGenerado',
-                  id  : '<?php echo $id_recibo_caja; ?>',
-                  opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
-              }
-          });
-      }
-  }
+        for(i in arrayIdsArticulos){
+            if(arrayIdsArticulos[i].innerHTML != '' ){ contArticulos++; }
+        }
 
-  //=============== FUNCION PARA RESTAURAR UN DOCUMENTO ====================================================//
-  function restaurar<?php echo $opcGrillaContable ?>(){
-      cargando_documentos('Restaurando Documento...','');
-      Ext.get('renderRestaurar<?php echo $opcGrillaContable ?>').load({
-          url     : 'recibo_caja/bd/bd.php',
-          scripts : true,
-          nocache : true,
-          params  :
-          {
-              opc               : 'restaurarDocumento',
-              id       : '<?php echo $id_recibo_caja; ?>',
-              opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
-          }
-      });
-  }
+        if(contArticulos > 0){
+            if(confirm('Esta seguro de Eliminar el presente Documento y su contenido relacionado')){
+                cargando_documentos('Cancelando Documento...','');
+                Ext.get("terminar<?php echo $opcGrillaContable; ?>").load({
+                    url  : 'recibo_caja/bd/bd.php',
+                    scripts : true,
+                    nocache : true,
+                    params  :
+                    {
+                        opc               : 'cancelarDocumento',
+                        id                : '<?php echo $id_recibo_caja; ?>',
+                        opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+                    }
+                });
+            };
+        }
+    }
+
+    function ventanaObservacionCuenta<?php echo $opcGrillaContable; ?>(cont){
+        var id = document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_'+cont).value;
+
+        Win_Ventana_descripcion_cuenta = new Ext.Window({
+            width       : 330,
+            height      : 240,
+            id          : 'Win_Ventana_descripcion_cuenta',
+            title       : 'Observacion Cuenta',
+            modal       : true,
+            autoScroll  : false,
+            closable    : false,
+            autoDestroy : true,
+            autoLoad    :
+            {
+                url     : 'recibo_caja/bd/bd.php',
+                scripts : true,
+                nocache : true,
+                params  :
+                {
+                    opc               : 'ventanaObservacionCuenta',
+                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
+                    idCuenta          : id,
+                    cont              : cont,
+                    id                : '<?php echo $id_recibo_caja; ?>',
+                    readonly          : 'readonly'
+                }
+            },
+            tbar        :
+            [
+                {
+                    xtype       : 'button',
+                    text        : 'Regresar',
+                    scale       : 'large',
+                    iconCls     : 'regresar',
+                    iconAlign   : 'left',
+                    handler     : function(){ Win_Ventana_descripcion_cuenta.close(id) }
+                }
+            ]
+        }).show();
+    }
+
+    //=============== FUNCION PARA EDITAR UN DOCUMENTO TERMINADO ==============================================//
+    function modificarDocumento<?php echo $opcGrillaContable ?>(){
+
+        if (confirm("Aviso!\nEsta seguro que quiere modificar el documento?\nSi lo hace se eliminara el movimiento contable del mismo")) {
+            cargando_documentos('Editando Documento...','');
+            Ext.get('terminar<?php echo $opcGrillaContable; ?>').load({
+                url     : 'recibo_caja/bd/bd.php',
+                scripts : true,
+                nocache : true,
+                params  :
+                {
+                    opc : 'modificarDocumentoGenerado',
+                    id  : '<?php echo $id_recibo_caja; ?>',
+                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+                }
+            });
+        }
+    }
+
+    //=============== FUNCION PARA RESTAURAR UN DOCUMENTO ====================================================//
+    function restaurar<?php echo $opcGrillaContable ?>(){
+        cargando_documentos('Restaurando Documento...','');
+        Ext.get('renderRestaurar<?php echo $opcGrillaContable ?>').load({
+            url     : 'recibo_caja/bd/bd.php',
+            scripts : true,
+            nocache : true,
+            params  :
+            {
+                opc               : 'restaurarDocumento',
+                id       : '<?php echo $id_recibo_caja; ?>',
+                opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+            }
+        });
+    }
+
+
 </script>

@@ -62,6 +62,10 @@
 			validateUpdateFecha($fecha,$usuario,$password,$id_empresa,$idFacturaVenta,$opcGrillaContable,$link);
 			break;
 
+		case 'QuickFechaUpdate':
+			validateUpdateFecha($fecha,$usuario,$password,$id_empresa,$idFacturaVenta,$opcGrillaContable,$link);
+			break;
+
 		case 'UpdateCuentaPago':
 			verificaEstadoDocumento($id,$opcGrillaContable,$link);
 			UpdateCuentaPago($id,$idCuentaPago,$link);
@@ -721,7 +725,7 @@
 						nombre,
 						nombre_unidad_medida AS unidad_medida,
 						cantidad_unidad_medida AS cantidad_unidades,
-						costo_unitario AS costo,
+						costo_inventario AS costo,
 						cantidad
 					FROM ventas_facturas_inventario 
 					WHERE id_factura_venta=$id_documento
@@ -756,7 +760,7 @@
 		];
 		$obj = new Inventario_pp();
 		$process = $obj->UpdateInventory($params);
-
+		var_dump($params);
 		// if ($opc=='eliminar'){
 		// 	$sql   = "UPDATE inventario_totales AS IT, (
 		// 					SELECT SUM(cantidad) AS total_factura_venta, id_inventario AS id_item
@@ -1135,12 +1139,48 @@
 		$sqlInsert   = "INSERT INTO ventas_facturas_update_fecha(fecha,hora,usuario,id_factura,id_empresa) VALUES (NOW(),NOW(),'$usuario','$idFacturaVenta','$id_empresa')";
 		$queryInsert = mysql_query($sqlInsert,$link);
 
-		if(!$queryInsert){ echo'<script>alert("Aviso,\nError de conexion con la base de datos");</script>'; exit; }
+		$sqlFactura = "SELECT estado FROM ventas_facturas WHERE id=$idFacturaVenta";
+		$query=mysql_query($sqlFactura,$link);
+		$estado = mysql_result($query,0,'estado');
 
-		echo'<script>
-				document.getElementById("fecha'.$opcGrillaContable.'").value = "'.$fecha.'";
-				Win_Ventana_update_fecha_'.$opcGrillaContable.'.close();
+		if($estado=='1'){
+			$sqlUpdateFecha  = "UPDATE ventas_facturas 
+									SET fecha_creacion = '$fecha',
+									fecha_contabilizado = '$fecha',
+									fecha_inicio = '$fecha',
+									fecha_vencimiento = '$fecha' 
+									WHERE
+										id= '$idFacturaVenta'";
+
+			$sqlUpdateFecha2 = "UPDATE asientos_colgaap 
+									SET fecha = '$fecha' 
+									WHERE
+										id_documento= '$idFacturaVenta' 
+										AND tipo_documento = 'FV'";
+
+			$sqlUpdateFecha3 = "UPDATE asientos_niif 
+									SET fecha = '$fecha' 
+									WHERE
+										id_documento= '$idFacturaVenta' 
+										AND tipo_documento = 'FV'";
+
+		if(!mysql_query($sqlUpdateFecha,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
+		if(!mysql_query($sqlUpdateFecha2,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
+		if(!mysql_query($sqlUpdateFecha3,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }}
+
+		if(!$queryInsert){ echo'<script>alert("Aviso,\nError de conexion con la base de datos");</script>'; exit; }
+		if($estado=='1'){
+			echo'<script>
+			document.getElementById("fecha'.$opcGrillaContable.'").value = "'.$fecha.'";
+			document.querySelector("#fechaLimitePago'.$opcGrillaContable.' input").value = "'.$fecha.'";
+			Win_Ventana_update_fecha_'.$opcGrillaContable.'.close();
 			</script>';
+		}else{
+			echo'<script>
+					document.getElementById("fecha'.$opcGrillaContable.'").value = "'.$fecha.'";
+					Win_Ventana_update_fecha_'.$opcGrillaContable.'.close();
+				</script>';
+		}
 	}
 
 	//=========================== FUNCION PARA ACTUALIZAR LA CUENTA DE PAGO ==============================================//
@@ -1303,13 +1343,13 @@
 		$id_bodega = mysql_result($query,0,'id_bodega');
 		$consecutivo = mysql_result($query,0,'consecutivo');
 		if ($estado==1) {
-			$mensaje='Error!\nEl Documento a sido generado \nNo se puede realizar mas acciones sobre el';
+			$mensaje='Error!\nEl Documento ha sido generado \nNo se puede realizar mas acciones sobre el';
 		}
 		else if ($estado==2) {
-			$mensaje='Error!\nEl Documento a sido cruzado \nNo se puede realizar mas acciones sobre el';
+			$mensaje='Error!\nEl Documento ha sido cruzado \nNo se puede realizar mas acciones sobre el';
 		}
 		else if ($estado==3) {
-			$mensaje='Error!\nEl Documento a sido cancelado \nNo se puede realizar mas acciones sobre el';
+			$mensaje='Error!\nEl Documento ha sido cancelado \nNo se puede realizar mas acciones sobre el';
 		}
 
 		if ($estado>0) {
@@ -2085,6 +2125,4 @@
 			exit;
 		}
 	}
-
-	
 ?>

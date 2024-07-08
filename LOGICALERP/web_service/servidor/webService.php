@@ -1420,34 +1420,6 @@
 		$queryOrden2 = mysql_query($sqlOrden2,$conexion);
 		$idOrdenErp = mysql_result($queryOrden2, 0, 'id');
 
-		//consultar las retenciones configuradas de ese tercero
-		$sql="SELECT id_retencion,retencion,valor FROM terceros_retenciones WHERE activo=1 AND id_proveedor=$idTerceroErp";
-		$query = mysql_query($sql,$conexion);
-		$insert_retenciones = NULL;
-		while ($row = mysql_fetch_array($query)) { 
-			// (
-			// 	'id_orden_compra'
-			// 	'id_tercero'
-			// 	'id_retencion'
-			// 	'retencion'
-			// 	'porcentaje'
-			// 	)
-			$insert_retenciones .= "(
-									'$idOrdenErp',
-									'$idTerceroErp',
-									'$row[id_retencion]',
-									'$row[retencion]',
-									'$row[valor]'
-									),";
-		}
-
-		if($insert_retenciones){
-			$insert_retenciones = substr($insert_retenciones, 0, -1);
-			$sql="INSERT INTO compras_ordenes_retenciones (id_orden_compra,id_tercero,id_retencion,retencion,porcentaje) VALUES  $insert_retenciones";
-			$query = mysql_query($sql,$conexion);
-		}
-
-
 		$valueInsert   = "";
 		$whereId       = "";
 		$contItems     = 1;
@@ -1500,9 +1472,7 @@
 								'".$arrayItem['descuento']."',
 								'".$arrayItem['impuesto']."',
 								'".$arrayItem['observaciones']."',
-								'".$id_Ccos."',
-								'costo',
-								'true'
+								'".$id_Ccos."'
 							),";
 
 			$whereId .= "|| codigo = '".$arrayItem['codigo']."' ";
@@ -1524,9 +1494,7 @@
 								'".$arrayItem['descuento']."',
 								'".$arrayItem['impuesto']."',
 								'".$arrayItem['observaciones']."',
-								'".$id_Ccos."',
-								'costo',
-								'true'
+								'".$id_Ccos."'
 							),";
 
 			$whereId .= "|| codigo = '".$arrayItem['codigo']."' ";
@@ -1559,9 +1527,7 @@
 							descuento,
 							id_impuesto,
 							observaciones,
-							id_centro_costos,
-							check_opcion_contable,
-							opcion_costo
+							id_centro_costos
 						)
 						VALUES $valueInsert";
 		$queryItems  = mysql_query($sqlItems,$conexion);

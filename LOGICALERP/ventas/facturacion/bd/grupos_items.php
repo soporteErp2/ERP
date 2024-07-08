@@ -6,7 +6,7 @@
 	$id_empresa  = $_SESSION['EMPRESA'];
 	// opcGrillaContable
 	// id_documento
-	
+
 	// SI ES UNA ACTUALIZACION DEL GRUPO O ASIGNACION DE ITEMS
 	if ($opcForm=='updateGroup') {
 		$sql="SELECT * FROM ventas_facturas_grupos WHERE activo=1 AND id_empresa=$id_empresa AND id_factura_venta=$id_documento AND id=$id_row";
@@ -23,16 +23,19 @@
 		$codigo_impuesto     = $mysql->result($query,0, 'codigo_impuesto');
 		$porcentaje_impuesto = $mysql->result($query,0, 'porcentaje_impuesto');
 		echo "<script>console.log('$id_row');</script>";
-		// $input_impuesto = "<input type='text' readonly style='width:190px;' value='$nombre_impuesto' id='info_impuesto_grupo' data-id='$id_impuesto' data-nombre='$nombre_impuesto' data-dianCode='$codigo_impuesto' data-valor='$porcentaje_impuesto' >";
+		$input_impuesto = "<input type='text' readonly style='width:190px;' value='$nombre_impuesto' id='info_impuesto_grupo' data-id='$id_impuesto' data-nombre='$nombre_impuesto' data-dianCode='$codigo_impuesto' data-valor='$porcentaje_impuesto' >";
 	}
-
-	$sql="SELECT id,impuesto,codigo_impuesto_dian,valor FROM impuestos WHERE activo=1 AND id_empresa=$id_empresa AND venta='Si' ";
-	$query=$mysql->query($sql,$mysql->link);
-	while ($row=$mysql->fetch_array($query)) {
-		$input_impuesto .= "<option data-id='$row[id]' ".($id_impuesto==$row[id]? "selected" : "")." data-nombre='$row[impuesto]' data-dianCode='$row[codigo_impuesto_dian]' data-valor='$row[valor]' >
+	else{
+		$sql="SELECT id,impuesto,codigo_impuesto_dian,valor FROM impuestos WHERE activo=1 AND id_empresa=$id_empresa AND venta='Si' ";
+		$query=$mysql->query($sql,$mysql->link);
+		while ($row=$mysql->fetch_array($query)) {
+			$input_impuesto .= "<option data-id='$row[id]' data-nombre='$row[impuesto]' data-dianCode='$row[codigo_impuesto_dian]' data-valor='$row[valor]' >
 								$row[impuesto]
 							</option>";
+		}
+		$input_impuesto = "<select style='width:190px;' id='info_impuesto_grupo' >$input_impuesto</select>";
 	}
+
 ?>
 
 <style>
@@ -56,19 +59,14 @@
 			<td>Cantidad</td>
 			<td ><input type="number" style="width:190px;" value="1" id="cantidad_grupo" readonly=""></td>
 			<td>Costo</td>
-			<td ><input type="text" style="width:190px;" value="<?php echo $costo; ?>" id="costo_grupo" ></td>
+			<td ><input type="text" readonly style="width:190px;" value="<?php echo $costo; ?>" id="costo_grupo" placeholder="Campo automatico"></td>
 		</tr>
 		<tr>
 			<td>Descuento</td>
-			<td ><input type="text" style="width:190px;" value="<?php echo $descuento; ?>" id="descuento_grupo" ></td>
+			<td ><input type="text" readonly style="width:190px;" value="<?php echo $descuento; ?>" id="descuento_grupo" placeholder="Campo automatico"></td>
 			<td>Impuesto</td>
 			<td >
-				<select style='width:190px;' id='info_impuesto_grupo' >
-					<option>Exento</option>
-					<?= $input_impuesto ?>
-							
-				</select>
-				<!-- <?php echo $input_impuesto; ?> -->
+				<?php echo $input_impuesto; ?>
 				<!-- <select style="width: 190px;" name="" id="info_impuesto_grupo">
 					<option value="" data-value="c" data-icon="1">xxx</option>
 				</select> -->
@@ -78,7 +76,7 @@
 		</tr>
 		<tr>
 			<td>Valor Impuesto</td>
-			<td ><input type="text" style="width:190px;" value="<?php echo $impuesto; ?>" id="impuesto_grupo" ></td>
+			<td ><input type="text" readonly style="width:190px;" value="<?php echo $impuesto; ?>" id="impuesto_grupo" placeholder="Campo automatico"></td>
 		</tr>
 		<tr>
 			<td>Observaciones</td>
@@ -209,19 +207,16 @@
 	// GUARDAR LA INFORMACION PRINCIPAL DEL GRUPO
 	function saveUpdateGroup() {
 		var opc             = ("<?php echo $opcForm; ?>"=='newGroup')? 'saveGroup' : 'updateGroup'
-		,	codigo          = document.getElementById('codigo_grupo').value
-		,	nombre          = document.getElementById('nombre_grupo').value
-		,	cantidad        = document.getElementById('cantidad_grupo').value
-		,	observaciones   = document.getElementById('observaciones_grupo').value
-		,	id_bodega       = document.getElementById('filtro_ubicacion_FacturaVenta').value
-		,	select_impuesto = document.getElementById('info_impuesto_grupo')
-		,	id_impuesto     = select_impuesto.dataset.id
-		,	nombre_impuesto = select_impuesto.dataset.nombre
-		,	valor_impuesto  = select_impuesto.dataset.valor
-		,	codigo_dian     = select_impuesto.dataset.dianCode
-		,	costo_grupo     = document.getElementById('costo_grupo').value
-		,	descuento_grupo = document.getElementById('descuento_grupo').value
-		,	impuesto_grupo  = document.getElementById('impuesto_grupo').value
+		,	codigo          	= document.getElementById('codigo_grupo').value
+		,	nombre          	= document.getElementById('nombre_grupo').value
+		,	cantidad        	= document.getElementById('cantidad_grupo').value
+		,	observaciones   	= document.getElementById('observaciones_grupo').value
+		,	id_bodega       	= document.getElementById('filtro_ubicacion_FacturaVenta').value
+		,	select_impuesto 	= document.getElementById('info_impuesto_grupo')
+		,	id_impuesto     	= ("<?php echo $opcForm; ?>" != 'updateGroup')? select_impuesto.options[select_impuesto.selectedIndex].dataset.id     	: select_impuesto.dataset.id
+		,	nombre_impuesto 	= ("<?php echo $opcForm; ?>" != 'updateGroup')? select_impuesto.options[select_impuesto.selectedIndex].dataset.nombre 	: select_impuesto.dataset.nombre
+		,	valor_impuesto  	= ("<?php echo $opcForm; ?>" != 'updateGroup')? select_impuesto.options[select_impuesto.selectedIndex].dataset.valor  	: select_impuesto.dataset.valor
+		,	codigo_dian      	= ("<?php echo $opcForm; ?>" != 'updateGroup')? select_impuesto.options[select_impuesto.selectedIndex].dataset.dianCode : select_impuesto.dataset.dianCode
 
 		// QUITAR CARACTERES ESPECIALES
 		observaciones = observaciones.replace(/[\#\<\>\'\"]/g, '');
@@ -249,8 +244,6 @@
 				nombre_impuesto   : nombre_impuesto,
 				valor_impuesto    : valor_impuesto,
 				codigo_dian       : codigo_dian,
-				costo_unitario    : costo_grupo,
-				descuento         : descuento_grupo,
 			}
 		});
 	}

@@ -3623,10 +3623,10 @@
 			$facturaJSON = new ClassFacturaJSON_V2($mysql);
 		  $facturaJSON->obtenerDatos($id_factura,$id_empresa);
 	    $data = $facturaJSON->construirJSON();
-	    var_dump($data);
-		  // $result      = $facturaJSON->enviarJSON();
-		  // echo json_encode($result);
-		  
+	    //var_dump($data);
+		 $result      = $facturaJSON->enviarJSON();
+		//echo json_encode($result);
+	
       $result['validar'] = str_replace("\'","",$result['validar']);
 
 			if(strpos($result['validar'],"Procesado Correctamente") != false || strpos($result['validar'],"Documento no enviado, Ya cuenta con env") != false || strpos($result['validar'],"procesado anteriormente") != false || strpos($result['validar'],"ha sido autorizada") != false){
