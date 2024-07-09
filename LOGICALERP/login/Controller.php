@@ -1,8 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-$DIRECTORIO = explode("/", $_SERVER['REQUEST_URI']);
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/configuracion/conexion.php');
+include_once('../../configuracion/conexion.php');
 
 class Login 
 {
