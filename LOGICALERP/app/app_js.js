@@ -13,6 +13,7 @@ function toggle_perfil(){
 async function load_modules(){
     let request = await fetch(`LOGICALERP/app/Controller.php?method=load_modules`);
     let response = await request.json();
+    console.log(response)
 }
 
 
@@ -24,5 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('profile-btn').addEventListener('click', function() {
         toggle_perfil();
     });
+
+    load_modules();
 });
 
