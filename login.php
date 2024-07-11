@@ -40,6 +40,11 @@
 </head>
 
 <body class="font-montserrat overflow-hidden">
+    <div class="absolute top-0 left-0 h-screen w-screen bg-white z-20 flex items-center justify-center hidden" id="login-loader">
+        <span class="animate-ping absolute inline-flex h-20 w-20 rounded-full bg-gray-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-20 w-20 bg-gray-400"></span>    
+    </div>
+
     <div id="modal-content" class="absolute w-full h-full left-0 top-0 bg-gray-200/50 flex justify-center items-center">
         <div id="content" class="bg-white opacity-1 p-4 min-w-96 max-h-full">
             <div class="flex items-center justify-between p-4 md:p-5 rounded-t ">
@@ -111,14 +116,12 @@
                                         <path fill-rule="evenodd" clip-rule="evenodd"  d="M9.53314 0.28277C9.96402 -0.0942565 10.6074 -0.0942565 11.0383 0.28277L20.1811 8.28277C20.4292 8.49978 20.5714 8.8133 20.5714 9.14286V13.7143H30.8571C31.4883 13.7143 32 14.226 32 14.8571V30.8571C32 31.4883 31.4883 32 30.8571 32H19.4286H10.2857H1.14286C0.511675 32 0 31.4883 0 30.8571V9.14286C0 8.8133 0.142263 8.49978 0.39028 8.28277L9.53314 0.28277ZM11.4286 29.7143V26.2857C11.4286 25.6545 10.9169 25.1429 10.2857 25.1429C9.65453 25.1429 9.14286 25.6545 9.14286 26.2857V29.7143H2.28571V9.66145L10.2857 2.66145L18.2857 9.66145L18.2857 14.8571L18.2857 29.7143H11.4286ZM29.7143 16H20.5714V29.7143H29.7143V16ZM5.71429 19.4286C5.71429 18.7974 6.22596 18.2857 6.85714 18.2857H13.7143C14.3455 18.2857 14.8571 18.7974 14.8571 19.4286C14.8571 20.0598 14.3455 20.5714 13.7143 20.5714H6.85714C6.22596 20.5714 5.71429 20.0598 5.71429 19.4286ZM6.85714 11.4286C6.22596 11.4286 5.71429 11.9402 5.71429 12.5714C5.71429 13.2026 6.22596 13.7143 6.85714 13.7143H13.7143C14.3455 13.7143 14.8571 13.2026 14.8571 12.5714C14.8571 11.9402 14.3455 11.4286 13.7143 11.4286H6.85714Z" fill="currentColor"></path>
                                     </svg>
                                 </div>
-                                <!-- <button type="button" class="text-[15px] text-neutral-mediumGray flex items-center absolute top-0 bottom-0 right-3 m-auto outline-none transition-all rotate-0">
-                                    <svg width="1em" height="1em" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"  d="M4.33474 12.3347C4.78105 11.8884 5.50467 11.8884 5.95098 12.3347L20 26.3838L34.049 12.3347C34.4953 11.8884 35.219 11.8884 35.6653 12.3347C36.1116 12.781 36.1116 13.5047 35.6653 13.951L21.6187 27.9976C21.4121 28.2135 21.1643 28.386 20.8899 28.5048C20.609 28.6264 20.3061 28.6892 20 28.6892C19.6939 28.6892 19.391 28.6264 19.1101 28.5048C18.8357 28.386 18.5879 28.2135 18.3813 27.9976L4.33474 13.951C3.88842 13.5047 3.88842 12.781 4.33474 12.3347Z" fill="currentColor"></path>
-                                    </svg>
-                                </button> -->
-                                <select required  id="sucursal" class="absolute bg-transparent w-full h-full border border-neutral-pureGray  rounded-[12px] ps-10 pe-3 text-[16px] focus:text-brand-blue600 focus:border-brand-blue400 outline-none">
+                                <select required  id="sucursal" class=" absolute bg-transparent w-full h-full border border-neutral-pureGray  rounded-[12px] ps-10 pe-3 text-[16px] focus:text-brand-blue600 focus:border-brand-blue400 outline-none">
                                     <option value="">Sucursal...</option>
                                 </select>
+                                <div id="branch-skeleton" class="hidden animate-pulse rounded-lg w-full h-full flex items-center justify-center">
+                                    <div class="w-full bg-gray-400 h-5 rounded-lg ml-10"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="grid w-full">
