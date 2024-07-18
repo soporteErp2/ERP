@@ -299,9 +299,9 @@
 	arraytercerosFVG        = new Array();
 	tercerosConfiguradosFVG = new Array();
 
-	var Tam     = parent.TamVentana();
-	var myancho = Tam[0];
-	var myalto  = Tam[1];
+	// var Tam     = parent.TamVentana();
+	// var myancho = Tam[0];
+	// var myalto  = Tam[1];
 	apuntador_este_gridraro = 2;
 
 	var panelinfos = new Ext.Panel({

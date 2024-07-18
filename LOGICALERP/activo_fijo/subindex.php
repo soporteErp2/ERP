@@ -8,9 +8,9 @@
 //////////////////////////////////   VARIABLES PARA LOS INFORMES  /////////////////////////////////////////
 var my_fecha_desde      = '<?php $fecha = date("Y-m-d"); echo date("Y-m-d", strtotime("$fecha -5 day")); ?>'
 ,	my_fecha_hasta      = '<?php $fecha = date("Y-m-d"); echo $fecha; ?>'
-,	Tam                 = parent.TamVentana()
-,	myancho             = Tam[0]
-,	myalto              = Tam[1];
+// ,	Tam                 = parent.TamVentana()
+// ,	myancho             = Tam[0]
+// ,	myalto              = Tam[1];
 apuntador_este_gridraro = 2;
 
 Ext.QuickTips.init();

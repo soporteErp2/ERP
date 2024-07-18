@@ -12,9 +12,9 @@
 //////////////////////////////////   VARIABLES PARA LOS INFORMES  /////////////////////////////////////////
 var my_fecha_desde = '<?php $fecha = date("Y-m-d"); echo date("Y-m-d", strtotime("$fecha -5 day")); ?>';
 var my_fecha_hasta = '<?php $fecha = date("Y-m-d"); echo $fecha; ?>';
-var Tam            = parent.TamVentana();
-var myancho        = Tam[0];
-var myalto         = Tam[1];
+// var Tam            = parent.TamVentana();
+// var myancho        = Tam[0];
+// var myalto         = Tam[1];
 var apuntador_este_gridraro = 2;
 var arrayContGlobals = new Array();
 

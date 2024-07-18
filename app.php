@@ -86,7 +86,7 @@
         </div>
         <div class="overflow-hidden flex">
             <div id="nav" class="border-r border-gray-dark overflow-hidden transition-all ease-in-out duration-500 bg-white w-64 h-screen flex flex-cols justify-between">
-                <ul class="fixed w-60 ml-2 list-none p-0 text-gray-text pt-4" id="modules-content">
+                <ul class="fixed w-60 ml-2 list-none p-0 text-gray-text pt-4" id="modules-nav">
                     <li class="rounded-lg h-10 py-2 px-4 flex content-center items-center gap-2 cursor-pointer  transition-all ease-in-out duration-100 animate-pulse">
                         <div class="rounded-full bg-gray-300 w-6 h-6"></div>                     
                         <div class="rounded-lg w-full h-2 bg-gray-300"></div>                     
@@ -107,7 +107,7 @@
                     <a href="logout.php" class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-6">Cerrar sesión</a>
                 </div>
             </div>
-            <div id="content" class="z-10 flex-grow bg-gray-light h-screen overflow-auto transition-all ease-in-out">contenido</div>
+            <div id="modules-content" class="z-10 flex-grow bg-gray-light h-screen overflow-auto transition-all ease-in-out"></div>
         </div>
     </div>
 </body>
