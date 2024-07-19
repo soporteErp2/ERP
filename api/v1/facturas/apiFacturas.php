@@ -2281,7 +2281,7 @@
 			$saldoGlobalFacturaSinAbono = ROUND($saldoGlobalFacturaSinAbono,$decimalesMoneda);
 			$totalDebito  = ROUND($totalDebito,$decimalesMoneda);
 			$totalCredito = ROUND($totalCredito,$decimalesMoneda);
-			if($totalDebito != $totalCredito){
+			if($totalDebito != $totalCredito && ABS($totalDebito-$totalCredito)>10){
 				$this->rollBack($id_factura,1);
 				return array('status' => false, 'detalle'=> "La contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control. debitos: $totalDebito creditos: $totalCredito" );
 				// echo '<script>
@@ -2861,7 +2861,7 @@
 
 			$totalDebito  = ROUND($totalDebito,$decimalesMoneda);
 			$totalCredito = ROUND($totalCredito,$decimalesMoneda);
-			if($totalDebito != $totalCredito){
+			if($totalDebito != $totalCredito && ABS($totalDebito-$totalCredito)>10){
     			$this->rollback($id_factura,1);
 				return array('status' => false, 'detalle'=> "La contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control (Niif) debitos: $totalDebito creditos: $totalCredito" );
 				// echo '<script>
