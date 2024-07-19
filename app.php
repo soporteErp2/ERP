@@ -3,6 +3,7 @@
     if (!isset($_SESSION['IDUSUARIO'])) {
         header('location: login.php');
     }
+    // var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,14 +66,14 @@
                     </svg>
                         
                 </div>
-                <div id="profile-content" class="opacity-0 absolute right-0 m-3 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  transition-all ease-in-out duration-200" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div id="profile-content" class="opacity-0 absolute right-0 m-3 w-80 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  transition-all ease-in-out duration-200" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                     <div class="py-1 hover:bg-gray-light" role="none">
-                      <a href="#" class="block px-4 pt-2 text-sm text-gray-text font-bold">Hotel yyyyyyy</a>
-                      <a href="#" class="block px-4 text-sm text-gray-text">sucursal</a>
+                      <a href="#" class="block px-4 pt-2 text-sm text-gray-text font-bold"><?= $_SESSION['NOMBREEMPRESA']?></a>
+                      <a href="#" class="block px-4 text-sm text-gray-text"><?= $_SESSION['NOMBRESUCURSAL'] ?></a>
                     </div>
                     <div class="py-1 hover:bg-gray-light" role="none">
-                      <a href="#" class="block px-4 pt-2 text-sm text-gray-text font-bold">Validado en:</a>
-                      <a href="#" class="block px-4 text-sm text-gray-text">xxxx xxxxx</a>
+                      <a href="#" class="block px-4 pt-2 text-sm text-gray-text font-bold"><?= $_SESSION['NOMBREFUNCIONARIO']? $_SESSION['NOMBREFUNCIONARIO'] : $_SESSION['NOMBREUSUARIO'] ?></a>
+                      <a href="#" class="block px-4 text-sm text-gray-text"><?= $_SESSION['NOMBREROL'] ?></a>
                     </div>
                     <div class="py-1 text-red-500 flex items-center justify-start pl-2 hover:bg-red-50 cursor-pointer font-medium" role="none">
                         <svg class="h-5 w-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,8 +86,8 @@
             
         </div>
         <div class="overflow-hidden flex">
-            <div id="nav" class="border-r border-gray-dark overflow-hidden transition-all ease-in-out duration-500 bg-white w-64 h-screen flex flex-cols justify-between">
-                <ul class="fixed w-60 ml-2 list-none p-0 text-gray-text pt-4" id="modules-nav">
+            <div id="nav" class="overflow-y-auto overflow-x-hidden scroll-smooth border-r border-gray-dark transition-all ease-in-out duration-500 bg-white w-64 h-full flex flex-col justify-between ">
+                <ul class=" w-60 ml-2 list-none p-0 text-gray-text pt-4" id="modules-nav">
                     <li class="rounded-lg h-10 py-2 px-4 flex content-center items-center gap-2 cursor-pointer  transition-all ease-in-out duration-100 animate-pulse">
                         <div class="rounded-full bg-gray-300 w-6 h-6"></div>                     
                         <div class="rounded-lg w-full h-2 bg-gray-300"></div>                     
@@ -100,7 +101,7 @@
                         <div class="rounded-lg w-full h-2 bg-gray-300"></div>                     
                     </li>
                 </ul>
-                <div class="fixed w-full bottom-0 p-2 text-red-500 flex items-center justify-start pl-2 hover:bg-red-50 cursor-pointer font-medium" role="none">
+                <div class=" p-2 text-red-500 flex items-center justify-start pl-2 hover:bg-red-50 cursor-pointer font-medium" role="none">
                     <svg class="h-5 w-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16.8835 9.27598C19.4225 8.25496 22.209 8.0169 24.8845 8.59243C27.56 9.16795 30.0021 10.5307 31.8967 12.5055C32.3337 12.961 33.0572 12.976 33.5126 12.539C33.9681 12.102 33.9831 11.3785 33.5461 10.9231C31.3357 8.6192 28.4866 7.02928 25.3652 6.35783C22.2438 5.68638 18.9929 5.96412 16.0307 7.15531C13.0684 8.34649 10.5303 10.3967 8.74275 13.0421C6.9552 15.6875 6 18.8073 6 22C6 25.1927 6.9552 28.3125 8.74275 30.9579C10.5303 33.6033 13.0684 35.6535 16.0307 36.8447C18.9929 38.0359 22.2438 38.3136 25.3652 37.6422C28.4866 36.9707 31.3357 35.3808 33.5461 33.0769C33.9831 32.6215 33.9681 31.898 33.5126 31.461C33.0572 31.024 32.3337 31.039 31.8967 31.4945C30.0021 33.4693 27.56 34.832 24.8845 35.4076C22.209 35.9831 19.4225 35.745 16.8835 34.724C14.3444 33.703 12.1689 31.9457 10.6367 29.6782C9.1045 27.4107 8.28575 24.7366 8.28575 22C8.28575 19.2634 9.1045 16.5893 10.6367 14.3218C12.1689 12.0543 14.3444 10.297 16.8835 9.27598ZM23.3347 16.3347C23.7811 15.8884 24.5047 15.8884 24.951 16.3347L29.5225 20.9062C29.9688 21.3525 29.9688 22.0761 29.5225 22.5224L24.951 27.0938C24.5047 27.5401 23.7811 27.5401 23.3347 27.0938C22.8884 26.6475 22.8884 25.9239 23.3347 25.4776L25.5267 23.2857H12.1429C11.5117 23.2857 11 22.774 11 22.1429C11 21.5117 11.5117 21 12.1429 21H26.3838L23.3347 17.951C22.8884 17.5047 22.8884 16.781 23.3347 16.3347Z"/>
                     </svg>

@@ -163,7 +163,7 @@ class Login
             $this->session_connect($row['bd']);
             
             // Consultar el empleado
-            $sql = "SELECT id, documento, nombre, id_rol, id_sucursal, username,email_empresa,id_empresa,color_menu FROM empleados WHERE activo = 1 AND username = ? AND password = ?";
+            $sql = "SELECT id, documento, nombre, id_rol, rol, id_sucursal, username,email_empresa,id_empresa,color_menu FROM empleados WHERE activo = 1 AND username = ? AND password = ?";
             $stmt = $this->session_mysqli->prepare($sql);
             $hashed_password = md5($password);
             $stmt->bind_param("ss", $usuario, $hashed_password);
@@ -210,6 +210,7 @@ class Login
         $result = $this->session_mysqli->query($sql);
         $rol = $result->fetch_assoc();
 
+        $_SESSION["NOMBREROL"]              = $employee_data['rol'];
         $_SESSION["ROL"]                    = $employee_data['id_rol'];
         $_SESSION["ROLVALOR"]               = $rol["valor"];
         $_SESSION["PERMISOS"]               = $permissions;
