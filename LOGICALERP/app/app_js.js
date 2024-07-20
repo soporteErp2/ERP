@@ -28,6 +28,7 @@ async function load_modules(){
 function render_modules() {
     let module_items = document.querySelectorAll('.module-nav');
     let modules_content = document.getElementById('modules-content');
+    let loader = document.getElementById('iframe-loading');
 
     module_items.forEach(item => {
         item.addEventListener('click', () => {
@@ -36,14 +37,27 @@ function render_modules() {
             let iframe = document.getElementById(`iframe-${id}`);
 
             if (!iframe) {
+                // Mostrar el loader al hacer click
+                loader.classList.remove('hidden');
                 iframe = document.createElement('iframe');
                 iframe.id = `iframe-${id}`;
                 iframe.src = src;
                 iframe.style.display = 'none';
                 iframe.classList.add("w-full");
                 iframe.classList.add("h-full");
+                iframe.addEventListener('load', function() {
+                    loader.classList.add('hidden'); // Ocultar el loader cuando el iframe haya cargado
+                    iframe.style.display = 'block';
+                });
                 modules_content.appendChild(iframe);
             }
+            // Si el iframe ya existe y está cargado, no recargar
+            // if (iframe.src !== src) {
+            //     iframe.src = src;
+            // } else {
+            //     loader.classList.add('hidden'); // Ocultar el loader si el iframe ya está cargado
+            //     iframe.style.display = 'block';
+            // }
 
             const iframes = modules_content.querySelectorAll('iframe');
             iframes.forEach(iframe => {

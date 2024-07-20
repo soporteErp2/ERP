@@ -108,7 +108,12 @@
                     <a href="logout.php" class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-6">Cerrar sesión</a>
                 </div>
             </div>
-            <div id="modules-content" class="z-10 flex-grow bg-gray-light h-screen overflow-auto transition-all ease-in-out"></div>
+            <div id="modules-content" class="z-10 flex-grow bg-gray-light h-screen overflow-auto transition-all ease-in-out overflow-hidden">
+                <div class="h-full w-full bg-white z-10 flex items-center justify-center hidden" id="iframe-loading">
+                    <span class="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-gray-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-10 w-10 bg-gray-400"></span>    
+                </div>
+            </div>
         </div>
     </div>
 </body>
