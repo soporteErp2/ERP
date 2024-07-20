@@ -56,7 +56,12 @@
 	if (!class_exists('ConnectDb')) {
 		$DIRECTORIO = explode ("/", $_SERVER['REQUEST_URI']);
 
-		include_once($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/misc/ConnectDb/class.ConnectDb.php');
+		// include_once($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/misc/ConnectDb/class.ConnectDb.php');
+		include_once(__DIR__.'/../misc/ConnectDb/class.ConnectDb.php');
+
+		// echo __DIR__.'/../misc/ConnectDb/class.ConnectDb.php';
+		// echo "<br> ". __DIR__;
+		// exit;
 
 		// if(file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/ARCHIVOS_PROPIOS/conexion.xml')){
 		// 	$fichero  = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/'.$DIRECTORIO[1].'/ARCHIVOS_PROPIOS/conexion.xml'); //SI SE LLAMA DESDE LOCAL O EN CARPETA /SIIP
