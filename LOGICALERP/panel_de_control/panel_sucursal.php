@@ -1,6 +1,6 @@
 <?php
 	include('../../configuracion/conectar.php');
-	include("../../configuracion/define_variables_debug.php");
+	include("../../configuracion/define_variables.php");
 
 	//ESTILO DEL PERMISO
 	$style_permiso='style="display:none;"';
