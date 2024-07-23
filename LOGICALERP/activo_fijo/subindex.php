@@ -42,14 +42,14 @@ Ext.onReady
 			style 		: 'font-family:Tahoma, Geneva, sans-serif; font-size:12px;',
 			items:
 				[
-					{
-						region		: 'north',
-						xtype		: 'panel',
-						height		: 33,
-						border		: false,
-						margins		: '0 0 0 0',
-						bodyStyle 	: 'background-image:url(../../temas/clasico/images/fondo_cabecera.png);'
-					},
+					// {
+					// 	region		: 'north',
+					// 	xtype		: 'panel',
+					// 	height		: 33,
+					// 	border		: false,
+					// 	margins		: '0 0 0 0',
+					// 	bodyStyle 	: 'background-image:url(../../temas/clasico/images/fondo_cabecera.png);'
+					// },
 					{
 						region			: 'center',
 						xtype			: 'tabpanel',
