@@ -83,6 +83,16 @@ async function login(){
     }
 }
 
+function show_hide_pass(option){
+    let input = document.getElementById("password")
+    ,   btn_show = document.getElementById("show-pass") 
+    ,   btn_hide = document.getElementById("hide-pass") 
+
+    input.type = option=="show"? "text" : "password";
+    btn_show.classList.toggle("hidden");
+    btn_hide.classList.toggle("hidden");
+}
+
 //listeners
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("n_documento").focus();
@@ -113,8 +123,11 @@ document.addEventListener("DOMContentLoaded", function() {
         login();
     });
 
-    
-    
-
+    document.getElementById("show-pass").addEventListener('click', function() {
+        show_hide_pass("show")
+    });
+    document.getElementById("hide-pass").addEventListener('click', function() {
+        show_hide_pass("hide")
+    });
     
 });
