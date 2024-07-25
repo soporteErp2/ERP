@@ -637,11 +637,22 @@
 			return utf8_encode($string);
 		}
 
+		public function utf8_encode_recursive($mixed) {
+			if (is_array($mixed)) {
+				foreach ($mixed as &$valor) {
+					$valor = $this->utf8_encode_recursive($valor);
+				}
+			} elseif (is_string($mixed)) {
+				$mixed = utf8_encode($mixed);
+			}
+			return $mixed;
+		}
 		/**
 		 * printJson show json in the screen
 		 */
 		public function printJson($debug = false){
 			// echo "<pre>".json_encode($this->jsonStructure)."</pre>";
+			$this->jsonStructure = $this->utf8_encode_recursive($this->jsonStructure);
 			if($debug){
 
 				$json_final =  json_encode($this->jsonStructure, JSON_PRETTY_PRINT);
@@ -650,7 +661,7 @@
 				}
 
 				else{
-					return print("<pre>".print_r($this->jsonStructure,true)."</pre>");
+					return print("<pre>".print_r($this->jsonStructure,true)."</pre>"."<pre>".json_last_error_msg()."</pre>");
 					#return json_encode(array("Hola"=>"Mundo"), JSON_PRETTY_PRINT);
 				}
 								
