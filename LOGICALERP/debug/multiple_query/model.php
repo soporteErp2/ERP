@@ -22,7 +22,7 @@
 
 		public function getDataBases()
 		{
-			$query="SELECT DISTINCT ".$this->column." AS bd FROM ".$this->dbHost;
+			$query="SELECT DISTINCT ".$this->column." AS bd FROM ".$this->dbHost." WHERE activo = 1";
 			$result=mysql_query($query, $this->link);
 			$data=array();
 			while ($data[]=@mysql_fetch_assoc($result));
@@ -55,5 +55,9 @@
 				mysql_close($newLink);
 			}
 			return $message;
+		}
+
+		public function getConn(){
+			return $this->conn;
 		}
 	}

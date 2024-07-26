@@ -118,7 +118,7 @@
 																'precio_venta' => $row['precio_venta'],
 																'impuesto'     => $row['valor_impuesto'],
 															);
-				$arrTaxes[$row['id_item']] = $row['valor_impuesto'];
+				$arrTaxes[$row['id_pos']][$row['id_item']] = $row['valor_impuesto'];
 			}
 			//echo json_encode($arrayPos);
 			foreach ($arrayPos as $id_pos => $arrayResult){
@@ -136,13 +136,12 @@
     				if ($arrayResult['valor_descuento']>0) {
     					$subtotal = $subtotal-($arrayResult['valor_descuento']/$arrayResult['contItems']);
     				}
-					$taxPercent   = ( $arrTaxes[$arrayResultItems['id_item']] * 0.01 )+1;
+					$taxPercent   = ( $arrTaxes[$id_pos][$arrayResultItems['id_item']] * 0.01 )+1;
 					$neto         = ROUND($subtotal/$taxPercent);
 					$acumNeto     += $neto;
-					$acumImpuesto += ROUND(($neto*$arrTaxes[$arrayResultItems['id_item']])/100);
+					$acumImpuesto += ROUND(($neto*$arrTaxes[$id_pos][$arrayResultItems['id_item']])/100);
 
-					$acumExento += ($arrTaxes[$arrayResultItems['id_item']]==0 || $arrTaxes[$arrayResultItems['id_item']]==null)?  $arrayResultItems['precio_venta']*$arrayResultItems['cantidad'] : 0;
-
+					$acumExento += ($arrTaxes[$id_pos][$arrayResultItems['id_item']]==0 || $arrTaxes[$id_pos][$arrayResultItems['id_item']]==null)?  $arrayResultItems['precio_venta']*$arrayResultItems['cantidad'] : 0;
     				// echo $arrayResultItems['nombre']." tx: ".$arrTaxes[$arrayResultItems['id_item']]." acumExento: $acumExento subtotal: $subtotal taxPercent: $taxPercent neto: $neto <b>acumNeto</b>: $acumNeto acumImpuesto :$acumImpuesto<br>";
 				}
 				// echo "--------------------------- <br>";
@@ -150,7 +149,7 @@
 				// echo "acumNeto $acumNeto acumImpuesto: $acumImpuesto valor_propina ".$arrayResult['valor_propina']." ".($acumNeto+$acumImpuesto+$arrayResult['valor_propina'])."<br>";
 
 				// echo "valor_metodo: ".$arrayResult['valor_metodo']." total: ".round(($acumNeto+$acumImpuesto+$arrayResult['valor_propina']),2)."<br> ";
-
+				
 				if ($arrayResult['valor_metodo']<> round($acumNeto+$acumImpuesto+$arrayResult['valor_propina']) && $acumImpuesto>0){
 					$acumNeto = ($arrayResult['valor_metodo']-$acumExento-$arrayResult['valor_propina'])/1.08;
 					$acumImpuesto = $acumNeto * 0.08;
