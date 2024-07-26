@@ -30,14 +30,22 @@ function set_company(n_documento){
 
 
 async function load_company(){  
+    let n_documento = document.getElementById("n_documento").value
+    if (n_documento=='') {
+        return;
+    }
 
     document.getElementById("sucursal").classList.toggle("hidden");
     document.getElementById("branch-skeleton").classList.toggle("hidden");
-    let n_documento = document.getElementById("n_documento").value
     let request = await fetch(`LOGICALERP/login/Controller.php?method=load_company&n_documento=${ n_documento }`);
     let response = await request.json();
     let select = document.getElementById('sucursal');
-    let options = response.map(option => `<option value="${option.id}" ${(response.length==1)? "selected" : "" }>${option.nombre}</option>`).join('');
+    let options = '';
+    try {
+        options = response.map(option => `<option value="${option.id}" ${(response.length==1)? "selected" : "" }>${option.nombre}</option>`).join('');
+    } catch (error) {
+        console.warn(error)
+    }
     select.innerHTML = `<option>Sucursal...</option> ${options}`
     document.getElementById("sucursal").classList.toggle("hidden");
     document.getElementById("branch-skeleton").classList.toggle("hidden");

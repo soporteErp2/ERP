@@ -127,6 +127,9 @@ class Login
     }
 
     public function load_company($n_documento){
+        if ($n_documento=='') {
+            return json_encode(["error"=>"no branches"]);
+        }
         $host = self::get_host($n_documento);
         if (count($host) > 0) {
             $this->session_connect($host['bd']);
