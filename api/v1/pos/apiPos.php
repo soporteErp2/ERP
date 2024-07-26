@@ -316,7 +316,7 @@
 																	'precio_venta' 		=> $row['precio_venta'],
 																	'impuesto'     		=> $row['valor_impuesto'],
 																);
-					$arrTaxes[$row['id_pos']][$row['id_item']] = $row['valor_impuesto'];	
+					$arrTaxes[$row['id']][$row['id_item']] = $row['valor_impuesto'];	
 				}
 							
 				foreach ($arrayPos as $id_pos => $arrayResult){
