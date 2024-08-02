@@ -316,7 +316,7 @@
 																	'precio_venta' 		=> $row['precio_venta'],
 																	'impuesto'     		=> $row['valor_impuesto'],
 																);
-					$arrTaxes[$row['id_item']] = $row['valor_impuesto'];
+					$arrTaxes[$row['id']][$row['id_item']] = $row['valor_impuesto'];	
 				}
 							
 				foreach ($arrayPos as $id_pos => $arrayResult){
@@ -333,12 +333,12 @@
 						if ($arrayResult['valor_descuento']>0) {
 							$subtotal = $subtotal-($arrayResult['valor_descuento']/$arrayResult['contItems']);							
 						}
-						$taxPercent   = ( $arrTaxes[$arrayResultItems['id_item']] * 0.01 )+1;
+						$taxPercent   = ( $arrTaxes[$id_pos][$arrayResultItems['id_item']] * 0.01 )+1;
 						$neto         = ROUND($subtotal/$taxPercent);
 						$acumNeto     += $neto;
-						$acumImpuesto += ROUND(($neto*$arrTaxes[$arrayResultItems['id_item']])/100);
+						$acumImpuesto += ROUND(($neto*$arrTaxes[$id_pos][$arrayResultItems['id_item']])/100);
 	
-						$acumExento += ($arrTaxes[$arrayResultItems['id_item']]==0 || $arrTaxes[$arrayResultItems['id_item']]==null)?  $arrayResultItems['precio_venta']*$arrayResultItems['cantidad'] : 0;
+						$acumExento += ($arrTaxes[$id_pos][$arrayResultItems['id_item']]==0 || $arrTaxes[$id_pos][$arrayResultItems['id_item']]==null)?  $arrayResultItems['precio_venta']*$arrayResultItems['cantidad'] : 0;
 					}
 
 					if ($arrayResult['valor_metodo']<> round($acumNeto+$acumImpuesto+$arrayResult['valor_propina']) && $acumImpuesto>0){
