@@ -253,7 +253,7 @@ class Login
         $_SESSION["APIGOOGLE"]              = "";
         $_SESSION["LICENCIASOPORTE"]        = $licence["id_unico"];
         $_SESSION["PRODUCTO"]               = 4;
-        $SESSION['APP']                     = 'LogicalSoft-ERP';
+        $_SESSION['APP']                    = 'LogicalSoft-ERP';
 
         return ["success" => true];
     }

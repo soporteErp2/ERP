@@ -82,7 +82,7 @@
     <div class="bg-[#EFF4FD] w-screen h-screen overflow-hidden flex relative">
         <div class="bg-white xl:w-[536px] md:w-[536px] w-full z-10 flex justify-center">
             <div class="flex flex-col gap-8 h-sm:py-0 py-16 px-20 md:px-[85px] xl:px-[85px] h-screen overflow-y-auto">
-                <img src="assets/img/plataforma_software.png" alt="logo" width="65" class="mb-3">
+                <img src="assets/img/logo_erp.png" alt="logo" class="w-48 h-20">
                 <h1 class="text-title-10 text-brand-blue600 text-blue-dark text-4xl font-semibold">Welcome</h1>
                 <p class="text-body-30-regular text-neutral-black leading-[17.5px] max-w-[367px]">Ingrese todos los campos para iniciar sesion en el software contable</p>
                 <div>
