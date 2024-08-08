@@ -149,19 +149,25 @@
                 CO.consecutivo,
                 CO.pendientes_facturar,
                 CO.proveedor,
+                T.numero_identificacion as NIT,
                 CO.usuario,
                 CO.tipo_nombre,
                 CO.observacion,
-                CO.estado
+                CO.estado,
+                CF.consecutivo AS consecutivo_cruce,
+	              CF.fecha_inicio AS fecha 
               FROM
-                compras_ordenes AS CO
+              compras_ordenes AS CO 
+              LEFT JOIN compras_facturas_inventario AS CFI ON CFI.id_consecutivo_referencia = CO.id 
+              INNER JOIN compras_facturas AS CF ON CFI.id_factura_compra = CF.id
+              INNER JOIN terceros AS T ON CO.id_proveedor = T.id
               WHERE
                 CO.activo = 1
               AND
                 CO.id_empresa = $this->id_empresa
                 $this->customWhere
-              GROUP BY
-                CO.id";
+              GROUP BY	
+              CO.id,CF.id";
       $query = $this->mysql->query($sql,$this->mysql->link);
       while($row = $this->mysql->fetch_array($query)){
         $id_doc = $row['id'];
@@ -169,17 +175,24 @@
         $whereIdDocs .= ($whereIdDocs == '')? "COI.id_orden_compra = '$id_doc'" : " OR COI.id_orden_compra = '$id_doc'";
 
         $this->arrayDoc[$id_doc] = array(
-                                          'sucursal'            => $row['sucursal'],
-                                          'bodega'              => $row['bodega'],
-                                          'fecha_inicio'        => $row['fecha_inicio'],
-                                          'fecha_vencimiento'   => $row['fecha_vencimiento'],
-                                          'consecutivo'         => $row['consecutivo'],
-                                          'pendientes_facturar' => $row['pendientes_facturar'],
-                                          'proveedor'           => $row['proveedor'],
-                                          'usuario'             => $row['usuario'],
-                                          'tipo_nombre'         => $row['tipo_nombre'],
-                                          'observacion'         => $row['observacion'],
-                                          'estado'              => $row['estado']
+                                          'sucursal'                => $row['sucursal'],
+                                          'bodega'                  => $row['bodega'],
+                                          'fecha_inicio'            => $row['fecha_inicio'],
+                                          'fecha_vencimiento'       => $row['fecha_vencimiento'],
+                                          'consecutivo'             => $row['consecutivo'],
+                                          'pendientes_facturar'     => $row['pendientes_facturar'],
+                                          'proveedor'               => $row['proveedor'],
+                                          'nit_proveedor'           => $row['NIT'],
+                                          'usuario'                 => $row['usuario'],
+                                          'tipo_nombre'             => $row['tipo_nombre'],
+                                          'observacion'             => $row['observacion'],
+                                          'estado'                  => $row['estado'],
+                                          'consecutivo_cruce'       => ($this->arrayDoc[$id_doc]['consecutivo_cruce'])?
+                                                                        $this->arrayDoc[$id_doc]['consecutivo_cruce']." - ".$row['consecutivo_cruce'] :
+                                                                        $row['consecutivo_cruce'],
+                                          'fecha_factura'           => ($this->arrayDoc[$id_doc]['fecha'])?
+                                                                        $this->arrayDoc[$id_doc]['fecha']." - ".$row['fecha'] :
+                                                                        $row['fecha']
                                         );
       }
 
@@ -381,11 +394,14 @@
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_inicio]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_vencimiento]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[consecutivo]</td>
+                            <td style='text-align:center; font-size:11px; $styleCancel'>$result[consecutivo_cruce]</td>
+                            <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_factura]</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['subtotal'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['impuesto'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['total'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['unidad_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['valor_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
+                            <td style='text-align:center; font-size:11px; $styleCancel'>$result[nit_proveedor]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[proveedor]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[usuario]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[tipo_nombre]</td>
@@ -395,13 +411,13 @@
 
           if($result == end($this->arrayDoc)){
             $bodyTable .= "<tr style='background: #999;padding-left: 10px;height: 25px;color: #FFF;font-weight: bold;'>
-                              <td style='text-align:left;' colspan='5'>TOTALES ORDENES DE COMPRAS</td>
+                              <td style='text-align:left;' colspan='7'>TOTALES ORDENES DE COMPRAS</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalSubtotalOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalImpuestoOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalUnidadPendienteOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalValorPendienteOrden),$_SESSION['DECIMALESMONEDA'])."</td>
-                              <td style='text-align:right;' colspan='5'></td>
+                              <td style='text-align:right;' colspan='7'></td>
                             </tr>";
           }
         }
@@ -447,13 +463,13 @@
 
           if($result == end($this->arrayDoc)){
             $bodyTable .=  "<tr style='background: #999;padding-left: 10px;height: 25px;color: #FFF;font-weight: bold;'>
-                              <td style='text-align:left;' colspan='5'>TOTALES ORDENES DE COMPRAS</td>
+                              <td style='text-align:left;' colspan='7'>TOTALES ORDENES DE COMPRAS</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalSubtotalOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalImpuestoOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalUnidadPendienteOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round(array_sum($this->totalValorPendienteOrden),$_SESSION['DECIMALESMONEDA'])."</td>
-                              <td style='text-align:right;' colspan='12'></td>
+                              <td style='text-align:right;' colspan='14'></td>
                               <td style='text-align:right;'>".round($totalCantidadItems,$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round($totalCostoUnitarioItems,$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;'>".round($totalDescuentoItems,$_SESSION['DECIMALESMONEDA'])."</td>
@@ -490,11 +506,14 @@
           <td>FECHA GENERACION</td>
           <td>FECHA VENCIMIENTO</td>
           <td>CONSECUTIVO</td>
+          <td>CONSECUTIVO CRUCE</td>
+          <td>FECHA FACTURACION</td>
           <td>SUBTOTAL</td>
           <td>IVA</td>
           <td>TOTAL</td>
           <td>UND. PENDIENTE(S)</td>
           <td>VALOR PENDIENTE(S)</td>
+          <td>NIT PROVEEDOR</td>
           <td>PROVEEDOR</td>
           <td>USUARIO</td>
           <td>TIPO</td>
@@ -538,10 +557,13 @@
                             <td style='width:70px;text-align:center;'><b>FECHA GENERACION</b></td>
                             <td style='width:70px;text-align:center;'><b>FECHA VENCIMIENTO</b></td>
                             <td style='width:70px;text-align:center;'><b>CONSECUTIVO</b></td>
+                            <td style='width:70px;text-align:center;'>CONSECUTIVO CRUCE</td>
+                            <td style='width:70px;text-align:center;'>FECHA FACTURACION</td>
                             <td style='width:70px;text-align:center;'><b>SUBTOTAL</b></td>
                             <td style='width:70px;text-align:center;'><b>IVA</b></td>
                             <td style='width:70px;text-align:center;'><b>UND. PENDIENTE(S)</b></td>
                             <td style='width:70px;text-align:center;'><b>VALOR PENDIENTE(S)</b></td>
+                            <td style='width:70px;text-align:center;'>NIT PROVEEDOR</td>
                             <td style='width:70px;text-align:center;'><b>PROVEEDOR</b></td>
                             <td style='width:70px;text-align:center;'><b>USUARIO</b></td>
                           </tr>";
@@ -554,10 +576,13 @@
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[fecha_inicio]</td>
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[fecha_vencimiento]</td>
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[consecutivo]</td>
+                          <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[consecutivo_cruce]</td>
+                          <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[fecha_factura]</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['subtotal'],$_SESSION['DECIMALESMONEDA'])."</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['impuesto'],$_SESSION['DECIMALESMONEDA'])."</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['unidad_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['valor_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
+                          <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[nit_proveedor]</td>
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[proveedor]</td>
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[usuario]</td>
                         </tr>";
@@ -565,7 +590,7 @@
         //PIE DE PAGINA DEL INFORME SIN DRISCRIMINAR
         if($result == end($this->arrayDoc) && $this->item == "no"){
           $footerTable = "<tr class='total' style='border:1px solid #999;'>
-                            <td style='text-align:left;' colspan='5'>TOTALES ORDENES DE COMPRAS</td>
+                            <td style='text-align:left;' colspan='7'>TOTALES ORDENES DE COMPRAS</td>
                             <td style='text-align:right;'>".round(array_sum($this->totalSubtotalOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;'>".round(array_sum($this->totalImpuestoOrden),$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;'>".round(array_sum($this->totalUnidadPendienteOrden),$_SESSION['DECIMALESMONEDA'])."</td>
@@ -615,12 +640,12 @@
                                 </tr>";
 
           $bodyTable .=  "<tr style='border: 1px solid #999;'>
-                            <td colspan='11' style='padding:0px;'>
+                            <td colspan='14' style='padding:0px;'>
                               <table class='tableInforme' style='margin-top: -1px;margin-bottom:-1px;'>
                                 <tr class='total'>
-                                  <td style='text-align:center;'>CODIGO</td>
-                                  <td style='text-align:center;'>NOMBRE</td>
-                                  <td style='text-align:center;'>UNIDAD</td>
+                                  <td style='text-align:center; width:70px;'>CODIGO</td>
+                                  <td style='text-align:center; width:70px;'>NOMBRE</td>
+                                  <td style='text-align:center; width:70px;'>UNIDAD</td>
                                   <td style='text-align:center;'>COD. CENTRO COSTO</td>
                                   <td style='text-align:center;'>CENTRO COSTO</td>
                                   <td style='text-align:center;'>CANTIDAD</td>
