@@ -159,8 +159,8 @@
               FROM
               compras_ordenes AS CO 
               LEFT JOIN compras_facturas_inventario AS CFI ON CFI.id_consecutivo_referencia = CO.id 
-              INNER JOIN compras_facturas AS CF ON CFI.id_factura_compra = CF.id
-              INNER JOIN terceros AS T ON CO.id_proveedor = T.id
+              LEFT JOIN compras_facturas AS CF ON CFI.id_factura_compra = CF.id
+              LEFT JOIN terceros AS T ON CO.id_proveedor = T.id
               WHERE
                 CO.activo = 1
               AND
