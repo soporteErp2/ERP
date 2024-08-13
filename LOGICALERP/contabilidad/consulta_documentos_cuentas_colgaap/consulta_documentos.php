@@ -1,4 +1,9 @@
+<head>
+  <script type="module" src="../web_components/DataTable.js"></script>
+</head>
+<data-table></data-table>
 <?php
+/*
 	include("../../../configuracion/conectar.php");
 	include("../../../configuracion/define_variables.php");
 	include("../../../misc/MyGrilla/class.MyGrilla.php");
@@ -6,10 +11,11 @@
 	/**//////////////////////////////////////////////**/
 	/**///		 INICIALIZACION DE LA CLASE  	  ///**/
 	/**/											/**/
-	/**/	$grilla = new MyGrilla();				/**/
+	/**/	/*$grilla = new MyGrilla();				/**/
 	/**/											/**/
 	/**//////////////////////////////////////////////**/
 
+	/*
 	$id_empresa  = $_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
 
@@ -90,12 +96,12 @@
 	/**//////////////////////////////////////////////////////////////**/
 	/**///				INICIALIZACION DE LA GRILLA	  			  ///**/
 	/**/															/**/
-	/**/	$grilla->Link = $link;  	//Conexion a la BD			/**/
-	/**/	$grilla->inicializa($_POST);//variables POST			/**/
-	/**/	$grilla->GeneraGrilla(); 	// Inicializa la Grilla		/**/
+	/**/	/* $grilla->Link = $link;  	//Conexion a la BD			/**/
+	/**/	/* $grilla->inicializa($_POST);//variables POST			/**/
+	/**/	/* $grilla->GeneraGrilla(); 	// Inicializa la Grilla		/**/
 	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
-
+/*
 
 if(!isset($opcion)){ ?>
 	<script>
@@ -256,4 +262,4 @@ if(!isset($opcion)){ ?>
 		}
 
     </script>
-<?php } ?>
+<?php } */?>
