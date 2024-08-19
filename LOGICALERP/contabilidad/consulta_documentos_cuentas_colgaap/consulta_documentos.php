@@ -1,4 +1,10 @@
+<script type="module" src="../web_components/data-table/DataTable.js"></script>
+
+<data-table></data-table>
 <?php
+
+exit;	
+
 	include("../../../configuracion/conectar.php");
 	include("../../../configuracion/define_variables.php");
 	include("../../../misc/MyGrilla/class.MyGrilla.php");
