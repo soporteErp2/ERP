@@ -13,6 +13,7 @@ function toggle_perfil(){
 async function load_modules(){
     let request = await fetch(`LOGICALERP/app/Controller.php?method=load_modules`);
     let response = await request.json();
+    response = typeof response == 'object' ? Object.values(response) : response ;
     let modules = response.map(module=>{
         return `<li data-src="${module.src}" data-id="${module.id}" class="module-nav rounded-lg hover:border-l-4 hover:border-nav-dark hover:bg-nav-light hover:text-nav-dark hover:font-medium py-2 px-4 flex content-center gap-2 cursor-pointer  transition-all ease-in-out duration-100 ">
                     <svg class="  h-6 w-6" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
