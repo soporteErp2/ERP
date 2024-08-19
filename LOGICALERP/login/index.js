@@ -54,8 +54,6 @@ async function load_company(){
 async function login(){
     let btn_submit = document.getElementById("btn_submit")
 
-    
-
     let n_documento = document.getElementById("n_documento").value
       , sucursal    = document.getElementById("sucursal").value
       , usuario     = document.getElementById("usuario").value
@@ -71,7 +69,8 @@ async function login(){
     btn_submit.disabled = true;
     btn_submit.innerHTML = `<div class="animate-spin border-4 border-orange-light border-r-orange-dark rounded-full w-6 h-6"></div>Procesando...`
 
-    let request = await fetch(`LOGICALERP/login/Controller.php?method=login&n_documento=${ n_documento }&sucursal=${sucursal}&usuario=${usuario}&password=${password}`);
+    console.log(`LOGICALERP/login/Controller.php?method=login&n_documento=${ n_documento }&sucursal=${sucursal}&usuario=${usuario}&password=${password}`)
+    let request = await fetch(`LOGICALERP/login/Controller.php?method=login&n_documento=${ n_documento }&sucursal=${sucursal}&usuario=${usuario}&password=${encodeURIComponent(password)}`);
     let response = await request.json();
 
     if (response.error) {
