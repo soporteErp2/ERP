@@ -1154,8 +1154,9 @@ class ClassFacturaJSON_V2{
 	}
 
 	public function enviarJSON(){
+    	$server_name = $_SERVER['SERVER_NAME'];
 
-		if(str_contains($_SERVER['SERVER_NAME'],'localhost')){
+		if($server_name<>'logicalsoft-erp.com'){
 			// API para enviar el JSON a la DIAN
 			$url_api = "http://fst.facse.net/api/comunicacion/ComprobanteJson";
 
