@@ -37,7 +37,7 @@ class Login
     }
 
     public function get_companies(){
-        $sql = "SELECT id, nit, nombre, bd, fecha_vencimiento_plan FROM host WHERE activo=1";
+        $sql = "SELECT id, nit, nombre, bd, fecha_vencimiento_plan FROM host WHERE activo=1 ORDER BY nombre ASC";
         $result = $this->mysqli->query($sql);
 
         if ($result->num_rows > 0) {
