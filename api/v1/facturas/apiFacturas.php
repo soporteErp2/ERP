@@ -2148,8 +2148,8 @@
 			//**********************************************************************//
 			$saldoClientes = ROUND($arrayAsiento[$acumCuentaClientes][$estadoCuentaClientes]);
 			$saldoAnticipo = $arrayAnticipo['total'];
-
-			if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes){
+			$diferenciaSaldos = ABS($saldoAnticipo - $saldoClientes);
+			if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes && $diferenciaSaldos > 1 ){
 				$this->rollBack($id_factura,1);
 				return  array('status' => false, 'detalle'=> "Los anticipos no pueden ser mayores a la factura de venta. anticipo: $saldoAnticipo saldo:$saldoClientes" );
 				// echo'<script>
