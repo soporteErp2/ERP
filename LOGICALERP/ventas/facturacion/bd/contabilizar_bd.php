@@ -545,8 +545,9 @@
 		//**********************************************************************//
 		$saldoClientes = $arrayAsiento[$acumCuentaClientes][$estadoCuentaClientes];
 		$saldoAnticipo = $arrayAnticipo['total'];
+		$diferenciaSaldos = ABS($saldoAnticipo - $saldoClientes);
 
-		if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes){
+		if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes && $diferenciaSaldos > 1){
 			if(!(in_array('301', $_SESSION["PERMISOS"])) || count($arrayAnticipo['anticipos']) > 1){echo'<script>
 					alert("Aviso.\nLos anticipos no pueden ser mayores a la factura de venta! \n saldo clientes: '.$saldoClientes.'");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
