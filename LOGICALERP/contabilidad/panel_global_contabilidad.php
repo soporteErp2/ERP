@@ -1844,7 +1844,7 @@
 		var myalto  = Ext.getBody().getHeight();
 		var myancho = Ext.getBody().getWidth();
 
-		if(alto == 0){ WinAlto = myalto-20; }
+		if(alto == 0){ WinAlto = myalto-110; }
 		else{ WinAlto = alto; }
 
 		if(ancho == 0){ WinAncho = myancho-30; }

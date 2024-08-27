@@ -1,6 +1,32 @@
-<script type="module" src="../web_components/data-table/DataTable.js"></script>
+<?php
+	error_reporting(E_ERROR | E_PARSE);
+	session_start();
+	include("../../../configuracion/define_variables.php");
+?>
 
-<data-table></data-table>
+<data-table 
+	endpoint='{
+				"url" : "consulta_documentos_cuentas_colgaap/bd/Api.php",
+				"method" : "GET",
+				"params" : [
+							{"id_empresa":"<?=$_SESSION['EMPRESA']?>"},
+							{"id_sucursal":"<?=$filtro_sucursal?>"},
+							{"contabilidad":"<?=$contabilidad?>"},
+							{"tipo_documento":"<?=$tipo_documento?>"},
+							{"fecha_inicial":"<?=$fecha_inicial?>"},
+							{"fecha_final":"<?=$fecha_final?>"}
+						]
+			}' 
+	columns='[
+				{"field":"Fecha","class":"","type":"","options":"","callback":""},
+				{"field":"Tipo","class":"","type":"","options":"","callback":""},
+				{"field":"Consecutivo","class":"","type":"","options":"","callback":""},
+				{"field":"Documento","class":"","type":"","options":"","callback":""},
+				{"field":"Nit","class":"","type":"","options":"","callback":""},
+				{"field":"Tercero","class":"","type":"","options":"","callback":""},
+				{"field":"Sucursal","class":"","type":"","options":"","callback":""}
+			]'
+></data-table>
 <?php
 
 exit;	

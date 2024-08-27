@@ -10,8 +10,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
     <title>ERP</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
     <link rel="stylesheet" href="LOGICALERP/app/app_style.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
@@ -19,29 +19,6 @@
             font-family: 'Montserrat', sans-serif;
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'white': '#ffffff',
-                        'gray': {
-                            'dark' : '#DADADA',
-                            'light' : '#fafafa',
-                            'icon' : '#9d9d9c',
-                            'text' : '#484848',
-                            'dropdown' : '#f5f5f5'
-                        },
-                        'nav':{
-                            'light' : '#f2f9fe',
-                            'dark' : '#00b9ff',
-                        }
-                    }
-                }
-            }
-        }
-        // icons 
-    </script>
     <script src="LOGICALERP/app/app_js.js"></script>
 </head>
 <body class="h-screen">

@@ -12,7 +12,10 @@ if(!$_GET['autorizado']){
     <link rel="stylesheet" type="text/css" href="index.css"/>
     <link rel="stylesheet" type="text/css" href="../../temas/clasico/estilo.php"/>
     <link rel="stylesheet" type="text/css" href="deterioro_cartera_clientes/index.css">
-	<script type="text/javascript" src="../../misc/extjs3/ext-base.js?v4.0.0.12-05-2013"></script>
+    
+    <script type="module" src="../web_components/data-table/DataTable.js?v=${Date.now()" defer></script>
+	
+        <script type="text/javascript" src="../../misc/extjs3/ext-base.js?v4.0.0.12-05-2013"></script>
     <script type="text/javascript" src="../../misc/extjs3/ext-all.js?v4.0.0.12-05-2013"></script>
     <script type="text/javascript" src="../../misc/lib.js?v4.0.0.12-05-2013"></script>
     <script type="text/javascript" src="../../misc/MyFunctions.js?v4.0.0.12-05-2013"></script>

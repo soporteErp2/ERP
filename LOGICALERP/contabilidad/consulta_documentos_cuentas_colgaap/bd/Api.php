@@ -13,13 +13,13 @@
 
     $object = new Api_colgapp_documents($mysql);
 
-    switch ($params->option) {
-        case 'get_documents':
-            $object->get_documents($params);
+    switch ($method) {
+        case 'GET':
+            $object->get_documents();
             break;
         
         default:
-            echo json_encode(["warning"=>"no se detecto la opcion"]);
+            echo json_encode(["warning"=>"method not found"]);
             break;
     }
 
@@ -31,56 +31,56 @@
         }
 
         // listar los items y si estan configurados para la seccion dada
-        public function get_documents($params){
+        public function get_documents(){
             // Parámetros de solicitud
-            $limit = isset($params->limit) ? intval($params->limit) : 100;
-            $page = isset($params->page) ? intval($params->page) : 1;
-            $search = isset($params->q) ? $params->q : "";
+            $limit = isset($_GET["limit"]) ? intval($_GET["limit"]) : 100;
+            $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
+            $search = isset($_GET["q"]) ? $_GET["q"] : "";
             // Calcular el offset
             $offset = ($page - 1) * $limit;
-            $where = "";
+            $where = ($_GET['tipo_documento'])? " AND tipo_documento='$_GET[tipo_documento]' " : "";
+            $where .= ($_GET['id_sucursal']!='global')? " AND id_sucursal='$_GET[id_sucursal]' " : "";
+
             // Agregar cláusula WHERE si se proporciona un parámetro de búsqueda
             if (!empty($search)) {
                 $where .= " AND (
-                                    items.codigo LIKE '%$search%' OR 
-                                    items.nombre_equipo LIKE '%$search%' OR 
-                                    items.familia LIKE '%$search%' OR 
-                                    items.grupo LIKE '%$search%' OR
-                                    items.subgrupo LIKE '%$search%'  
+                                    fecha LIKE '%$search%' OR 
+                                    tipo_documento LIKE '%$search%' OR 
+                                    consecutivo_documento LIKE '%$search%' OR 
+                                    tipo_documento_extendido LIKE '%$search%' OR 
+                                    nit_tercero LIKE '%$search%' OR 
+                                    tercero LIKE '%$search%' 
                                 )";
             }
-            // seccion_items
+
+            $tabla_asientos =($_GET['contabilidad']=='niif')? "asientos_niif" : "asientos_colgaap";
+
             // Consulta SQL para obtener registros con paginación y límite
-           $sql = "SELECT
-                        items.id,
-                        items.codigo,
-                        items.nombre_equipo AS item,
-                        items.familia,
-                        items.grupo,
-                        items.subgrupo,
-                        CASE
-                            WHEN seccion_items.id_seccion = $params->id_seccion THEN seccion_items.id_seccion
-                            ELSE NULL
-                        END AS id_seccion
-                    FROM items 
-                    LEFT JOIN seccion_items ON seccion_items.id_item = items.id 
-                    AND (seccion_items.id_seccion = $params->id_seccion OR seccion_items.id_seccion IS NULL)
-                    WHERE activo=1 AND id_empresa=$params->id_empresa
-                    $where
-                    AND modulo_pos = 'true'
-                    ORDER BY nombre_equipo ASC
-                    LIMIT $limit OFFSET $offset";
+           $sql = "SELECT 
+                        fecha AS 'Fecha',
+                        tipo_documento AS 'Tipo',
+                        consecutivo_documento AS 'Consecutivo',
+                        tipo_documento_extendido AS 'Documento',
+                        nit_tercero AS 'Nit',
+                        tercero AS 'Tercero',
+                        sucursal AS 'Sucursal'
+                        FROM $tabla_asientos 
+                        WHERE
+                        activo = 1 AND id_empresa='$_GET[id_empresa]'
+                        AND fecha BETWEEN '$_GET[fecha_inicial]' AND '$_GET[fecha_final]' 
+                        $where
+                        LIMIT $limit OFFSET $offset ";
             $query = $this->mysql->query($sql);
             $ret_val = [];
 			while ($row=$this->mysql->fetch_array($query)) {
                $ret_val[] = [
-                    "id"         => $row["id"],
-                    "codigo"     => $row["codigo"],
-                    "nombre"     => utf8_encode($row["item"]),
-                    "familia"    => utf8_encode($row["familia"]),
-                    "grupo"      => utf8_encode($row["grupo"]),
-                    "subgrupo"   => utf8_encode($row["subgrupo"]),
-                    "id_seccion" => $row["id_seccion"],
+                            "Fecha"       => $row["Fecha"],
+                            "Tipo"        => $row["Tipo"],
+                            "Consecutivo" => $row["Consecutivo"],
+                            "Documento"   => $row["Documento"],
+                            "Nit"         => utf8_encode($row["Nit"]),
+                            "Tercero"     => utf8_encode($row["Tercero"]),
+                            "Sucursal"    => utf8_encode($row["Sucursal"])
                 ];
             }
 

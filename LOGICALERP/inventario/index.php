@@ -8,7 +8,7 @@ if(!$_GET['autorizado']){
 
 ?>
 <head>
-	<script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/tailwind.css">
 </head>
 <style>
 </style>
