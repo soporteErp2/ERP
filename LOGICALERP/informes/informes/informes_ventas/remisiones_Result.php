@@ -111,29 +111,32 @@
             VR.fecha_finalizacion,
             VR.consecutivo,
             VR.pendientes_facturar,
+            VR.nit,
             VR.cliente,
             VR.nombre_vendedor,
             VR.consecutivo_siip,
             VR.centro_costo,
+            VR.bodega,
             VR.sucursal,
             VR.estado,
-            VR.observacion
+            VR.observacion,
+            VF.numero_factura_completo as consecutivo_cruce,
+            VF.fecha_inicio as fecha_cruce
           FROM
-            ventas_remisiones AS VR,
-            ventas_remisiones_inventario AS VRI
+            ventas_remisiones AS VR
+            LEFT JOIN ventas_facturas_inventario AS VFI ON VR.id = VFI.id_consecutivo_referencia
+            LEFT JOIN ventas_facturas AS VF ON VFI.id_factura_venta = VF.id
           WHERE
-            VR.activo = 1
-          AND
-            VR.id_empresa = $id_empresa
-          AND
-            VRI.id_remision_venta=VR.id
+          VR.activo = 1
+          AND VFI.nombre_consecutivo_referencia = 'Remision'
+          AND VR.id_empresa = $id_empresa
             $whereEstado
             $whereSucursal
             $whereClientes
             $whereVendedores
             $whereFechas
             $whereCentroCostos
-          GROUP BY VR.id
+          GROUP BY VR.id, VF.id
           ORDER BY
             VR.cliente ASC "; 
   $query = mysql_query($sql,$link);
@@ -146,12 +149,18 @@
                                                'consecutivo'         => $row['consecutivo'],
                                                'pendientes_facturar' => ($row['estado'] == 3)? 0 : $row['pendientes_facturar'],
                                                'valor_restante'      => $row['valor_restante'],
+                                               'nit_cliente'         => $row['nit'],
                                                'cliente'             => $row['cliente'],
                                                'nombre_vendedor'     => $row['nombre_vendedor'],
                                                'consecutivo_siip'    => $row['consecutivo_siip'],
                                                'centro_costo'        => $row['centro_costo'],
+                                               'bodega'              => $row['bodega'],
                                                'sucursal'            => $row['sucursal'],
                                                'estado'              => $row['estado'],
+                                               'documento_cruce'     => ($arrayRemisionesVentas[$row['id']]['consecutivo_cruce'])?
+                                                                          $arrayRemisionesVentas[$row['id']]['consecutivo_cruce']." - ".$row['consecutivo_cruce'] :
+                                                                        $row['consecutivo_cruce'],
+                                               'fecha_cruce'         => $row['fecha_cruce'],
                                                'observacion'         => $row['observacion']
                                               );
   }
@@ -242,7 +251,6 @@
       $arrayTotalesRemision[$row['id_remision_venta']]  += $total_articulo;
     }
   }
-  $cont = 0;
   $remision = 0;
 
   //VARIABLES ACUMULADAS POR CADA ITEM
@@ -271,20 +279,23 @@
     //SI SE VAN A DISCRIMIAR LOS ARTCULOS
     if($detallado_items == 'si'){
       if($cont > 0){
-        $headerTable .=  '<tr class="titulos">
-                            <td style="text-align:center;">&nbsp;<b>SUCURSAL</b></td>
-                            <td style="text-align:center;"><b>FECHA I.</b></td>
-                            <td style="text-align:center;"><b>FECHA F.</b></td>
-                            <td style="text-align:center;"><b>CONS. ERP</b></td>
-                            '.$title.'
-                            <td style="text-align:center;"><b>CENTRO COSTO</b></td>
-                            <td style="text-align:center;"><b>SUBTOTAL</b></td>
-                            <td style="text-align:center;"><b>IVA</b></td>
-                            <td style="text-align:center;"><b>UND.<br>PENDIENTE(S)</b></td>
-                            <td style="text-align:center;"><b>VAL. PENDIENTE</b></td>
-                            <td style="text-align:center;"><b>CLIENTE</b></td>
-                            <td style="text-align:center;"><b>VENDEDOR</b></td>
-                          </tr>';
+    $headerTable .=  '<tr class="titulos">
+                      <td style="text-align:center;">&nbsp;<b>SUCURSAL</b></td>
+                      <td style="text-align:center;"><b>FECHA I.</b></td>
+                      <td style="text-align:center;"><b>CONS. ERP</b></td>
+                      '.$title.'
+                      <td style="text-align:center;"><b>CONS. CRUCE</b></td>
+                      <td style="text-align:center;"><b>FECHA CRUCE</b></td>
+                      <td style="text-align:center;"><b>CENTRO COSTO</b></td>
+                      <td style="text-align:center;"><b>BODEGA</b></td>
+                      <td style="text-align:center;"><b>SUBTOTAL</b></td>
+                      <td style="text-align:center;"><b>IVA</b></td>
+                      <td style="text-align:center;"><b>UND.<br>PENDIENTE(S)</b></td>
+                      <td style="text-align:center;"><b>VAL. PENDIENTE</b></td>
+                      <td style="text-align:center;"><b>NIT</b></td>
+                      <td style="text-align:center;"><b>CLIENTE</b></td>
+                      <td style="text-align:center;"><b>VENDEDOR</b></td>
+                    </tr>';
       }
       else{
         $cont++;
@@ -294,14 +305,17 @@
                       <tr style="border:1px solid #999;border-top:none;border-bottom:none;">
                         <td style="text-align:center;'.$styleDocCancelado.'">&nbsp;'.$arrayResul['sucursal'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['fecha_inicio'].'</td>
-                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['fecha_finalizacion'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['consecutivo'].'</td>
                         '.$consecutivo_siip.'
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['documento_cruce'].'</td>
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['fecha_cruce'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['centro_costo'].'</td>
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['bodega'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.validar_numero_formato($arraySubTotalRemision[$id_remision],$IMPRIME_XLS).'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.validar_numero_formato($arrayIvaRemision[$id_remision],$IMPRIME_XLS).'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.($arrayResul['pendientes_facturar'] * 1).'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.validar_numero_formato($arrayTotalesRemision[$id_remision],$IMPRIME_XLS).'</td>
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['nit_cliente'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['cliente'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['nombre_vendedor'].'</td>
                       </tr>';
@@ -324,8 +338,8 @@
 
         $bodyTableDetail .=  '<tr style="height:25px;border:1px solid #999;border-top:none;border-bottom:none;">
                                 <td colspan="2" style="text-align:left">&nbsp;&nbsp;'.$arrayResul2['codigo'].'</td>
-                                <td colspan="3" style="text-align:left">'.$arrayResul2['nombre'].'</td>
-                                <td style="text-align:left">'.$arrayResul2['nombre_unidad_medida'].' x '.$arrayResul2['cantidad_unidad_medida'].'</td>
+                                <td colspan="5" style="text-align:left">'.$arrayResul2['nombre'].'</td>
+                                <td colspan="2" style="text-align:left">'.$arrayResul2['nombre_unidad_medida'].' x '.$arrayResul2['cantidad_unidad_medida'].'</td>
                                 <td style="text-align:right;">'.($arrayResul2['cantidad'] * 1).'</td>
                                 <td style="text-align:right;">'.($arrayResul2['saldo_cantidad'] * 1).'</td>
                                 <td style="text-align:right;">'.validar_numero_formato($arrayResul2['costo_unitario'],$IMPRIME_XLS).'</td>
@@ -347,7 +361,7 @@
       if($remision != $id_remision){
         if($id_remision != 0){
           $bodyTableFooter .=  '<tr class="total" style=" border:1px solid #999;border-top:none;">
-                                  <td colspan="6" style="border-top:1px solid #999;"><b>&nbsp;&nbsp;TOTALES</b></td>
+                                  <td colspan="9" style="border-top:1px solid #999;"><b>&nbsp;&nbsp;TOTALES</b></td>
                                   <td style="border-top:1px solid #999;text-align:right;"><b>'.$acumuladoCantidad.'</b></td>
                                   <td style="border-top:1px solid #999;text-align:right;"><b>'.$acumuladoPendiente.'</b></td>
                                   <td style="border-top:1px solid #999;text-align:right;"><b>'.validar_numero_formato($acumuladoCosto,$IMPRIME_XLS).'</b></td>
@@ -355,8 +369,8 @@
                                   <td style="border-top:1px solid #999;text-align:right;"><b>'.validar_numero_formato($acumuladoTotal,$IMPRIME_XLS).'&nbsp;&nbsp;</b></td>
                                 </tr>
                                 <tr class="total" style="border:1px solid #999;border-top:none;">
-                                  <td colspan="6" style="border-top:1px solid #999;width:95px;"><b>&nbsp;&nbsp;OBSERVACIONES</b></td>
-                                  <td colspan="6" style="border-top:1px solid #999;width:95px;">'.$arrayResul['observacion'].'</td>
+                                  <td colspan="8" style="border-top:1px solid #999;width:95px;"><b>&nbsp;&nbsp;OBSERVACIONES</b></td>
+                                  <td colspan="7" style="border-top:1px solid #999;width:95px;">'.$arrayResul['observacion'].'</td>
                                 </tr>';
 
           //LIMPIAR LAS VARIABLES
@@ -372,8 +386,8 @@
 
       $bodyTable .=  '<tr style="height:30px;border:1px solid #999;border-bottom:none;">
                         <td colspan="2" style="text-align:left;">&nbsp;&nbsp;<b>Codigo</td>
-                        <td colspan="3" style="text-align:left;"><b>Nombre</td>
-                        <td style="text-align:left;"><b>Unidad</td>
+                        <td colspan="5" style="text-align:left;"><b>Nombre</td>
+                        <td colspan="2" style="text-align:left;"><b>Unidad</td>
                         <td style="text-align:center;"><b>Cantidad</td>
                         <td style="text-align:center;"><b>Pendientes</td>
                         <td style="text-align:center;"><b>Costo</td>
@@ -391,14 +405,17 @@
                       <tr>
                         <td style="text-align:center;'.$styleDocCancelado.'">&nbsp;'.$arrayResul['sucursal'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['fecha_inicio'].'</td>
-                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['fecha_finalizacion'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['consecutivo'].'</td>
                         '.$consecutivo_siip.'
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['documento_cruce'].'</td>
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['fecha_cruce'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['centro_costo'].'</td>
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['bodega'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.validar_numero_formato($arraySubTotalRemision[$id_remision],$IMPRIME_XLS).'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.validar_numero_formato($arrayIvaRemision[$id_remision],$IMPRIME_XLS).'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.($arrayResul['pendientes_facturar'] * 1).'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.validar_numero_formato($arrayTotalesRemision[$id_remision],$IMPRIME_XLS).'</td>
+                        <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['nit_cliente'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['cliente'].'</td>
                         <td style="text-align:center;'.$styleDocCancelado.'">'.$arrayResul['nombre_vendedor'].'</td>
                       </tr>';
@@ -495,14 +512,17 @@
           <tr class="titulos">
             <td style=";text-align:center;">&nbsp;<b>SUCURSAL</b></td>
             <td style="text-align:center;"><b>FECHA I.</b></td>
-            <td style="text-align:center;"><b>FECHA F.</b></td>
             <td style="text-align:center;"><b>CONS. ERP</b></td>
             <?php echo $title; ?>
+            <td style="text-align:center;"><b>CONS. CRUCE</b></td>
+            <td style="text-align:center;"><b>FECHA CRUCE</b></td>
             <td style="text-align:center;"><b>CENTRO COSTO</b></td>
+            <td style="text-align:center;"><b>BODEGA</b></td>
             <td style="text-align:center;"><b>SUBTOTAL</b></td>
             <td style="text-align:center;"><b>IVA</b></td>
             <td style="text-align:center;"><b>UND.<br>PENDIENTE(S)</b></td>
             <td style="text-align:center;"><b>VAL. PENDIENTE</b></td>
+            <td style="text-align:center;"><b>NIT</b></td>
             <td style="text-align:center;"><b>CLIENTE</b></td>
             <td style="text-align:center;"><b>VENDEDOR</b></td>
           </tr>
