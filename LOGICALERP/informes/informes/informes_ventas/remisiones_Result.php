@@ -128,7 +128,7 @@
             LEFT JOIN ventas_facturas AS VF ON VFI.id_factura_venta = VF.id
           WHERE
           VR.activo = 1
-          AND VFI.nombre_consecutivo_referencia = 'Remision'
+          AND (VFI.nombre_consecutivo_referencia = 'Remision' OR VFI.nombre_consecutivo_referencia IS NULL)
           AND VR.id_empresa = $id_empresa
             $whereEstado
             $whereSucursal
