@@ -110,7 +110,7 @@ class Login
     }
 
     public function get_support_licence($company_id){
-        $sql = "SELECT id, id_unico,autorizado  FROM licencia_soporte WHERE id=$company_id";
+        $sql = "SELECT id, id_unico,autorizado  FROM licencia_soporte WHERE id_empresa=$company_id";
         $result = $this->session_mysqli->query($sql);
         $licence = $result->fetch_assoc();
         return $licence;
