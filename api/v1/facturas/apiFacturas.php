@@ -2700,7 +2700,7 @@
 			$saldoClientes = $arrayAsiento[$acumCuentaClientes][$estadoCuentaClientes];
 			$saldoAnticipo = $arrayAnticipo['total'];
 
-			if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes){
+			if($saldoAnticipo > 0 && $saldoAnticipo > $saldoClientes && ABS($saldoAnticipo-$saldoClientes) > 1){
     			$this->rollback($id_factura,1);
 				return array('status' => false, 'detalle'=> "Los anticipos no pueden ser mayores a la factura de venta (Niif)" );
 				// echo'<script>
