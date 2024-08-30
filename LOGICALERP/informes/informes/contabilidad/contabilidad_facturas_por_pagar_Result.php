@@ -171,6 +171,7 @@
                     CF.prefijo_factura,
                     CF.numero_factura,
                     CF.sucursal,
+                    CF.observacion,
                     A.saldo
                   FROM
                     $nombreTempo AS A
@@ -214,6 +215,15 @@
                                           <td>"'.$rowFacturas['nit'].'"</td>
                                           <td>'.$rowFacturas['proveedor'].'</td>'
                                           : '<td>'.$rowFacturas['sucursal'].'</td>';
+    
+    $columnaObservaciones = '';
+    $columnaObservacionesBody = '';
+    $colspanInforme = '15';
+    if($imprimeObservaciones == 'true'){
+      $columnaObservaciones = '<td style="text-align:right;"></td>';
+      $colspanInforme = '16';
+      $columnaObservacionesBody = "<td style=\"".$style." width:80px;text-align:right;\" >".$rowFacturas['observacion']."</td>";
+    }
 
     if($tercero != $rowFacturas['id_proveedor']){
       if($tercero != 0){
@@ -224,7 +234,7 @@
                                                                   <td style="text-align:right;">'.number_format($acumuladounoAtreinta,2,',','.').'</td>
                                                                   <td style="text-align:right;">'.number_format($acumuladotreintayunoAsesenta,2,',','.').'</td>
                                                                   <td style="text-align:right;">'.number_format($acumuladosesentayunoAnoventa,2,',','.').'</td>
-                                                                  <td style="text-align:right;">'.number_format($acumuladomasDenoventa,2,',','.').'</td>
+                                                                  <td style="text-align:right;">'.number_format($acumuladomasDenoventa,2,',','.').'</td>'.$columnaObservaciones.'
                                                                 </tr>
                                                                 <tr>
                                                                   <td>&nbsp;</td>
@@ -240,7 +250,7 @@
 
       $tercero    = $rowFacturas['id_proveedor'];
       $bodyTable .= ($tipo_informe != 'totalizado_edades')?  '<tr class="total">
-                                                                <td width="80" colspan="15"><b>'.$rowFacturas['proveedor'].'</b></td>
+                                                                <td width="80" colspan="'.$colspanInforme.'"><b>'.$rowFacturas['proveedor'].'</b></td>
                                                               </tr>': '';
       $bodyTable .= ($tipo_informe == 'detallado')?  '<tr>
                                                         '.$campos.'
@@ -256,6 +266,7 @@
                                                         <td style="'.$style.'width:80px;text-align:right;" > '.number_format($treintayunoAsesenta,2,',','.').'</td>
                                                         <td style="'.$style.'width:80px;text-align:right;" > '.number_format($sesentayunoAnoventa,2,',','.').'</td>
                                                         <td style="'.$style.'width:80px;text-align:right;" > '.number_format($masDenoventa,2,',','.').'</td>
+                                                        '.$columnaObservacionesBody.'
                                                       </tr>' : '';
     }
     else{
@@ -272,7 +283,8 @@
                                                           <td style="'.$style.'width:80px;text-align:right;"> '.number_format($unoAtreinta,2,',','.').'</td>
                                                           <td style="'.$style.'width:80px;text-align:right;"> '.number_format($treintayunoAsesenta,2,',','.').'</td>
                                                           <td style="'.$style.'width:80px;text-align:right;"> '.number_format($sesentayunoAnoventa,2,',','.').'</td>
-                                                          <td style="'.$style.'width:80px;text-align:right;"> '.number_format($masDenoventa,2,',','.').'</td>
+                                                          <td style="'.$style.'width:80px;text-align:right;"> '.number_format($masDenoventa,2,',','.').'</td>'
+                                                          .$columnaObservacionesBody.'
                                                         </tr>' : '';
     }
 
@@ -322,6 +334,10 @@
                                             <td style="font-weight:bold; width:90px;border-left:1px solid;">CUENTA</td>'
                                             : '<td>SUCURSAL</td>
                                             <td style="font-weight:bold; width:90px;">PROVEEDOR</td>';
+  
+  $columnObservaciones = ($imprimeObservaciones == 'true')? 
+                          '<td style="font-weight:bold; width:80px;text-align:right;" >OBSERVACIONES</td>' 
+                          : '';
 ?>
 <style>
   .contenedor_informe, .contenedor_titulo_informe{
@@ -401,6 +417,7 @@
               <td style="font-weight:bold; width:80px;text-align:right;">31-60</td>
               <td style="font-weight:bold; width:80px;text-align:right;">61-90</td>
               <td style="font-weight:bold; width:80px;text-align:right;" >MAS 90</td>
+              <?php echo $columnObservaciones; ?>
             </tr>
           </thead>
           <?php echo $bodyTable; ?>

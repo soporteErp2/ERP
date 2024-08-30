@@ -171,6 +171,8 @@
 				idClientes = (idClientes == '')? arrayProveedores[i] : idClientes + ',' + arrayProveedores[i];
 			}
 		}
+		//Imprime observaciones
+		imprimeObservaciones = document.getElementById('imprime_observaciones').checked;
 
 		//RECORREMOS LOS CHECKBOX PARA SABER CUALES FUERON SELECCIONADOS Y ENVIARLOS A LA CONSULTA
 		plazo_por_vencer = document.getElementById('plazo_por_vencer');
@@ -284,7 +286,8 @@
 									sucursal                   : sucursal,
 									cuenta                     : cuenta,
 									ordenCampo                 : ordenCampo,
-									ordenFlujo                 : ordenFlujo
+									ordenFlujo                 : ordenFlujo,
+									imprimeObservaciones	   : imprimeObservaciones
 								}
 		});
 

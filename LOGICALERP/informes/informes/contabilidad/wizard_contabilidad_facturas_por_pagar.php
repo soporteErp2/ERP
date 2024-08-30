@@ -126,6 +126,14 @@
               <div style="float:left;">Totalizado Por Edades</div>
             </td>
           </tr>
+          <tr>
+            <td>
+              <input type="checkbox" id="imprime_observaciones" value="imprime_observaciones" style="float:left; width:30px">
+            </td>
+            <td>
+              <div style="float:left;">Imprime observaciones</div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </p>
