@@ -33,12 +33,38 @@
 		$limit1     =$limit2+1;
 		$limit2     =$limit2+$limit;
 	}
+	$whereCuentas    = "";
+    $sqlCuentasPago  = "SELECT cuenta FROM configuracion_cuentas_pago
+                        WHERE id_empresa = $id_empresa
+                        AND activo = 1
+                        AND tipo = 'Compra'
+                        AND estado = 'Credito'";
+    $queryCuentasPago = mysql_query($sqlCuentasPago,$link);
+    while($rowCuenta = mysql_fetch_assoc($queryCuentasPago)){
+      $whereCuentas .= " OR A.codigo_cuenta=$rowCuenta[cuenta]";
+    }
 
- 	$sqlCuentas   = "SELECT $id_tercero,$tercero,$nit $whereSum
-					FROM $tabla
-					WHERE activo=1 $estado
-					AND id_empresa = '$id_empresa'
-					GROUP BY $id_tercero ASC LIMIT $limit";
+    $whereCuentas = substr($whereCuentas, 3);
+	
+	putenv("TZ=America/Bogota");
+	$fechaActual = date("Y-m-d");
+	$sqlCuentas = "SELECT
+						A.id_tercero as $id_tercero,
+						A.tercero as $tercero,
+						A.nit_tercero as nit,
+						SUM( A.haber - A.debe ) AS saldo
+                  	FROM asientos_colgaap AS A
+                  	INNER JOIN compras_facturas AS CF ON (
+                  	  A.id_documento_cruce = CF.id
+                  	  AND A.codigo_cuenta = CF.cuenta_pago
+                  	)
+                  	WHERE A.activo = 1
+					AND A.fecha <= '$fechaActual'
+                  	AND ($whereCuentas)
+                  	AND A.tipo_documento_cruce = 'FC'
+                  	AND A.id_empresa = $id_empresa
+                  	GROUP BY A.id_tercero
+                  	HAVING saldo > 0";
 
 	$queryCuentas = mysql_query($sqlCuentas,$link);
 
@@ -212,7 +238,7 @@
 
 			if(PaginaActual<?php echo $opcGrillaContable; ?>!=1){
 				Ext.get(MyParent).load({
-					url		: url,
+					url		: '',
 					scripts	: true,
 					nocache	: true,
 					params	:
