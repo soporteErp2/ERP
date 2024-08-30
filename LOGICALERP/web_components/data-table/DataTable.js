@@ -3,6 +3,7 @@ class DataTable extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     // Variables del estado
+    this.limit = 100;
     this.page = 1;
     this.q = "";
     this.order_by = "";
@@ -35,6 +36,14 @@ class DataTable extends HTMLElement {
     this.addListeners();
     this.get_records(1);
   }
+
+  executeCallback() {
+    if (typeof window[this.callback] === "function") {
+        window[this.callback]("Parámetro desde el Web Component");
+    } else {
+        console.error(`La función ${this.callback} no está definida.`);
+    }
+}
 
   render(){
     this.shadowRoot.innerHTML = '';
@@ -121,7 +130,7 @@ class DataTable extends HTMLElement {
             return `${key}=${value}`;
         }).join('&');
         
-        url += `?${queryString}&page=${this.page}&q=${this.q}&order_by=${this.order_by}`;
+        url += `?${queryString}&limit=${this.limit}&page=${this.page}&q=${this.q}&order_by=${this.order_by}`;
     }
 
     // Si el método es POST, enviamos los parámetros en el cuerpo de la solicitud
@@ -192,7 +201,7 @@ class DataTable extends HTMLElement {
     return data.map(element => (
       /*html*/`<tr class="bg-white odd:bg-white even:bg-slate-50 hover:bg-gray-200 cursor-default">
                   ${cols.map(col => /*html*/`
-                        <td scope="col" class="py-2" }">
+                        <td scope="col" class="py-2" ${(col.callback ? "ondblclick()" : "" )}>
                           <span>${element[col.field]}</span>
                         </td>
                       `).join('')}

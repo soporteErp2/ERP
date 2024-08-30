@@ -56,7 +56,7 @@
             $tabla_asientos =($_GET['contabilidad']=='niif')? "asientos_niif" : "asientos_colgaap";
 
             // Consulta SQL para obtener registros con paginación y límite
-           $sql = "SELECT 
+            $sql = "SELECT 
                         fecha AS 'Fecha',
                         tipo_documento AS 'Tipo',
                         consecutivo_documento AS 'Consecutivo',

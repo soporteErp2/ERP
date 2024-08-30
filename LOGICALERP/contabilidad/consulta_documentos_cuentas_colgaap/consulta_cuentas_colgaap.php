@@ -1,4 +1,11 @@
 <?php
+	error_reporting(E_ERROR | E_PARSE);
+	session_start();
+	include("../../../configuracion/define_variables.php");
+?>
+
+<?php
+exit;
 	include("../../../configuracion/conectar.php");
 	include("../../../configuracion/define_variables.php");
 	include("../../../misc/MyGrilla/class.MyGrilla.php");
