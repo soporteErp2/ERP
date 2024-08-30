@@ -306,6 +306,9 @@
 				idClientes=(idClientes=='')? arrayProveedores[i] : idClientes+','+arrayProveedores[i] ;
 			}
 		}
+		
+		//Imprime observaciones
+		imprimeObservaciones = document.getElementById('imprime_observaciones').checked;
 
 		//RECORREMOS LOS CHECKBOX PARA SABER CUALES FUERON SELECCIONADOS Y ENVIARLOS A LA CONSULTA
 		plazo_por_vencer = document.getElementById('plazo_por_vencer');
@@ -382,7 +385,8 @@
 					+"&tipo_informe="+tipo_informe
 					+"&cuenta="+cuenta
 					+"&ordenCampo="+ordenCampo
-					+"&ordenFlujo="+ordenFlujo;
+					+"&ordenFlujo="+ordenFlujo
+					+"&imprimeObservaciones="+imprimeObservaciones;
 
 		window.open("../informes/informes/contabilidad/contabilidad_facturas_por_pagar_Result.php?"+data);
 	}
