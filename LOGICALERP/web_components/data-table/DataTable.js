@@ -37,13 +37,14 @@ class DataTable extends HTMLElement {
     this.get_records(1);
   }
 
-  executeCallback() {
-    if (typeof window[this.callback] === "function") {
-        window[this.callback]("Parámetro desde el Web Component");
-    } else {
-        console.error(`La función ${this.callback} no está definida.`);
-    }
-}
+  executeCallback(callbackName, data) {
+      // Verifica si la función existe en el contexto global
+      if (typeof window[callbackName] === "function") {
+          window[callbackName](data);
+      } else {
+          console.error(`Callback function ${callbackName} is not defined`);
+      }
+  }
 
   render(){
     this.shadowRoot.innerHTML = '';
@@ -52,7 +53,6 @@ class DataTable extends HTMLElement {
   }
 
   template() {
-    
     const template = document.createElement('template');
 
     if (!this.columns) {
@@ -83,9 +83,9 @@ class DataTable extends HTMLElement {
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 table-auto">
               <thead class="text-xs text-gray-900 uppercase bg-gray-300 sticky top-0 cursor-pointer">
                 <tr>
-                  ${cols.map(element => /*html*/`
+                  ${cols.filter(element => !element.hidde).map(element => /*html*/`
                       <th scope="col" class="${element.css ? element.css : "py-2" }">
-                        <span>${element.field}</span>
+                        <span>${element.alias}</span>
                       </th>
                     `).join('')}
                 </tr>
@@ -200,8 +200,8 @@ class DataTable extends HTMLElement {
 
     return data.map(element => (
       /*html*/`<tr class="bg-white odd:bg-white even:bg-slate-50 hover:bg-gray-200 cursor-default">
-                  ${cols.map(col => /*html*/`
-                        <td scope="col" class="py-2" ${(col.callback ? "ondblclick()" : "" )}>
+                  ${cols .filter(element => !element.hidde).map(col => /*html*/`
+                  <td scope="col" class="py-2" ${col.callback ? `ondblclick="window.${col.callback}('${JSON.stringify(element).replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/(\r\n|\n|\r)/g, "")}')"` : "" }>
                           <span>${element[col.field]}</span>
                         </td>
                       `).join('')}

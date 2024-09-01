@@ -57,13 +57,17 @@
 
             // Consulta SQL para obtener registros con paginación y límite
             $sql = "SELECT 
-                        fecha AS 'Fecha',
-                        tipo_documento AS 'Tipo',
-                        consecutivo_documento AS 'Consecutivo',
-                        tipo_documento_extendido AS 'Documento',
-                        nit_tercero AS 'Nit',
-                        tercero AS 'Tercero',
-                        sucursal AS 'Sucursal'
+                            id,
+                            id_documento,
+                            fecha,
+                            tipo_documento,
+                            consecutivo_documento,
+                            tipo_documento_extendido,
+                            id_tercero,
+                            nit_tercero,
+                            tercero,
+                            id_sucursal,
+                            sucursal
                         FROM $tabla_asientos 
                         WHERE
                         activo = 1 AND id_empresa='$_GET[id_empresa]'
@@ -72,16 +76,8 @@
                         LIMIT $limit OFFSET $offset ";
             $query = $this->mysql->query($sql);
             $ret_val = [];
-			while ($row=$this->mysql->fetch_array($query)) {
-               $ret_val[] = [
-                            "Fecha"       => $row["Fecha"],
-                            "Tipo"        => $row["Tipo"],
-                            "Consecutivo" => $row["Consecutivo"],
-                            "Documento"   => $row["Documento"],
-                            "Nit"         => utf8_encode($row["Nit"]),
-                            "Tercero"     => utf8_encode($row["Tercero"]),
-                            "Sucursal"    => utf8_encode($row["Sucursal"])
-                ];
+			while ($row=$this->mysql->fetch_assoc($query)) {
+               $ret_val[] = $row;
             }
 
             $ret_val = json_encode($ret_val);
