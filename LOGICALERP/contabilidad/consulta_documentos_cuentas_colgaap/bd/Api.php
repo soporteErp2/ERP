@@ -73,6 +73,7 @@
                         activo = 1 AND id_empresa='$_GET[id_empresa]'
                         AND fecha BETWEEN '$_GET[fecha_inicial]' AND '$_GET[fecha_final]' 
                         $where
+                        GROUP BY id_documento, tipo_documento
                         LIMIT $limit OFFSET $offset ";
             $query = $this->mysql->query($sql);
             $ret_val = [];
