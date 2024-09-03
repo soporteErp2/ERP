@@ -370,6 +370,7 @@
           }
           elseif($this->discriminar_items == 'items'){
             foreach($this->arrayDocItems[$id_fc] as $id_row => $resultItems){
+              $docCruce = ($resultItems['nombre_consecutivo_referencia']=="Orden de Compra")? "OC ".$resultItems['consecutivo_referencia'] : "";
               $bodyTable .=  "<tr>
                                 <td style='text-align:center;font-size: 11px; $styleCancel'>$result[sucursal]</td>
                                 <td style='text-align:center;font-size: 11px; $styleCancel'>$result[bodega]</td>
@@ -386,6 +387,7 @@
                                 <td style='text-align:right; font-size: 11px; $styleCancel'>".validar_numero_formato($result['reteIca'],$this->IMPRIME_XLS)."</td>
                                 <td style='text-align:right; font-size: 11px; $styleCancel'>".validar_numero_formato($result['reteIva'],$this->IMPRIME_XLS)."</td>
                                 <td style='text-align:right; font-size: 11px; $styleCancel'>".validar_numero_formato($result['total_factura'],$this->IMPRIME_XLS)."</td>
+                                <td style='text-align:center;font-size: 11px; $styleCancel'>$docCruce</td>
                                 <td style='text-aling:center;font-size: 11px; $styleCancel'>$resultItems[codigo]</td>
                                 <td style='text-align:left;  font-size: 11px; $styleCancel'>$resultItems[nombre]</td>
                                 <td style='text-align:center;font-size: 11px; $styleCancel'>$resultItems[nombre_unidad_medida] x $resultItems[cantidad_unidad_medida]</td>
@@ -593,6 +595,7 @@
             <td>RETE. IVA</td>
             <td>TOTAL</td>
             <?php if($this->discriminar_items == "items"){ ?>
+              <td>DOC CRUCE</td>
               <td>CODIGO</td>
               <td>NOMBRE</td>
               <td>UNIDAD</td>
