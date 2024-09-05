@@ -158,7 +158,7 @@ class DataTable extends HTMLElement {
         this.end_fetching = true;
       }
     } catch (error) {
-      console.log(error);
+      console.warn(error);
     }
 
     this.loading_records(false);
