@@ -555,12 +555,12 @@
         if($this->impuestoDVI[$i] != null && ($this->exento_ivaDV == "No" || $this->exento_ivaDV == null || $this->exento_ivaDV == "")){
 					$arrayImpuestoItem[$i] = [
                                       array(
-                                              "Base"           => (string) round($this->costo_subtotalDVI[$i],$_SESSION['DECIMALESMONEDA']),
+                                              "Base"           => $this->costo_subtotalDVI[$i],
                                               "CodigoImpuesto" => $this->codigo_impuesto_dianDVI[$i],
                                               "Nombre"         => $this->impuestoDVI[$i],
                                               // "Nombre"         => "IVA SERVICIOS 19%",
       																				"Porcentaje"     => round($this->valor_impuestoDVI[$i],$_SESSION['DECIMALESMONEDA']),
-      																				"Impuesto"       => (string) round($this->costo_impuestoDVI[$i],$_SESSION['DECIMALESMONEDA'])
+      																				"Impuesto"       => $this->costo_impuestoDVI[$i]
 																		        )
                                    ];
 
