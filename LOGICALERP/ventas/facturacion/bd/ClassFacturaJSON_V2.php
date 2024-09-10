@@ -600,6 +600,9 @@ class ClassFacturaJSON_V2{
 					else if(stripos($this->impuestoVFI[$i],"compra") !== false){
 						$descripcionIVA = "IVA COMPRAS";
 					}
+					else{
+						$descripcionIVA = "IVA";
+					}
 				}
 				else{
 					$arrayImpuestoItem[$i] = [
