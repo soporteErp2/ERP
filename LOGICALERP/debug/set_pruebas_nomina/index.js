@@ -19,7 +19,7 @@ let payRoll = async () => {
 	for (let i = consecutivo; i <= (consecutivo+20); i++) {
 		data["Documento"]["Consecutivo"] = i;
 		let response = await api(data);
-		console.log(response)
+		console.log({response, data})
    	   	list.innerHTML = `${list.innerHTML} 
 	   	   	<div class="accordion-item">
 	          <h2 class="accordion-header" id="heading${i}">
