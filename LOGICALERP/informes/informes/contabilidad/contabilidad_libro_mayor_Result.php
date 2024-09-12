@@ -203,7 +203,7 @@
     <div style="float:left; width:100%">
       <div style="float:left;width:100%; text-align:center">
         <div class="my_informe_Contenedor_Titulo_informe_Empresa"><?php echo $_SESSION['NOMBREEMPRESA'];?><br><spam style="font-size:12px;">Nit.<?php echo $_SESSION['NITEMPRESA']; ?></spam></div>
-        <div style="width:100%; font-weight:bold; font-size:14px; text-align:center;"><?php echo $nombre_informe ?></div>
+        <div style="width:100%; font-weight:bold; font-size:14px; text-align:center;"><?php echo str_replace("_", " ", $nombre_informe) ?></div>
         <div style="margin-bottom:8px;" >Periodo del <?php echo $MyInformeFiltroFechaInicio; ?> al <?php echo $MyInformeFiltroFechaFinal; ?></div>
       </div>
     </div>

@@ -118,6 +118,8 @@
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
 							+"&cuentas_cierre="+cuentas_cierre
+							+"&nombre_informe=Libro_Mayor"
+
 
 		localStorage.nivel_cuentasLM              = nivel_cuentas;
 		localStorage.MyInformeFiltroFechaFinalLM  = MyInformeFiltroFechaFinal;
@@ -154,6 +156,7 @@
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
 							+"&cuentas_cierre="+cuentas_cierre
+							+"&nombre_informe=Libro_Mayor"
 
 		window.open(url_variable + "?" + data);
 	}
