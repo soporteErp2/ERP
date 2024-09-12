@@ -103,7 +103,7 @@
 		,	MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
 		,	separador_miles            = document.getElementById('separador_milesLM').value
 		,	separador_decimales        = document.getElementById('separador_decimalesLM').value
-		,	cuentas_cierreLM           = document.getElementById('cuentas_cierreLM').value
+		,	cuentas_cierre             = document.getElementById('cuentas_cierreLM').value
 
 		if(separador_decimales == separador_miles){
 			alert("\u00A1Error!\nEl separador de miles y decimales no puede ser igual.");
