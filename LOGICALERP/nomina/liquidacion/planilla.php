@@ -234,7 +234,7 @@ if(!isset($opcion)){ ?>
                                 xtype   : 'buttongroup',
                                 height  : 80,
                                 id      : 'BtnGroup_Estado1_'+opcGrillaContable,
-                                columns : 4,
+                                columns : 5,
                                 title   : 'Documento Generado',
                                 items   :
                                 [
@@ -275,6 +275,17 @@ if(!isset($opcion)){ ?>
                                         iconCls     : 'restaurar32',
                                         iconAlign   : 'top',
                                         handler     : function(){ BloqBtn(this); restaurarPlanillaLiquidacion(); }
+                                    },
+                                    {
+                                        xtype       : 'button',
+                                        width       : 60,
+                                        height      : 56,
+                                        text        : 'Enviar a todos',
+                                        id          : 'EnviarCorreos',
+                                        scale       : 'large',
+                                        iconCls     : 'enviar',
+                                        iconAlign   : 'top',
+                                        handler     : async function(){await enviarTodosCorreos();}
                                     }
                                 ]
                             },
