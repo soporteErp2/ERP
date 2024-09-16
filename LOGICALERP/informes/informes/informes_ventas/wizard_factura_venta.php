@@ -69,6 +69,13 @@
         <option value="Si">Si</option>
       </select>
     </p>
+    <div class="title">MOSTRAR DOC CRUCE</div>
+    <p>
+      <select data-width="input" id="mostrarDocCruce">
+        <option value="No">No</option>
+        <option value="Si">Si</option>
+      </select>
+    </p>
     <div class="title">FILTRAR POR CENTROS DE COSTOS</div>
     <div class="content-grilla-filtro" style=" height: calc(50% - 107px);">
       <div class="head">
@@ -131,7 +138,11 @@
     if (typeof(localStorage.detallado_documentosFV)!="undefined")
         if (localStorage.detallado_documentosFV!="")
             document.getElementById("detallado_documentos").value=localStorage.detallado_documentosFV;
-
+  
+    if (typeof(localStorage.mostrarDocCruce)!="undefined")
+        if (localStorage.mostrarDocCruce!="")
+            document.getElementById("mostrarDocCruce").value=localStorage.mostrarDocCruce;
+  
     if (typeof(localStorage.utilidadFV)!="undefined")
         if (localStorage.utilidadFV!="")
             document.getElementById("utilidad").value=localStorage.utilidadFV;
