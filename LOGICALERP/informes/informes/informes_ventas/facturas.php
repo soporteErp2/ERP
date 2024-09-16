@@ -98,6 +98,12 @@
 			}
 		}
 
+		if (typeof(localStorage.mostrarDocCruce)!="undefined") {
+			if (localStorage.mostrarDocCruce != '') {
+				detallado_documentos = localStorage.mostrarDocCruce;
+			}
+		}
+
 		if (typeof(localStorage.utilidadFV) != "undefined") {
 			if (localStorage.utilidadFV != '') {
 				utilidad = localStorage.utilidadFV;
@@ -251,6 +257,7 @@
 		,	arrayCcosJSON              = Array()
 		,	i                          = 0
 		,	facturacion_electronica    = document.getElementById('facturacion_electronica').value
+		,	mostrarDocCruce	       	   = document.getElementById('mostrarDocCruce').value
 
 		arraytercerosFV.forEach(function(id_tercero){ arraytercerosJSON[i] = id_tercero; i++; });
     	arraytercerosJSON=JSON.stringify(arraytercerosJSON);
@@ -280,6 +287,7 @@
 				detallado_documentos       : detallado_documentos,
 				detalla_utilidad           : utilidad,
 				facturacion_electronica    : facturacion_electronica,
+				mostrarDocCruce   	   	   : mostrarDocCruce,
 			}
 		});
 
@@ -292,6 +300,7 @@
 		localStorage.detallado_documentosFV             = detallado_documentos;
 		localStorage.utilidadFV                         = utilidad;
 		localStorage.facturacion_electronica            = facturacion_electronica;
+		localStorage.mostrarDocCruce           			= mostrarDocCruce;
 	}
 
 	function generarPDF_ExcelFV(tipo_documento){
@@ -303,6 +312,7 @@
 		,	detallado_documentos       = document.getElementById('detallado_documentos').value
 		,	utilidad                   = document.getElementById('utilidad').value
 		, 	facturacion_electronica    = document.getElementById('facturacion_electronica').value
+		, 	mostrarDocCruce   	   	   = document.getElementById('mostrarDocCruce').value
 		,	i                          = 0
 		,	arraytercerosJSON          = Array()
 		,	arrayVendedoresJSON        = Array()
@@ -327,6 +337,7 @@
 								&detallado_documentos=${detallado_documentos}
 								&detalla_utilidad=${utilidad}
 								&facturacion_electronica=${facturacion_electronica}
+								&mostrarDocCruce=${mostrarDocCruce}
 								&arraytercerosJSON=${arraytercerosJSON}
 								&arrayVendedoresJSON=${arrayVendedoresJSON}
 								&arrayCcosJSON=${arrayCcosJSON}`
