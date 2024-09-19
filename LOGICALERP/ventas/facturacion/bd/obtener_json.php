@@ -32,7 +32,7 @@
             AND VFC.tipo = 'FE'
             AND VF.numero_factura_completo != ''
             ORDER BY VF.id DESC
-            LIMIT 0,1000";
+            LIMIT 0,10000";
     $query = $mysql->query($sql,$mysql->link);
 
     while($row = $mysql->fetch_array($query)){
