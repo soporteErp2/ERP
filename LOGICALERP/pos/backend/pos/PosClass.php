@@ -842,6 +842,7 @@
 
 							if(!$query) { 
 								$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
+								echo json_encode($arrayResult);
 								return;
 							}
 
@@ -898,6 +899,14 @@
 							// Consumimos el API y obtenemos sus resultados
 							$respuesta = $this->curlApi($curl_params);
 							$respuesta = json_decode($respuesta,true);
+							if($respuesta['success']){
+								$id_cliente = $respuesta['data']; 
+							}
+							else{
+								$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
+								echo json_encode($arrayResult);
+								return;
+							}
 					}
 					
 				}
@@ -992,7 +1001,7 @@
 				$arrayResult = array('status'=>'failed','message'=>$this->mysql->error());
 				//$arrayResult = array('status'=>'failed','detalle'=>$this->mysql->error(), 'debug'=>$sql);
 				//$arrayResult = $this->utf8ize($arrayResult);
-				//echo json_encode($arrayResult);
+				echo json_encode($arrayResult);
 				return ;
 			}
 
