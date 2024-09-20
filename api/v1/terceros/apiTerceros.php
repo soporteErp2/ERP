@@ -407,7 +407,7 @@
 			$query =$this->mysql->query($sql, $this->link);
 			if($query){
 				if (empty($arrayError)) {
-					return array('status'=>true);
+					return array('status'=>true, 'id_tercero'=>$this->mysql->insert_id());
 				}
 				else{
 					return array('status'=>false,'detalle'=>$arrayError);
