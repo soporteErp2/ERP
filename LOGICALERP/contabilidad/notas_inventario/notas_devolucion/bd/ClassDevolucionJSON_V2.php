@@ -825,6 +825,11 @@
         $emails = $this->email_feDV;
       }
 
+      			//SI NO TIENE EMAILS EN LA PESTAÑA DE EMAILFE ENTONCES SE TOMA EL EMAIL DEL TERCERO
+			if($emails == ""){
+				$emails	= $this->emailT;
+			}
+
       // SI LOS DATOS DE LA SUCURSAL ESTAN INCOMPLETOS TOMAMOS LOS PRINCIPALES DEL TERCERO
       if($this->departamentoTD != null || $this->ciudadTD != null){
         $direccion_tercero   = $this->direccionTD;
