@@ -1,6 +1,9 @@
 <?php
 
 	include '../../../misc/ConnectDb/class.ConnectDb.php';
+	include '../../../configuracion/conexion.php';
+
+
 	/**
 	 * @apiDefine Ventas Se requieren permisos de ventas
 	 * Para crear, actualizar o eliminar documentos, se requieren los respectivos permisos del modulo de ventas
@@ -24,31 +27,37 @@
 		private $documento_usuario;
 		private $nombre_usuario;
 		private $usuarioPermisos;
-		private $UsuarioDb    = 'root';
-		private $PasswordDb   = 'serverchkdsk';
+		// private $UsuarioDb    = $server->user;
+		// private $PasswordDb   = $server->password;
 		private $actionUpdate = false;
 
 		// CONEXION DESARROLLO
-		private $ServidorDb = 'localhost';
+		// private $ServidorDb = $server->server_name;
 		//private $NameDb     = 'erp_bd';
 
 		// CONEXION PRODUCCION
-		// private $ServidorDb = 'localhost';
-		private $NameDb     = 'erp_acceso';
+		private $ServidorDb;
+		private $NameDb;
 		// private $UsuarioDb  = 'root';
 		// private $PasswordDb = 'serverchkdsk';
 
 		function __construct(){
+			global $server;
+			$this->ServidorDb = $server->server_name;
+			$this->NameDb = $server->database;
+	
 			$this->conexion();
 			$this->authentication();
 		}
 
 		public function conexion(){
+			global $server;
+
 			$this->objConectDB = new ConnectDb(
 			                       'MySql',
 			                       $this->ServidorDb,
-			                       $this->UsuarioDb,
-			                       $this->PasswordDb,
+			                       $server->user,
+			                       $server->password,
 			                       $this->NameDb
 			                   );
 			$this->mysql = $this->objConectDB->getApi();

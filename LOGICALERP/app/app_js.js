@@ -1,6 +1,7 @@
 // functions
 function toggle_nav(){
     let nav = document.getElementById("nav")
+    nav.classList.toggle("w-64")
     nav.classList.toggle("w-0")
 }
 
