@@ -42,7 +42,7 @@
 				$result =$obj->store($data);
 				if($result['status']){
         			$response['status'] = 202;
-        			$response['data']=array('success'=>'Informacion registrada');
+        			$response['data']=array('success'=>'Informacion registrada', 'data'=>$result['id_tercero']);
 				}else{
 					$response['status'] = 400;
         			$response['data']=array('failure'=>'Ha ocurrido un error','detalle'=>$result['detalle']);

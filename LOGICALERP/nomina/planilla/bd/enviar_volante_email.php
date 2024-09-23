@@ -245,7 +245,7 @@ function imprimirEnviaVolante($id_planilla,$id_empleado,$id_contrato,$mail,$mpdf
 
 		// if($PDF_GUARDA){ $mpdf->Output($documento.".pdf",'D'); }   	///OUTPUT A ARCHIVO
 		// else{ $mpdf->Output($documento.".pdf",'I'); }		///OUTPUT A VISTA
-		$mpdf->Output($documento."volante_nomina.pdf",'F');		///OUTPUT A VISTA
+		$stringPdf = $mpdf->Output("volante_nomina.pdf",'S');		///OUTPUT A VISTA
 
 		//======================================= ENVIO DEL EMAIL ======================================//
 		$body  = '<font color="black">
@@ -271,7 +271,7 @@ function imprimirEnviaVolante($id_planilla,$id_empleado,$id_contrato,$mail,$mpdf
 		$mail->Body = $body;
 
 		$mail->MsgHTML($body);
-		$mail->AddAttachment("volante_nomina.pdf");
+		$mail->addStringAttachment($stringPdf,"volante_nomina.pdf");
 		$mail->AddAddress($email_envio);
 		$mail->IsHTML(true); // send as HTML
 

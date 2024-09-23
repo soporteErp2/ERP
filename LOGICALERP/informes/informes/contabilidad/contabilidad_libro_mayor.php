@@ -103,7 +103,7 @@
 		,	MyInformeFiltroFechaFinal  = document.getElementById('MyInformeFiltroFechaFinal').value
 		,	separador_miles            = document.getElementById('separador_milesLM').value
 		,	separador_decimales        = document.getElementById('separador_decimalesLM').value
-		,	cuentas_cierreLM           = document.getElementById('cuentas_cierreLM').value
+		,	cuentas_cierre             = document.getElementById('cuentas_cierreLM').value
 
 		if(separador_decimales == separador_miles){
 			alert("\u00A1Error!\nEl separador de miles y decimales no puede ser igual.");
@@ -118,6 +118,8 @@
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
 							+"&cuentas_cierre="+cuentas_cierre
+							+"&nombre_informe=Libro_Mayor"
+
 
 		localStorage.nivel_cuentasLM              = nivel_cuentas;
 		localStorage.MyInformeFiltroFechaFinalLM  = MyInformeFiltroFechaFinal;
@@ -154,6 +156,7 @@
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
 							+"&cuentas_cierre="+cuentas_cierre
+							+"&nombre_informe=Libro_Mayor"
 
 		window.open(url_variable + "?" + data);
 	}

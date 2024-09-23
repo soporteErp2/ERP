@@ -472,6 +472,11 @@
 															text    : "Imprimir Ajuste salidas",
 															iconCls : "pdf16",
 															handler : function(){ BloqBtn(this); imprimirSalidasAjusteInventario(); }
+									            		},
+														{
+															text    : "Imprimir Excel",
+															iconCls : "xls16",
+															handler : function(){ BloqBtn(this); ventanaConfigurarInforme(); }
 									            		}
 										          	]
 										        },

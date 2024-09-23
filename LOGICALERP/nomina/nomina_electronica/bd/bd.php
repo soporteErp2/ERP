@@ -1587,8 +1587,8 @@
 				"DiasTrabajados"     => $workedDays,
 				"SueldoTrabajado"    => ($concepts["salario"]["valor_concepto"]==null)? 0: $concepts["salario"]["valor_concepto"],
 				"AuxilioTransporte"  => ($concepts["auxilio_transporte"]["valor_concepto"]==null)? 0: $concepts["auxilio_transporte"]["valor_concepto"],
-				"ViaticoManutAlojS"  => ($concepts["viaticos_salariales"]["valor_concepto"]==null)? 0: $concepts["viaticos_salariales"]["valor_concepto"],
-				"ViaticoManutAlojNS" => ($concepts["viaticos_no_salariales"]["valor_concepto"]==null)? 0: $concepts["viaticos_no_salariales"]["valor_concepto"],
+				"ViaticoManuAlojS"  => ($concepts["viaticos_salariales"]["valor_concepto"]==null)? 0: $concepts["viaticos_salariales"]["valor_concepto"],
+				"ViaticoManuAlojNS" => ($concepts["viaticos_no_salariales"]["valor_concepto"]==null)? 0: $concepts["viaticos_no_salariales"]["valor_concepto"],
 				
 				"HEDs"               => ($concepts["hora_extra_diurna"]["valor_concepto"])
 										? [

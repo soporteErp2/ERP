@@ -109,9 +109,12 @@ $sql = "SELECT
           VF.nombre_usuario_FE,
           VF.cedula_usuario_FE,
           VF.fecha_FE,
-          VF.hora_FE
+          VF.hora_FE,
+          VFI.consecutivo_referencia,
+          VFI.nombre_consecutivo_referencia
         FROM
           ventas_facturas AS VF
+        LEFT JOIN ventas_facturas_inventario AS VFI ON VFI.id_factura_venta = VF.id 
         WHERE
           VF.activo = 1
         AND
@@ -127,7 +130,8 @@ $sql = "SELECT
           $whereCentroCostos
           $whereFE
         GROUP BY
-          VF.id
+        VFI.id_consecutivo_referencia,
+	      VF.id 
         ORDER BY
           VF.numero_factura,
           VF.fecha_inicio DESC";
@@ -146,32 +150,41 @@ while($row = mysql_fetch_array($query)){
     $row['subtotal'] = 0;
     $row['iva']      = 0;
   }
+  $tipoDoc = "";
+  $docCruce ="";
+  if($row['nombre_consecutivo_referencia']){
+    $tipoDoc = ($row['nombre_consecutivo_referencia']=="Remision")? "RV" : "CT";
+    $docCruce = $tipoDoc.$row['consecutivo_referencia'];
+  }
 
   $numero_factura = ($row['prefijo'] != "")? $row['prefijo'].' '.$row['numero_factura'] : $row['numero_factura'] ;
   $arrayFacturas[$row['id']] = array(
-                                      'fecha_inicio'        => $row['fecha_inicio'],
-                                      'fecha_vencimiento'   => $row['fecha_vencimiento'],
-                                      'numero_factura'      => $numero_factura,
-                                      'nit'                 => $row['nit'],
-                                      'cliente'             => $row['cliente'],
-                                      'nombre_vendedor'     => $row['nombre_vendedor'],
-                                      'codigo_centro_costo' => $row['codigo_centro_costo'],
-                                      'centro_costo'        => $row['centro_costo'],
-                                      'sucursal'            => $row['sucursal'],
-                                      'bodega'              => $row['bodega'],
-                                      'sucursal_cliente'    => $row['sucursal_cliente'],
-                                      'subtotal'            => 0,
-                                      'iva'                 => 0,
-                                      'ReteFuente'          => '',
-                                      'ReteIva'             => '',
-                                      'ReteIca'             => '',
-                                      'estado'              => $row['estado'],
-                                      'exento_iva'          => $row['exento_iva'],
-                                      'observacion'         => $row['observacion'],
-                                      'nombre_usuario_FE'   => $row['nombre_usuario_FE'],
-                                      'cedula_usuario_FE'   => $row['cedula_usuario_FE'],
-                                      'fecha_FE'            => $row['fecha_FE'],
-                                      'hora_FE'             => $row['hora_FE']
+                                      'fecha_inicio'             => $row['fecha_inicio'],
+                                      'fecha_vencimiento'        => $row['fecha_vencimiento'],
+                                      'numero_factura'           => $numero_factura,
+                                      'nit'                      => $row['nit'],
+                                      'cliente'                  => $row['cliente'],
+                                      'nombre_vendedor'          => $row['nombre_vendedor'],
+                                      'codigo_centro_costo'      => $row['codigo_centro_costo'],
+                                      'centro_costo'             => $row['centro_costo'],
+                                      'sucursal'                 => $row['sucursal'],
+                                      'bodega'                   => $row['bodega'],
+                                      'sucursal_cliente'         => $row['sucursal_cliente'],
+                                      'subtotal'                 => 0,
+                                      'iva'                      => 0,
+                                      'ReteFuente'               => '',
+                                      'ReteIva'                  => '',
+                                      'ReteIca'                  => '',
+                                      'estado'                   => $row['estado'],
+                                      'exento_iva'               => $row['exento_iva'],
+                                      'observacion'              => $row['observacion'],
+                                      'nombre_usuario_FE'        => $row['nombre_usuario_FE'],
+                                      'cedula_usuario_FE'        => $row['cedula_usuario_FE'],
+                                      'fecha_FE'                 => $row['fecha_FE'],
+                                      'hora_FE'                  => $row['hora_FE'],
+                                      'docCruce'                 => ($arrayFacturas[$row['id']]['docCruce'])?
+                                                                    $arrayFacturas[$row['id']]['docCruce']." - ".$docCruce
+                                                                    : $docCruce
                                     );
 }
 
@@ -321,6 +334,8 @@ if($whereId != ''){
     $sql = "SELECT
               id,
               id_factura_venta,
+              consecutivo_referencia,
+              nombre_consecutivo_referencia,
               codigo,
               nombre_unidad_medida,
               cantidad_unidad_medida,
@@ -382,9 +397,11 @@ if($whereId != ''){
         $arrayFacturas[$row['id_factura_venta']]['descuento'] += $descuento;
         $arrayFacturas[$row['id_factura_venta']]['iva']       += $iva;
 
+        $tipoDoc = ($row['nombre_consecutivo_referencia']=="Remision")? "RV" : "CT";
         $arrayItemsFactura[$row['id_factura_venta']][$row['id']] = array(
                                                                           'id_factura_venta'       => $row['id_factura_venta'],
                                                                           'codigo'                 => $row['codigo'],
+                                                                          'docCruce'               => $tipoDoc.$row['consecutivo_referencia'],
                                                                           'nombre_unidad_medida'   => $row['nombre_unidad_medida'],
                                                                           'cantidad_unidad_medida' => $row['cantidad_unidad_medida'],
                                                                           'nombre'                 => $row['nombre'],
@@ -451,9 +468,9 @@ $titulosTipoDoc = ($IMPRIME_XLS == 'true')? '<td style="width:200px; text-align:
                                             '<td style="width:180px; text-align:center"><b>CLIENTE</b></td>
                                              <td style="width:100px; text-align:center"><b>SUCURSAL CLIENTE</b></td>' ;
 
-$colspanTotal = ($IMPRIME_XLS == 'true')? 'colspan="10"' : 'colspan="7"' ;
+$colspanTotal = ($IMPRIME_XLS == 'true')? 10 : 7 ;
+if($mostrarDocCruce == "Si"){$colspanTotal++;}
 
-$colspanItems = ($IMPRIME_XLS == 'true')? 'colspan="16"' : 'colspan="13"' ;
 
 //LIMPIAR LAS VARIABLES
 $acumuladoCantidad   = 0;
@@ -566,6 +583,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                                 <td style="padding-left: 10px;'.$styleDocCancelado.''.$styleDocCancelado.'">'.$arrayResul['observacion'].'</td>
                                 <td style="width: 95px;">&nbsp;&nbsp;'.$arrayResul2['codigo'].'</td>
                                 <td style="width: 340px;">'.$arrayResul2['nombre'].'</td>
+                                <td style="width: 80px;">'.$arrayResul2['docCruce'].'</td>
                                 <td style="width: 80px;">'.$arrayResul2['nombre_unidad_medida'].' x '.$arrayResul2['cantidad_unidad_medida'].'</td>
                                 <td style="width: 70px;text-align:right;">'.($arrayResul2['cantidad'] * 1).'</td>
                                 <td style="width: 120px;text-align:right;">'.validar_numero_formato($arrayResul2['costo_unitario'],$IMPRIME_XLS).'</td>
@@ -646,6 +664,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                             <tr style=" border:1px solid #999;border-top:none;border-bottom:none;">
                               <td style="width:95px;">&nbsp;&nbsp;<b>Codigo</b></td>
                               <td style="width:340px;"><b>Nombre</b></td>
+                              <td style="width:80px;"><b>DOC. CRUCE</b></td>
                               <td style="width:80px;"><b>Unidad</b></td>
                               <td style="text-align:right;width:70px;"><b>Cantidad</b></td>
                               <td style="text-align:right;width:120px;"><b>Precio</b></td>
@@ -680,6 +699,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                                 <tr>
                                   <td style="width: 95px;">&nbsp;&nbsp;'.$arrayResul2['codigo'].'</td>
                                   <td style="width: 340px;">'.$arrayResul2['nombre'].'</td>
+                                  <td style="width: 80px;">'.$arrayResul2['docCruce'].'</td>
                                   <td style="width: 80px;">'.$arrayResul2['nombre_unidad_medida'].' x '.$arrayResul2['cantidad_unidad_medida'].'</td>
                                   <td style="width: 70px;text-align:right;">'.($arrayResul2['cantidad'] * 1).'</td>
                                   <td style="width: 120px;text-align:right;">'.validar_numero_formato($arrayResul2['costo_unitario'],$IMPRIME_XLS).'</td>
@@ -744,14 +764,16 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                                              '<td style="padding-left: 10px;'.$styleDocCancelado.'">'.$arrayResul['cliente'].'</td>
                                               <td style="padding-left: 10px;'.$styleDocCancelado.'">'.$arrayResul['sucursal_cliente'].'</td>
                                               <td style="padding-left: 10px;'.$styleDocCancelado.''.$styleDocCancelado.'">'.$arrayResul['centro_costo'].'</td>' ;
-
+      
+      $cotizacion = ($mostrarDocCruce == "Si")? 
+                    '<td style="text-align:center;'.$styleDocCancelado.'" >'.$arrayResul['docCruce'].'</td>'
+                  : '';
       $bodyTable .='<tr style="'.$style.'">
                       <td style="text-align:center;'.$styleDocCancelado.'" >'.$arrayResul['sucursal'].' </td>
                       <td style="text-align:center;'.$styleDocCancelado.'" >'.$arrayResul['fecha_inicio'].'</td>
                       <td style="text-align:center;'.$styleDocCancelado.'" >'.$arrayResul['fecha_vencimiento'].'</td>
-                      <td style="text-align:center;'.$styleDocCancelado.'" >'.$arrayResul['numero_factura'].'</td>
-                      ' . $camposTipoDoc . '
-
+                      <td style="text-align:center;'.$styleDocCancelado.'" >'.$arrayResul['numero_factura'].'</td>'
+                      . $cotizacion . $camposTipoDoc .'
                       <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['subtotal'],$IMPRIME_XLS).'</td>
                       <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['descuento'],$IMPRIME_XLS).'</td>
                       <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['iva'],$IMPRIME_XLS).'</td>
@@ -774,13 +796,14 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
 
 //SI NO SE DETALLA POR ITEM
 if ($detallado_items == 'no') {
-
+  $cotizaciones = ($mostrarDocCruce == 'Si')? '<td style="width:70px; text-align:center;"><b>DOC. CRUCE</b></td>' : '';
   $table = '<table class="defaultFont" style="width:99%;border-collapse: collapse;">
               <tr class="titulos">
                 <td style="width:100px; text-align:center;"><b>SUCURSAL</b></td>
                 <td style="width:100px; text-align:center;"><b>FECHA</b></td>
                 <td style="width:70px; text-align:center;"><b>FECHA VENCIMIENTO</b></td>
                 <td style="width:70px; text-align:center;"><b>N. FACTURA</b></td>
+                '.$cotizaciones.'
                 '.$titulosTipoDoc.'
                 <td style="width:70px; text-align:center;"><b>CENTRO COSTOS</b></td>
                 <td style="width:80px; text-align:center;"><b>SUBTOTAL</b></td>
@@ -796,7 +819,7 @@ if ($detallado_items == 'no') {
               '</tr>
               '.$bodyTable.'
               <tr class="total">
-                <td style="text-align:center;"'.$colspanTotal.'>TOTAL VENTAS</td>
+                <td style="text-align:center;" colspan="'.$colspanTotal.'">TOTAL VENTAS</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoSubtotal,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoDescuento,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoIva,$IMPRIME_XLS).'</td>
@@ -837,6 +860,7 @@ else{
                   <td style="width:80px; text-align:center;"><b>OBSERVACIONES GENERALaES</b></td>
                   <td style="width:95px;">&nbsp;&nbsp;<b>CODIGO</b></td>
                   <td style="width:340px;"><b>NOMBRE</b></td>
+                  <td style="width:80px;"><b>DOC. CRUCE</b></td>
                   <td style="width:80px;"><b>UNIDAD</b></td>
                   <td style="text-align:center;width:70px;"><b>CANTIDAD</b></td>
                   <td style="text-align:center;width:120px;"><b>COSTO UNITARIO</b></td>
@@ -888,7 +912,7 @@ else{
                       (($IMPRIME_PDF == 'true')? $bodyTable : '') . '
                     </tr>
                     <tr class="total">
-                      <td style="text-align:center;" '.$colspanTotal.'>TOTAL VENTAS</td>
+                      <td style="text-align:center;"  colspan="'.$colspanTotal.'>TOTAL VENTAS</td>
                       <td style="text-align:right;">'.validar_numero_formato($acumuladoSubtotal,$IMPRIME_XLS).'</td>
                       <td style="text-align:right;">'.validar_numero_formato($acumuladoDescuento,$IMPRIME_XLS).'</td>
                       <td style="text-align:right;">'.validar_numero_formato($acumuladoIva,$IMPRIME_XLS).'</td>

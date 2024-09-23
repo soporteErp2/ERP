@@ -841,7 +841,25 @@
 
       window.open("../nomina/liquidacion/bd/descargarArchivoPlano.php?" + data);
     }
+    
+    async function enviarTodosCorreos(){
+        var empleados = document.querySelectorAll('#contenedorEmpleados div.iconBuscar img[title="Enviar Volante por Email"]');
+        if(empleados.length == 0){alert("No hay empleados pendientes de envio"); return}
+        for (empleado of empleados) {
+            await new Promise((resolve) => {
+                
+                empleado.click(); //Enviamos el empleado
 
+                nIntervId = setInterval(()=>{ //Empezamos a validar si se envio ese empleado
+                    if(document.getElementById(empleado.id).title === 'Reenviar Volante por email'){ //Condicion de envio
+                        clearInterval(nIntervId); // Si se envio, terminar el interval y resolvemos la promesa
+                        nIntervId = null;
+                        resolve();
+                    }
+                }, 200); //Se valida cada 500ms
+            });
+        }
+    }
 
     function ventanaConfigurarDatosNELE(cont,tipo_concepto){
 

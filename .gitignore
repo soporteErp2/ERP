@@ -11,6 +11,7 @@ LOGICALERP/nomina/documentos_tercero
 LOGICALERP/pos/backend/pos_admin/informes/temp
 LOGICALERP/pos/backend/temp
 LOGICALERP/ventas/facturacion_electronica
+LOGICALERP/pos/backend/pos_admin/informes/temp
 #ignorar el archivo de configuracion
 configuracion/conexion.php
 

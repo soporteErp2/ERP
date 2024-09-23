@@ -19,7 +19,7 @@ let payRoll = async () => {
 	for (let i = consecutivo; i <= (consecutivo+20); i++) {
 		data["Documento"]["Consecutivo"] = i;
 		let response = await api(data);
-		console.log(response)
+		console.log({response, data})
    	   	list.innerHTML = `${list.innerHTML} 
 	   	   	<div class="accordion-item">
 	          <h2 class="accordion-header" id="heading${i}">
@@ -119,14 +119,13 @@ let payRollAdjustmentType2 = async ()=>{
 }
 
 let api = async (data) => {
-	let url = "http://facse.eastus2.cloudapp.azure.com:8092/Nomina/Documento";
-	let response =  await fetch(url,{
-		method : "POST",
+	let url = "https://logicalsoft-erp.com/LOGICALERP/debug/set_pruebas_nomina/proxy.php"; // Cambia esta URL a donde hayas colocado tu proxy
+	let response = await fetch(url, {
+		method: "POST",
 		headers: {
-	      'Content-Type': 'application/json'
-	      // 'Content-Type': 'application/x-www-form-urlencoded',
+	      'Content-Type': 'application/json',
 	    },
 		body: JSON.stringify(data)
-	})
+	});
 	return response.json();
 }

@@ -248,6 +248,48 @@
         window.open("ajuste_inventario/bd/imprimirAjusteInventarioSalidas.php?id=<?php echo $id_documento; ?>&opcGrillaContable=<?php echo $opcGrillaContable; ?>&tablaPrincipal=<?php echo $tablaPrincipal; ?>&idTablaPrincipal=<?php echo $idTablaPrincipal; ?>&tablaInventario=<?php echo $tablaInventario; ?>&tablaRetenciones=<?php echo $tablaRetenciones; ?>");
     }
 
+    function ventanaConfigurarInforme(){
+
+		Win_Ventana_configurar_separador_ajuste_inventario = new Ext.Window({
+		    width       : 500,
+		    height      : 250,
+		    id          : 'Win_Ventana_configurar_separador_ajuste_inventario',
+		    title       : 'Aplicar separador',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : true,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : '../inventario/ajuste_inventario/bd/wizard_ajuste_inventario_xls.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+		            opc : 'cuerpoVentanaConfiguracionAjusteInventario',
+		        }
+		    }
+		}).show();
+	}
+
+    function imprimirXls (){
+        const selectDecimales	  = document.getElementById('separadorDecimalesAI').value,
+			  selectMiles 		  = document.getElementById('separadorMilesAI').value
+        window.open("ajuste_inventario/bd/imprimirAjusteInventarioXls.php?id=<?php echo $id_documento; ?>&separador_decimales="+selectDecimales+
+                                                                        "&separador_miles="+selectMiles);
+    }
+
+	function validarSelectAI(separadorId){
+		const selectDecimales	  = document.getElementById('separadorDecimalesAI'),
+			  selectMiles 		  = document.getElementById('separadorMilesAI')
+        
+		if(selectDecimales.value === selectMiles.value && separadorId === 'decimales'){
+			selectMiles.value = (selectMiles.value === ',')? "." : ",";
+		}
+		else if(selectDecimales.value === selectMiles.value){
+			selectDecimales.value = (selectDecimales.value === ',')? "." : ",";
+		}
+	}
     // function imprimir<?php echo $opcGrillaContable; ?>Excel (){
     //     window.open("bd/exportar_excel_factura_compra.php?id="+'<?php echo $id_documento; ?>');
     // }
