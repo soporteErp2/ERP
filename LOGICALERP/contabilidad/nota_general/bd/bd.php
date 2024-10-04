@@ -504,11 +504,11 @@
 		}
 		else if (strlen ($cuenta)>5 AND strlen ($cuenta)<7) {
 			$where   = ' LEFT(codigo_cuenta,6) = \''.$cuenta.'\'';
-			$mensaje = 'Exite(n) una(s) cuenta(s) de esta, con 8 digitos, no se puede utilizar esta de 6\nDigite apartir de 8 digitos para continuar';
+			$mensaje = 'Existe(n) una(s) cuenta(s) de esta, con 8 digitos, no se puede utilizar esta de 6\nDigite apartir de 8 digitos para continuar';
 		}
 		else if (strlen ($cuenta)>7 && strlen ($cuenta)<9) {
 			$where   = ' codigo_cuenta =  LEFT(\''.$cuenta.'\',6) ';
-			$mensaje = 'Exite(n) una(s) cuenta(s) de esta, con 6 digitos, no se puede utilizar esta de 8\nDigite solo de 6 digitos para continuar';
+			$mensaje = 'Existe(n) una(s) cuenta(s) de esta, con 6 digitos, no se puede utilizar esta de 8\nDigite solo de 6 digitos para continuar';
 		}
 		else {
 			$where   = '(LENGTH(cuenta)>5)';
