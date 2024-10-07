@@ -1684,7 +1684,7 @@ $permiso_entrada_almacen        = (user_permisos(175,'false') == 'true')? 'false
 
 		// FUNCION PARA ACTUALIZAR LA FILA DE LA VENTANA DEL DOCUMENTO CRUCE
 
-	function actualiza_fila_ventana_busqueda_doc_cruce(id) {
+	function actualiza_fila_ventana_busqueda_doc_cruce(id,evento) {
         var div    = '';
         var divImg = '';
         var divEvt = '';
@@ -1700,6 +1700,11 @@ $permiso_entrada_almacen        = (user_permisos(175,'false') == 'true')? 'false
 			divImg = document.getElementById('MuestraToltip_grillaPedidoFactura_'+id);
 			divEvt = document.getElementById('MuestraToltip_General_grillaPedidoFactura_'+id);
         }
+		else if (document.getElementById("div_ComprobanteEgreso_nit_"+id)){
+			div    = document.getElementById('item_ComprobanteEgreso_'+id);
+			divImg = document.getElementById('MuestraToltip_ComprobanteEgreso_'+id);
+			divEvt = document.getElementById('MuestraToltip_General_ComprobanteEgreso_'+id);
+		}
 
         if (div) {
         	div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#e5ffe5 !important;');
@@ -1712,8 +1717,27 @@ $permiso_entrada_almacen        = (user_permisos(175,'false') == 'true')? 'false
     	if (divImg) {
     		divImg.setAttribute('style',divImg.getAttribute('style')+';background-image:url(../../misc/MyGrilla/MyGrillaFondoOk.png);');
     	}
-
-
+		if (evento=='fail'){
+	    	if (div) {
+	    		div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#FDDADA !important;');
+	      }
+	      if (divEvt) {
+	      	divEvt.setAttribute('ondblclick','');
+	      }
+	    	if (divImg) {
+	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../nomina/img/false.png);background-repeat: no-repeat;background-position-x: 15px;');
+	    	}
+	    } else{
+	    	if (div) {
+	    		div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#e5ffe5 !important;');
+	      }
+	      if (divEvt) {
+	      	divEvt.setAttribute('ondblclick','');
+	      }
+	    	if (divImg) {
+	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../nomina/img/true.png);background-repeat: no-repeat;background-position-x: 15px;');
+	    	}
+	    }
     }
 
 	function RecargaDashboard(){
