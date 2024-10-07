@@ -198,13 +198,13 @@
     <div class="bodyTop">
         <div class="contInfoFact">
             <div class="contTopFila">
-                <div class="renglonTop">
+                <div id= 'cargaFechaRenglonTop' class="renglonTop">
                     <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
                     <div class="labelTop">
                         Fecha
                         <div id="loadFecha" style="float:right; margin-left:-20px; width:20px; height:19px; overflow:hidden;"></div>
                     </div>
-                    <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>" value="<?php echo $fecha; ?>" readonly></div>
+                    <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>" value="<?php echo $fecha; ?>"></div>
                 </div>
 
 
@@ -258,8 +258,16 @@
                     <div class="labelTop">Usuario</div>
                     <div class="campoTop" style="width:277px;"><input type="text" id="usuario<?php echo $opcGrillaContable; ?>" readonly="" ></div>
                 </div>
-
-            </div>
+                <div class="renglonTop" id="divAjusteMensual">
+                  <div class="labelTop">Ajuste mensual</div>
+                  <div class="campoTop" style="width:150px">
+                    <select id='selectAjusteMensual' onchange="UpdateFechaInventarioMensual()">
+                      <option value='NO'>No</option>
+                      <option value='SI'>Si</option>
+                      <?php echo $optionfechas; ?>
+                    </select>
+                  </div>
+                </div>
         </div>
     </div>
 
@@ -280,6 +288,33 @@
     document.getElementById("codTercero<?php echo $opcGrillaContable; ?>").focus();         //dar el foco
 
     //=========================== UPDATE FORMAS DE PAGO ============================================//
+    function  UpdateFechaInventarioMensual(){
+        if(document.getElementById('selectAjusteMensual').value!=='NO'){
+            // Obtener la fecha actual
+        let today = new Date();
+        
+        // Establecer la fecha al primer día del mes actual
+        let firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        
+        // Restar un día para obtener el último día del mes anterior
+        let lastDayOfPreviousMonth = new Date(firstDayOfCurrentMonth);
+        lastDayOfPreviousMonth.setDate(firstDayOfCurrentMonth.getDate() - 1);
+        
+        // Formatear la fecha en yyyy-mm-dd
+        let year = lastDayOfPreviousMonth.getFullYear();
+        let month = String(lastDayOfPreviousMonth.getMonth() + 1).padStart(2, '0');
+        let day = String(lastDayOfPreviousMonth.getDate()).padStart(2, '0');
+
+        document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value = `${year}-${month}-${day}`;
+        document.getElementById('cargaFechaRenglonTop').style.pointerEvents = 'none';
+        UpdateFechaDocumento<?php echo $opcGrillaContable; ?>();
+        return;
+        }
+        document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value =  new Date().toISOString().split('T')[0];
+        document.getElementById('cargaFechaRenglonTop').style.pointerEvents = '';
+        UpdateFechaDocumento<?php echo $opcGrillaContable; ?>()
+    }
+
     function UpdateFechaDocumento<?php echo $opcGrillaContable; ?>(){
         var fecha = document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value;
         Ext.get('loadFecha').load({
@@ -1047,7 +1082,12 @@
             element : document.getElementById('div_upload_file'),
             action  : 'upload_file/upload_file.php',
             debug   : false,
-            params  : { opcion: 'loadExcelNota',id_documento :' <?php echo $id_documento ?>',id_bodega : id_bodega},
+            params  : { AjusteMensual: document.getElementById('selectAjusteMensual').value,
+                        fechaAjusteMensual : document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value,
+                        opcion: 'loadExcelNota',
+                        id_documento :' <?php echo $id_documento ?>',
+                        id_bodega : id_bodega
+                      },
             button            : null,
             multiple          : false,
             maxConnections    : 3,

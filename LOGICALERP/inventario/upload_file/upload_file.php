@@ -168,7 +168,7 @@
     $findme     = 'LOGICALERP';
     $pos        = strpos($rutaServer, $findme);
 
-    if (!$pos && $_SERVER['HTTP_HOST'] != 'erp.plataforma.co' && $_SERVER['HTTP_HOST'] != 'logicalsoft-erp.com') { $rutaServer = $_SERVER['DOCUMENT_ROOT'].'/LOGICALERP'; }
+    if (!$pos && $_SERVER['HTTP_HOST'] != 'erp.plataforma.co' && $_SERVER['HTTP_HOST'] != 'logicalsoft-erp.com' && $_SERVER['HTTP_HOST'] != 'repo.logicalsoft-erp.com') { $rutaServer = $_SERVER['DOCUMENT_ROOT'].'/LOGICALERP'; }
 
     $serv = $rutaServer."/";
     $url  = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/';

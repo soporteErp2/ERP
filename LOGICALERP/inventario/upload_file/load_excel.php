@@ -40,7 +40,18 @@
     }
 
     $whereItems = "codigo='".implode("' OR codigo='", array_keys($arrayItems))."'";
-    $sql="SELECT id_item,codigo,nombre_equipo,costos,cantidad FROM inventario_totales WHERE activo=1 AND id_empresa=$id_empresa AND id_ubicacion=$id_bodega AND ($whereItems) ";
+    $sql = '';
+    if($AjusteMensual=='NO'){
+        $sql="SELECT id_item,codigo,nombre_equipo,costos,cantidad FROM inventario_totales WHERE activo=1 AND id_empresa=$id_empresa AND id_ubicacion=$id_bodega AND ($whereItems) ";
+    }else{
+        $sqlFecha = "SELECT fecha_documento FROM inventario_ajuste WHERE id=$id_documento LIMIT 1";
+        $fechaDoc = $mysql->result($mysql->query($sql,$mysql->link));
+        //sumarle un dia a la fecha (la base de datos guarda la fecha el primer dia del mes)
+        $fecha = new DateTime($fechaDoc);
+        $fecha->modify('+1 day');
+        $fechaconsul = $fecha->format('Y-m-d');
+        $sql="SELECT id_item,codigo,nombre_equipo,costos,cantidad FROM inventario_totales_log_mensual WHERE activo=1 AND id_empresa=$id_empresa AND id_ubicacion=$id_bodega AND fecha = '$fechaconsul' AND ($whereItems) ";
+    }
     $query=$mysql->query($sql,$mysql->link);
     while ($row=$mysql->fetch_array($query)) {
         $codigo = $row['codigo'];
