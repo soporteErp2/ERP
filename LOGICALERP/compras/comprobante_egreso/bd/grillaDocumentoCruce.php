@@ -148,8 +148,11 @@
 if(!isset($opcion)){  ?>
 	<script>
 
-		//console.log("<?php echo $grilla->MyWhere ?>");
-
+		// SI YA SE INERTO EL DOCUMENTO EN LA FILA, SE ASGINA CONT A LA ULTIMA FILA DE LA GRILLA
+		if (document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont;?>').value>0) {cont=contArticulos<?php echo $opcGrillaContable; ?>;}
+		// SINO SE HA INSERTADO AUN UN REGISTRO, ENTONCES CORRESPONDE A LA FILA DONDE SE HIZO CLICK
+		else{cont = <?php echo $cont; ?>;}
+		
 		function Editar_<?php echo $opcGrillaContable; ?>(id){
 			var total_sin_abono=0;
 			// if ('<?php echo $tipo_documento_cruce ?>'=='LN') {
@@ -157,8 +160,8 @@ if(!isset($opcion)){  ?>
 			// 	return;
 			// }
 
-			if(document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value > 0){
-        	    document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').style.display = 'block';
+			if(document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_'+cont).value > 0){
+        	    document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+cont).style.display = 'block';
         	    document.getElementById("divImageSave<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>").style.display     = 'inline';
         	}
 
@@ -178,41 +181,43 @@ if(!isset($opcion)){  ?>
 			cuenta     = document.getElementById('cuenta_pago_'+id).innerHTML;
 			id_tercero = document.getElementById('id_tercero_'+id).innerHTML;
 
-			document.getElementById('idCuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value = id_cuenta;
-			document.getElementById('cuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value   = cuenta;
+			document.getElementById('idCuenta<?php echo $opcGrillaContable; ?>_'+cont).value = id_cuenta;
+			document.getElementById('cuenta<?php echo $opcGrillaContable; ?>_'+cont).value   = cuenta;
 
-			document.getElementById('idDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value=id;
-			document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value='<?php echo $tipo_documento_cruce; ?>';
-			document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value = prefijo_factura;
-			document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value  = numero_factura;
-			document.getElementById('debito<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value= total_sin_abono;
-			document.getElementById('debito<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').focus();
+			document.getElementById('idDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).value=id;
+			document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).value='<?php echo $tipo_documento_cruce; ?>';
+			document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).value = prefijo_factura;
+			document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).value  = numero_factura;
+			document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+cont).value= total_sin_abono;
+			document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+cont).focus();
 
-			if (document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value != '' ) {
+			if (document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).value != '' ) {
 				//CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN TERCERO
-        		document.getElementById('imgBuscarDocumentoCruce_<?php echo $cont; ?>').setAttribute('src','img/eliminar.png');
-        		document.getElementById('imgBuscarDocumentoCruce_<?php echo $cont; ?>').setAttribute('title','Eliminar Documento Cruce');
-        		document.getElementById('imgBuscarDocumentoCruce_<?php echo $cont; ?>').setAttribute('onclick'," eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>('<?php echo $cont; ?>')");
+        		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('src','img/eliminar.png');
+        		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('title','Eliminar Documento Cruce');
+        		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('onclick'," eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>(''+cont)");
 			}
 
 			if (id_cliente_<?php echo $opcGrillaContable; ?>!=id_tercero) {
-				document.getElementById('tercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value   = tercero;
-				document.getElementById('idTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value = id_tercero;
+				document.getElementById('tercero<?php echo $opcGrillaContable; ?>_'+cont).value   = tercero;
+				document.getElementById('idTercero<?php echo $opcGrillaContable; ?>_'+cont).value = id_tercero;
 				//CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN TERCERO
-        		document.getElementById('imgBuscarTercero_<?php echo $cont; ?>').setAttribute('src','img/eliminar.png');
-        		document.getElementById('imgBuscarTercero_<?php echo $cont; ?>').setAttribute('title','Eliminar Tercero');
-        		document.getElementById('imgBuscarTercero_<?php echo $cont; ?>').setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
+        		document.getElementById('imgBuscarTercero_'+cont).setAttribute('src','img/eliminar.png');
+        		document.getElementById('imgBuscarTercero_'+cont).setAttribute('title','Eliminar Tercero');
+        		document.getElementById('imgBuscarTercero_'+cont).setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>("+cont+")");
 			}
 			else{
-				document.getElementById('tercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value="";
-				document.getElementById('idTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value="";
+				document.getElementById('tercero<?php echo $opcGrillaContable; ?>_'+cont).value="";
+				document.getElementById('idTercero<?php echo $opcGrillaContable; ?>_'+cont).value="";
 				//CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN TERCERO
-        		document.getElementById('imgBuscarTercero_<?php echo $cont; ?>').setAttribute('src','img/buscar20.png');
-        		document.getElementById('imgBuscarTercero_<?php echo $cont; ?>').setAttribute('title','Buscar Tercero');
-        		document.getElementById('imgBuscarTercero_<?php echo $cont; ?>').setAttribute('onclick',"buscarVentanaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
+        		document.getElementById('imgBuscarTercero_'+cont).setAttribute('src','img/buscar20.png');
+        		document.getElementById('imgBuscarTercero_'+cont).setAttribute('title','Buscar Tercero');
+        		document.getElementById('imgBuscarTercero_'+cont).setAttribute('onclick',"buscarVentanaTercero<?php echo $opcGrillaContable; ?>("+cont+")");
 			}
+			guardarNewCuenta<?php echo $opcGrillaContable; ?>(cont);
+			cont=contArticulos<?php echo $opcGrillaContable; ?>;
 
-			Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
+			//Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
 		}
 
 		// function ventanaCuentasPlanillaNomina(id) {
@@ -239,7 +244,7 @@ if(!isset($opcion)){  ?>
 		// 				id_planilla           : id,
 		// 				consecutivo           : consecutivo,
 		// 				opcGrillaContable     : '<?php echo $opcGrillaContable; ?>',
-		// 				cont                  : '<?php echo $cont; ?>',
+		// 				cont                  : ''+cont,
 		// 				id_comprobante_egreso : <?php echo $id_comprobante_egreso; ?>,
 		// 	        }
 		// 	    },
@@ -300,7 +305,7 @@ if(!isset($opcion)){  ?>
 						id_planilla           : id,
 						consecutivo           : consecutivo,
 						opcGrillaContable     : '<?php echo $opcGrillaContable; ?>',
-						cont                  : '<?php echo $cont; ?>',
+						cont                  : ''+cont,
 						id_comprobante_egreso : <?php echo $id_comprobante_egreso; ?>,
 						tipo_documento_cruce  : '<?php echo $tipo_documento_cruce ?>',
 			        }

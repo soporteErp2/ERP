@@ -1431,6 +1431,7 @@
 					if (typeof(cont)!="undefined") { cont = '.$consecutivo.'; }
 
 					'.$script.'
+					actualiza_fila_ventana_busqueda_doc_cruce('.$id_documento_cruce.');
 
 				</script>'.$body/*.$script*/;
 
