@@ -37,6 +37,8 @@
 				centro_costos,
 				cuenta_ingreso_colgaap,
 				cuenta_ingreso_niif,
+				cuenta_devolucion_colgaap,
+				cuenta_devolucion_niif,
 				cambia_precio_items,
 				cuenta_pago,
 				metodo_pago
@@ -49,21 +51,23 @@
 		$nomSeccion      = $row['nombre'];
 		$optionSeccionPadre .= "<option value='$row[id]'>$row[nombre]</option>";
 		$arraySeccion[$row['id']] = array(
-										'nombre'                 => $row['nombre'],
-										'id_padre'               => $row['id_padre'],
-										'restaurante'            => $row['restaurante'],
-										'id_sucursal'            => $row['id_sucursal'],
-										'id_bodega'              => $row['id_bodega'],
-										'id_centro_costos'       => $row['id_centro_costos'],
-										'codigo_centro_costos'   => $row['codigo_centro_costos'],
-										'centro_costos'          => $row['centro_costos'],
-										'cuenta_ingreso_colgaap' => $row['cuenta_ingreso_colgaap'],
-										'cuenta_ingreso_niif'    => $row['cuenta_ingreso_niif'],
-										'eventos_asiste'         => $row['eventos_asiste'],
-										'codigo_transaccion'     => $row['codigo_transaccion'],
-										'cambia_precio_items'    => $row['cambia_precio_items'],
-										'cuenta_pago' 			 => $row['cuenta_pago'],
-										'metodo_pago' 			 => $row['metodo_pago']
+										'nombre'                 		=> $row['nombre'],
+										'id_padre'               		=> $row['id_padre'],
+										'restaurante'            		=> $row['restaurante'],
+										'id_sucursal'            		=> $row['id_sucursal'],
+										'id_bodega'              		=> $row['id_bodega'],
+										'id_centro_costos'       		=> $row['id_centro_costos'],
+										'codigo_centro_costos'   		=> $row['codigo_centro_costos'],
+										'centro_costos'          		=> $row['centro_costos'],
+										'cuenta_ingreso_colgaap' 		=> $row['cuenta_ingreso_colgaap'],
+										'cuenta_ingreso_niif'    		=> $row['cuenta_ingreso_niif'],
+										'cuenta_devolucion_colgaap'    	=> $row['cuenta_devolucion_colgaap'],
+										'cuenta_devolucion_niif'    	=> $row['cuenta_devolucion_niif'],
+										'eventos_asiste'         		=> $row['eventos_asiste'],
+										'codigo_transaccion'     		=> $row['codigo_transaccion'],
+										'cambia_precio_items'    		=> $row['cambia_precio_items'],
+										'cuenta_pago' 			 		=> $row['cuenta_pago'],
+										'metodo_pago' 			 		=> $row['metodo_pago']
 										);
 		// $arrayOrden[$codSeccionPadre] = ($row['orden'] > $arrayOrden[$codSeccionPadre])? $row['orden'] : $arrayOrden[$codSeccionPadre] ;
 	}
@@ -71,21 +75,23 @@
 	if ($id_seccion>0) {
 
 		$acumscript .="
-						document.getElementById('seccion_padre').value          = '".$arraySeccion[$id_seccion]['id_padre']."';
-						document.getElementById('restaurante').value            = '".$arraySeccion[$id_seccion]['restaurante']."';
-						document.getElementById('centro_costos').value          = '".$arraySeccion[$id_seccion]['codigo_centro_costos']." - ".$arraySeccion[$id_seccion]['centro_costos']."';
-						document.getElementById('centro_costos').title          = '".$arraySeccion[$id_seccion]['codigo_centro_costos']." - ".$arraySeccion[$id_seccion]['centro_costos']."';
-						document.getElementById('centro_costos').dataset.id     = '".$arraySeccion[$id_seccion]['id_centro_costos']."';
-						document.getElementById('centro_costos').dataset.codigo = '".$arraySeccion[$id_seccion]['codigo_centro_costos']."';
-						document.getElementById('centro_costos').dataset.nombre = '".$arraySeccion[$id_seccion]['centro_costos']."';
-						document.getElementById('cuenta_ingreso_colgaap').value = '".$arraySeccion[$id_seccion]['cuenta_ingreso_colgaap']."';
-						document.getElementById('cuenta_ingreso_niif').value    = '".$arraySeccion[$id_seccion]['cuenta_ingreso_niif']."';
-						document.getElementById('eventos_asiste').value         = '".$arraySeccion[$id_seccion]['eventos_asiste']."';
-						document.getElementById('cod_tx').value                 = '".$arraySeccion[$id_seccion]['codigo_transaccion']."';
-						document.getElementById('cambia_precio_items').value    = '".$arraySeccion[$id_seccion]['cambia_precio_items']."';
-						document.getElementById('cuenta_pago').value    		= '".$arraySeccion[$id_seccion]['cuenta_pago']."';
-						document.getElementById('metodo_pago').value    		= '".$arraySeccion[$id_seccion]['metodo_pago']."';
-						var options                                             = document.getElementById('seccion_padre').options
+						document.getElementById('seccion_padre').value          	  = '".$arraySeccion[$id_seccion]['id_padre']."';
+						document.getElementById('restaurante').value            	  = '".$arraySeccion[$id_seccion]['restaurante']."';
+						document.getElementById('centro_costos').value          	  = '".$arraySeccion[$id_seccion]['codigo_centro_costos']." - ".$arraySeccion[$id_seccion]['centro_costos']."';
+						document.getElementById('centro_costos').title          	  = '".$arraySeccion[$id_seccion]['codigo_centro_costos']." - ".$arraySeccion[$id_seccion]['centro_costos']."';
+						document.getElementById('centro_costos').dataset.id     	  = '".$arraySeccion[$id_seccion]['id_centro_costos']."';
+						document.getElementById('centro_costos').dataset.codigo 	  = '".$arraySeccion[$id_seccion]['codigo_centro_costos']."';
+						document.getElementById('centro_costos').dataset.nombre 	  = '".$arraySeccion[$id_seccion]['centro_costos']."';
+						document.getElementById('cuenta_ingreso_colgaap').value 	  = '".$arraySeccion[$id_seccion]['cuenta_ingreso_colgaap']."';
+						document.getElementById('cuenta_ingreso_niif').value    	  = '".$arraySeccion[$id_seccion]['cuenta_ingreso_niif']."';
+						document.getElementById('cuenta_devolucion_colgaap').value    = '".$arraySeccion[$id_seccion]['cuenta_devolucion_colgaap']."';
+						document.getElementById('cuenta_devolucion_niif').value    	  = '".$arraySeccion[$id_seccion]['cuenta_devolucion_niif']."';
+						document.getElementById('eventos_asiste').value         	  = '".$arraySeccion[$id_seccion]['eventos_asiste']."';
+						document.getElementById('cod_tx').value                 	  = '".$arraySeccion[$id_seccion]['codigo_transaccion']."';
+						document.getElementById('cambia_precio_items').value    	  = '".$arraySeccion[$id_seccion]['cambia_precio_items']."';
+						document.getElementById('cuenta_pago').value    			  = '".$arraySeccion[$id_seccion]['cuenta_pago']."';
+						document.getElementById('metodo_pago').value    			  = '".$arraySeccion[$id_seccion]['metodo_pago']."';
+						var options                                             	  = document.getElementById('seccion_padre').options
 						for (const prop in options) {
 						  if(options[prop].value==$id_seccion){
 						  	document.getElementById('seccion_padre').options[prop].disabled = true;
@@ -180,6 +186,14 @@
 			<td ><input type="text"  style="width:190px;"  id="cuenta_ingreso_niif" ></td>
 		</tr>
 		<tr>
+			<td>Cuenta de devolucion (colgaap)</td>
+			<td ><input type="text"  style="width:190px;"  id="cuenta_devolucion_colgaap" ></td>
+		</tr>
+		<tr>
+			<td>Cuenta de devolucion (Niif)</td>
+			<td ><input type="text"  style="width:190px;"  id="cuenta_devolucion_niif" ></td>
+		</tr>
+		<tr>
 			<td>Eventos Asiste</td>
 			<td>
 				<select id="eventos_asiste" data-requiere="true" style="width:190px;" onchange="" >
@@ -268,21 +282,23 @@
 
 	function guardarActualizarSeccion() {
 		var opc            = '<?php echo $id_seccion ?>' > 0 ? 'actualizarSeccion' : 'agregarSeccion';
-		let nombre                 = document.getElementById('nombre').value
-		,	id_padre               = document.getElementById('seccion_padre').value
-		,	restaurante            = document.getElementById('restaurante').value
-		,	bodega                 = document.getElementById('bodega').value
-		,	inputCcos              = document.getElementById('centro_costos')
-		,	idCcos                 = inputCcos.dataset.id
-		,	codigoCcos             = inputCcos.dataset.codigo
-		,	nombreCcos             = inputCcos.dataset.nombre
-		,	cuenta_ingreso_colgaap = document.getElementById('cuenta_ingreso_colgaap').value
-		,	cuenta_ingreso_niif    = document.getElementById('cuenta_ingreso_niif').value
-		,	eventos_asiste         = document.getElementById('eventos_asiste').value
-		,	cod_tx                 = document.getElementById('cod_tx').value
-		,	cambia_precio_items    = document.getElementById('cambia_precio_items').value
-		,	cuenta_pago    		   = document.getElementById('cuenta_pago').value
-		,	metodo_pago   		   = document.getElementById('metodo_pago').value
+		let nombre                 		 = document.getElementById('nombre').value
+		,	id_padre               		 = document.getElementById('seccion_padre').value
+		,	restaurante            		 = document.getElementById('restaurante').value
+		,	bodega                 		 = document.getElementById('bodega').value
+		,	inputCcos              		 = document.getElementById('centro_costos')
+		,	idCcos                 		 = inputCcos.dataset.id
+		,	codigoCcos             		 = inputCcos.dataset.codigo
+		,	nombreCcos             		 = inputCcos.dataset.nombre
+		,	cuenta_ingreso_colgaap 		 = document.getElementById('cuenta_ingreso_colgaap').value
+		,	cuenta_ingreso_niif    		 = document.getElementById('cuenta_ingreso_niif').value
+		,	cuenta_devolucion_colgaap    = document.getElementById('cuenta_devolucion_colgaap').value
+		,	cuenta_devolucion_niif    	 = document.getElementById('cuenta_devolucion_niif').value
+		,	eventos_asiste         		 = document.getElementById('eventos_asiste').value
+		,	cod_tx                 		 = document.getElementById('cod_tx').value
+		,	cambia_precio_items    		 = document.getElementById('cambia_precio_items').value
+		,	cuenta_pago    		   		 = document.getElementById('cuenta_pago').value
+		,	metodo_pago   		   		 = document.getElementById('metodo_pago').value
 		
 
 
@@ -311,6 +327,8 @@
 				nombreCcos,             
 				cuenta_ingreso_colgaap, 
 				cuenta_ingreso_niif,    
+				cuenta_devolucion_colgaap,
+				cuenta_devolucion_niif,
 				eventos_asiste,         
 				cod_tx,                 
 				cambia_precio_items,    
