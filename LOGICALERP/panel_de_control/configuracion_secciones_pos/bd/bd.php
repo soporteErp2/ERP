@@ -7,10 +7,10 @@
 	switch ($opc) {
 		// FUNCIONES PARA SECCIONES
 		case 'agregarSeccion':
-			agregarSeccion($nombre,$id_padre,$restaurante,$id_sucursal,$bodega,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql);
+			agregarSeccion($nombre,$id_padre,$restaurante,$id_sucursal,$bodega,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$cuenta_devolucion_colgaap,$cuenta_devolucion_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql);
 			break;
 		case 'actualizarSeccion':
-			actualizarSeccion($id_seccion,$nombre,$id_padre,$restaurante,$bodega,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql);
+			actualizarSeccion($id_seccion,$nombre,$id_padre,$restaurante,$bodega,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$cuenta_devolucion_colgaap,$cuenta_devolucion_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql);
 			break;
 		case 'eliminarSeccion':
 			eliminarSeccion($id_seccion,$id_empresa,$mysql);
@@ -25,7 +25,7 @@
 	}
 
 	// FUNCIONES PARA LAS SECCIONES
-	function agregarSeccion($nombre,$id_padre,$restaurante,$id_sucursal,$bodega=0,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql){
+	function agregarSeccion($nombre,$id_padre,$restaurante,$id_sucursal,$bodega,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$cuenta_devolucion_colgaap,$cuenta_devolucion_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql){
 		$sql="INSERT INTO ventas_pos_secciones
 				(
 					nombre,
@@ -38,6 +38,8 @@
 					centro_costos,
 					cuenta_ingreso_colgaap,
 					cuenta_ingreso_niif,
+					cuenta_devolucion_colgaap,
+					cuenta_devolucion_niif,
 					eventos_asiste,
 					codigo_transaccion,
 					cambia_precio_items,
@@ -57,6 +59,8 @@
 					'$nombreCcos',
 					'$cuenta_ingreso_colgaap',
 					'$cuenta_ingreso_niif',
+					'$cuenta_devolucion_colgaap',
+					'$cuenta_devolucion_niif',
 					'$eventos_asiste',
 					'$cod_tx',
 					'$cambia_precio_items',
@@ -88,23 +92,25 @@
 		}
 	}
 
-	function actualizarSeccion($id_seccion,$nombre,$id_padre,$restaurante,$bodega=0,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql){
+	function actualizarSeccion($id_seccion,$nombre,$id_padre,$restaurante,$bodega,$idCcos,$codigoCcos,$nombreCcos,$cuenta_ingreso_colgaap,$cuenta_ingreso_niif,$cuenta_devolucion_colgaap,$cuenta_devolucion_niif,$eventos_asiste,$cod_tx,$cambia_precio_items,$cuenta_pago,$metodo_pago,$id_empresa,$mysql){
 		$sql="UPDATE ventas_pos_secciones
 				SET
-					nombre                 = '$nombre',
-					id_padre               = '$id_padre',
-					restaurante            = '$restaurante',
-					id_bodega              = '$bodega',
-					id_centro_costos       = '$idCcos',
-					codigo_centro_costos   = '$codigoCcos',
-					centro_costos          = '$nombreCcos',
-					cuenta_ingreso_colgaap = '$cuenta_ingreso_colgaap',
-					cuenta_ingreso_niif    = '$cuenta_ingreso_niif',
-					eventos_asiste         = '$eventos_asiste',
-					codigo_transaccion     = '$cod_tx',
-					cambia_precio_items    = '$cambia_precio_items',
-					cuenta_pago 		   = '$cuenta_pago',
-					metodo_pago            = '$metodo_pago'
+					nombre                 		= '$nombre',
+					id_padre               		= '$id_padre',
+					restaurante            		= '$restaurante',
+					id_bodega              		= '$bodega',
+					id_centro_costos       		= '$idCcos',
+					codigo_centro_costos   		= '$codigoCcos',
+					centro_costos          		= '$nombreCcos',
+					cuenta_ingreso_colgaap 		= '$cuenta_ingreso_colgaap',
+					cuenta_ingreso_niif    		= '$cuenta_ingreso_niif',
+					cuenta_devolucion_colgaap   = '$cuenta_devolucion_colgaap',
+					cuenta_devolucion_niif    	= '$cuenta_devolucion_niif',
+					eventos_asiste         		= '$eventos_asiste',
+					codigo_transaccion     		= '$cod_tx',
+					cambia_precio_items    		= '$cambia_precio_items',
+					cuenta_pago 		   		= '$cuenta_pago',
+					metodo_pago            		= '$metodo_pago'
 				WHERE activo   = 1
 				AND id_empresa = $id_empresa
 				AND id         = $id_seccion";

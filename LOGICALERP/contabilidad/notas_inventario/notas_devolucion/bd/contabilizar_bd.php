@@ -971,7 +971,7 @@
 		else{ echo '<script>alert("Aviso.\nLa plantilla ingresada no tiene configuracion contable.")</script>'; exit; }
   }
 
-  function contabilizarNotaFacturaVentaSinPlantilla($arrayCuentaPago,$idCcos,$idNota,$idBodega,$idSucursal,$idEmpresa,$idFactura,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura){
+  function contabilizarNotaFacturaVentaSinPlantilla($arrayCuentaPago,$idCcos,$idNota,$idBodega,$idSucursal,$idEmpresa,$idFactura,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura,$isPos){
   	
     	global $saldoGlobalNotaSinAbono;
     	$decimalesMoneda = ($_SESSION['DECIMALESMONEDA'] >= 0)? $_SESSION['DECIMALESMONEDA']: 0;
@@ -988,9 +988,17 @@
 		$arrayRemisiones   = '';
 		$contRemisiones    = 0;
 		$acumIdRemisiones  = '';		//CONDICIONAL GLOBAL WHERE SQL IDS REMISIONES
-
+		$cuentaDevPos	   = '';
 		$whereIdItemsCuentas = '';
-
+		if($isPos){
+			$sqlDevPos = "SELECT
+							VPS.cuenta_devolucion_colgaap
+							FROM ventas_pos AS VP INNER JOIN ventas_pos_secciones AS VPS ON VP.id_seccion = VPS.id
+							WHERE VP.id_factura = '$idFactura'
+							LIMIT 0,1";
+			$queryDevPos  = mysql_query($sqlDevPos,$link);
+			$cuentaDevPos =	mysql_result($queryDevPos,0,'cuenta_devolucion_colgaap');
+		}
 		$sqlDoc = "SELECT D.id,
 						D.id_inventario AS id_item,
 						D.codigo,
@@ -1088,7 +1096,7 @@
 			  $cuentaPrecio   = $arrayCuentasItems[$idItemArray]['precio']['cuenta'];
       } 
       else{
-        $cuentaPrecio   = $arrayCuentasItems[$idItemArray]['devprecio']['cuenta'];
+        $cuentaPrecio   = ($isPos)? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['devprecio']['cuenta'];
       }
 			
       $contraPrecio   = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];

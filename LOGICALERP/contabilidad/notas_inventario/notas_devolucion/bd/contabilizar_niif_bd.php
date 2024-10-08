@@ -200,9 +200,18 @@
 		$ivaAcumulado      = 0;
 		$costoAcumulado    = 0;
 		$precioAcumulado   = 0;
-
+		$cuentaDevPos	   = '';
 		$whereIdItemsCuentas = '';
-
+		
+		if($isPos){
+			$sqlDevPos = "SELECT
+							VPS.cuenta_devolucion_niif
+							FROM ventas_pos AS VP INNER JOIN ventas_pos_secciones AS VPS ON VP.id_seccion = VPS.id
+							WHERE VP.id_factura = '$idFactura'
+							LIMIT 0,1";
+			$queryDevPos  = mysql_query($sqlDevPos,$link);
+			$cuentaDevPos =	mysql_result($queryDevPos,0,'cuenta_devolucion_colgaap');
+		}
 		$sqlDoc =  "SELECT
                   D.id,
       						D.id_inventario AS id_item,
@@ -313,8 +322,11 @@
 			$idItemArray       = $valArrayInventario['id_items'];										//ID ITEM
 			$descripcionCuenta = $valArrayInventario['check_opcion_contable'];							//GASTO, COSTO, ACTIVO FIJO
 			$cuentaOpcional    = $arrayCuentasItems[$idItemArray][$descripcionCuenta]['cuenta'];		//CUENTA OPCION CONTABILIZACION
+			
+			$cuentaPrecio = ($descripcionCuenta == '')
+			? (($isPos) ? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['precio']['cuenta'])
+			: $cuentaOpcional;
 
-			$cuentaPrecio   = ($descripcionCuenta == '')? $arrayCuentasItems[$idItemArray]['precio']['cuenta']: $cuentaOpcional;
 			$contraPrecio   = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];
 			$cuentaImpuesto = ($valArrayInventario['cuenta_iva'] > 0)? $valArrayInventario['cuenta_iva']: $arrayCuentasItems[$idItemArray]['impuesto']['cuenta'];
 

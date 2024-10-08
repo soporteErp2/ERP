@@ -999,6 +999,11 @@
 				$cuentaPago     =  mysql_result($queryFactura,0,'cuenta_pago');
 				$cuentaPagoNiif = mysql_result($queryFactura,0,'cuenta_pago_niif');
 
+				//Validar si es POS
+				$sqlValidaPos   = "SELECT COUNT(*) AS cont FROM ventas_pos WHERE id_factura = '$idDocumentoVenta'";
+				$queryValidaPos = mysql_query($sqlValidaPos,$link);
+				$isPos      	= mysql_result($queryValidaPos,0,'cont');
+				
 				//CUENTA DE PAGO ESTADO (credito-contado)
 				$sqlEstadoCuentaPago   = "SELECT estado FROM configuracion_cuentas_pago WHERE id='$idCuentaPago' AND id_empresa='$id_empresa' AND tipo='Venta'";
 				$queryEstadoCuentaPago = mysql_query($sqlEstadoCuentaPago,$link);
@@ -1022,8 +1027,8 @@
 						contabilizarNotaFacturaVentaConPlantillaNiif($id,$id_sucursal,$id_empresa,$idPlantilla,$idDocumentoVenta,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura);
 					}
 					else{
-						contabilizarNotaFacturaVentaSinPlantilla($arrayCuentaPago,$idCcos,$id,$idBodega,$id_sucursal,$id_empresa,$idDocumentoVenta,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura);
-						contabilizarNotaFacturaVentaSinPlantillaNiif($arrayCuentaPago,$idCcos,$id,$idBodega,$id_sucursal,$id_empresa,$idDocumentoVenta,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura);
+						contabilizarNotaFacturaVentaSinPlantilla($arrayCuentaPago,$idCcos,$id,$idBodega,$id_sucursal,$id_empresa,$idDocumentoVenta,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura,$isPos);
+						contabilizarNotaFacturaVentaSinPlantillaNiif($arrayCuentaPago,$idCcos,$id,$idBodega,$id_sucursal,$id_empresa,$idDocumentoVenta,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura,$isPos);
 					}
 
 					// ACTUALIZAR LOS ARTICULOS O ACTIVOS FIJOS
