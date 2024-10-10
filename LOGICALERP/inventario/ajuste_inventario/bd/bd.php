@@ -91,6 +91,10 @@
 		case 'restaurarDocumento':
 			restaurarDocumento($id,$opcGrillaContable,$id_sucursal,$id_empresa,$mysql);
 			break;
+		
+		case 'UpdateTipoAjuste':
+			UpdateTipoAjuste($id,$isMensual,$id_empresa,$mysql);
+			break;
 
 	}
 
@@ -102,7 +106,14 @@
 			echo '<script>alert("Error!\nNo se actualizo la fechan del documento, si el problema persiste comuniquese con el administrador del sistema");</script>';
 		}
 	}
-
+	//=========================== FUNCION PARA ACTUALIZAR EL TIPO DE AJUSTE ==========================================================================//
+	function UpdateTipoAjuste($id,$isMensual, $id_empresa,$mysql){
+		$sql="UPDATE inventario_ajuste SET ajuste_mensual='$isMensual'  WHERE activo=1 AND id_empresa=$id_empresa AND id=$id";
+		$query=$mysql->query($sql,$mysql->link);
+		if (!$query) {
+			echo '<script>alert("Error!\nNo se actualizo el tipo del documento, si el problema persiste comuniquese con el administrador del sistema");</script>';
+		}
+	}
 	//=========================== FUNCION PARA BUSCAR E INSERTAR UN TERCERO ===============================================================================//
 	function buscarTercero($id,$codTercero,$inputId,$opcGrillaContable,$tablaPrincipal,$id_empresa,$mysql){
 
