@@ -134,7 +134,8 @@
                         codigo_centro_costo,
                         centro_costo,
                         consecutivo_remision_venta,
-                        consecutivo_entrada_almacen
+                        consecutivo_entrada_almacen,
+                        ajuste_mensual
                     FROM $tablaPrincipal
                     WHERE id='$id_documento' AND activo = 1";
         $query=$mysql->query($sql,$mysql->link);
@@ -154,6 +155,7 @@
         $centro_costo                = $mysql->result($query,0,'centro_costo');
         $consecutivo_remision_venta  = $mysql->result($query,0,'consecutivo_remision_venta');
         $consecutivo_entrada_almacen = $mysql->result($query,0,'consecutivo_entrada_almacen');
+        $ajuste_mensual              = $mysql->result($query,0,'ajuste_mensual');
 
         $labelCcos = $codigo_centro_costo.' '.$centro_costo;
 
@@ -180,6 +182,7 @@
                         document.getElementById("remision'.$opcGrillaContable.'").value      = "'.$consecutivo_remision_venta.'";
                         document.getElementById("entrada'.$opcGrillaContable.'").value       = "'.$consecutivo_entrada_almacen.'";
                         document.getElementById("usuario'.$opcGrillaContable.'").value       = "'.$usuario.'";
+                        document.getElementById("selectAjusteMensual").value                 = "'.$ajuste_mensual.'";
                         observacion'.$opcGrillaContable.'                                    = "'.$observacion.'";
 
                         id_tercero_'.$opcGrillaContable.'   = "'.$id_tercero.'";
@@ -265,7 +268,6 @@
                     <select id='selectAjusteMensual' onchange="UpdateFechaInventarioMensual()">
                       <option value='NO'>No</option>
                       <option value='SI'>Si</option>
-                      <?php echo $optionfechas; ?>
                     </select>
                   </div>
                 </div>
