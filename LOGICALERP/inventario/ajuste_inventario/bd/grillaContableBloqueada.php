@@ -62,7 +62,8 @@
                 centro_costo,
                 consecutivo,
                 consecutivo_remision_venta,
-                consecutivo_entrada_almacen
+                consecutivo_entrada_almacen,
+                ajuste_mensual
             FROM $tablaPrincipal
             WHERE id='$id_documento' AND activo = 1";
     $query=$mysql->query($sql,$mysql->link);
@@ -83,6 +84,7 @@
     $centro_costo                = $mysql->result($query,0,'centro_costo');
     $consecutivo_remision_venta  = $mysql->result($query,0,'consecutivo_remision_venta');
     $consecutivo_entrada_almacen = $mysql->result($query,0,'consecutivo_entrada_almacen');
+    $ajuste_mensual              = $mysql->result($query,0,'ajuste_mensual');
 
     $labelCcos = $codigo_centro_costo.' '.$centro_costo;
 
@@ -97,7 +99,9 @@
                     document.getElementById("entrada'.$opcGrillaContable.'").value       = "'.$consecutivo_entrada_almacen.'";
                     document.getElementById("usuario'.$opcGrillaContable.'").value       = "'.$usuario.'";
                     document.getElementById("cCos_'.$opcGrillaContable.'").value         = "'.$labelCcos.'";
+                    document.getElementById("AjusteMensualBloqueada").value              = "'.$ajuste_mensual.'";
                     observacion'.$opcGrillaContable.'                                    = "'.$observacion.'";';
+                    
 
     $bodyArticle = cargaArticulosSave($id_documento,$observacion,$estado,$opcGrillaContable,$tablaPrincipal,$tablaInventario,$idTablaPrincipal,$link);
 
@@ -166,6 +170,14 @@
                 <div class="renglonTop">
                     <div class="labelTop">Usuario</div>
                     <div class="campoTop" style="width:277px;"><input type="text" id="usuario<?php echo $opcGrillaContable; ?>" readonly ></div>
+                </div>
+
+                <div class="renglonTop">
+                    <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
+                    <div class="labelTop">
+                            Ajuste mensual
+                    </div>
+                    <div class="campoTop"><input type="text" id="AjusteMensualBloqueada" readonly></div>
                 </div>
 
             </div>
