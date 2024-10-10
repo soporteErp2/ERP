@@ -258,7 +258,8 @@
                     <div class="labelTop">Usuario</div>
                     <div class="campoTop" style="width:277px;"><input type="text" id="usuario<?php echo $opcGrillaContable; ?>" readonly="" ></div>
                 </div>
-                <div class="renglonTop" id="divAjusteMensual">
+                <div class="renglonTop">
+                <div id="cargaAjuste"></div>
                   <div class="labelTop">Ajuste mensual</div>
                   <div class="campoTop" style="width:150px">
                     <select id='selectAjusteMensual' onchange="UpdateFechaInventarioMensual()">
@@ -308,13 +309,28 @@
         document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value = `${year}-${month}-${day}`;
         document.getElementById('cargaFechaRenglonTop').style.pointerEvents = 'none';
         UpdateFechaDocumento<?php echo $opcGrillaContable; ?>();
+        UpdateTipoAjuste();
         return;
         }
         document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value =  new Date().toISOString().split('T')[0];
         document.getElementById('cargaFechaRenglonTop').style.pointerEvents = '';
-        UpdateFechaDocumento<?php echo $opcGrillaContable; ?>()
+        UpdateFechaDocumento<?php echo $opcGrillaContable; ?>();
+        UpdateTipoAjuste();
     }
-
+    function UpdateTipoAjuste(){
+        var isMensual = document.getElementById('selectAjusteMensual').value;
+        Ext.get('cargaAjuste').load({
+            url     : 'ajuste_inventario/bd/bd.php',
+            scripts : true,
+            nocache : true,
+            params  :
+            {
+                opc         : 'UpdateTipoAjuste',
+                isMensual   : isMensual,
+                id          : '<?php echo $id_documento; ?>'
+            }
+        });
+    }
     function UpdateFechaDocumento<?php echo $opcGrillaContable; ?>(){
         var fecha = document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value;
         Ext.get('loadFecha').load({
@@ -1085,7 +1101,7 @@
             params  : { AjusteMensual: document.getElementById('selectAjusteMensual').value,
                         fechaAjusteMensual : document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value,
                         opcion: 'loadExcelNota',
-                        id_documento :' <?php echo $id_documento ?>',
+                        id_documento :'<?php echo $id_documento ?>',
                         id_bodega : id_bodega
                       },
             button            : null,
