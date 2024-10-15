@@ -598,13 +598,13 @@ if(!isset($opcion)){ ?>
 
 		function generarInventarioExcel(){
 			var id_bodega          = document.getElementById('filtro_ubicacion_inventario').value
-			  , fecha              = document.getElementById('fecha_inventario').value
+			  , fecha_inventario   = document.getElementById('fecha_inventario').value
 			  , separadorDecimales = document.getElementById('separadorDecimales').value
 			  , separadorMiles     = document.getElementById('separadorMiles').value
 
 			const url = `inventario_unidades/excel_inventario.php?filtro_empresa=<?php echo $empresa; ?>&filtro_sucursal=<?php echo $filtro_sucursal ?>&filtro_ubicacion=${id_bodega}&separador_decimales=${separadorDecimales}&separador_miles=${separadorMiles}&fecha_inventario=${fecha_inventario}`;
 			
-			//console.log(url);
+			console.log(url);
 			window.open(url);
 		}
 
