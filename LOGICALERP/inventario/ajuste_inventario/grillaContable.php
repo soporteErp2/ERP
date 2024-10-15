@@ -84,14 +84,15 @@
         }
 
         $sql="INSERT INTO $tablaPrincipal
-                    (id_empresa,random,fecha_documento,id_sucursal,id_bodega,id_usuario$camposInsert)
+                    (id_empresa,random,fecha_documento,id_sucursal,id_bodega,id_usuario$camposInsert,ajuste_mensual)
                 VALUES('$id_empresa',
                         '$random_factura',
                         '$fecha',
                         '$id_sucursal',
                         '$filtro_bodega',
                         '$id_usuario'
-                        $valuesInsert
+                        $valuesInsert,
+                        'NO'
                         )";
         $query=$mysql->query($sql,$mysql->link);
 
@@ -332,6 +333,7 @@
                 id          : '<?php echo $id_documento; ?>'
             }
         });
+        createUploader();
     }
     function UpdateFechaDocumento<?php echo $opcGrillaContable; ?>(){
         var fecha = document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value;
