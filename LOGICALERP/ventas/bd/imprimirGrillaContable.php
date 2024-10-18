@@ -90,13 +90,13 @@
 
 			$articulos .= '<table class="StyleTableArticulos" width="740" border="0" cellspacing="0" cellpadding="0">
 							<tr>
-								<td style="width: 55px;">'.$array["codigo"].'</td>
-								<td style="width: 305px; text-align:left; padding-left:5px;">'.$array["nombre"].'</td>
-								<td style="width: 80px; text-align:left; padding-left:5px;">'.$array["nombre_unidad_medida"].' x '.$array["cantidad_unidad_medida"].'</td>
-								<td style="width: 60px; text-align:right;">'.$array["cantidad_total"].'</td>
-								<td style="width: 80px; text-align:right;">'.$array["descuento"].' '.$tipoDescuento.'</td>
-								<td style="width: 80px; text-align:right;">'.number_format ($array["costo_unitario"],$_SESSION['DECIMALESMONEDA']).'</td>
-							 	<td style="width: 80px; text-align:right;">'.number_format ($subTotal,$_SESSION['DECIMALESMONEDA']).'</td>
+								<td valign="top" style="width: 55px;">'.$array["codigo"].'</td>
+								<td valign="top" style="width: 305px; text-align:left; padding-left:5px;">'.$array["nombre"].'</td>
+								<td valign="top" style="width: 80px; text-align:left; padding-left:5px;">'.$array["nombre_unidad_medida"].' x '.$array["cantidad_unidad_medida"].'</td>
+								<td valign="top" style="width: 60px; text-align:right;">'.$array["cantidad_total"].'</td>
+								<td valign="top" style="width: 80px; text-align:right;">'.$array["descuento"].' '.$tipoDescuento.'</td>
+								<td valign="top" style="width: 80px; text-align:right;">'.number_format ($array["costo_unitario"],$_SESSION['DECIMALESMONEDA']).'</td>
+							 	<td valign="top" style="width: 80px; text-align:right;">'.number_format ($subTotal,$_SESSION['DECIMALESMONEDA']).'</td>
 							</tr>';
 
 			if($array["observaciones"] != ''){
@@ -308,7 +308,7 @@
 	if(!isset($IMPRIME_PDF)){ $IMPRIME_PDF = 'true'; }
 
 	if(isset($MARGENES)){ list($MS, $MD, $MI, $ML) = split( ',', $MARGENES ); }
-	else{ $M[0] = 50; $M[1] = 10; $M[2] = 10; $M[3] = 10; }
+	else{ $M[0] = 71; $M[1] = 10; $M[2] = 10; $M[3] = 10; }
 
 	if(!isset($TAMANO_ENCA)){ $TAMANO_ENCA = 12; }
 
