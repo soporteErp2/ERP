@@ -1483,4 +1483,60 @@
 
     }
 
+    let debounce_tercero;
+
+    function debounceRequest (input, delay=1000,cont) {
+        clearTimeout(debounce_tercero);
+
+        debounce_tercero = setTimeout(() => {
+            makeRequest(input,cont);
+        }, delay);
+        
+        // Verificar si se presiona Enter
+        if (event.key === 'Enter') {
+            clearTimeout(debounce_tercero);
+            makeRequest(input,cont);
+        }
+    };
+
+    function makeRequest (input,cont) {
+
+        var idInsertCuenta  = document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_'+cont).value
+        if (idInsertCuenta>0) {
+            document.getElementById('divImageSave<?php echo $opcGrillaContable; ?>_'+cont).style.display    = 'inline';
+            document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+cont).style.display = 'inline';
+        }
+
+        if (input=="") {
+            document.getElementById("tercero<?=$opcGrillaContable?>_"+cont).value = ""
+            document.getElementById("idTercero<?=$opcGrillaContable?>_"+cont).value = ""
+
+            return;
+        }
+        Ext.Ajax.request({
+            url: 'comprobante_egreso/bd/bd.php',
+            method: 'GET',
+            params: {
+                opc: "buscarTercero",
+                document: input
+            },
+            success: (response) => {
+                let result = JSON.parse(response.responseText)
+                if (result.status=="success") {
+                    document.getElementById("tercero<?=$opcGrillaContable?>_"+cont).value = result.nombre
+                    document.getElementById("idTercero<?=$opcGrillaContable?>_"+cont).value = result.id
+                }
+                else{
+                    document.getElementById("tercero<?=$opcGrillaContable?>_"+cont).value = ""
+                    document.getElementById("idTercero<?=$opcGrillaContable?>_"+cont).value = ""
+                }
+                console.log('Response:', result);
+            },
+            failure: (response) => {
+                console.error('Error:', response);
+            }
+        });
+    };
+
+
 </script>

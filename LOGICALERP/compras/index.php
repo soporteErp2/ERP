@@ -33,5 +33,6 @@
     <link rel="stylesheet" href="../../misc/jquery-editable-select/jquery.editable-select.css" type="text/css" />
 
     <!-- // <script type="text/javascript" src="cssrefresh/cssrefresh.js"></script> -->
+    <link rel="stylesheet" href="../../assets/css/tailwind.css">
 
 <?php include('subindex.php') ?>

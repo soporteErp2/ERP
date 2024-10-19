@@ -1,4 +1,5 @@
 module.exports = {
+    important: true,
     content: [
       './LOGICALERP/**/*.{php,html,js}',
       './public/index.html',

@@ -11,6 +11,7 @@
 					debito,
 					credito,
 					id_tercero,
+					nit_tercero,
 					tercero,
 					id_documento_cruce,
 					tipo_documento_cruce,
@@ -45,7 +46,7 @@
 
 					$cont++;
 					$body .='<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
-								'.cargaDivsUnidadesSaveConTercero($cont,$opcGrillaContable,$row['id'],$row['id_puc'],$row['cuenta'],$row['descripcion'],$row['debito'],$row['credito'],$row['id_tercero'],$row['tercero'],$row['id_documento_cruce'],$row['tipo_documento_cruce'],$row['prefijo_documento_cruce'],$row['numero_documento_cruce'],$row['id_tabla_referencia'],$link ).'
+								'.cargaDivsUnidadesSaveConTercero($cont,$opcGrillaContable,$row['id'],$row['id_puc'],$row['cuenta'],$row['descripcion'],$row['debito'],$row['credito'],$row['id_tercero'],$row['nit_tercero'],$row['tercero'],$row['id_documento_cruce'],$row['tipo_documento_cruce'],$row['prefijo_documento_cruce'],$row['numero_documento_cruce'],$row['id_tabla_referencia'],$link ).'
 							</div>';
 				}
 				$cont++;
@@ -65,7 +66,7 @@
 
 					$cont++;
 					$body .='<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
-								'.cargaDivsUnidadesBloqueadasConTercero($cont,$opcGrillaContable,$row['id'],$row['id_puc'],$row['cuenta'],$row['descripcion'],$row['debito'],$row['credito'],$row['id_tercero'],$row['tercero'],$row['id_documento_cruce'],$row['tipo_documento_cruce'],$row['prefijo_documento_cruce'],$row['numero_documento_cruce'],$row['id_tabla_referencia']  ).'
+								'.cargaDivsUnidadesBloqueadasConTercero($cont,$opcGrillaContable,$row['id'],$row['id_puc'],$row['cuenta'],$row['descripcion'],$row['debito'],$row['credito'],$row['id_tercero'],$row['nit_tercero'],$row['tercero'],$row['id_documento_cruce'],$row['tipo_documento_cruce'],$row['prefijo_documento_cruce'],$row['numero_documento_cruce'],$row['id_tabla_referencia']  ).'
 							</div>';
 				}
 				$mostarBoton='disable()';
@@ -110,7 +111,7 @@
 		return $body;
 	}
 	//==================================== CARGAR ARTICULOS EN FACTURA ABIERTA ==================================================================//
-	function cargaDivsUnidadesSaveConTercero($cont,$opcGrillaContable,$id=0,$id_puc = 0,$cuenta='',$descripcion='',$debe=0,$haber=0,$id_tercero,$tercero,$id_documento_cruce,$tipo_documento_cruce,$prefijo_documento_cruce,$numero_documento_cruce,$id_tabla_referencia,$link){
+	function cargaDivsUnidadesSaveConTercero($cont,$opcGrillaContable,$id=0,$id_puc = 0,$cuenta='',$descripcion='',$debe=0,$haber=0,$id_tercero,$nit_tercero,$tercero,$id_documento_cruce,$tipo_documento_cruce,$prefijo_documento_cruce,$numero_documento_cruce,$id_tabla_referencia,$link){
 
 		$numero_documento_cruce=($numero_documento_cruce==0)? '' : $numero_documento_cruce ;
 
@@ -163,7 +164,10 @@
 					<img src="img/buscar20.png" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;"/>
 				</div>
 
-				<div class="campoGrilla" style="width:30%;"><input type="text" id="tercero'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" value="'.$tercero.'" title="'.$tercero.'" readonly/></div>
+				<div class="campoGrilla flex" style="width:30%;">
+					<input type="text" id="documento_tercero_'.$opcGrillaContable.'_'.$cont.'" onkeyup="debounceRequest(this.value, event,'.$cont.')" value="'.$nit_tercero.'" style="border-right:1px solid #CCC;" placeholder="cedula, nit...">
+					<input type="text" id="tercero'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" value="'.$tercero.'" title="'.$tercero.'" readonly/>
+				</div>
 				<div class="iconBuscarArticulo">
 					<img src="img/'.$imagenBoton.'.png" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;" title="Buscar Tercero" id="imgBuscarTercero_'.$cont.'" onclick="'.$eventoBoton.''.$opcGrillaContable.'('.$cont.')"/>
 				</div>
