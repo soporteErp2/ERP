@@ -139,6 +139,10 @@
 		case 'mostrarAlmacenamiento':
 			mostrarAlmacenamiento();
 			break;
+		case 'buscarTercero' :
+			buscarTercero($document,$id_empresa,$link);
+			break;
+
 	}
 
 	//=================================// FUNCION PARA BUSCAR UN CLIENTE //=================================//
@@ -264,7 +268,10 @@
 					<img src="img/buscar20.png" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;" />
 				</div>
 
-				<div class="campoGrilla" style="width:30%;"><input type="text" id="tercero'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" readonly/></div>
+				<div class="campoGrilla flex" style="width:30%;" >
+					<input type="text" id="documento_tercero_'.$opcGrillaContable.'_'.$cont.'" onkeyup="debounceRequest(this.value, event,'.$cont.')" style="border-right:1px solid #CCC;" placeholder="cedula, nit...">
+					<input type="text" id="tercero'.$opcGrillaContable.'_'.$cont.'" style="text-align:left;" readonly/>
+				</div>
 				<div class="iconBuscarArticulo">
 					<img src="img/buscar20.png" title="Buscar Tercero" style="margin-top: 3px; margin-left: 2px; height: 16px; width: 16px;" id="imgBuscarTercero_'.$cont.'"  onclick="buscarVentanaTercero'.$opcGrillaContable.'('.$cont.')"/>
 				</div>
@@ -425,7 +432,7 @@
 
 	//=========================== FUNCION PARA DESHACER LOS CAMBIOS DE UN ARTICULO QUE SE MODIFICA ==============================================//
 	function retrocederCuenta($id,$idCuentaInsert,$cont,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link){
-		$sql   = "SELECT id_puc,cuenta,debito,credito,id_documento_cruce,prefijo_documento_cruce,numero_documento_cruce,tipo_documento_cruce,tercero,id_tabla_referencia
+		$sql   = "SELECT id_puc,cuenta,debito,credito,id_documento_cruce,prefijo_documento_cruce,numero_documento_cruce,tipo_documento_cruce,nit_tercero,tercero,id_tabla_referencia
 					FROM $tablaCuentasNota
 					WHERE $idTablaPrincipal='$id' AND id='$idCuentaInsert' ";
 		$query = mysql_query($sql,$link);
@@ -435,6 +442,7 @@
 		$descripcion             = mysql_result($query,0,'descripcion');
 		$debe                    = mysql_result($query,0,'debito');
 		$haber                   = mysql_result($query,0,'credito');
+		$nit_tercero                 = mysql_result($query,0,'nit_tercero');
 		$tercero                 = mysql_result($query,0,'tercero');
 		$id_documento_cruce      = mysql_result($query,0,'id_documento_cruce');
 		$tipo_documento_cruce    = mysql_result($query,0,'tipo_documento_cruce');
@@ -465,6 +473,7 @@
 
 				document.getElementById("idCuenta'.$opcGrillaContable.'_'.$cont.'").value                 = "'.$idCuenta.'";
 				document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont.'").value                   = "'.$cuenta.'";
+				document.getElementById("documento_tercero_'.$opcGrillaContable.'_'.$cont.'").value                  = "'.$nit_tercero.'";
 				document.getElementById("tercero'.$opcGrillaContable.'_'.$cont.'").value                  = "'.$tercero.'";
 				document.getElementById("idDocumentoCruce'.$opcGrillaContable.'_'.$cont.'").value         = "'.$id_documento_cruce.'";
 				document.getElementById("documentoCruce'.$opcGrillaContable.'_'.$cont.'").value           = "'.$tipo_documento_cruce.'";
@@ -2186,6 +2195,21 @@
 				  	  	</table>
 				  	</div>
 			    </div>';
+	}
+
+	function buscarTercero($document,$id_empresa,$link){
+		$sql="SELECT id,nombre FROM terceros WHERE activo=1 AND id_empresa=$id_empresa AND numero_identificacion='$document' ";
+		$query=mysql_query($sql,$link);
+		$rows = mysql_num_rows($query);
+
+		$response = ["status"=>"error"];
+		if ($rows>0) {
+			$id = mysql_result($query,0,'id'); 
+			$nombre = mysql_result($query,0,'nombre'); 
+			$response = ["status"=>"success", "id"=>$id, "nombre"=>$nombre];
+		}
+
+		echo json_encode($response);
 	}
 
 ?>
