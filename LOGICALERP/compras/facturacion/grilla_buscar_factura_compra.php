@@ -67,13 +67,14 @@
 
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center>','40');
-			$grilla->AddRow('Prefijo','prefijo_factura',80);
-			$grilla->AddRow('N. Factura proveedor','numero_factura',150);
-			$grilla->AddRow('Consecutivo','consecutivo',100);
-			$grilla->AddRow('Nit','nit',100);
+			$grilla->AddRow('Tipo Doc','tipo_documento',50,'TipoDocumento');
+			$grilla->AddRow('Prefijo','prefijo_factura',50);
+			$grilla->AddRow('N. Factura','numero_factura',80);
+			$grilla->AddRow('Consecutivo','consecutivo',80);
+			$grilla->AddRow('Nit','nit',80);
 			$grilla->AddRow('Proveedor','proveedor',200);
-			$grilla->AddRow('Fecha','fecha_inicio',250,'fecha');
-
+			$grilla->AddRow('Fecha','fecha_inicio',130,'fecha');
+			$grilla->AddRowImage('Enviado','<center><img src="img/estado_doc/[response_DS].png" style="cursor:pointer" width="16" height="16" id="imgEnvioFacturaCompra_[id]" /></center>','50','EnvioDian','response_DS');
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 760;
 			$grilla->FColumnaGeneralAncho	= 380;
