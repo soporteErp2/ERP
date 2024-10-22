@@ -46,9 +46,9 @@
     }else{
         $sqlFecha = "SELECT fecha_documento FROM inventario_ajuste WHERE id=$id_documento LIMIT 1";
         $fechaDoc = $mysql->result(($mysql->query($sqlFecha,$mysql->link)),0,'fecha_documento');
-        //sumarle un dia a la fecha (la base de datos guarda la fecha el primer dia del mes)
+        //sumarle un dos a la fecha (la base de datos guarda la fecha el sergundo segundo día del mes)
         $fecha = new DateTime($fechaDoc);
-        $fecha->modify('+1 day');
+        $fecha->modify('+2 day');
         $fechaconsul = $fecha->format('Y-m-d');
         $sql="SELECT id_item,codigo,nombre as nombre_equipo,costo as costos,cantidad FROM inventario_totales_log_mensual WHERE id_empresa=$id_empresa AND id_bodega=$id_bodega AND fecha = '$fechaconsul' AND ($whereItems) ";
     }
