@@ -113,7 +113,7 @@
             return $random1.''.$random2;;
         }
 
-        function handleUpload($uploadDirectory,$id_documento,$id_bodega,$mysql){
+        function handleUpload($uploadDirectory,$id_documento,$id_bodega,$AjusteMensual,$mysql){
             if (!is_writable($uploadDirectory)){ return array('error' => "Server error. El directorio no tiene permisos de escritura : $_SERVER[HTTP_HOST]  - $_SERVER[DOCUMENT_ROOT] <> ".$uploadDirectory); }
             if (!$this->file){ return array('error' => 'No files were uploaded.'); }
 
@@ -168,7 +168,7 @@
     $findme     = 'LOGICALERP';
     $pos        = strpos($rutaServer, $findme);
 
-    if (!$pos && $_SERVER['HTTP_HOST'] != 'erp.plataforma.co' && $_SERVER['HTTP_HOST'] != 'logicalsoft-erp.com') { $rutaServer = $_SERVER['DOCUMENT_ROOT'].'/LOGICALERP'; }
+    if (!$pos && $_SERVER['HTTP_HOST'] != 'erp.plataforma.co' && $_SERVER['HTTP_HOST'] != 'logicalsoft-erp.com' && $_SERVER['HTTP_HOST'] != 'repo.logicalsoft-erp.com') { $rutaServer = $_SERVER['DOCUMENT_ROOT'].'/LOGICALERP'; }
 
     $serv = $rutaServer."/";
     $url  = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/';
@@ -181,7 +181,7 @@
     if(!file_exists($url)){ mkdir ($url); }
 
     $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-    $result   = $uploader->handleUpload($url,$id_documento,$id_bodega,$mysql);
+    $result   = $uploader->handleUpload($url,$id_documento,$id_bodega,$AjusteMensual,$mysql);
 
     echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
 

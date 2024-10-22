@@ -84,14 +84,15 @@
         }
 
         $sql="INSERT INTO $tablaPrincipal
-                    (id_empresa,random,fecha_documento,id_sucursal,id_bodega,id_usuario$camposInsert)
+                    (id_empresa,random,fecha_documento,id_sucursal,id_bodega,id_usuario$camposInsert,ajuste_mensual)
                 VALUES('$id_empresa',
                         '$random_factura',
                         '$fecha',
                         '$id_sucursal',
                         '$filtro_bodega',
                         '$id_usuario'
-                        $valuesInsert
+                        $valuesInsert,
+                        'NO'
                         )";
         $query=$mysql->query($sql,$mysql->link);
 
@@ -134,7 +135,8 @@
                         codigo_centro_costo,
                         centro_costo,
                         consecutivo_remision_venta,
-                        consecutivo_entrada_almacen
+                        consecutivo_entrada_almacen,
+                        ajuste_mensual
                     FROM $tablaPrincipal
                     WHERE id='$id_documento' AND activo = 1";
         $query=$mysql->query($sql,$mysql->link);
@@ -154,6 +156,7 @@
         $centro_costo                = $mysql->result($query,0,'centro_costo');
         $consecutivo_remision_venta  = $mysql->result($query,0,'consecutivo_remision_venta');
         $consecutivo_entrada_almacen = $mysql->result($query,0,'consecutivo_entrada_almacen');
+        $ajuste_mensual              = $mysql->result($query,0,'ajuste_mensual');
 
         $labelCcos = $codigo_centro_costo.' '.$centro_costo;
 
@@ -180,6 +183,7 @@
                         document.getElementById("remision'.$opcGrillaContable.'").value      = "'.$consecutivo_remision_venta.'";
                         document.getElementById("entrada'.$opcGrillaContable.'").value       = "'.$consecutivo_entrada_almacen.'";
                         document.getElementById("usuario'.$opcGrillaContable.'").value       = "'.$usuario.'";
+                        document.getElementById("selectAjusteMensual").value                 = "'.$ajuste_mensual.'";
                         observacion'.$opcGrillaContable.'                                    = "'.$observacion.'";
 
                         id_tercero_'.$opcGrillaContable.'   = "'.$id_tercero.'";
@@ -198,13 +202,13 @@
     <div class="bodyTop">
         <div class="contInfoFact">
             <div class="contTopFila">
-                <div class="renglonTop">
+                <div id= 'cargaFechaRenglonTop' class="renglonTop">
                     <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
                     <div class="labelTop">
                         Fecha
                         <div id="loadFecha" style="float:right; margin-left:-20px; width:20px; height:19px; overflow:hidden;"></div>
                     </div>
-                    <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>" value="<?php echo $fecha; ?>" readonly></div>
+                    <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>" value="<?php echo $fecha; ?>"></div>
                 </div>
 
 
@@ -258,8 +262,16 @@
                     <div class="labelTop">Usuario</div>
                     <div class="campoTop" style="width:277px;"><input type="text" id="usuario<?php echo $opcGrillaContable; ?>" readonly="" ></div>
                 </div>
-
-            </div>
+                <div class="renglonTop">
+                <div id="cargaAjuste"></div>
+                  <div class="labelTop">Ajuste mensual</div>
+                  <div class="campoTop" style="width:150px">
+                    <select id='selectAjusteMensual' onchange="UpdateFechaInventarioMensual()">
+                      <option value='NO'>No</option>
+                      <option value='SI'>Si</option>
+                    </select>
+                  </div>
+                </div>
         </div>
     </div>
 
@@ -280,6 +292,49 @@
     document.getElementById("codTercero<?php echo $opcGrillaContable; ?>").focus();         //dar el foco
 
     //=========================== UPDATE FORMAS DE PAGO ============================================//
+    function  UpdateFechaInventarioMensual(){
+        if(document.getElementById('selectAjusteMensual').value!=='NO'){
+            // Obtener la fecha actual
+        let today = new Date();
+        
+        // Establecer la fecha al primer día del mes actual
+        let firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        
+        // Restar un día para obtener el último día del mes anterior
+        let lastDayOfPreviousMonth = new Date(firstDayOfCurrentMonth);
+        lastDayOfPreviousMonth.setDate(firstDayOfCurrentMonth.getDate() - 1);
+        
+        // Formatear la fecha en yyyy-mm-dd
+        let year = lastDayOfPreviousMonth.getFullYear();
+        let month = String(lastDayOfPreviousMonth.getMonth() + 1).padStart(2, '0');
+        let day = String(lastDayOfPreviousMonth.getDate()).padStart(2, '0');
+
+        document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value = `${year}-${month}-${day}`;
+        document.getElementById('cargaFechaRenglonTop').style.pointerEvents = 'none';
+        UpdateFechaDocumento<?php echo $opcGrillaContable; ?>();
+        UpdateTipoAjuste();
+        return;
+        }
+        document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value =  new Date().toISOString().split('T')[0];
+        document.getElementById('cargaFechaRenglonTop').style.pointerEvents = '';
+        UpdateFechaDocumento<?php echo $opcGrillaContable; ?>();
+        UpdateTipoAjuste();
+    }
+    function UpdateTipoAjuste(){
+        var isMensual = document.getElementById('selectAjusteMensual').value;
+        Ext.get('cargaAjuste').load({
+            url     : 'ajuste_inventario/bd/bd.php',
+            scripts : true,
+            nocache : true,
+            params  :
+            {
+                opc         : 'UpdateTipoAjuste',
+                isMensual   : isMensual,
+                id          : '<?php echo $id_documento; ?>'
+            }
+        });
+        createUploader();
+    }
     function UpdateFechaDocumento<?php echo $opcGrillaContable; ?>(){
         var fecha = document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value;
         Ext.get('loadFecha').load({
@@ -1047,7 +1102,12 @@
             element : document.getElementById('div_upload_file'),
             action  : 'upload_file/upload_file.php',
             debug   : false,
-            params  : { opcion: 'loadExcelNota',id_documento :' <?php echo $id_documento ?>',id_bodega : id_bodega},
+            params  : { AjusteMensual: document.getElementById('selectAjusteMensual').value,
+                        fechaAjusteMensual : document.getElementById('fecha<?php echo $opcGrillaContable; ?>').value,
+                        opcion: 'loadExcelNota',
+                        id_documento :'<?php echo $id_documento ?>',
+                        id_bodega : id_bodega
+                      },
             button            : null,
             multiple          : false,
             maxConnections    : 3,
