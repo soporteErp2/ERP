@@ -15,7 +15,7 @@ date_default_timezone_set('America/Bogota');
 
 // validar que sea el ultimo dia del mes
 // if (date('t') != date('d')) {
-if (date('j') != 1) {
+if (date('j') != 2) {
     exit("no es el ultimo dia del mes!\n");
 }
     // guardar log para verificacion de ejecucion
