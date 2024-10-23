@@ -225,6 +225,9 @@
 		case 'updateRows':
 			updateRows($row,$value,$idFactura,$id_empresa,$mysql,$link);
 			break;
+		case 'filtro_tipo_doc':
+			filtro_tipo_doc($filtro_bodega,$id_empresa,$link);
+			break;
 
 
 	}
@@ -3518,6 +3521,37 @@
 							opcGrilla       : '<?php echo $opcGrilla ?>',
 							idFactura       : '<?php echo $idFactura ?>',
 							terceroAnticipo : terceroAnticipo,
+						}
+					});
+				}
+
+			</script>
+		<?php
+	}
+
+	function filtro_tipo_doc($filtro_bodega,$id_empresa,$link){
+		?>
+			<div style="margin-top:5px;">
+				<select onchange="load_facturas(this.value)" class="myfield" style="width:145px;">
+					<option value="">Todos</option>
+					<option value="FC">Facturas</option>
+					<option value="DSE">Documentos soporte</option>
+
+				<select>
+			</div>
+			<script type="text/javascript">
+
+				load_facturas("");
+
+				function load_facturas(tipo_doc){
+
+					Ext.get('ContenedorPrincipal_facturaCompra').load({
+						url     : 'facturacion/grilla_buscar_factura_compra.php',
+						scripts : true,
+						nocache : true,
+						params  :
+						{	filtro_bodega : '<?php echo $filtro_bodega ?>', 
+							tipo_doc : tipo_doc
 						}
 					});
 				}
