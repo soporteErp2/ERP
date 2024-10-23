@@ -65,6 +65,9 @@
         <div class="title">FILTRAR POR TIPO DE FACTURA</div>
         <p>
             <select data-width="input" id="discriminar_tipo_factura">
+                <option value="">Todos</option>
+                <option value="FC">Facturas de compra</option>    
+                <option value="DSE">Documento soporte</option>
             </select>
         </p>
         <div class="title">FILTRAR POR CENTROS DE COSTOS</div>
