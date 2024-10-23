@@ -5,7 +5,16 @@
 
 	$id_empresa  = $_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
+	$whereTipoDoc = '';
+	switch($tipo_doc){
+		case 'FC':
+			$whereTipoDoc = "AND tipo_documento IS NULL";
+			break;
 
+		case 'DSE':
+			$whereTipoDoc = "AND tipo_documento = '05'";
+			break;
+	}
 	$sqlAux = "SELECT id_factura_compra 
 				FROM compras_facturas_inventario 
 				WHERE activo = 1  AND id_sucursal=$id_sucursal 
@@ -44,7 +53,8 @@
 											AND proveedor <> '' 
 											AND id_sucursal=$id_sucursal 
 											AND id_bodega=$filtro_bodega 
-											AND id_empresa='$id_empresa' 
+											AND id_empresa='$id_empresa'
+											$whereTipoDoc 
 											AND id_saldo_inicial=0 
 											AND factura_por_cuentas='false' 
 											AND (id in($id_facturas) OR numero_factura > 0)";
