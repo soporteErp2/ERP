@@ -76,15 +76,15 @@
 	 		$grilla->AddFilter('Estado de la Factura','estado','estado');
 
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
-	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center>','40');
-			$grilla->AddRow('Tipo Doc','tipo_documento',50,'TipoDocumento');
-			$grilla->AddRow('Prefijo','prefijo_factura',50);
-			$grilla->AddRow('N. Factura','numero_factura',80);
-			$grilla->AddRow('Consecutivo','consecutivo',80);
-			$grilla->AddRow('Nit','nit',80);
-			$grilla->AddRow('Proveedor','proveedor',200);
-			$grilla->AddRow('Fecha','fecha_inicio',130,'fecha');
-			$grilla->AddRowImage('Enviado','<center><img src="img/estado_doc/[response_DS].png" style="cursor:pointer" width="16" height="16" id="imgEnvioFacturaCompra_[id]" /></center>','50','EnvioDian','response_DS');
+	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center>','50');
+			$grilla->AddRow('Tipo Doc','tipo_documento',60,'TipoDocumento');
+			$grilla->AddRow('Prefijo','prefijo_factura',60);
+			$grilla->AddRow('N. Factura','numero_factura',100);
+			$grilla->AddRow('Consecutivo','consecutivo',90);
+			$grilla->AddRow('Nit','nit',90);
+			$grilla->AddRow('Proveedor','proveedor',210);
+			$grilla->AddRow('Fecha','fecha_inicio',170,'fecha');
+			$grilla->AddRowImage('Enviado','<center><img src="img/estado_doc/[response_DS].png" style="cursor:pointer" width="16" height="16" id="imgEnvioFacturaCompra_[id]" /></center>','60','EnvioDian','response_DS');
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 760;
 			$grilla->FColumnaGeneralAncho	= 380;
