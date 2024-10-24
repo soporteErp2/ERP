@@ -233,6 +233,7 @@
 		,	sucursal                   = document.getElementById('filtro_sucursal_facturas_compra').value
 		,	discriminar_items          = document.getElementById('discriminar_items_facturas_compra').value
 		,	tipo_doc		           = document.getElementById('discriminar_tipo_factura').value
+		,	estadoDoc		           = document.getElementById('discriminar_tipo_estado_factura').value
 		,	i                          = 0
 		,	arraytercerosJSON          = Array()
 		,	arrayVendedoresJSON        = Array()
@@ -265,6 +266,7 @@
 				arrayCcosJSON              : arrayCcosJSON,
 				discriminar_items          : discriminar_items,
 				tipo_doc				   : tipo_doc,
+				estadoDoc				   : estadoDoc,
 			}
 		});
 
@@ -284,6 +286,7 @@
 		,	sucursal                   = document.getElementById('filtro_sucursal_facturas_compra').value
 		,	discriminar_items          = document.getElementById('discriminar_items_facturas_compra').value
 		,	tipo_doc	               = document.getElementById('discriminar_tipo_factura').value
+		,	estadoDoc		           = document.getElementById('discriminar_tipo_estado_factura').value
 		,	i                          = 0
 		,	arraytercerosJSON          = Array()
 		,	arrayVendedoresJSON        = Array()
@@ -309,6 +312,7 @@
 					+"&arrayCcosJSON="+arrayCcosJSON
 					+"&discriminar_items="+discriminar_items
 					+"&tipo_doc="+tipo_doc
+					+"&estadoDoc="+estadoDoc
 
 		window.open("../informes/informes/informes_compras/facturas_Result.php?"+data);
 
