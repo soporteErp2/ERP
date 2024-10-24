@@ -138,10 +138,11 @@ $sql = "SELECT
 
 $query = mysql_query($sql,$link);
 
-$acumuladoSubtotal  = 0;
-$acumuladoIva       = 0;
-$acumuladoTotal     = 0;
-$whereId            = '';
+$acumuladoSubtotal   = 0;
+$acumuladoDescuento  = 0;
+$acumuladoIva        = 0;
+$acumuladoTotal      = 0;
+$whereId             = '';
 
 while($row = mysql_fetch_array($query)){
   $whereId .= ($whereId == '')? 'id_factura_venta='.$row['id'] : ' OR id_factura_venta='.$row['id'] ;
@@ -479,8 +480,6 @@ $acumuladoCosto      = 0;
 $acumuladoTotal      = 0;
 $acumuladoCantidad   = 0;
 $acumuladoPendiente  = 0;
-$acumuladoCosto      = 0;
-$acumuladoDescuento  = 0;
 $acumuladoIva        = 0;
 $acumuladoUtilidad   = 0;
 $acumuladoTotalItems = 0;
