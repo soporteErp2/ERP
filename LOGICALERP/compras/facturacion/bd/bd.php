@@ -3541,8 +3541,6 @@
 			</div>
 			<script type="text/javascript">
 
-				load_facturas("");
-
 				function load_facturas(tipo_doc){
 
 					Ext.get('ContenedorPrincipal_facturaCompra').load({
