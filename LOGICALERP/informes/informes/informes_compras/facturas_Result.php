@@ -20,6 +20,8 @@
       public $mysql                       = '';
       public $id_empresa                  = '';
       public $customWhere                 = '';
+      public $tipoDoc                     = '';
+      public $estadoDoc                   = '';
       public $arrayDoc                    = array();
       public $arrayDocItems               = array();
 
@@ -37,7 +39,7 @@
        * @param int $sucursal                     Filtro por sucursal
        * @param obj $mysql                        Objeto de conexion a la base de datos
        */
-      function __construct($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arraytercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$mysql){
+      function __construct($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arraytercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$tipo_doc,$estadoDoc,$mysql){
         $this->IMPRIME_HTML               = $IMPRIME_HTML;
         $this->IMPRIME_XLS                = $IMPRIME_XLS;
         $this->IMPRIME_PDF                = $IMPRIME_PDF;
@@ -49,6 +51,8 @@
         $this->discriminar_items          = $discriminar_items;
         $this->mysql                      = $mysql;
         $this->sucursal                   = $sucursal;
+        $this->tipoDoc                    = $tipo_doc;
+        $this->estadoDoc                  = $estadoDoc;
         $this->id_empresa                 = $_SESSION['EMPRESA'];
       }
 
@@ -85,12 +89,30 @@
 
         if(!empty($this->arrayCcosJSON)){
           foreach($this->arrayCcosJSON as $indice => $codigo_centro_costo){
-            $whereCcos .= ($whereCcos == "")? "AND TI.id_centro_costos = '$codigo_centro_costo'" : " OR TI.id_centro_costos = '$codigo_centro_costo'";
+            $whereCcos .= ($whereCcos == "")? " AND TI.id_centro_costos = '$codigo_centro_costo'" : " OR TI.id_centro_costos = '$codigo_centro_costo'";
+          }
+        }
+
+        if(!empty($this->tipoDoc)){
+          if ($this->tipoDoc == "FC"){
+             $whereTipoDoc = " AND TP.tipo_documento IS NULL"; 
+          }
+          elseif ($this->tipoDoc == "DSE"){
+             $whereTipoDoc = " AND TP.tipo_documento = '05'"; 
+          }
+        }
+
+        if(!empty($this->estadoDoc)){
+          if ($this->estadoDoc == "ENVIADO"){
+             $whereEstadoDoc = " AND TP.response_DS like '%recibido exitosamente%' "; 
+          }
+          elseif ($this->estadoDoc == "NO_ENVIADO"){
+             $whereEstadoDoc = " AND (TP.response_DS IS NULL OR TP.response_DS = '' )"; 
           }
         }
 
         $this->customWhere .= ($this->sucursal != "" && $this->sucursal != "global")? " AND TP.id_sucursal = '$this->sucursal'" : "";
-        $this->customWhere .= $whereTerceros.$whereVendedores.$whereCcos;
+        $this->customWhere .= $whereTerceros.$whereVendedores.$whereCcos.$whereTipoDoc.$whereEstadoDoc;
       }
 
       /**
@@ -99,7 +121,7 @@
       public function getDocumentoInfo(){
 
         //------------------- DATOS CABECERA DE LA FACTURA -------------------//
-        $sql = "SELECT
+       $sql = "SELECT
                   TP.id,
                   TP.fecha_inicio,
                   TP.fecha_final,
@@ -1008,6 +1030,6 @@
       }
     }
 
-    $objectInform = new InformeFacturaCompra($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arraytercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$mysql);
+    $objectInform = new InformeFacturaCompra($IMPRIME_HTML,$IMPRIME_XLS,$IMPRIME_PDF,$sucursal,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$arraytercerosJSON,$arrayVendedoresJSON,$arrayCcosJSON,$discriminar_items,$tipo_doc,$estadoDoc,$mysql);
     $objectInform->generate();
 ?>

@@ -463,11 +463,12 @@ class MyGrilla {
 								"invoca una funcion previamente creada en la clase"
 						  );
 	*/
-	public function AddRowImage($titulo,$scriptImagen,$largo,$funcion=''){
+	public function AddRowImage($titulo,$scriptImagen,$largo,$funcion='',$campoBdFuncion=''){
 		$this->ElTitulo[$this->CuantasRows] = $titulo;
 		$this->ElDato[$this->CuantasRows] = false;
 		$this->ElLargo[$this->CuantasRows] = $largo;
 		$this->LaFuncion[$this->CuantasRows] = $funcion;
+		$this->CampoBdFuncion[$this->CuantasRows] = $campoBdFuncion;
 		$this->LaImagen[$this->CuantasRows] = $scriptImagen;
 		$this->EsVisible[$this->CuantasRows] = $esvisible;
 		$this->CuantasRows++;
@@ -526,6 +527,31 @@ class MyGrilla {
 		return $resultado;
 	}
 
+	public function TipoDocumento($cadena){
+		if($cadena == '05'){ return 'DSE'; }
+		return "FC";
+	}
+
+	//La variable de la imagen debe ser igual al campo de la BD
+	public function EnvioDian($LaImagen,$campoBd,$row){
+		$cadena = $row[$campoBd];
+		$array_variables_imagen = $this->EncuentraVariablesCadena($LaImagen);
+		$Imagen = '';
+		for($h=0;$h<count($array_variables_imagen);$h++){
+			if($array_variables_imagen[$h]==$campoBd){
+				$isSend = (strpos($cadena,'recibido exitosamente'))? '1' : '3';
+				$Imagen = str_replace("[".$array_variables_imagen[$h]."]",$isSend,$LaImagen);
+				$LaImagen = $Imagen;
+			}else{
+				$Imagen = str_replace("[".$array_variables_imagen[$h]."]",$row[$array_variables_imagen[$h]],$LaImagen);
+				$LaImagen = $Imagen;
+			}
+		}
+		
+		return $LaImagen;
+
+	}
+	
 	/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	// FUNCION QUE ENCUENTRA VARIABLES EN UN STRING Y DEVUELVE UN ARRAY CON ESAS VARIABLES (LAS VARIABLES DEEN ESTAR DEFINIDAS EN EL STRING DE LA SIGUIENTE FORMA "[VARIABLE]")
 	public function EncuentraVariablesCadena($mensaje){
@@ -1094,6 +1120,14 @@ class MyGrilla {
 
 													case "fecha":
 													$Dato = $this->Fecha($row[$this->ElDato[$i]]);
+													break;
+
+													case "TipoDocumento":
+													$Dato = $this->TipoDocumento($row[$this->ElDato[$i]]);
+													break;
+
+													case "EnvioDian":
+													$Dato = $this->EnvioDian($this->LaImagen[$i],$this->CampoBdFuncion[$i],$row);
 													break;
 												}
 

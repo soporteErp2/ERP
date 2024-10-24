@@ -614,7 +614,7 @@
             width       : myancho-100,
             height      : myalto-50,
             id          : 'Win_Ventana_buscar_factura_compra',
-            title       : 'Seleccionar articulo ',
+            title       : 'Seleccionar factura de compra',
             modal       : true,
             autoScroll  : false,
             closable    : false,

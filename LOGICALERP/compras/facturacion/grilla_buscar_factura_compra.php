@@ -5,7 +5,16 @@
 
 	$id_empresa  = $_SESSION['EMPRESA'];
 	$id_sucursal = $_SESSION['SUCURSAL'];
+	$whereTipoDoc = '';
+	switch($tipo_doc){
+		case 'FC':
+			$whereTipoDoc = "AND tipo_documento IS NULL";
+			break;
 
+		case 'DSE':
+			$whereTipoDoc = "AND tipo_documento = '05'";
+			break;
+	}
 	$sqlAux = "SELECT id_factura_compra 
 				FROM compras_facturas_inventario 
 				WHERE activo = 1  AND id_sucursal=$id_sucursal 
@@ -44,7 +53,8 @@
 											AND proveedor <> '' 
 											AND id_sucursal=$id_sucursal 
 											AND id_bodega=$filtro_bodega 
-											AND id_empresa='$id_empresa' 
+											AND id_empresa='$id_empresa'
+											$whereTipoDoc 
 											AND id_saldo_inicial=0 
 											AND factura_por_cuentas='false' 
 											AND (id in($id_facturas) OR numero_factura > 0)";
@@ -66,14 +76,15 @@
 	 		$grilla->AddFilter('Estado de la Factura','estado','estado');
 
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
-	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center>','40');
-			$grilla->AddRow('Prefijo','prefijo_factura',80);
-			$grilla->AddRow('N. Factura proveedor','numero_factura',150);
-			$grilla->AddRow('Consecutivo','consecutivo',100);
-			$grilla->AddRow('Nit','nit',100);
-			$grilla->AddRow('Proveedor','proveedor',200);
-			$grilla->AddRow('Fecha','fecha_inicio',250,'fecha');
-
+	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center>','50');
+			$grilla->AddRow('Tipo Doc','tipo_documento',60,'TipoDocumento');
+			$grilla->AddRow('Prefijo','prefijo_factura',60);
+			$grilla->AddRow('N. Factura','numero_factura',100);
+			$grilla->AddRow('Consecutivo','consecutivo',90);
+			$grilla->AddRow('Nit','nit',90);
+			$grilla->AddRow('Proveedor','proveedor',210);
+			$grilla->AddRow('Fecha','fecha_inicio',170,'fecha');
+			$grilla->AddRowImage('Enviado','<center><img src="img/estado_doc/[response_DS].png" style="cursor:pointer" width="16" height="16" id="imgEnvioFacturaCompra_[id]" /></center>','60','EnvioDian','response_DS');
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 760;
 			$grilla->FColumnaGeneralAncho	= 380;

@@ -232,6 +232,8 @@
 		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
 		,	sucursal                   = document.getElementById('filtro_sucursal_facturas_compra').value
 		,	discriminar_items          = document.getElementById('discriminar_items_facturas_compra').value
+		,	tipo_doc		           = document.getElementById('discriminar_tipo_factura').value
+		,	estadoDoc		           = document.getElementById('discriminar_tipo_estado_factura').value
 		,	i                          = 0
 		,	arraytercerosJSON          = Array()
 		,	arrayVendedoresJSON        = Array()
@@ -255,7 +257,7 @@
 			nocache : true,
 			params  :
 			{
-				nombre_informe             : 'Cotizaciones',
+				nombre_informe             : 'Facturas de compra',
 				sucursal                   : sucursal,
 				MyInformeFiltroFechaFinal  : MyInformeFiltroFechaFinal,
 				MyInformeFiltroFechaInicio : MyInformeFiltroFechaInicio,
@@ -263,6 +265,8 @@
 				arrayVendedoresJSON        : arrayVendedoresJSON,
 				arrayCcosJSON              : arrayCcosJSON,
 				discriminar_items          : discriminar_items,
+				tipo_doc				   : tipo_doc,
+				estadoDoc				   : estadoDoc,
 			}
 		});
 
@@ -281,6 +285,8 @@
 		,	MyInformeFiltroFechaInicio = document.getElementById('MyInformeFiltroFechaInicio').value
 		,	sucursal                   = document.getElementById('filtro_sucursal_facturas_compra').value
 		,	discriminar_items          = document.getElementById('discriminar_items_facturas_compra').value
+		,	tipo_doc	               = document.getElementById('discriminar_tipo_factura').value
+		,	estadoDoc		           = document.getElementById('discriminar_tipo_estado_factura').value
 		,	i                          = 0
 		,	arraytercerosJSON          = Array()
 		,	arrayVendedoresJSON        = Array()
@@ -305,6 +311,8 @@
 					+"&arrayVendedoresJSON="+arrayVendedoresJSON
 					+"&arrayCcosJSON="+arrayCcosJSON
 					+"&discriminar_items="+discriminar_items
+					+"&tipo_doc="+tipo_doc
+					+"&estadoDoc="+estadoDoc
 
 		window.open("../informes/informes/informes_compras/facturas_Result.php?"+data);
 

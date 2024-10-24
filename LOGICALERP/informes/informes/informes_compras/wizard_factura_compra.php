@@ -64,7 +64,18 @@
         </p>
         <div class="title">FILTRAR POR TIPO DE FACTURA</div>
         <p>
-            <select data-width="input" id="discriminar_tipo_factura">
+            <select data-width="input" id="discriminar_tipo_factura" onchange="add_filtro_envio(this.value);">
+                <option value="">Todos</option>
+                <option value="FC">Facturas de compra</option>    
+                <option value="DSE">Documento soporte</option>
+            </select>
+        </p>
+        <div class="title">ESTADO</div>
+        <p>
+            <select data-width="input" id="discriminar_tipo_estado_factura">
+                <option value="">Todos</option>
+                <option value="ENVIADO">Enviado</option>    
+                <option value="NO_ENVIADO">No enviado</option>
             </select>
         </p>
         <div class="title">FILTRAR POR CENTROS DE COSTOS</div>
@@ -136,5 +147,15 @@
     //RECORRER EL ARRAY PARA RENDERIZAR LOS CENTROS DE COSTOS DEL FILTRO
     CentroCostosConfiguradosFC.forEach(function(elemento) {rows += elemento;});
     document.getElementById('body_grilla_filtro_ccos').innerHTML=rows;
-
+    
+    function add_filtro_envio(optionSelected){
+        if(optionSelected != "FC"){
+            document.getElementById('discriminar_tipo_estado_factura').disabled=false;
+        }
+        else{
+            document.getElementById('discriminar_tipo_estado_factura').selectedIndex = 0;;
+            document.getElementById('discriminar_tipo_estado_factura').disabled=true;
+        }
+        return;
+    }
 </script>

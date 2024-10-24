@@ -2260,7 +2260,33 @@
                     iconCls     : 'regresar',
                     iconAlign   : 'top',
                     handler     : function(){ Win_Ventana_buscar_factura_compra.close(id) }
-                },'-'
+                },{
+                    xtype   : 'buttongroup',
+                    columns : 3,
+                    title   : 'Filtro Documentos',
+                    style   : 'border-right:none;',
+                    items   :
+                    [
+                        {
+                            xtype       : 'panel',
+                            border      : false,
+                            width       : 150,
+                            height      : 46,
+                            bodyStyle   : 'background-color:rgba(255,255,255,0);',
+                            autoLoad    :
+                            {
+                                url     : 'facturacion/bd/bd.php',
+                                scripts : true,
+                                nocache : true,
+                                params  :
+                                {
+                                    opc         : 'filtro_tipo_doc',
+                                    filtro_bodega   : document.getElementById("filtro_ubicacion_facturacion_compras").value
+                                }
+                            }
+                        }
+                    ]
+                }
             ]
         }).show();
     }
