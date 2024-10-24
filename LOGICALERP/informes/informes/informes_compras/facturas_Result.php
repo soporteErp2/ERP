@@ -121,7 +121,6 @@
       public function getDocumentoInfo(){
 
         //------------------- DATOS CABECERA DE LA FACTURA -------------------//
-       echo  $this->estadoDoc;
        $sql = "SELECT
                   TP.id,
                   TP.fecha_inicio,
