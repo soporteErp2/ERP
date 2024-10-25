@@ -1878,7 +1878,7 @@
 		if ($observacion <> '') {
 			$arrayReplaceString = array("\n", "\r","<br>");
 			$observacion        = str_replace($arrayReplaceString, "\\n", $observacion);
-			$camposUpdate .="observacion = IF(
+			$camposUpdate[] ="observacion = IF(
 											observacion<>'',
 											CONCAT(observacion, '<br>', '$referencia_input ', '$codDocAgregar', ': ', '$observacion'),
 											CONCAT('$referencia_input ', '$codDocAgregar', ': ', '$observacion')
@@ -1887,21 +1887,21 @@
 							observacionOC.value=observacionOC.value+'<br> $referencia_input $codDocAgregar: $observacion'; ";
 		}
 		if ($area_orden<=0 || is_null($area_orden)){
-			$camposUpdate .=",id_area_solicitante 	= '$id_area_requisicion',
+			$camposUpdate[] ="id_area_solicitante 	= '$id_area_requisicion',
 							codigo_area_solicitante = '$codigo_area_requisicion',
 							area_solicitante        = '$area_requisicion'";
 			$acumScript .="document.getElementById('areaSolcitante').value='$area_requisicion';";
 		}
 		$search_array = array('first' => 1, 'second' => 4);
 		if (array_key_exists($tipo_nombre_requisicion, $arrayTipoOc)) {
-		    $camposUpdate .= ",id_tipo=$arrayTipoOc[$tipo_nombre_requisicion],
+		    $camposUpdate[] = "id_tipo=$arrayTipoOc[$tipo_nombre_requisicion],
 		    				tipo_nombre='$tipo_nombre_requisicion' ";
 			$acumScript .="document.getElementById('selectTipoOrdenCompra').value='$arrayTipoOc[$tipo_nombre_requisicion]';";
 		}
 
 		// SI HAY CAMPOS A ALMACENAR ENTONCES ACTUALIZAR LA CABECERA DEL DOCUMENTO
-		if ($camposUpdate<>'') {
-			$sql="UPDATE compras_ordenes SET $camposUpdate WHERE id='$id_factura' AND id_empresa='$id_empresa' AND activo=1";
+		if (!empty($camposUpdate)) {
+			$sql="UPDATE compras_ordenes SET ".implode(", ",$camposUpdate)." WHERE id='$id_factura' AND id_empresa='$id_empresa' AND activo=1";
 			$query=mysql_query($sql,$link);
 		}
 		// if($observacion <> ''){
