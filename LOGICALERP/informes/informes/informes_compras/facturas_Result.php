@@ -107,7 +107,7 @@
              $whereEstadoDoc = " AND TP.response_DS like '%recibido exitosamente%' "; 
           }
           elseif ($this->estadoDoc == "NO_ENVIADO"){
-             $whereEstadoDoc = " AND (TP.response_DS IS NULL OR TP.response_DS = '' )"; 
+            $whereEstadoDoc = " AND (TP.response_DS IS NULL OR TP.response_DS = '' OR TP.response_DS NOT like '%recibido exitosamente%' )"; 
           }
         }
 
