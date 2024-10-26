@@ -200,18 +200,9 @@
 		$ivaAcumulado      = 0;
 		$costoAcumulado    = 0;
 		$precioAcumulado   = 0;
-		$cuentaDevPos	   = '';
+
 		$whereIdItemsCuentas = '';
-		
-		if($isPos){
-			$sqlDevPos = "SELECT
-							VPS.cuenta_devolucion_niif
-							FROM ventas_pos AS VP INNER JOIN ventas_pos_secciones AS VPS ON VP.id_seccion = VPS.id
-							WHERE VP.id_factura = '$idFactura'
-							LIMIT 0,1";
-			$queryDevPos  = mysql_query($sqlDevPos,$link);
-			$cuentaDevPos =	mysql_result($queryDevPos,0,'cuenta_devolucion_colgaap');
-		}
+
 		$sqlDoc =  "SELECT
                   D.id,
       						D.id_inventario AS id_item,
@@ -322,11 +313,8 @@
 			$idItemArray       = $valArrayInventario['id_items'];										//ID ITEM
 			$descripcionCuenta = $valArrayInventario['check_opcion_contable'];							//GASTO, COSTO, ACTIVO FIJO
 			$cuentaOpcional    = $arrayCuentasItems[$idItemArray][$descripcionCuenta]['cuenta'];		//CUENTA OPCION CONTABILIZACION
-			
-			$cuentaPrecio = ($descripcionCuenta == '')
-			? (($isPos) ? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['precio']['cuenta'])
-			: $cuentaOpcional;
 
+			$cuentaPrecio   = ($descripcionCuenta == '')? $arrayCuentasItems[$idItemArray]['precio']['cuenta']: $cuentaOpcional;
 			$contraPrecio   = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];
 			$cuentaImpuesto = ($valArrayInventario['cuenta_iva'] > 0)? $valArrayInventario['cuenta_iva']: $arrayCuentasItems[$idItemArray]['impuesto']['cuenta'];
 
@@ -948,7 +936,7 @@
 		else{ echo '<script>alert("Aviso.\nLa plantilla ingresada no tiene configuracion contable.")</script>'; exit; }
     }
 
-    function contabilizarNotaFacturaVentaSinPlantillaNiif($arrayCuentaPago,$idCcos,$idNota,$idBodega,$idSucursal,$idEmpresa,$idFactura,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura){
+    function contabilizarNotaFacturaVentaSinPlantillaNiif($arrayCuentaPago,$idCcos,$idNota,$idBodega,$idSucursal,$idEmpresa,$idFactura,$idCliente,$exento_iva,$link,$fecha,$numero_documento_cruce,$totalFactura,$isPos){
 		$decimalesMoneda  = ($_SESSION['DECIMALESMONEDA'] >= 0)? $_SESSION['DECIMALESMONEDA']: 0;
 		$cuentaPagoNiif   = $arrayCuentaPago['cuentaNiif'];
 		$estadoCuentaPago = $arrayCuentaPago['estado'];
@@ -963,9 +951,17 @@
 		$arrayRemisiones    = '';
 		$contRemisiones     = 0;
 		$acumIdRemisiones   = '';		//CONDICIONAL GLOBAL WHERE SQL IDS REMISIONES
-
+		$cuentaDevPos	   = '';
 		$whereIdItemsCuentas = '';
-
+		if($isPos){
+			$sqlDevPos = "SELECT
+							VPS.cuenta_devolucion_niif
+							FROM ventas_pos AS VP INNER JOIN ventas_pos_secciones AS VPS ON VP.id_seccion = VPS.id
+							WHERE VP.id_factura = '$idFactura'
+							LIMIT 0,1";
+			$queryDevPos  = mysql_query($sqlDevPos,$link);
+			$cuentaDevPos =	mysql_result($queryDevPos,0,'cuenta_devolucion_niif');
+		}
 		$sqlDoc = "SELECT D.id,
 						D.id_inventario AS id_item,
 						D.codigo,
@@ -1052,7 +1048,13 @@
 			$arrayItemEstado['credito'] = 0;
 
 			$idItemArray    = $valArrayInventario['id_items'];
-			$cuentaPrecio   = $arrayCuentasItems[$idItemArray]['precio']['cuenta'];
+			      //para plataforma colombia siempre devolvera sobre estas cuentas
+			if($idEmpresa == 1 || $idEmpresa == 47){
+				$cuentaPrecio   = $arrayCuentasItems[$idItemArray]['precio']['cuenta'];
+			} 
+			else{
+			 	$cuentaPrecio   = ($isPos)? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['devprecio']['cuenta'];
+			}
 			$contraPrecio   = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];
 			$cuentaImpuesto = ($valArrayInventario['cuenta_iva'] > 0)? $valArrayInventario['cuenta_iva']: $arrayCuentasItems[$idItemArray]['impuesto']['cuenta'];
 
