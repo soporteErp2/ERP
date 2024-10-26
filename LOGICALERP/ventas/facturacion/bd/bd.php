@@ -1136,17 +1136,48 @@
 			echo '<script>alert("Aviso!\nNo tiene los permisos necesarios para realizar el cambio");</script>'; exit;
 		}
 
-		$sqlInsert   = "INSERT INTO ventas_facturas_update_fecha(fecha,hora,usuario,id_factura,id_empresa) VALUES (NOW(),NOW(),'$usuario','$idFacturaVenta','$id_empresa')";
-		$queryInsert = mysql_query($sqlInsert,$link);
-
-		$sqlFactura = "SELECT estado FROM ventas_facturas WHERE id=$idFacturaVenta";
+		$sqlFactura = "SELECT estado, numero_factura_completo, fecha_inicio FROM ventas_facturas WHERE id=$idFacturaVenta";
 		$query=mysql_query($sqlFactura,$link);
 		$estado = mysql_result($query,0,'estado');
+		$numeroCompleto = mysql_result($query,0,'numero_factura_completo');
+		$fechDoc = mysql_result($query,0,'fecha_inicio');
+
+		//Validar si el periodo esta cerrado
+		$sqlValidaPeriodo = "SELECT COUNT(id) as cont_periodos 
+								FROM cierre_por_periodo 
+								WHERE 
+									fecha_inicio <= '$fechDoc' 
+									AND fecha_final >= '$fechDoc' 
+									AND estado = 1 
+									AND activo = 1";
+
+		$queryValidaPeriodo = mysql_query($sqlValidaPeriodo,$link);
+		$contPeriodosCerrados  = mysql_result($queryValidaPeriodo,0,'cont_periodos');
+
+		$year = date('Y', strtotime($fechDoc));
+		$sqlValidaCierres = "SELECT COUNT(id) AS cont_cieres 
+								FROM nota_cierre 
+								WHERE 
+								YEAR(fecha_nota) = '$year' 
+								AND estado = 1 
+								AND activo = 1";
+
+		$queryValidaCierres = mysql_query($sqlValidaCierres,$link);
+		$contCierres  = mysql_result($queryValidaCierres,0,'cont_cieres');
+
+		if($contPeriodosCerrados > 0 || $contCierres > 0){ 
+			echo'<script>alert("Error!\nEl Documento '.$numeroCompleto.' se encuentra en un periodo cerrado");</script>';
+			exit;
+		}
+
+		$sqlInsert   = "INSERT INTO ventas_facturas_update_fecha(fecha,hora,usuario,id_factura,id_empresa) VALUES (NOW(),NOW(),'$usuario','$idFacturaVenta','$id_empresa')";
+		$queryInsert = mysql_query($sqlInsert,$link);
+		
+
 
 		if($estado=='1'){
 			$sqlUpdateFecha  = "UPDATE ventas_facturas 
-									SET fecha_creacion = '$fecha',
-									fecha_contabilizado = '$fecha',
+									SET  fecha_contabilizado = '$fecha',
 									fecha_inicio = '$fecha',
 									fecha_vencimiento = '$fecha' 
 									WHERE
@@ -1164,9 +1195,19 @@
 										id_documento= '$idFacturaVenta' 
 										AND tipo_documento = 'FV'";
 
-		if(!mysql_query($sqlUpdateFecha,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
-		if(!mysql_query($sqlUpdateFecha2,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
-		if(!mysql_query($sqlUpdateFecha3,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }}
+			if(!mysql_query($sqlUpdateFecha,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
+			if(!mysql_query($sqlUpdateFecha2,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
+			if(!mysql_query($sqlUpdateFecha3,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
+		}
+
+		else if ($estado==2) {
+			echo'<script>alert("Error!\nEl Documento ha sido cruzado \nNo se puede realizar mas acciones sobre el");</script>';
+			exit;
+		}
+		else if ($estado==3) {
+			echo'<script>alert("Error!\nEl Documento ha sido cancelado \nNo se puede realizar mas acciones sobre el");</script>';
+			exit;
+		}
 
 		if(!$queryInsert){ echo'<script>alert("Aviso,\nError de conexion con la base de datos");</script>'; exit; }
 		if($estado=='1'){
