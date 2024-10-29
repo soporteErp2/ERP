@@ -1120,12 +1120,42 @@
 	}
 
 	function validateUpdateFecha($fecha,$usuario,$password,$id_empresa,$idFacturaVenta,$opcGrillaContable,$link){
+		switch($opcGrillaContable){
+			case "RemisionesVenta":
+				$tablaBuscar = "ventas_remisiones";
+				$numeroFactura = "consecutivo";
+				$tipoDocumento = "RV";
+				$campoFecha = "fecha_vencimiento";
+				break;
+
+			case "FacturaVenta":
+				$tablaBuscar = "ventas_facturas";
+				$numeroFactura = "numero_factura_completo";
+				$tipoDocumento = "FV";
+				$campoFecha = "fecha_vencimiento";
+				break;
+
+			case "CotizacionVenta":
+				$tablaBuscar = "ventas_cotizaciones";
+				$numeroFactura = "consecutivo";
+				$tipoDocumento = "CT";
+				$campoFecha = "fecha_finalizacion";
+				break;
+
+			case "PedidoVenta":
+				$tablaBuscar = "ventas_pedidos";
+				$numeroFactura = "consecutivo";
+				$tipoDocumento = "PD";
+				$campoFecha = "fecha_finalizacion";
+				break;
+		}
+
+		//Validar el usuario
 		$password     = md5($password);
 		$sqlUsuario   = "SELECT COUNT(id) AS cont_usuario,id_rol FROM empleados WHERE id_empresa='$id_empresa' AND username='$usuario' AND password='$password' and activo=1 LIMIT 0,1";
 		$queryUsuario = mysql_query($sqlUsuario,$link);
 		$contUsuario  = mysql_result($queryUsuario,0,'cont_usuario');
 		$id_rol       = mysql_result($queryUsuario,0,'id_rol');
-
 		if(!$queryUsuario || $contUsuario == 0){ echo'<script>alert("Aviso,\nNombre de usuario o password incorrectos");</script>'; exit; }
 
 		// CONSULTAR SI EL ROL DEL EMPLEADON TIENE EL PERMISO PARA REALIZAR EL CAMBIO
@@ -1136,10 +1166,11 @@
 			echo '<script>alert("Aviso!\nNo tiene los permisos necesarios para realizar el cambio");</script>'; exit;
 		}
 
-		$sqlFactura = "SELECT estado, numero_factura_completo, fecha_inicio FROM ventas_facturas WHERE id=$idFacturaVenta";
+		// Buscar info del documento
+		$sqlFactura = "SELECT estado, $numeroFactura, fecha_inicio FROM $tablaBuscar WHERE id=$idFacturaVenta";
 		$query=mysql_query($sqlFactura,$link);
 		$estado = mysql_result($query,0,'estado');
-		$numeroCompleto = mysql_result($query,0,'numero_factura_completo');
+		$numeroCompleto = mysql_result($query,0,$numeroFactura);
 		$fechDoc = mysql_result($query,0,'fecha_inicio');
 
 		//Validar si el periodo esta cerrado
@@ -1153,7 +1184,8 @@
 
 		$queryValidaPeriodo = mysql_query($sqlValidaPeriodo,$link);
 		$contPeriodosCerrados  = mysql_result($queryValidaPeriodo,0,'cont_periodos');
-
+		
+		//Validar si el año esta cerrado
 		$year = date('Y', strtotime($fechDoc));
 		$sqlValidaCierres = "SELECT COUNT(id) AS cont_cieres 
 								FROM nota_cierre 
@@ -1169,35 +1201,32 @@
 			echo'<script>alert("Error!\nEl Documento '.$numeroCompleto.' se encuentra en un periodo cerrado");</script>';
 			exit;
 		}
-
-		$sqlInsert   = "INSERT INTO ventas_facturas_update_fecha(fecha,hora,usuario,id_factura,id_empresa) VALUES (NOW(),NOW(),'$usuario','$idFacturaVenta','$id_empresa')";
-		$queryInsert = mysql_query($sqlInsert,$link);
 		
+		//Actualizar la tabla del documento
+		$sqlUpdateFecha  = "UPDATE $tablaBuscar 
+						SET  fecha_inicio = '$fecha',
+						$campoFecha = '$fecha' 
+						WHERE
+							id= '$idFacturaVenta'";
+		if(!mysql_query($sqlUpdateFecha,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos al actualizar la cabecera del documento'. mysql_error($link) .'");</script>'; exit; }
 
+		//Si el documento tiene asientos entocnes se actualizan
+		if($estado=='1' && ($tipoDocumento == "FV" || $tipoDocumento == "RV")){
 
-		if($estado=='1'){
-			$sqlUpdateFecha  = "UPDATE ventas_facturas 
-									SET  fecha_contabilizado = '$fecha',
-									fecha_inicio = '$fecha',
-									fecha_vencimiento = '$fecha' 
-									WHERE
-										id= '$idFacturaVenta'";
-
-			$sqlUpdateFecha2 = "UPDATE asientos_colgaap 
+			$sqlUpdateFechaColgaap = "UPDATE asientos_colgaap 
 									SET fecha = '$fecha' 
 									WHERE
 										id_documento= '$idFacturaVenta' 
-										AND tipo_documento = 'FV'";
+										AND tipo_documento = '$tipoDocumento'";
 
-			$sqlUpdateFecha3 = "UPDATE asientos_niif 
+			$sqlUpdateFechaNiif = "UPDATE asientos_niif 
 									SET fecha = '$fecha' 
 									WHERE
 										id_documento= '$idFacturaVenta' 
-										AND tipo_documento = 'FV'";
+										AND tipo_documento = '$tipoDocumento'";
 
-			if(!mysql_query($sqlUpdateFecha,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
-			if(!mysql_query($sqlUpdateFecha2,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
-			if(!mysql_query($sqlUpdateFecha3,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos'. mysql_error($link) .'");</script>'; exit; }
+			if(!mysql_query($sqlUpdateFechaColgaap,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos al modificar los asientos colgaap'. mysql_error($link) .'");</script>'; exit; }
+			if(!mysql_query($sqlUpdateFechaNiif,$link)){ echo'<script>alert("Aviso,\nError de conexion con la base de datos al modificar los asientos niif'. mysql_error($link) .'");</script>'; exit; }
 		}
 
 		else if ($estado==2) {
@@ -1209,7 +1238,6 @@
 			exit;
 		}
 
-		if(!$queryInsert){ echo'<script>alert("Aviso,\nError de conexion con la base de datos");</script>'; exit; }
 		if($estado=='1'){
 			echo'<script>
 			document.getElementById("fecha'.$opcGrillaContable.'").value = "'.$fecha.'";
@@ -1221,6 +1249,13 @@
 					document.getElementById("fecha'.$opcGrillaContable.'").value = "'.$fecha.'";
 					Win_Ventana_update_fecha_'.$opcGrillaContable.'.close();
 				</script>';
+		}
+
+		//INSERT LOG DE CAMBIOS DE FECHA
+		if($tipoDocumento == "FV"){
+			$sqlInsert   = "INSERT INTO ventas_facturas_update_fecha(fecha,hora,usuario,id_factura,id_empresa) VALUES (NOW(),NOW(),'$usuario','$idFacturaVenta','$id_empresa')";
+			$queryInsert = mysql_query($sqlInsert,$link);
+			if(!$queryInsert){ echo'<script>alert("Aviso,\nError de conexion con la base de datos al insertar en el log de cambio de fecha");</script>'; exit; }
 		}
 	}
 
