@@ -33,7 +33,7 @@
 			$grilla->GrillaName	 		= 'buscarEmpleadosPlanilla';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
 			$grilla->TableName			= 'empleados_contratos';			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			= "activo = 1 AND id_empresa = $id_empresa AND id_sucursal=$filtro_sucursal AND estado=0 AND fecha_inicio_nomina<='$fecha_final'  AND nombre_empleado IS NOT NULL $whereId";		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->MyWhere			= "activo = 1 AND id_empresa = $id_empresa AND id_sucursal=$filtro_sucursal AND estado=0 AND fecha_inicio_nomina<='$fecha_final'  AND id_empleado IS NOT NULL $whereId";		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
 
 
