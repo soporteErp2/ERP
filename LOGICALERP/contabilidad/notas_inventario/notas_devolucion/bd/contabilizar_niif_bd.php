@@ -1048,13 +1048,17 @@
 			$arrayItemEstado['credito'] = 0;
 
 			$idItemArray    = $valArrayInventario['id_items'];
-			      //para plataforma colombia siempre devolvera sobre estas cuentas
-			if($idEmpresa == 1 || $idEmpresa == 47){
-				$cuentaPrecio   = $arrayCuentasItems[$idItemArray]['precio']['cuenta'];
+			
+			// Determina el precio de la cuenta de devolución según el tipo de factura y la descripción de cuenta
+			if ($isPos) {
+			    // Si es una factura POS, usa la cuenta de devolución POS
+			    $cuentaPrecio = $cuentaDevPos;
+			} else{
+			    // Si no es POS y no se especifica una descripción de cuenta,
+			    // usa la cuenta de precio específica del array para devoluciones NO POS
+			    $cuentaPrecio = $arrayCuentasItems[$idItemArray]['precio']['cuenta'];
 			} 
-			else{
-			 	$cuentaPrecio   = ($isPos)? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['devprecio']['cuenta'];
-			}
+			
 			$contraPrecio   = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];
 			$cuentaImpuesto = ($valArrayInventario['cuenta_iva'] > 0)? $valArrayInventario['cuenta_iva']: $arrayCuentasItems[$idItemArray]['impuesto']['cuenta'];
 
