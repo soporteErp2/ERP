@@ -1125,7 +1125,7 @@
 				$tablaBuscar = "ventas_remisiones";
 				$numeroFactura = "consecutivo";
 				$tipoDocumento = "RV";
-				$campoFecha = "fecha_vencimiento";
+				$campoFecha = "fecha_finalizacion";
 				break;
 
 			case "FacturaVenta":
