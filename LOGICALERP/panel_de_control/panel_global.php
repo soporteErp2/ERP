@@ -315,6 +315,10 @@
                 <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/cuentas_predefinidas44.png" width="44" height="44"></div>
                 <div class="IconoPanelControltxt">Tipos de facturas de compra</div>
             </div>
+            <div class="IconoPanelControl" onClick="AbreVentanaPanelGlobal('envio_facturas/Form','Envio automatico',350,250,0,0);">
+                <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/BotonesTabs/envia_doc.png" width="44" height="44"></div>
+                <div class="IconoPanelControltxt">Envio automatico de facturas</div>
+            </div>
 
             <!--<div class="IconoPanelControl" onClick="AbreVentanaPanelGlobal('configuracion_comprobante_egreso/configuracion_comprobante_egreso','Cuentas documentos cruce permitidos',600,500,0,0);">
                 <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/documentos44.png" width="44" height="44"></div>
