@@ -69,9 +69,11 @@
 		 * @return Array        Json con la respuesta de la peticion
 		 */
 		public function anularFactura($id_documento,$observacion){
-			$sql  = "SELECT estado FROM ventas_pos WHERE id=$id_documento";
+			$sql  = "SELECT estado,id_entrada_almacen FROM ventas_pos WHERE id=$id_documento";
 			$query = $this->mysql->query($sql);
 			$estado = $this->mysql->result($query,0,'estado');
+			$idRemision = $this->mysql->result($query,0,'id_entrada_almacen');
+
 			if ($estado=='500') {
 				$sql  = "UPDATE estado=3 FROM ventas_pos WHERE id=$id_documento";
 				$query = $this->mysql->query($sql);
@@ -86,7 +88,7 @@
 				echo json_encode(array('status' => 'failed', 'message'=>$resultAccounts['message'],"debug"=>$resultAccounts['debug']) );
 				return;
 			}
-			$resultInv = $this->rollBackInventory($id_documento);
+			$resultInv = $this->rollBackInventory($id_documento,$idRemision);
 			if(!$resultInv['status']){
 				echo json_encode(array('status' => 'failed', 'message'=>$resultInv['message']));
 				return;
@@ -174,7 +176,9 @@
 		 * @param  Int 		$id_documento 	Id de la factura a anular
 		 * @return Array               		Array json con la respuesta de la peticion
 		 */
-		public function rollBackInventory($id_documento){
+		public function rollBackInventory($id_documento,$idRemision=''){
+			//Si es un ticket con una RV relacionada, no devuelve inv
+			if($idRemision){return array('status' => true);}
     		$accion = ($params['accion'=='aumentar'])? " + " : " - " ;
     		$accion = " + ";
     		$sql="SELECT
