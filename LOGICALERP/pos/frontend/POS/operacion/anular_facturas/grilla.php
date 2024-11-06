@@ -94,8 +94,11 @@
 		?>
 			<script>
 				var anularFactura = (params) =>{
-					if (params.estado==2){
-						alert("No se puede anular una factura bloqueada");
+
+				// $permiso_cotizacion  = (user_permisos(5,'false') == 'true')? 'false' : 'true';
+
+					if (params.estado==2 && "<?=(user_permisos(255) == 'true' ? "true" : "false" )?>" != "true" ){
+						alert("No tiene el permiso para eliminar documentos bloqueados\ncontacte al usuario administrador para que le asigne el permiso desde el panel de control");
 						return;
 					}
 					if (params.estado==3){
