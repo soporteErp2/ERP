@@ -119,7 +119,7 @@ let payRollAdjustmentType2 = async ()=>{
 }
 
 let api = async (data) => {
-	let url = "https://logicalsoft-erp.com/LOGICALERP/debug/set_pruebas_nomina/proxy.php"; // Cambia esta URL a donde hayas colocado tu proxy
+	let url = "https://logicalsoft-erp.com/LOGICALERP/debug/set_pruebas_nomina/proxy.php"; 
 	let response = await fetch(url, {
 		method: "POST",
 		headers: {
