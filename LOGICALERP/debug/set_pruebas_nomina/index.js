@@ -61,6 +61,7 @@ let payRollAdjustmentType1 = async ()=>{
 	
 	list.innerHTML = '';
 	let response = await api(data);
+	console.log({response, data})
 
    	list.innerHTML = `${list.innerHTML} 
    	   	<div class="accordion-item">
@@ -102,6 +103,7 @@ let payRollAdjustmentType2 = async ()=>{
 	
 	list.innerHTML = '';
 	let response = await api(data);
+	console.log({response, data})
 
    	list.innerHTML = `${list.innerHTML} 
    	   	<div class="accordion-item">
