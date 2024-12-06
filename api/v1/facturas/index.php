@@ -39,7 +39,9 @@
 						'id'=>$result['id'],
 						'prefijo'=>$result['prefijo'],
 						'numero_factura'=>$result['numero_factura'],
-						'numero_factura_completo'=>$result['numero_factura_completo']);
+						'numero_factura_completo'=>$result['numero_factura_completo'],
+						'envioDIAN'=>$result['envioDIAN'],
+						);
 				}else{
 					$response['status'] = 400;
         			$response['data']=array('failure'=>'Ha ocurrido un error','detalle'=>$result['detalle']);
