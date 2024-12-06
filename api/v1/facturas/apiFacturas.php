@@ -1542,8 +1542,9 @@
 		public function getEmpleado($documento){
 			$sql="SELECT id,documento,nombre FROM empleados WHERE activo=1 AND id_empresa=$this->id_empresa AND documento='$documento'";
 			$query=$this->mysql->query($sql,$this->mysql->link);
-			$arrayTemp[$documento] =  $this->mysql->result($query, 'id');
-			$arrayTemp[$documento] =  $this->mysql->result($query, 'nombre');
+			$arrayTemp[$documento] =  array('id'		=>	$this->mysql->result($query, 'id'), 
+											'nombre'	=>	$this->mysql->result($query, 'nombre')
+										);
 			return $arrayTemp;
 		}
 
