@@ -30,7 +30,12 @@
 		private $cuenta_ingreso = NULL;
 		private $consecuivo_factura = NULL;
 		private $fecha_documento = NULL;
-
+		private $invoiceValidationStrings = array(
+			"Procesado Correctamente",
+			"Documento no enviado, Ya cuenta con env",
+			"procesado anteriormente",
+			"ha sido autorizada"
+		);
 		// CONEXION DESARROLLO
 		// private $ServidorDb = 'localhost';
 		// private $NameDb     = 'erp_bd';
@@ -930,6 +935,8 @@
 	        			}
 	        		}
 
+					$resultadoEnvio = $this->sendInvoice($id_factura,$this->id_empresa);
+					// Factura almacenada con exito
 					return array(
 									'status'                  => 200,
 									'id'                	  => $id_factura,
@@ -940,6 +947,7 @@
 									'fecha_resolucion'        => $arrayResoluciones['resolucion'][$id_configuracion_resolucion]['fecha_resolucion'],
 									'num_inicial'             => $arrayResoluciones['resolucion'][$id_configuracion_resolucion]['numero_inicial_resolucion'],
 									'num_final'               => $arrayResoluciones['resolucion'][$id_configuracion_resolucion]['numero_final_resolucion'],
+									'envioDIAN'				  => $resultadoEnvio,
 								);
         		}
         	}
@@ -952,7 +960,69 @@
         		return array('status'=>false,'detalle'=>$arrayError);
         	}
 		}
+		public function sendInvoice($idFactura,$idEmpresa){
+			include("../../../LOGICALERP/ventas/facturacion/bd/ClassFacturaJSON_V2.php");
 
+			$facturaJSON = new ClassFacturaJSON_V2($this->mysql); //Objeto classFacturaJson
+			$facturaJSON->obtenerDatos($idFactura,$idEmpresa); //Obtener todos los datos de la factura
+		  	$facturaJSON->construirJSON(); //Armar JSON de envio
+			$result = $facturaJSON->enviarJSON(); //Enviar a la DIAN
+			
+			$result['validar'] = "Procesado Correctamente"; //Quitar backslashes de la respuesta de FACSE
+			
+			/*
+			Para comprobar si la factura fue enviada
+			Filtramos $invoiceValidationStrings que contiene
+			los posibles valores de una factura envida con éxito
+			comparando sus valores con el obtenido en este envío $result['validar']
+			*/
+			$found = array_filter($this->invoiceValidationStrings,  //Array a filtrar
+				function($str) use ($result) {	//Callback -> usamos use para permitir que la función anónima acceda a la variable $result fuera de su scope.
+					return strpos($result['validar'], $str) !== false;
+				}
+			);
+			
+			/*
+			$found estará vacío si ninún elemento de 
+			$invoiceValidationStrings coincide con $result['validar']
+			Por lo tanto la factura no fue enviada
+			*/
+			if (empty($found)) {
+				$response_FE = $result['validar'];
+				$detalleEnvio = "Factura no enviada";
+			}
+			else{//Si $found no está vacío, la factura fue enviada con éxito
+				$response_FE = "Ejemplar recibido exitosamente pasara a verificacion";
+				$result['validar'] = str_replace("'", "-", $result['validar']);
+
+				//Si no tenemos el UUID ($result["id_factura"]) hay un error en el PDF pero la factura fue enviada
+				$detalleEnvio = ($result["id_factura"] == "" || $result["id_factura"] == null)? 
+				"No fue posible generar el pdf":
+				"Factura Enviada";
+			}
+			date_default_timezone_set("America/Bogota");
+			$fecha_actual = date('Y-m-d');
+			$hora_actual  = date('H:i:s');
+
+			//Se guardan los datos de la respuesta del web web_service
+			$sqlEnviarFacturaDIAN =  "UPDATE
+									  	ventas_facturas
+									  SET
+									  	fecha_FE = '$fecha_actual',
+									  	hora_FE = '$hora_actual',
+									  	response_FE = '$response_FE',
+									  	UUID = '$result[id_factura]',
+									  	cufe = '$result[cufe]',
+									  	id_usuario_FE = '".$this->id_usuario."',
+									  	nombre_usuario_FE = '".$this->nombre_usuario."',
+									  	cedula_usuario_FE = '".$this->documento_usuario."'
+									  WHERE
+									  	id = $idFactura";
+
+			$queryEnviarFacturaDIAN = $this->mysql->query($sqlEnviarFacturaDIAN,$link);
+
+			return $detalleEnvio;
+		}
 		/**
 		 * @api {put} /facturas/ Modificar factura
 		 * @apiVersion 1.0.0
