@@ -934,8 +934,11 @@
 			        		return array('status'=>false,'detalle'=>$arrayError);
 	        			}
 	        		}
-
-					$resultadoEnvio = $this->sendInvoice($id_factura,$this->id_empresa);
+					$resultadoEnvio = "Envio manual";
+					if($this->isAutomaticallySent()){
+						$resultadoEnvio = $this->sendInvoice($id_factura);
+					}
+					
 					// Factura almacenada con exito
 					return array(
 									'status'                  => 200,
@@ -960,11 +963,27 @@
         		return array('status'=>false,'detalle'=>$arrayError);
         	}
 		}
-		public function sendInvoice($idFactura,$idEmpresa){
+		public function isAutomaticallySent(){
+			$sqlAutomaticSending = "SELECT data 
+									FROM
+										configuracion_general
+									WHERE 
+									id_empresa =$this->id_empresa
+									AND descripcion = 'envio automatico de FV electronica'";
+			
+			$queryAutomaticSending = $this->mysql->query($sqlAutomaticSending,$this->mysql->link);
+			$dataSting  = $this->mysql->result($queryAutomaticSending,0,'data');
+			$data  =  json_decode($dataSting,true);
+			$isActive = $data[0]['is_active'];
+
+			return ($isActive === "true");
+		}
+
+		public function sendInvoice($idFactura){
 			include("../../../LOGICALERP/ventas/facturacion/bd/ClassFacturaJSON_V2.php");
 
 			$facturaJSON = new ClassFacturaJSON_V2($this->mysql); //Objeto classFacturaJson
-			$facturaJSON->obtenerDatos($idFactura,$idEmpresa); //Obtener todos los datos de la factura
+			$facturaJSON->obtenerDatos($idFactura,$this->id_empresa); //Obtener todos los datos de la factura
 		  	$facturaJSON->construirJSON(); //Armar JSON de envio
 			$result = $facturaJSON->enviarJSON(); //Enviar a la DIAN
 			
