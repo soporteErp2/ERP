@@ -171,6 +171,16 @@
 			}
 			return array('status'=>true,'data'=>$arrayTemp);
 		}
+		public function utf8_encode_recursive($mixed) {
+			if (is_array($mixed)) {
+				foreach ($mixed as &$valor) {
+					$valor = $this->utf8_encode_recursive($valor);
+				}
+			} elseif (is_string($mixed)) {
+				$mixed = utf8_encode($mixed);
+			}
+			return $mixed;
+		}
 
 		public function apiResponse($response){
 		    $http_response_code = array(
@@ -231,7 +241,8 @@
 				}
 			}
 			// print_r($response);
-		    $json_response = json_encode($response['data']);
+			
+		    $json_response = json_encode($this->utf8_encode_recursive($response['data']));
 		    echo $json_response;
 		    exit;
 		}
