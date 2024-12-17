@@ -319,7 +319,7 @@
 			}
 
 			// SI EL TIQUET NO TIENE UN TERCERO ASIGNADO, ASIGNAR EL DE LA RESOLUCION (TERCERO POR DEFECTO)
-			if ($this->documento_cliente==='' || $this->documento_cliente==0 || $this->documento_cliente==="0" || is_null($this->documento_cliente)) {
+			if ($this->documento_cliente==='' || $this->documento_cliente===0 || $this->documento_cliente==="0" || is_null($this->documento_cliente)) {
 				$this->id_cliente        = ($arrayCuentasPago['id_tercero']<>'')? $arrayCuentasPago['id_tercero'] : $arrayResolucion['id_tercero'];
 				$this->documento_cliente = ($arrayCuentasPago['nit_tercero']<>'')? $arrayCuentasPago['nit_tercero'] : $arrayResolucion['documento_tercero'];
 				$this->cliente           = ($arrayCuentasPago['tercero']<>'')? $arrayCuentasPago['tercero'] : $arrayResolucion['tercero'];
