@@ -770,22 +770,20 @@
 				$tipoDocumento			= $params['huespedesSelect'][0]['tipoDocumento'];
 				$tipoPersona			= $params['huespedesSelect'][0]['tipoPersona'];
 
+				//Comprobar si el tercero existe
+				$sql = "SELECT id, nombre, email FROM terceros  WHERE numero_identificacion = '$documento_cliente';";
+				$queryT=$this->mysql->query($sql);
+				$id_cliente = $this->mysql->result($queryT,0,'id');
 				if($params['huespedesSelect'][0]['clientePos']){
 					$datosEmpresa = $this->getInfoEmpresa();
-
-					//Comprobar si el tercero existe
-					$sql = "SELECT id, nombre, email FROM terceros  WHERE numero_identificacion = '$documento_cliente';";
-					$query=$this->mysql->query($sql);
-
 					//Si el tercero existe
-					if($this->mysql->num_rows($query) > 0){
-						$idT = $this->mysql->result($query,0,'id');
-						$nombreT = $this->mysql->result($query,0,'nombre');
-						$emailT = $this->mysql->result($query,0,'email');
+					if($this->mysql->num_rows($queryT) > 0){
 						
+						$cliente = $this->mysql->result($queryT,0,'nombre');
+						$emailT = $this->mysql->result($queryT,0,'email');
 						//validar que el correo no este configurada en una sucursal
 						$sql = "SELECT TDE.id_direccion, TDE.email FROM terceros_direcciones_email AS TDE inner join
-						terceros_direcciones AS TD on TDE.id_direccion = TD.id WHERE TD.id_tercero = $idT";
+						terceros_direcciones AS TD on TDE.id_direccion = TD.id WHERE TD.id_tercero = $id_cliente";
 						$query=$this->mysql->query($sql);
 						while ($row=$this->mysql->fetch_array($query)) {
 							if($row['email'] == $correoCliente){
@@ -817,7 +815,7 @@
 									codigo_postal,
 									numero_matricula_mercantil) 
 								VALUES(
-									$idT,
+									$id_cliente,
 									'".mb_convert_encoding($datosEmpresa['direccion'], 'UTF-8', 'UTF-8')."',
 									".$datosEmpresa['id_departamento'].",
 									'".mb_convert_encoding($datosEmpresa['departamento'], 'UTF-8', 'UTF-8')."',
@@ -828,7 +826,7 @@
 									'',
 									'',
 									'',
-									'".mb_convert_encoding($nombreT, 'UTF-8', 'UTF-8')."',
+									'".mb_convert_encoding($cliente, 'UTF-8', 'UTF-8')."',
 									0,
 									".$datosEmpresa['id_pais'].",
 									'".mb_convert_encoding($datosEmpresa['pais'], 'UTF-8', 'UTF-8')."',

@@ -1161,9 +1161,9 @@ class ClassFacturaJSON_V2{
 
 	public function enviarJSON(){
     	$server_name = $_SERVER['SERVER_NAME'];
-
-		if($server_name<>'logicalsoft-erp.com'){
-			// API para enviar el JSON a la DIAN
+		$pos = strpos($server_name,"logicalsoft-erp");
+		if($pos===false){
+			// API para enviar el JSON a entorno de pruebas
 			$url_api = "http://fst.facse.net/api/comunicacion/ComprobanteJson";
 
 			// Cambiamos la url de validacion por la del envio
@@ -1180,7 +1180,7 @@ class ClassFacturaJSON_V2{
         	$validar = $respuesta['RespuestaFacse'];
 
 			$respuestaFinal['validar']     = $this->quitarTildes($validar);
-			$respuestaFinal['comprobante'] = "Se ejecuto el envio en desarrollo";
+			$respuestaFinal['comprobante'] = json_encode(array("server"=>$server_name,"rul_api"=>$url_api));
 			$respuestaFinal['id_factura']  = $respuesta['IdDocumento']['Contenido'];
 			$respuestaFinal['cufe']        = $respuesta['CufeDocumento']['Contenido'];
 
@@ -1204,7 +1204,7 @@ class ClassFacturaJSON_V2{
 			$validar = $respuesta['RespuestaFacse'];
 
 			$respuestaFinal['validar']     = $this->quitarTildes($validar);
-			$respuestaFinal['comprobante'] = "Se ejecuto el envio en produccion";
+			$respuestaFinal['comprobante'] = json_encode(array("server"=>$server_name,"rul_api"=>$url_api));
 			$respuestaFinal['id_factura']  = $respuesta['IdDocumento']['Contenido'];
 			$respuestaFinal['cufe']        = $respuesta['CufeDocumento']['Contenido'];
 

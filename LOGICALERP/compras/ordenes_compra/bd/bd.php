@@ -1223,8 +1223,11 @@
 	            }
 
 	    	}
+			if($consecutivo!='0' || $consecutivo!=''){//Validar que la OC este generada
 
-			actualizaInventarioDocumentoCruce('aumentar',$idOrdenCompra,$link);
+				// Si la OC ha sido generada se actualiza el inventario del doc cruce
+				actualizaInventarioDocumentoCruce('aumentar',$idOrdenCompra,$link);
+			}
 
 			//INSERTAR EL LOG DE EVENTOS
 			$sqlLog="INSERT INTO log_documentos_contables (id_documento,id_usuario,usuario,actividad,descripcion,id_sucursal,id_empresa,ip,tipo_documento)

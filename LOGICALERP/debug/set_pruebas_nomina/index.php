@@ -61,7 +61,7 @@
         <label for="consecutivo_planilla_ajustar2" class="form-label">consecutivo de la planilla a ajustar</label>
         <input type="email" class="form-control" id="consecutivo_planilla_ajustar2">
       </div>
-      <button type="button" class="btn btn-primary">Enviar Ajuste (tipo 2)</button>
+      <button type="button" class="btn btn-primary" onclick="payRollAdjustmentType2()">Enviar Ajuste (tipo 2)</button>
       <div class="accordion" id="accordionPayRollAdjustmentType2">
       </div>
     </div>
