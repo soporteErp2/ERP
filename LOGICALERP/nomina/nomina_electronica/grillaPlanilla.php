@@ -685,7 +685,7 @@
         var div = document.getElementById('MuestraToltip_buscarEmpleadosPlanilla_'+id_contrato);
         div.style.overflow='hidden';
         div.style.textIndent= '10px';
-        var cont = div.innerHTML;
+
         Ext.get('MuestraToltip_buscarEmpleadosPlanilla_'+id_contrato).load({
             url     : 'nomina_electronica/bd/bd.php',
             scripts : true,
@@ -695,7 +695,6 @@
             {
                 opc         : 'addEmployee',
                 id_contrato : id_contrato,
-                cont        : cont,
                 id_planilla : '<?php echo $id_planilla; ?>',
 
             }
