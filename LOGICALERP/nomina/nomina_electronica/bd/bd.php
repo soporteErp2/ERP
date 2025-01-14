@@ -14,7 +14,7 @@
 			$electronicPayRollObject->updateFields($data);
 			break;
 		case 'addEmployee':
-			$electronicPayRollObject->addEmployee($id_contrato,$cont);
+			$electronicPayRollObject->addEmployee($id_contrato);
 			break;
 		case 'deleteEmployee':
 			$electronicPayRollObject->deleteEmployee($id_contrato,$id_empleado);
@@ -37,6 +37,9 @@
 			break;
 		case 'generate':
 			$electronicPayRollObject->generate($id_empleado);
+			break;
+		case 'cargarTodosEmpleados':
+			$electronicPayRollObject->addAllEmployees();
 			break;
 		default:
 			// code...
@@ -223,13 +226,14 @@
 		 * @param  [array] $contractInfo employees current workcontract information
 		 * @return [array]  list with all conceptos from the payroll between given dates             
 		 */
-		public function getPayRollsData($contractInfo)
+		public function getPayRollsData($id_empleado)
 		{
 			/* get payroll data*/
 			$sql = "SELECT
 						NP.id,
 						NPE.dias_laborados,
 						NPE.id_empleado,
+						NPEC.id_contrato,
 						NPEC.id_concepto,
 						NPEC.concepto,
 						NPEC.codigo_concepto,
@@ -249,7 +253,7 @@
 					AND NP.fecha_inicio >= '".$this->payRollInfo->fecha_inicio."'
 					AND NP.fecha_final <= '".$this->payRollInfo->fecha_final."'
 					AND NPE.id_planilla = NP.id
-					AND NPE.id_empleado = '$contractInfo[id_empleado]'
+					AND NPE.id_empleado = '$id_empleado'
 					AND C.clasificacion IS NOT NULL
 					AND C.clasificacion <> ''
 					AND C.clasificacion NOT IN ('vacaciones','prima','cesantias')
@@ -267,6 +271,7 @@
 						NP.id,
 						NPE.dias_laborados,
 						NPE.id_empleado,
+						NPEC.id_contrato,
 						NPEC.id_concepto,
 						NPEC.codigo_concepto,
 						NPEC.concepto,
@@ -288,7 +293,7 @@
 					AND NP.fecha_documento >= '".$this->payRollInfo->fecha_inicio."'
 					AND NP.fecha_documento <= '".$this->payRollInfo->fecha_final."'
 					AND NPE.id_planilla = NP.id
-					AND NPE.id_empleado = '$contractInfo[id_empleado]'
+					AND NPE.id_empleado = '$id_empleado'
 					AND C.clasificacion IS NOT NULL
 					AND C.clasificacion <> ''
 					GROUP BY NPEC.id;";
@@ -453,7 +458,7 @@
 		 * @param [int] $id_contrato id of workcontract 
 		 * @param [int] $cont        list count
 		 */
-		public function addEmployee($id_contrato,$cont){
+		public function addEmployee($id_contrato){
 			date_default_timezone_set("America/Bogota");
 			$fecha=date("Y-m-d");	
 
@@ -463,7 +468,7 @@
 			$workedDays = $this->getWorkedDays($contractInfo[$id_contrato]['id_empleado']);
 			
 			/* get payrolls data for json */
-			$payRollsData = $this->getPayRollsData($contractInfo[$id_contrato]);
+			$payRollsData = $this->getPayRollsData($contractInfo[$id_contrato]['id_empleado']);
 			// print_r($payRollsData);
 			
 			/**/
@@ -540,7 +545,7 @@
 					//AGREGAR EL EMPLEADO A LA PLANILLA DE NOMINA
 					let div=document.createElement("div");
 					div.setAttribute("class","bodyDivNominaPlanilla");
-					let content = `<div class="campo" id="divLoadEmpleado_<?= $id_contrato ?>"><?=$cont?></div>
+					let content = `<div class="campo" id="divLoadEmpleado_<?= $id_contrato ?>"><?= $id_contrato ?></div>
 									<div class="campo" style="margin-left: -20px;border: none;width: 10px;margin-top: 1px;display:none;" id="fila_selected_<?=$id_contrato?>"><img src="img/fila_selected.png"></div>
                     				<div class="campo1" onclick="cargarConceptosEmpleado('<?=$id_contrato?>','<?= $contractInfo[$id_contrato]['id_empleado'] ?>');" style="width:100px;text-indent:5px;"><?= $contractInfo[$id_contrato]['documento_empleado'] ?></div>
                     				<div class="campo1" onclick="cargarConceptosEmpleado('<?=$id_contrato?>','<?= $contractInfo[$id_contrato]['id_empleado'] ?>');" style="width:calc(100% - 100px - 49px - 20px);text-indent:5px;"><?= $contractInfo[$id_contrato]['nombre_empleado'] ?></div>
@@ -572,6 +577,187 @@
 			}		
 		}
 
+		public function addAllEmployees(){
+			date_default_timezone_set("America/Bogota");
+
+			$fecha = date("Y-m-d");
+
+			// Obtener los contratos que no esten en la planilla
+			$sqlContratos="SELECT
+						ec.id, ec.id_empleado
+					FROM
+						empleados_contratos ec
+						LEFT JOIN nomina_planillas_electronica_empleados npe ON ec.id_empleado = npe.id_empleado 
+						AND npe.id_empresa = $this->id_empresa 
+						AND npe.id_planilla = $this->id_planilla
+						INNER JOIN nomina_planillas_electronica npe2 ON npe2.id = $this->id_planilla
+						AND npe2.id_empresa = $this->id_empresa
+					WHERE
+						ec.activo = 1 
+						AND ec.id_empresa = $this->id_empresa
+						AND ec.id_sucursal = npe2.id_sucursal 
+						AND ec.fecha_inicio_nomina <= npe2.fecha_final 
+						AND ec.nombre_empleado IS NOT NULL 
+						AND npe.id_empleado IS NULL";
+
+			$queryContratos=mysql_query($sqlContratos,$this->mysql);
+
+			//Array de contratos
+			while($rowContratos=mysql_fetch_array($queryContratos)){
+				$contratos[$rowContratos['id']] = $rowContratos['id_empleado'];				
+			}
+
+			//PayRollsData si no hay datos, se quita ese contratos
+			$payRollsDataTemp = [];
+			foreach ($contratos as $id_contrato => $id_empleado) {
+				$payRollsDataTemp[$id_empleado] = $this->getPayRollsData($id_empleado);
+			}
+			
+			$payRollsData = [];
+			// Ahora procesamos los contratos, verificando si existen datos de nómina.
+			foreach ($contratos as $id_contrato => $id_empleado) {
+				// Verificamos si el empleado tiene datos de nómina.
+				if (count($payRollsDataTemp[$id_empleado]) > 0) {
+					// Si tiene datos, los agregamos a $payRollsData.
+					$payRollsData[$id_empleado] = $payRollsDataTemp[$id_empleado];
+				} else {
+					// Si no tiene datos, eliminamos el contrato del array.
+					unset($contratos[$id_contrato]);
+				}
+			}
+
+
+			// Obtener la informacion de los contratos
+			$contractsInfo = $this->getWorkContract(array_keys($contratos));
+			foreach($contractsInfo as $id_contrato => $contractInfo){
+				$id_empleado = $contratos[$id_contrato];
+				$workedDays = $this->getWorkedDays($id_empleado);
+			
+				$insertEmployee[] = "(
+										'$this->id_planilla',
+										'".$id_empleado."',
+										'".$contractInfo['tipo_documento_empleado']."',
+										'".$contractInfo['documento_empleado']."',
+										'".$contractInfo['nombre_empleado']."',
+										'$workedDays',
+										'$id_contrato',
+										'false',
+										'',
+										$this->id_empresa
+									)";
+				$addElement .= "<div class='bodyDivNominaPlanilla'> 
+									<div class='campo' id='divLoadEmpleado_" . $id_contrato . "'>" . $id_contrato . "</div>
+									<div class='campo' style='margin-left: -20px; border: none; width: 10px; margin-top: 1px; display: none;' id='fila_selected_" . $id_contrato . "'><img src='img/fila_selected.png'></div>
+									<div class='campo1' onclick='cargarConceptosEmpleado(\"" . $id_contrato . "\", \"" . $id_empleado . "\");' style='width:100px; text-indent: 5px;'>" . $contractInfo['documento_empleado'] . "</div>
+									<div class='campo1' onclick='cargarConceptosEmpleado(\"" . $id_contrato . "\", \"" . $id_empleado . "\");' style='width:calc(100% - 100px - 49px - 20px); text-indent: 5px;'>" . $contractInfo['nombre_empleado'] . "</div>
+									<div onclick='eliminarEmpleado(\"" . $id_contrato . "\", \"" . $id_empleado . "\")' title='Eliminar Empleado' class='iconBuscar' style='margin-left: -1px;'>
+										<img src='img/delete.png'>
+									</div>
+								</div>";
+			}
+
+			foreach ($payRollsData as $id_empleado => $rollData) {
+				foreach($rollData as $key => $data){
+				$data['data'] = json_encode($data['data']);
+				$insertConcepts[] = "(
+										'$this->id_planilla',
+										'$data[id_empleado]',
+										'$data[id_contrato]',
+										'$data[id_concepto]',
+										'$data[codigo_concepto]',
+										'$data[concepto]',
+										'$data[valor_concepto]',
+										'$data[valor_campo_texto]',										
+										'$data[data]',
+										'$this->id_empresa'
+									)";
+				}
+			}
+			
+			/*employee*/
+			$sqlInsertEmployee="INSERT INTO nomina_planillas_electronica_empleados 
+			(
+				id_planilla,
+				id_empleado,
+				tipo_documento,
+				documento_empleado,
+				nombre_empleado,
+				dias_laborados,
+				id_contrato,
+				verificado,
+				observaciones,
+				id_empresa
+			) VALUES ".implode(", ", $insertEmployee);
+			
+			$queryInsertEmployee=mysql_query($sqlInsertEmployee,$this->mysql);
+
+			if(!$queryInsertEmployee){
+				echo "<script>alert('Ocurrio un error al insertar los empleados en la planilla')</script>";
+				exit;
+			}
+
+			// Iniciar la transacción
+			mysql_query("START TRANSACTION", $this->mysql);
+					
+			// Tamaño del lote
+			$batchSize = 100; 
+					
+			// Dividir el arreglo $insertConcepts en lotes de $batchSize
+			$chunks = array_chunk($insertConcepts, $batchSize);
+					
+			// Variable para controlar si hubo algún error
+			$transactionFailed = false;
+					
+			// Iterar sobre cada lote y ejecutar la consulta
+			foreach ($chunks as $chunk) {
+			    // Construir la consulta para el lote actual
+			    $sqlInsertConceptos = "INSERT INTO nomina_planillas_electronica_empleados_conceptos 
+			    (
+			        id_planilla,
+			        id_empleado,
+			        id_contrato,
+			        id_concepto,
+			        codigo_concepto,
+			        concepto,
+			        valor_concepto,
+			        valor_campo_texto,
+			        data,
+			        id_empresa
+			    ) VALUES " . implode(", ", $chunk);
+			
+			    // Ejecutar la consulta
+			    $queryInsertConceptos = mysql_query($sqlInsertConceptos, $this->mysql);
+			
+			    // Verificar si la consulta fue exitosa
+			    if (!$queryInsertConceptos) {
+			        // Si hubo un error, marcar como fallida la transacción y salir del ciclo
+			        $transactionFailed = true;
+			        break; // Salir del ciclo de inserciones
+			    }
+			}
+			
+			// Si alguna consulta falló, hacer un rollback
+			if ($transactionFailed) {
+			    mysql_query("ROLLBACK", $this->mysql);  // Deshacer todas las operaciones previas
+			    echo "<script>alert('Error: No se ingresaron los conceptos de los empleados')</script>";
+			} else {
+			    // Si todo fue exitoso, confirmar la transacción
+			    mysql_query("COMMIT", $this->mysql);  // Confirmar la transacción
+				echo "<script>
+					var elementoPHP = " . json_encode($addElement) . ";
+					document.getElementById('contenedorEmpleados').innerHTML += elementoPHP;
+					calcularValoresPlanilla();
+				</script>";
+			}
+			//echo "<pre>";
+			//print_r($insertEmployee);
+			//echo "</pre>";
+			
+			//echo "<pre>";
+			//print_r($insertConcepts);
+			//echo "</pre>";
+			
+		}
 		/**
 		 * showEmployeeConcepts show all employee concepts
 		 * @param  [int] $id_contrato employee id workcontract
@@ -2007,3 +2193,4 @@
 
 
 ?>
+
