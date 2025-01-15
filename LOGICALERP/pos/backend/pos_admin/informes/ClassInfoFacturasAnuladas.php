@@ -52,11 +52,14 @@
 							VPP.forma_pago,
 							VPP.valor,
 							VP.valor_propina,
-							VP.valor_descuento
+							VP.valor_descuento,
+							LDC.nombre_usuario AS usuario_anulacion
 						FROM
 							ventas_pos AS VP
 						INNER JOIN ventas_pos_formas_pago AS VPP ON VPP.id_pos = VP.id
 						INNER JOIN configuracion_cuentas_pago_pos AS CP ON CP.id = VPP.id_forma_pago
+						INNER JOIN log_documentos_contables AS LDC ON VP.id = LDC.id_documento
+							AND tipo_documento = 'POS'
 						WHERE
 							VP.activo = 1
 						AND VP.estado = 3
@@ -68,16 +71,17 @@
 			$query = $this->mysql->query($sql);
 			while ($row=$this->mysql->fetch_array($query)){
 				$arrayPos[$row['id']] = array(
-											'fecha_documento'   => $row['fecha_documento'],
-											'tipo'              => $row['tipo'],
-											'consecutivo'       => $row['consecutivo'],
-											'documento_cliente' => $row['documento_cliente'],
-											'cliente'           => $row['cliente'],
-											'valor_propina'     => $row['valor_propina'],
-											'valor_descuento'   => $row['valor_descuento'],
-											'usuario'           => $row['usuario'],
-											'seccion'           => $row['seccion'],
-											'detalle_estado'    => $row['detalle_estado'],
+											'fecha_documento'    => $row['fecha_documento'],
+											'tipo'               => $row['tipo'],
+											'consecutivo'        => $row['consecutivo'],
+											'documento_cliente'  => $row['documento_cliente'],
+											'cliente'            => $row['cliente'],
+											'valor_propina'      => $row['valor_propina'],
+											'valor_descuento'    => $row['valor_descuento'],
+											'usuario'            => $row['usuario'],
+											'seccion'            => $row['seccion'],
+											'detalle_estado'     => $row['detalle_estado'],
+											'usuario_anulacion'    => $row['usuario_anulacion'],
 										);
 
 			}
@@ -87,51 +91,29 @@
 						id_pos,
 						id_item,
 						cantidad,
-						precio_venta
+						precio_venta,
+						valor_impuesto
 					FROM ventas_pos_inventario
 					WHERE activo=1 AND id_empresa=$this->id_empresa AND ($wherePos)";
 			$query = $this->mysql->query($sql);
 			while ($row=$this->mysql->fetch_array($query)){
-				$whereIdItems .= ($whereIdItems=='')? " I.id=$row[id_item] " : " OR I.id=$row[id_item] " ;
 				$arrayPos[$row['id_pos']]['items'][] = array(
 																'id_pos'       => $row['id_pos'],
 																'id_item'      => $row['id_item'],
 																'cantidad'     => $row['cantidad'],
 																'precio_venta' => $row['precio_venta'],
+																'impuesto'	   => $row['valor_impuesto'],
 															);
 			}
 
-			$sql   = "SELECT
-						I.id,
-						I.id_impuesto,
-						IM.valor
-					FROM
-						items AS I
-					INNER JOIN impuestos AS IM ON IM.id = I.id_impuesto
-					WHERE
-						I.activo = 1
-					AND($whereIdItems) ";
-			$query = $this->mysql->query($sql);
-			while ($row=$this->mysql->fetch_array($query)){
-				$arrayItems[$row['id']] = $row['valor'];
-			}
-
 			foreach ($arrayPos as $id_pos => $arrayResult){
-
 				foreach ($arrayResult['items'] as $key => $arrayResultItems){
-					$subtotal = $arrayResultItems['precio_venta']*$arrayResultItems['cantidad'];
-					$acumCantidad += $arrayResultItems['cantidad'];
-					$acumTotal    += $subtotal;
-					$labelSubtotal = number_format($subtotal,$this->decimalesMoneda,",",".");
-    				if ($arrayResult['valor_descuento']>0) {
-    					$subtotal = $subtotal-($arrayResult['valor_descuento']/$contItems);
-    				}
-					$taxPercent   = ( $arrayItems[$arrayResultItems['id_item']] * 0.01 )+1;
-					$neto         = ROUND($subtotal/$taxPercent);
+					$taxPercent   = ( $arrayResultItems['impuesto'] * 0.01 )+1;
+					$neto         = ROUND($arrayResultItems['precio_venta']/$taxPercent);
 					$acumNeto     += $neto;
-					$acumImpuesto += ROUND(($neto*$arrayItems[$arrayResultItems['id_item']])/100);
+					$acumImpuesto += ROUND(($neto*$arrayResultItems['impuesto'])/100);
 				}
-
+				
 				$bodyReturn .= "<tr>
 									<td>$arrayResult[fecha_documento]</td>
 									<td>$arrayResult[tipo]</td>
@@ -139,8 +121,11 @@
 									<td>$arrayResult[usuario]</td>
 									<td>$arrayResult[seccion]</td>
 									<td>$arrayResult[detalle_estado]</td>
-									<td>".number_format(($acumNeto+$acumImpuesto),0,",",".")."</td>
+									<td>".number_format(($acumNeto+$acumImpuesto-$arrayResult['valor_descuento']),0,",",".")."</td>
+									<td>$arrayResult[usuario_anulacion]</td>
 								</tr>";
+				$acumNeto = 0;
+				$acumImpuesto = 0;
 			}
 
 			return $bodyReturn;
@@ -161,6 +146,7 @@
 						<td>Ambiente</td>
 						<td>Observacion</td>
 						<td>Valor</td>
+						<td>Usuario Anulacion</td>
 					</tr>
 				</thead>
 				<tbody> <?= $this->getData(); ?>
