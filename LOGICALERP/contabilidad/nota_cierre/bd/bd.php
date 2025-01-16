@@ -664,7 +664,7 @@
 		// moverDocumentosSaldos($id_empresa,$id,'eliminar',$link);
 
 		$fecha = date("Y-m-d");
-		$sql   = "UPDATE $tablaPrincipal SET estado=1,fecha_finalizacion='$fecha' WHERE id='$id' AND activo=1 AND id_empresa=$id_empresa";
+		$sql   = "UPDATE $tablaPrincipal SET estado=1,fecha_finalizacion='$fecha' WHERE id='$id' AND activo=1 AND id_empresa=$id_empresa AND id_sucursal=$id_sucursal";
 		$query = mysql_query($sql,$link);
 		if (!$query){
 			echo '<script>
@@ -675,7 +675,7 @@
 			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',$id_tercero,$link);
 		}
 		else{
-			$sqlConsecutivo        = "SELECT consecutivo FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_empresa='$id_empresa'";
+			$sqlConsecutivo        = "SELECT consecutivo FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_empresa='$id_empresa' AND id_sucursal=$id_sucursal";
 			$queryConsecutivo      = mysql_query($sqlConsecutivo,$link);
 			$consecutivo_documento = mysql_result($queryConsecutivo,0,'consecutivo');
 
@@ -684,7 +684,8 @@
 								numero_documento_cruce=IF(id_documento<>id_documento_cruce OR tipo_documento<>tipo_documento_cruce,numero_documento_cruce,'$consecutivo_documento')
 						 	WHERE id_documento='$id'
 						 		AND tipo_documento='NCC'
-						 		AND id_empresa='$id_empresa'";
+						 		AND id_empresa='$id_empresa'
+								AND id_sucursal=$id_sucursal";
 			$queryUpdate=mysql_query($sqlUpdate,$link);
 
 			$sqlUpdate = "UPDATE asientos_niif
@@ -692,7 +693,8 @@
 								numero_documento_cruce=IF(id_documento<>id_documento_cruce OR tipo_documento<>tipo_documento_cruce,numero_documento_cruce,'$consecutivo_documento')
 						 	WHERE id_documento='$id'
 						 		AND tipo_documento='NCC'
-						 		AND id_empresa='$id_empresa'";
+						 		AND id_empresa='$id_empresa'
+								AND id_sucursal=$id_sucursal";
 			$queryUpdate=mysql_query($sqlUpdate,$link);
 		}
 
@@ -847,7 +849,7 @@
 		}
 
 		// VALIDAR QUE NO EXISTAN MAS NOTAS DE CIERRE CREADAS PARA ESE PERIODO
-		$sql="SELECT COUNT(id) AS cont FROM nota_cierre WHERE activo=1 AND id_empresa=$id_empresa AND estado=1 AND fecha_nota>='$fecha_inicio_buscar' AND fecha_nota<='$fecha_fin_buscar' ";
+		$sql="SELECT COUNT(id) AS cont FROM nota_cierre WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal = $id_sucursal AND estado=1 AND fecha_nota>='$fecha_inicio_buscar' AND fecha_nota<='$fecha_fin_buscar' ";
 		$query=mysql_query($sql,$link);
 		$cont = mysql_result($query,0,'cont');
 
@@ -860,7 +862,7 @@
 		}
 
 		// VALIDAR QUE LA NOTA DE CIERRE NO TENGA CUENTAS EN EL CUERPO
-		$sql="SELECT COUNT(id) AS cant_cuentas FROM $tablaCuentasNota WHERE activo=1 AND id_empresa=$id_empresa AND id_nota_general=$id";
+		$sql="SELECT COUNT(id) AS cant_cuentas FROM $tablaCuentasNota WHERE activo=1 AND id_empresa=$id_empresa AND id_sucursal = $id_sucursal AND id_nota_general=$id";
 		$query=mysql_query($sql,$link);
 		$cant_cuentas = mysql_result($query,0,'cant_cuentas');
 
@@ -874,7 +876,7 @@
 
 
 		// CARGAR EL CUERPO DE LA NOTA, TRAER LAS CUENTAS DEL BALANCE PARA SER CERRADAS 4, 5, 6, 7, 8, 9
-		echo$sql="SELECT
+		$sql="SELECT
 					id_cuenta,
 					codigo_cuenta,
 					cuenta,
@@ -889,6 +891,7 @@
 				WHERE
 					activo = 1
 				AND id_empresa = $id_empresa
+				AND id_sucursal = $id_sucursal
 				AND fecha>='$fecha_inicio_buscar' AND fecha<='$fecha_fin_buscar'
 				AND (
 					codigo_cuenta LIKE '4%'
@@ -904,9 +907,10 @@
 				ORDER BY codigo_cuenta ASC";
 		$query=mysql_query($sql,$link);
 		$cont = 0;
+		$valueInsert = [];
 		while ($row=mysql_fetch_array($query)) {
 			if ($row['saldo']==0) { continue; }
-			$body.='<tr><td>'.$row['codigo_cuenta'].'</td><td>'.$row['cuenta'].'</td><td>0</td><td>'.$saldo.'</td><td>'.$row['tercero'].'</td></tr>';
+			//$body.='<tr><td>'.$row['codigo_cuenta'].'</td><td>'.$row['cuenta'].'</td><td>0</td><td>'.$saldo.'</td><td>'.$row['tercero'].'</td></tr>';
 
 			$debito  = ($row['saldo']<0)? abs($row['saldo']) : 0;
 			$credito = ($row['saldo']>0)? $row['saldo'] : 0;
@@ -916,15 +920,15 @@
 			// $body.='<tr><td>'.$acumCont.'</td><td>'.$row['codigo_cuenta'].'</td><td>'.$row['cuenta'].'</td><td>'.$debito.'</td><td>'.$credito.'</td><td>'.$row['tercero'].'</td></tr>';
 			// $acumCont++;
 			// $body.='<tr><td>'.$acumCont.'</td><td>'.$cuenta_cierre.'</td><td>'.$descripcion_cuenta_cierre.'</td><td>'.$credito.'</td><td>'.$debito.'</td><td>'.$row['tercero'].'</td></tr>';
-			$acumCont++;
+			//$acumCont++;
 
 			$acumDebito  += $debito+$credito;
 			$acumCredito += $credito+$debito;
 
 			// CUENTA A CERRAR
-			$valueInsert.="($id,$row[id_cuenta],$row[id_tercero],$debito,$credito,$id_empresa),";
+			$valueInsert[] ="($id,$row[id_cuenta],$row[id_tercero],$debito,$credito,$id_empresa)";
 			// CUENTA DE CIERRE
-			$valueInsert.="($id,$id_cuenta_cierre,$id_tercero,$credito,$debito,$id_empresa),";
+			$valueInsert[] ="($id,$id_cuenta_cierre,$id_tercero,$credito,$debito,$id_empresa)";
 
 
 		}
@@ -940,26 +944,48 @@
 		// 		document.getElementById("bodyArticulosNotaCierre").innerHTML="<table style=\'font-size:14px;font-family:monoscape;\' align=\'center\'><tr style=\'font-weight:bold;\'><td>Cuenta</td><td>N</td><td>Descripcion</td><td>Debito</td><td>Credito</td><td>Tercero</td></tr>'.$body.'</table>";
 		// 	</script>
 		// 	';
+		// Iniciar la transacción
+		mysql_query("START TRANSACTION", $link);
 
+		// Tamaño del lote
+		$batchSize = 100; 
 
-		$valueInsert = substr($valueInsert, 0, -1);
+		// Dividir el arreglo $insertConcepts en lotes de $batchSize
+		$chunksValueInsert = array_chunk($valueInsert, $batchSize);
+		
+		// Variable para controlar si hubo algún error
+		$transactionFailed = false;
 
-		$sql="INSERT INTO $tablaCuentasNota (id_nota_general,id_puc,id_tercero,debe,haber,id_empresa) VALUES $valueInsert ";
-		$query=mysql_query($sql,$link);
+		// Iterar sobre cada lote y ejecutar la consulta
+		foreach ($chunksValueInsert as $chunk) {
 
-		// echo '<script>
-		// 		document.getElementById("bodyArticulosNotaCierre").innerHTML="'.$sql.'";
-		// 	</script>
-		// 	';
+			echo $sqlInsertCuentas="INSERT INTO $tablaCuentasNota (id_nota_general,id_puc,id_tercero,debe,haber,id_empresa) VALUES ". implode(", ", $chunk);
+			$queryInsertCuentas=mysql_query($sqlInsertCuentas,$link);
+			// Verificar si la consulta fue exitosa
+			if (!$queryInsertCuentas) {
+				// Si hubo un error, marcar como fallida la transacción y salir del ciclo
+				$transactionFailed = true;
+				break; // Salir del ciclo de inserciones
+			}
+		}
 
-		if (!$query) {
-			$errormssg = mysql_error($link);
+		// Si alguna consulta falló, hacer un rollback
+		if ($transactionFailed) {
+			mysql_query("ROLLBACK", $link);  // Deshacer todas las operaciones previas
 			echo '<script>
 					alert("Error!\nNo se cargaron las cuentas a cerrar, intententelo de nuevo, si el problema continua comuniquese con el administrador del sistema");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 				</script>';
 			exit;
+		} else {
+			// Si todo fue exitoso, confirmar la transacción
+			mysql_query("COMMIT", $link);  // Confirmar la transacción
 		}
+
+		// echo '<script>
+		// 		document.getElementById("bodyArticulosNotaCierre").innerHTML="'.$sql.'";
+		// 	</script>
+		// 	';
 
 		terminarGenerar($id,$id_empresa,$id_sucursal,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_tercero,$link);
 	}
@@ -1166,7 +1192,7 @@
 	// ESTO SOLO SE CUMPLE SI LA FACTURA NO ESTA DENTRO DE UN CIERRE, SI ES ASI NO SE PODRA MODIFICAR EN NINGUNA MANERA
 	function modificarDocumentoGenerado($idDocumento,$opcGrillaContable,$id_empresa,$id_sucursal,$id_bodega,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$link){
 
-		$sql   = "SELECT consecutivo FROM $tablaPrincipal WHERE id='$idDocumento' AND id_empresa='$id_empresa' LIMIT 0,1 ";
+		$sql   = "SELECT consecutivo FROM $tablaPrincipal WHERE id='$idDocumento' AND id_empresa='$id_empresa' AND id_sucursal=$id_sucursal LIMIT 0,1 ";
 		$query = mysql_query($sql,$link);
 
 		$consecutivo=mysql_result($query,0 ,'consecutivo');
@@ -1197,7 +1223,7 @@
 		//PARA MODIFICAR EL DOCUMENTO PRIMERO DEBEMOS DESCONTABILIZARLO Y LUEGO REGRESARLO A ESTADO=0
 		moverCuentasDocumento($idDocumento,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',0,$link);
 		//YA QUE SE DIERON DE BAJA LOS ASIENTOS GENERADOS POR LA NOTA, PROCEDEMOS A ACTUALIZAR SU ESTADO A CERO
-		$sql   = "UPDATE $tablaPrincipal SET estado=0 WHERE id='$idDocumento' AND activo=1 AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa'";
+		$sql   = "UPDATE $tablaPrincipal SET estado=0 WHERE id='$idDocumento' AND activo=1 AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa' AND id_sucursal=$id_sucursal";
 		$query = mysql_query($sql,$link);
 
 		//MOVER LOS SALDOS DE LOS DOCUMENTOS RELACIONADOS
@@ -1435,7 +1461,7 @@
 	//============================ FUNCION PARA CANCELAR UN PEDIDO - COTIZACION ====================================================================//
 	function cancelarDocumento($id,$opcGrillaContable,$tablaPrincipal,$tablaCuentasNota,$idTablaPrincipal,$id_sucursal,$id_empresa,$link){
 		//CONSULTAMOS EL DOCUMENTO PARA SABER SI ESTA GENERADO
-		$sql   = "SELECT estado,consecutivo FROM $tablaPrincipal WHERE id='$id' AND id_empresa='$id_empresa' LIMIT 0,1 ";
+		$sql   = "SELECT estado,consecutivo FROM $tablaPrincipal WHERE id='$id' AND id_empresa='$id_empresa' AND id_sucursal = $id_sucursal LIMIT 0,1 ";
 		$query = mysql_query($sql,$link);
 
 		$estado      = mysql_result($query,0 ,'estado');
