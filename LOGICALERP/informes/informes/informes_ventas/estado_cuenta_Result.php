@@ -399,10 +399,181 @@
           echo $textoFinal;
         }
       } else{
-        echo "No hay resultados para este informe.";
+                //CABECERA DEL INFORME
+        $headTable .=  '<tr class="thead" style="border: 1px solid #999; color: #f7f7f7;">
+                          <td style="text-align:center;">SUCURSAL</td>
+                          <td style="text-align:center;">CUENTA</td>
+                          <td style="text-align:center;">NUMERO</td>
+                          <td style="text-align:center;">FECHA</td>
+                          <td style="text-align:center;">VENCIMIENTO</td>
+                          <td style="text-align:center;">DIAS</td>
+                          <td style="text-align:center;">SALDO</td>
+                          <td style="text-align:center;">POR VENCER</td>
+                          <td style="text-align:center;">1-30</td>
+                          <td style="text-align:center;">31-60</td>
+                          <td style="text-align:center;">61-90</td>
+                          <td style="text-align:center;">MAS 90</td>
+                        </tr>';
+
+        //PIE DE PAGINA DEL INFORME
+        $bodyTable .=  '<tr class="total" style="border:1px solid #999;">
+                          <td colspan="7"><b>TOTALES</b></td>
+                          <td style="text-align:right;"><b>'.number_format(0, $_SESSION['DECIMALESMONEDA'], ".", ",").'</b></td>
+                          <td style="text-align:right;"><b>'.number_format(0, $_SESSION['DECIMALESMONEDA'], ".", ",").'</b></td>
+                          <td style="text-align:right;"><b>'.number_format(0, $_SESSION['DECIMALESMONEDA'], ".", ",").'</b></td>
+                          <td style="text-align:right;"><b>'.number_format(0, $_SESSION['DECIMALESMONEDA'], ".", ",").'</b></td>
+                          <td style="text-align:right;"><b>'.number_format(0, $_SESSION['DECIMALESMONEDA'], ".", ",").'</b></td>
+                        </tr>';
+
+        $bodyTable .=  '<tr>
+                          <td colspan="12">&nbsp;</td>
+                        </tr>
+                        <tr class="total" style="border:1px solid #999;">
+                          <td colspan="6" style="text-align:center; border:1px solid #999;"><b>TOTAL CARTERA</b></td>
+                          <td colspan="6" style="text-align:center; border:1px solid #999;"><b>'.number_format(0, $_SESSION['DECIMALESMONEDA'], ".", ",").'</b></td>
+                        </tr>';
+
+        $texto = '<style>
+                    @page {
+                      margin-top    : 1cm;
+                      margin-bottom : 2cm;
+                      margin-left   : 0.1cm;
+                      margin-right  : 0.1cm;
+                    }
+                    .tableInforme{
+                      font-size       : 12px;
+                      width           : 100%;
+                      margin-top      : 20px;
+                      border-collapse : collapse;
+                    }
+                    .tableInforme .thead{
+                      height        : 25px;
+                      background    : #EEE;
+                      color         : #8E8E8E;
+                      border-top    : 1px solid #999;
+                      border-bottom : 1px solid #999;
+                      font-weight   : bold;
+                      font-family   : arial,helvetica;
+                    }
+                    .tableInforme .total{
+                      height        : 25px;
+                      background    : #EEE;
+                      color         : #8E8E8E;
+                      border-top    : 1px solid #999;
+                      border-bottom : 1px solid #999;
+                      font-weight   : bold;
+                      font-family   : arial,helvetica;
+                    }
+                    .my_informe_Contenedor_Titulo_informe{
+                      float         : left;
+                      width         : 100%;
+                      margin        : 0 0 10px 0;
+                      font-size     : 11px;
+                    }
+                    .table{
+                      font-size       : 12px;
+                      width           : 100%;
+                      border-collapse : collapse;
+                      color           : #FFF;
+                    }
+                    .thead{
+                      background  : #999;
+                      font-weight : bold;
+                      font-family : arial,helvetica;
+                    }
+                    .thead td {
+                      height        : 30px;
+                      background    : #999;
+                      height        : 25px;
+                      font-weight   : bold;
+                      font-family   :arial,helvetica;
+                      color         : #FFF;
+                    }
+                    .detail{
+                      background  : #FFF;
+                      font-family : arial,helvetica;
+                    }
+                    .detail td{
+                      background    : #FFF;
+                      height        : 25px;
+                      font-family   :arial,helvetica;
+                      color         : #000000;
+                    }
+                    .total{
+                      background  : #EEE;
+                      font-weight : bold;
+                      font-family : arial,helvetica;
+                    }
+                    .total td{
+                      border-top    : 1px solid #999;
+                      border-bottom : 1px solid #999;
+                      background    : #EEE;
+                      height        : 25px;
+                      font-weight   : bold;
+                      font-family   :arial,helvetica;
+                      color         : #8E8E8E;
+                    }
+                  </style>
+                  <div class="my_informe_Contenedor_Titulo_informe" style="float:left;">
+                    <table class="tableInforme" style="width:100%; border-collapse:collapse;">
+                      ' . $headTable . $bodyTable . '
+                    </table>
+                  </div>';
+
+                $formato    = $this->cargaFormatoDocumento('PYSEC',$this->id_empresa,$this->id_sucursal);
+                $textoFinal = $this->reemplazarVariables($formato,$texto,$this->id_empresa,$this->id_sucursal,$this->cliente,'','','');
+                $documento  = "Estado De Cuenta";
+                
+                if(isset($TAM)){$HOJA = $TAM;}else{$HOJA = 'LETTER';}
+                if(!isset($ORIENTACION)){$ORIENTACION = 'P';}
+                if(!isset($PDF_GUARDA)){$PDF_GUARDA = false;}
+                if(isset($MARGENES)){list($MS, $MD, $MI, $ML) = split( ',', $MARGENES );}else{$MS=10;$MD=10;$MI=10;$ML=50;}
+                if(!isset($TAMANO_ENCA)){$TAMANO_ENCA = 12 ;}
+
+                if($this->IMPRIME_PDF == 'true'){
+                  include_once("../../../../misc/MPDF54/mpdf.php");
+                  $mpdf = new mPDF(
+                                    'utf-8',      // mode - default ''
+                                    $HOJA,        // format - A4, for example, default ''
+                                    12,           // font size - default 0
+                                    '',           // default font family
+                                    $MI,          // margin left
+                                    $MD,          // margin right
+                                    $MS,          // margin top
+                                    $ML,          // margin bottom
+                                    10,           // margin header
+                                    50,           // margin footer
+                                    $ORIENTACION  // L - landscape, P - portrait
+                                  );
+                  $mpdf->useSubstitutions = false;
+                  $mpdf->packTableData = false;
+                  $mpdf->SetAutoPageBreak(true);
+                  $mpdf->SetTitle($documento);
+                  $mpdf->SetAuthor($_SESSION['NOMBREFUNCIONARIO']." // ".$_SESSION['NOMBREEMPRESA']);
+                  $mpdf->SetDisplayMode( 'fullpage' );
+                  $mpdf->SetHeader("");
+                  $mpdf->WriteHTML(utf8_encode($textoFinal));
+        
+                  //OUTPUT A ARCHIVO
+                  if($this->GUARDAR_PDF == 'true'){
+                    $serv = $_SERVER['DOCUMENT_ROOT'] . "/";
+                    $url  = $serv . 'ARCHIVOS_PROPIOS/empresa_' . $_SESSION['ID_HOST'] . '/archivos_temporales/';
+                    if(!file_exists($url)){
+                      mkdir($url);
+                    }
+        
+                    $mpdf->Output($url . "Estado_Cuenta.pdf",'F');
+                  }
+                  //OUTPUT A VISTA
+                  else{
+                    $mpdf->Output($documento.".pdf",'I');
+                  }
+                }
+            if($this->IMPRIME_HTML == 'true'){
+              echo $textoFinal;
+            } 
       }
     }
-
     /**
      * @method generate Generar el informe
      */
