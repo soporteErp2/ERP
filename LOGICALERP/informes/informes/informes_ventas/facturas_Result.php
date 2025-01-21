@@ -208,7 +208,8 @@ if($detallado_documentos == 'devolucion'){
             DV.cedula_usuario_DE,
             DV.fecha_DE,
             DV.hora_DE,
-            DV.observacion
+            DV.observacion,
+            FV.exento_iva
           FROM
             devoluciones_venta AS DV
           LEFT JOIN
@@ -247,7 +248,8 @@ if($detallado_documentos == 'devolucion'){
                                               'fecha_DE'               => $row['fecha_DE'],
                                               'hora_DE'                => $row['hora_DE'],
                                               'observaciones'          => $row['observacion'],
-                                              'id_factura_venta'       => $row['id_factura_venta']
+                                              'id_factura_venta'       => $row['id_factura_venta'],
+                                              'exento_iva'             => $row['exento_iva']
                                             );
   }
 
@@ -303,7 +305,6 @@ if($detallado_documentos == 'devolucion'){
     if($arrayDevoluciones[$row['id_devolucion_venta']]['exento_iva'] <> 'Si') {
       $iva = (($subtotal - $descuento) * $row['valor_impuesto']) / 100;
     }
-
     $acumuladoSubtotalDV  += $subtotal;
     $acumuladoDescuentoDV += $descuento;
     $acumuladoIvaDV       += $iva;
@@ -312,7 +313,6 @@ if($detallado_documentos == 'devolucion'){
     $arrayDevoluciones[$row['id_devolucion_venta']]['subtotal']  += $subtotal;
     $arrayDevoluciones[$row['id_devolucion_venta']]['descuento'] += $descuento;
     $arrayDevoluciones[$row['id_devolucion_venta']]['iva']       += $iva;
-
     $arrayItemsDevoluciones[$row['id_devolucion_venta']][$row['id']] = array(
                                                                               'id_devolucion_venta'    => $row['id_devolucion_venta'],
                                                                               'codigo'                 => $row['codigo'],
@@ -327,6 +327,7 @@ if($detallado_documentos == 'devolucion'){
                                                                               'observaciones'          => $row['observaciones']
                                                                             );
   }
+  //echo json_encode($arrayDevoluciones);
 }
 
 // CONSULTAR LAS RETENCIONES Y ITEMS
@@ -513,6 +514,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
 
     $acumuladoReteFuente    += $ReteFuente;
     $acumuladoReteIva       += $ReteIva;
+    $acumuladoIva += $arrayResul['iva'];
     $acumuladoReteIca       += $ReteIca;
     $acumuladoTotalUtilidad += $utilidad;
     $acumuladoTotal         += $total;
@@ -1205,6 +1207,7 @@ if ($detallado_documentos == 'devolucion') {
                          " . (($IMPRIME_XLS == 'true')? "<td colspan='5'></td>" : "") . "
                       </tr>
                   </table>";
+            $acumuladoIva = 0;
     }
 }
 
