@@ -13,18 +13,18 @@
 	$queryRemision=$mysql->query($sqlRemision,$mysql->link);
 	$idRemision = $mysql->result($queryRemision,0,'id_entrada_almacen');
 	
-	if($mysql->num_rows($queryRemision)>0){
+	if($idRemision){
 		$sqlRemisionCosto = "SELECT SUM(cantidad * costo_unitario) AS costo_total FROM ventas_remisiones_inventario WHERE id_remision_venta='$idRemision' AND activo =1";
 		$queryRemisionCosto=$mysql->query($sqlRemisionCosto,$mysql->link);
 		$costo_ticket = $mysql->result($queryRemisionCosto,0,'costo_total');
 	}
 	else{
-		$sql="SELECT SUM(cantidad * costo) AS costo_total
+		$sqlReceta="SELECT SUM(cantidad * costo) AS costo_total
 		FROM ventas_pos_inventario_receta
 		WHERE activo = 1 AND id_empresa='$idEmpresa' AND id_pos='$id_documento'";
 	
-		$query=$mysql->query($sql,$mysql->link);
-		$costo_ticket = $mysql->result($query,0,'costo_total');
+		$queryReceta=$mysql->query($sqlReceta,$mysql->link);
+		$costo_ticket = $mysql->result($queryReceta,0,'costo_total');
 	}
 
 
@@ -143,7 +143,7 @@
 								{
 									id_documento     : <?php echo $id_documento ?>,
 									id_producto      : id,
-									id_remision      : <?php echo $idRemision ?>,
+									id_remision      : <?php echo ($idRemision)? $idRemision : 0 ?>,
 								}
 							},
 				tbar		:
@@ -160,7 +160,7 @@
 							},'->',
                     		{
                     		    xtype       : "tbtext",
-                    		    text        : '<div id="Win_Ventana_Consultar_costo_item_receta"></div>',
+                    		    text        : '<div id="costo_item_receta"></div>',
                     		    scale       : "large",
                     		}
 						]
