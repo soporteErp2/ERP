@@ -31,8 +31,8 @@
 			$grilla->OrderBy 			= 'id DESC';
 		//TAMANO DE LA GRILLA
 			$grilla->AutoResize	 		= 'false';			//SI LA GRILLA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
-			$grilla->Ancho		 		= 770;				//ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
-			$grilla->Alto		 		= 350;				//ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
+			$grilla->Ancho		 		= 960;				//ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
+			$grilla->Alto		 		= 480;				//ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'false'
 			// $grilla->QuitarAncho		= 70;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ANCHO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
 			// $grilla->QuitarAlto			= 220;				//AJUSTE EN PIXELES QUE SE LE DECUENTAN AL ALTO DE LA GRILLA -- SOLO FUNCIONA CUANDO AutoResize = 'true'
 		//TOOLBAR Y CAMPO DE BUSQUEDA
@@ -41,19 +41,17 @@
 			$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA id_documento numero_documento
 
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
-			$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstado'.$opcGrillaContable.'_[id]" /></center>','40');
 			$grilla->AddRow('Prefijo','prefijo',40);
-			$grilla->AddRow('Consec.','consecutivo',50);
-			$grilla->AddRow('N. Fact.','numero_factura_completo',80);
+			$grilla->AddRow('Consecutivo','consecutivo',80);
+			$grilla->AddRow('N. Factura','numero_factura_completo',80);
 			$grilla->AddRow('N. Remision','consecutivo_entrada_almacen',70);
 			$grilla->AddRow('Fecha','fecha_documento',70);
-			$grilla->AddRow('Caja','caja',50);
 			$grilla->AddRow('Ambiente','seccion',120);
-			$grilla->AddRow('Doc. ','documento_cliente',70);
+			$grilla->AddRow('Doc. cliente ','documento_cliente',70);
 			$grilla->AddRow('Cliente ','cliente',120);
 			$grilla->AddRowImage('Cuentas','<div style="float:left; margin:0 0 0 10px; cursor:pointer" onClick="winAccounts([id],\'[prefijo] [consecutivo]\')"><div style="float:left"><img src="../../temas/clasico/images/BotonesTabs/book_open.png" ></div></div>',50);
-			$grilla->AddRowImage('Mat. Prima','<div style="float:left; margin:0 0 0 10px; cursor:pointer" onClick="winInventori({id:[id],consecutivo:\'[prefijo] [consecutivo]\',tabla:\'ventas_pos_inventario_receta\'})"><div style="float:left"><img src="../../temas/clasico/images/BotonesTabs/inventario16.png" ></div></div>',65);
 			$grilla->AddRowImage('Productos','<div style="float:left; margin:0 0 0 10px; cursor:pointer" onClick="winInventori({id:[id],consecutivo:\'[prefijo] [consecutivo]\',tabla:\'ventas_pos_inventario\'})"><div style="float:left"><img src="../../temas/clasico/images/BotonesTabs/inventario16.png" ></div></div>',65);
+			$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstado'.$opcGrillaContable.'_[id]" /></center>','40');
 			// $grilla->AddRowImage('','<div style="float:left" id="tipo_documento_consultarDocumentosPos_[id]">[tipo_documento]</div><div style="display:none" id="id_documento_consultarDocumentosPos_[id]">[id_documento]</div>',30);
 			// $grilla->AddRow('Sucursal','sucursal',100);
 
@@ -69,7 +67,7 @@
 
 		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
 			$grilla->VentanaAuto		= 'false';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
-			$grilla->TituloVentana		= 'Ventana Familia Items '.$subtitulo; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
+			$grilla->TituloVentana		= 'Tickets POS'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
 			$grilla->VBarraBotones		= 'false';			//SI HAY O NO BARRA DE BOTONES
 			$grilla->VBotonNuevo		= 'false';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
 			$grilla->VBotonNText		= 'Nueva Familia'; //TEXTO DEL BOTON DE NUEVO REGISTRO

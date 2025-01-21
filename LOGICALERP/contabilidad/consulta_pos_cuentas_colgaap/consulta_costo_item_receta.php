@@ -8,24 +8,23 @@
 	$idSucursal = $_SESSION['SUCURSAL'];
 
 	// CONSULTAR EL COSTO DEL INVENTARIO1
+    if($id_remision){
+        $sqlticketProductos = "SELECT codigo FROM ventas_pos_inventario_receta WHERE id_pos='$id_documento' AND activo =1 AND id_item_producto='$id_producto'";
+        $queryTicketProductos=$mysql->query($sqlticketProductos,$mysql->link);
+        
+        $recetaProduct = [];
+        while($row = $mysql->fetch_array($queryTicketProductos)){
+            $recetaProduct[] = $row['codigo'];
+        }
+        $tabla = "ventas_remisiones_inventario";
+        $where = "activo = 1 AND id_remision_venta=$id_remision AND codigo IN (" . implode(",",$recetaProduct) . ")";
+        $costoName = "costo_unitario";
+    }else{
+        $tabla = "ventas_pos_inventario_receta";
+        $where = "activo = 1 AND id_item_producto=$id_producto AND id_pos = $id_documento";
+        $costoName = "costo";
 
-	$sqlRemision = "SELECT id_entrada_almacen FROM ventas_pos WHERE id='$id_documento' AND activo =1 AND id_empresa='$idEmpresa'";
-	$queryRemision=$mysql->query($sqlRemision,$mysql->link);
-	$idRemision = $mysql->result($queryRemision,0,'id_entrada_almacen');
-	
-	if($mysql->num_rows($queryRemision)>0){
-		$sqlRemisionCosto = "SELECT SUM(cantidad * costo_unitario) AS costo_total FROM ventas_remisiones_inventario WHERE id_remision_venta='$idRemision' AND activo =1";
-		$queryRemisionCosto=$mysql->query($sqlRemisionCosto,$mysql->link);
-		$costo_ticket = $mysql->result($queryRemisionCosto,0,'costo_total');
-	}
-	else{
-		$sql="SELECT SUM(cantidad * costo) AS costo_total
-		FROM ventas_pos_inventario_receta
-		WHERE activo = 1 AND id_empresa='$idEmpresa' AND id_pos='$id_documento'";
-	
-		$query=$mysql->query($sql,$mysql->link);
-		$costo_ticket = $mysql->result($query,0,'costo_total');
-	}
+    }
 
 
 	/**//////////////////////////////////////////////**/
@@ -38,19 +37,10 @@
 	// $where = $filtro_sucursal > 0 ? "AND id_sucursal='$filtro_sucursal'": "";
 	//CONFIGURACION//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//NOMBRE DE LA GRILLA
-			$grilla->GrillaName	 		= 'consultarItems';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
-		//QUERY
-		if($tabla == 'ventas_pos_inventario_receta'){
-			$grilla->ConsulCustom		= "SELECT
-											codigo,
-											nombre,
-											cantidad,
-											costo,
-											(costo*cantidad) as costo_total
-											FROM";
-		}
+			$grilla->GrillaName	 		= 'consultarRecetaItems';  	//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
+
 			$grilla->TableName			= $tabla;		//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			= "activo = 1 AND id_empresa='$idEmpresa' AND id_pos='$id_documento' ";		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
+			$grilla->MyWhere			= $where;		//WHERE DE LA CONSULTA A LA TABLA "$TableName"
 			$grilla->MySqlLimit			= '0,20';			//LIMITE DE LA CONSULTA
 			// $grilla->GroupBy 			= 'id';
 		//TAMANO DE LA GRILLA
@@ -68,14 +58,7 @@
 			$grilla->AddRow('Codigo','codigo',60);
 			$grilla->AddRow('Nombre','nombre',200);
 			$grilla->AddRow('Cantidad','cantidad',60);
-			if ($tabla=='ventas_pos_inventario') {
-				$grilla->AddRow('Valor Unit.','precio_venta',100);
-				$grilla->AddRow('Imp. %','valor_impuesto',50);
-			}
-			else{
-				$grilla->AddRow('Costo Unit.','costo',60);
-				$grilla->AddRow('Costo total','costo_total',80);
-			}
+			$grilla->AddRow('Costo Unit.',$costoName,60);
 
 		//CONFIGURACION CSS X COLUMNA
 			// $grilla->AddColStyle('codigo_cuenta','text-align:right; width:75px !important; padding-right:5px');
@@ -91,7 +74,7 @@
 
 		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
 			$grilla->VentanaAuto		= 'false';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
-			$grilla->TituloVentana		= 'Items ticket'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
+			$grilla->TituloVentana		= 'costo items'; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
 			$grilla->VBarraBotones		= 'false';			//SI HAY O NO BARRA DE BOTONES
 			$grilla->VBotonNuevo		= 'false';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
 			$grilla->VBotonNText		= 'Nueva Familia'; 	//TEXTO DEL BOTON DE NUEVO REGISTRO
@@ -117,53 +100,3 @@
 	/**/	$grilla->GeneraGrilla(); 	// Inicializa la Grilla		/**/
 	/**/															/**/
 	/**//////////////////////////////////////////////////////////////**/
-
-?>
-<script>
-		document.getElementById('Contenedor_costo_items').innerHTML='<b>Costo Total Ticket</b><br>$ <?= $costo_ticket ?>';
-		document.getElementById('Contenedor_costo_items').style.fontSize='17px';
-		document.getElementById('Contenedor_costo_items').style.marginRight='40px';
-			function Editar_consultarItems(id){ 
-			Win_Ventana_Consultar_costo_item_receta = new Ext.Window({
-				width		: 715,
-				id			: 'Win_Ventana_Consultar_costo_item_receta',
-				height		: 430,
-				title		: ' Ingredientes',
-				modal		: true,
-				autoScroll	: true,
-				closable	: true,
-				autoDestroy : true,
-				bodyStyle   : 'background-color:<?php echo $_SESSION['COLOR_FONDO'] ?>;',
-				autoLoad    :
-							{
-								url		: 'consulta_pos_cuentas_colgaap/consulta_costo_item_receta.php',
-								scripts	: true,
-								nocache	: true,
-								params	:
-								{
-									id_documento     : <?php echo $id_documento ?>,
-									id_producto      : id,
-									id_remision      : <?php echo $idRemision ?>,
-								}
-							},
-				tbar		:
-						[
-							{
-								xtype		: 'button',
-								width 		: 60,
-								height 		: 56,
-								text		: 'Regresar',
-								scale		: 'large',
-								iconCls		: 'regresar',
-								iconAlign	: 'top',
-								handler 	: function(){Win_Ventana_Consultar_costo_item_receta.close()}
-							},'->',
-                    		{
-                    		    xtype       : "tbtext",
-                    		    text        : '<div id="Win_Ventana_Consultar_costo_item_receta"></div>',
-                    		    scale       : "large",
-                    		}
-						]
-			}).show();
-		}
-</script>
