@@ -154,7 +154,7 @@
 		</div>
 		<div style="width:100%; float:left">
 			<?php if ($permiso_consulta_pos=='false') { ?>
-			<div class="IconoPanelControl" onClick="AbreVentanaPanelGlobalContabilidadDocumentosPos('consulta_pos_cuentas_colgaap/consulta_documentos','Consulta Tickets',745,485);">
+			<div class="IconoPanelControl" onClick="AbreVentanaPanelGlobalContabilidadDocumentosPos('consulta_pos_cuentas_colgaap/consulta_documentos','Consulta Tickets',990,610);">
 				<div class="IconoPanelControlimg"><img src="img/consultar_pos.png" width="44" height="44"></div>
 				<div class="IconoPanelControltxt">Consulta Tickets (POS)</div>
 			</div>
@@ -1717,7 +1717,7 @@
 		else{ WinAncho = ancho }
 
 		Win_Panel_Global = new Ext.Window({
-			width       : 800,
+			width       : WinAncho,
 			height      : WinAlto,
 			title       : titulo,
 			modal       : true,
