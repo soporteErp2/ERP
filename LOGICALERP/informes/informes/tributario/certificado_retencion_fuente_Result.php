@@ -280,6 +280,7 @@
                 //       $mpdf->useSubstitutions = true;
                 //       $mpdf->simpleTables = true;
                 //       $mpdf->packTableData= true;
+                $documento = "certificado retencion en la fuente ".trim($this->arrayInfotercero['nombre']);
                 $mpdf->SetAutoPageBreak(TRUE, 15);
                 $mpdf->SetTitle ( $documento );
                 $mpdf->SetAuthor ( $_SESSION['NOMBREFUNCIONARIO']." // ".$_SESSION['NOMBREEMPRESA'] );
