@@ -1050,7 +1050,7 @@
 			$idItemArray    = $valArrayInventario['id_items'];
 			
 			// Determina el precio de la cuenta de devolución según el tipo de factura y la descripción de cuenta
-			if ($isPos) {
+			if ($isPos && $arrayCuentasItems[$idItemArray]['precio']['cuenta'][0]=='4') {
 			    // Si es una factura POS, usa la cuenta de devolución POS
 			    $cuentaPrecio = $cuentaDevPos;
 			} else{

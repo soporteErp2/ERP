@@ -522,7 +522,7 @@
     					</script>';
 				exit;
 			}
-		}
+	}
 
     $arrayGlobalEstado['debito'] = round($arrayGlobalEstado['debito']);
 		$arrayGlobalEstado['credito'] = round($arrayGlobalEstado['credito']);
@@ -1073,7 +1073,7 @@
       }
 
 			$arrayCuentasItems[$rowCuentasItems['id_item']][$rowCuentasItems['descripcion']]= array('estado' => $rowCuentasItems['caracter'], 'cuenta'=> $rowCuentasItems['codigo_puc']);
-		}
+	}
 
 		$arrayGlobalEstado['debito']  = 0;
 		$arrayGlobalEstado['credito'] = 0;
@@ -1096,7 +1096,7 @@
 			  $cuentaPrecio   = $arrayCuentasItems[$idItemArray]['precio']['cuenta'];
       } 
       else{
-        $cuentaPrecio   = ($isPos)? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['devprecio']['cuenta'];
+        $cuentaPrecio   = ($isPos && $arrayCuentasItems[$idItemArray]['precio']['cuenta'][0]=='4')? $cuentaDevPos : $arrayCuentasItems[$idItemArray]['devprecio']['cuenta'];
       }
 			
       $contraPrecio   = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];
