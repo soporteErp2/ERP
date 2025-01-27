@@ -4051,8 +4051,23 @@
 	function updateSupportDocumentResolution($idFactura,$resolution_id,$link){
 		$sql   = "UPDATE compras_facturas SET id_resolucion='".$resolution_id."' WHERE activo=1 AND id=$idFactura";
 		$query = mysql_query($sql,$link);
-	}
 
+		$sqlFechaVencimiento = "SELECT fecha_final_resolucion FROM resolucion_documento_soporte WHERE id=$resolution_id AND activo = 1";
+		$queryFechaVencimiento = mysql_query($sqlFechaVencimiento,$link);
+		$fecha_vencimiento_res = mysql_result($queryFechaVencimiento,0, 'fecha_final_resolucion');
+
+		$current_timestamp = time();
+        $fecha_res_timestamp = strtotime($fecha_vencimiento_res);
+        // Calculate the difference in seconds
+        $seconds_difference = abs($current_timestamp - $fecha_res_timestamp);
+
+        // Calculate the difference in days
+        $days_difference = floor($seconds_difference / (60 * 60 * 24));
+    
+    	if($days_difference < 7){
+    	echo "<script>if(document.querySelector('#titleResFC') !==null){ document.querySelector('#titleResFC').innerHTML='<b>Fecha de vencimeinto resolucion</b><br>$fecha_vencimiento_res';}</script>";
+		}
+	}
 	function updateDocumentType($idFactura,$document_type,$link){
 		$sql   = "UPDATE compras_facturas SET tipo_documento='".$document_type."' WHERE activo=1 AND id=$idFactura";
 		$query = mysql_query($sql,$link);

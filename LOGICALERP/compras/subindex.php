@@ -1090,6 +1090,11 @@ $permiso_entrada_almacen        = (user_permisos(175,'false') == 'true')? 'false
 		                                    xtype       : "tbtext",
 		                                    text        : '<div id="titleDocuementoFacturaCompra" style="text-align:center; font-size:18px; font-weight:bold;"></div>',
 		                                    scale       : "large",
+		                                },'->',
+		                                {
+											xtype : "tbtext",
+											text  : '<div id="titleResFC" style="text-align:center; font-size:18px; font-weight:bold;"></div>',
+											scale : "large",
 		                                }
 									]
 								},
