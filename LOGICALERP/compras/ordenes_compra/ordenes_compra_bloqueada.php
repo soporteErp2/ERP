@@ -374,6 +374,42 @@
 	//================================ EXPORTAR ORDEN EN EXCEL ====================================//
 	function imprimirOrdenCompraExcel(){  window.open("ordenes_compra/exportar_excel_orden_compra.php?id="+'<?php echo $id_orden_compra; ?>'); }
 
+	function ventanaConfigurarInformeOC(){
+
+		Win_Ventana_configurar_separador_ajuste_inventario = new Ext.Window({
+		    width       : 500,
+		    height      : 250,
+		    id          : 'Win_Ventana_configurar_separador_orden_compra',
+		    title       : 'Aplicar separador',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : true,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : '../compras/ordenes_compra/wizard_orden_compra_xls.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+		            opc : 'cuerpoVentanaConfiguracionAjusteInventario',
+		        }
+		    }
+		}).show();
+	}
+
+	function validarSelectOC(separadorId){
+		const selectDecimales	  = document.getElementById('separadorDecimalesOC'),
+			  selectMiles 		  = document.getElementById('separadorMilesOC')
+        
+		if(selectDecimales.value === selectMiles.value && separadorId === 'decimales'){
+			selectMiles.value = (selectMiles.value === ',')? "." : ",";
+		}
+		else if(selectDecimales.value === selectMiles.value){
+			selectDecimales.value = (selectDecimales.value === ',')? "." : ",";
+		}
+	}
+
 	function validarArticulosOrdenCompra(){ return 2; }
 
 	function restaurarOrdenCompra(){
