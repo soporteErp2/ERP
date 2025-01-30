@@ -551,6 +551,11 @@ $permiso_entrada_almacen        = (user_permisos(175,'false') == 'true')? 'false
 															text    : "Imprimir en otra moneda",
 															iconCls : "pdf16",
 															handler : function(){ BloqBtn(this); win_Select_moneda(); }
+									            		},
+									            		{
+															text    : "Imprimir en Excel",
+															iconCls : "xls16",
+															handler : function(){ BloqBtn(this); ventanaConfigurarInformeOC(); }
 									            		}
 										          	]
 										        },
@@ -1090,6 +1095,11 @@ $permiso_entrada_almacen        = (user_permisos(175,'false') == 'true')? 'false
 		                                    xtype       : "tbtext",
 		                                    text        : '<div id="titleDocuementoFacturaCompra" style="text-align:center; font-size:18px; font-weight:bold;"></div>',
 		                                    scale       : "large",
+		                                },'->',
+		                                {
+											xtype : "tbtext",
+											text  : '<div id="titleResFC" style="text-align:center; font-size:18px; font-weight:bold;"></div>',
+											scale : "large",
 		                                }
 									]
 								},

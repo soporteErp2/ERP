@@ -760,7 +760,8 @@
                     RS.activo = 1
                 AND RS.id_empresa='$id_empresa'
                 AND RS.id_sucursal='$id_sucursal'
-                AND R.id = RS.id_resolucion  ";
+                AND R.id = RS.id_resolucion
+                AND R.fecha_final_resolucion >= '".date('Y-m-d')."'";
     $query = $mysql->query($sql);
     while ($row=$mysql->fetch_array($query)) {
         ?>

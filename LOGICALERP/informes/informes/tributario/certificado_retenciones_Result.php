@@ -211,7 +211,7 @@
                                 <tr><td>&nbsp;</td></tr>
                                 <tr><td style="width:100%; font-weight:bold; font-size:14px; text-align:center;text-transform: uppercase;">Certificado de Retencion de '.$this->nombre_certificado.'</td></tr>
                                 <tr style="font-size:12px;"><td>Desde '.$this->fecha_inicio.' hasta '.$this->fecha_final.'<br>Fecha de expedicion '.date('Y-m-d').'</td></tr>
-                            </table>
+                        </table>
                         </div>
                         <div class="body">
                             <table class="tableResponsable">
@@ -277,6 +277,7 @@
                 //       $mpdf->useSubstitutions = true;
                 //       $mpdf->simpleTables = true;
                 //       $mpdf->packTableData= true;
+                $documento = "certificado retenciones ".trim($this->arrayInfoEmpresa['razon_social']);
                 $mpdf->SetAutoPageBreak(TRUE, 15);
                 $mpdf->SetTitle ( $documento );
                 $mpdf->SetAuthor ( $_SESSION['NOMBREFUNCIONARIO']." // ".$_SESSION['NOMBREEMPRESA'] );
