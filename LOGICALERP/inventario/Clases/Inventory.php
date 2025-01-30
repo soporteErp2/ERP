@@ -80,7 +80,7 @@ class Inventario_pp
             $sql_costo = ",costos = $item_antes[costos]";
 
             //crear condicion para actualizacion de inventario y costo
-            if(($item_antes['cantidad']<=0 || $item_antes['costos'] <=0) &&  $params["accion_inventario"] != 'salida'){
+            if(($item_antes['cantidad']<=0 || $item_antes['costos'] <=0) && ($params["accion_inventario"] != 'salida' && $params["accion_inventario"] != 'reversar salida')){
                 $sql_costo = ",costos = $item[costo]";
             }
             else  if($params['accion_inventario'] == 'ingreso' || 
