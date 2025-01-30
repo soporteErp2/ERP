@@ -376,7 +376,10 @@
                 <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/pagos.png" width="44" height="44"></div>
                 <div class="IconoPanelControltxt">Propinas</div>
             </div>
-            
+            <div class="IconoPanelControl" onClick="AbreVentanaPanelGlobal('contler/panel','Configuracion Contler',400,400,0);">
+                <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/contler_logo.jpg" width="44" height="44"></div>
+                <div class="IconoPanelControltxt">Contler</div>
+            </div>
 
         </div>
     </div>
