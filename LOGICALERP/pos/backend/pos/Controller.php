@@ -2,6 +2,7 @@
 	header("Access-Control-Allow-Origin: *");
 	header("Access-Control-Allow-Methods: *");
 	header("Access-Control-Allow-Headers: *");
+	error_reporting(E_ERROR | E_PARSE);
 
 	 // : "GET,POST,PUT,DELETE,OPTIONS",
 	include '../../../../configuracion/define_variables.php';
