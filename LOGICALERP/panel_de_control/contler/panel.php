@@ -56,6 +56,36 @@
         Win_Panel_Global.close();
     }
 
+    async function get_configuration(){
+        try {
+            const response = await fetch("contler/bd/Controller.php?opt=get_configuration");
+            if (!response.ok) {
+                throw new Error("Error al obtener los datos");
+            }
+            let data = await response.json();
+            let form_data = JSON.parse(data)
+
+            console.log(form_data)
+
+            if (Object.keys(form_data).length > 0) {
+                let section = document.getElementById("section")
+                section.value = form_data.section
+
+                await get_cash_register(form_data.section)
+                let cash_register = document.getElementById("cash_register")
+                cash_register.value = form_data.cash_register
+                await get_table(form_data.section)
+                let table = document.getElementById("table")
+                table.value = form_data.table
+            } 
+
+
+
+        } catch (error) {
+            console.error("Error:", error);
+        } 
+    }
+
     async function get_sections(){
         try {
             const response = await fetch("contler/bd/Controller.php?opt=get_sections");
@@ -73,6 +103,8 @@
 
             document.getElementById("section-pulse").classList.toggle("hidden")
             section.classList.toggle("hidden")
+
+            await get_configuration();
         } catch (error) {
             console.error("Error:", error);
         }
@@ -149,15 +181,19 @@
           , cash_register = document.getElementById("cash_register").value
           , table         = document.getElementById("table").value
         
+        let form_data = {
+          section,
+          cash_register,
+          table
+        }
+          
         try {
-            const data = {
-                opt: 'save_config',  // Acción que se enviará al servidor
-                section: section,
-                cash_register: cash_register,
-                table: table
+            let data = {
+                opt: 'save',  // Acción que se enviará al servidor
+                form_data
             };
 
-            const response = await fetch("contler/bd/Controller.php", {
+            const response = await fetch("contler/bd/Controller.php?opt=save", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",  // Tipo de contenido para enviar JSON
@@ -173,6 +209,7 @@
             console.log(result);  // Mostrar la respuesta del servidor
 
             alert("Configuración guardada con éxito");
+            Win_Panel_Global.close();
 
         } catch (error) {
             console.error("Error:", error);
