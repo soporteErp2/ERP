@@ -10,7 +10,7 @@
 
 	if (isset($id_planilla)) {
 		// FUNCION PARA VERIFICAR SI EXISTE ALGUN CIERRE EN ESE PERIODO ANTES DE PROCESAR EL DOCUMENTO, EXEPTO EN LA FUNCION DE CAMBIAR LA FECHA DE LA NOTA
-		if ($opc<>'guardarFechaPlanilla' && $opc<>'cargarConceptosEmpleado') {
+		if ($opc<>'guardarFechaPlanilla' && $opc<>'enviarVolanteUnicoEmpleado' && $opc<>'enviarPlanillaNomina' && $opc<>'cargarConceptosEmpleado') {
 			verificaCierre($id_planilla,'nomina_planillas',$id_empresa,$link);
 		}
 	}

@@ -89,11 +89,55 @@
 		}
 
 		public function getData()
-		{
+		{	
+			//Documentos 
+			$documentos_inv = array("FC"	=>	array('tabla_documento' => "compras_facturas", "id_referencia" => 'factura_compra'),
+									"FV"	=>	array('tabla_documento' => "ventas_facturas", "id_referencia" => 'factura_venta'),
+									"RV"	=>	array('tabla_documento' => "ventas_remisiones", "id_referencia" => 'remision_venta'),
+									"EA"	=>	array('tabla_documento' => "compras_entrada_almacen", "id_referencia" => 'entrada_almacen'),
+									"TDI"	=>	array('tabla_documento' => "inventario_traslados", "id_referencia" => 'traslado')
+								);
+			$arrayDocs = [];
+
+			#Se buscan todos los documentos generados con ese item en sus inventarios
+			foreach ($documentos_inv as $tipo_documento => $info_documento) {
+				$fecha_campo = "";
+				$info_documento_inventario = "";
+
+				switch($tipo_documento){
+					case "TDI":
+						$fecha_campo = 'fecha_documento';
+						$info_documento_inventario =  '_unidades';
+						break;
+					default:
+						$fecha_campo = 'fecha_inicio';
+						$info_documento_inventario =  '_inventario';
+						break;
+				}
+
+				$sqlDocumentos = "SELECT
+						concat('".$tipo_documento."',TD.id) as llave
+					FROM
+						".$info_documento['tabla_documento']." AS TD
+						INNER JOIN ".$info_documento['tabla_documento'].$info_documento_inventario." AS TDI ON TD.id = TDI.id_".$info_documento['id_referencia']." 
+					WHERE
+						TD.".$fecha_campo." BETWEEN '$this->fechaInicio' AND '$this->fechaFin'
+						AND TD.activo = 1
+						AND TD.estado = 1
+						AND TDI.id_inventario = ".$this->itemInfo['id_item']."
+						AND TD.id_bodega = $this->id_bodega";
+				$queryDocumentos=mysql_query($sqlDocumentos,$this->mysql);
+
+				while($row=mysql_fetch_assoc($queryDocumentos)){
+					$arrayDocs[] =  $row['llave'];
+				}
+			}
+
 			$logTempoSql= "CREATE TEMPORARY TABLE tempologs	SELECT
 							MAX(id) AS max_id,
 							cantidad as cantidad,
-							costo
+							costo,
+							CONCAT(tipo_documento,id_documento) as llave
 						FROM 
 							logs_inventario
 						WHERE 
@@ -131,6 +175,7 @@
 									LI.accion_inventario
 								FROM
 									logs_inventario as LI INNER JOIN tempologs as TL ON LI.id = TL.max_id
+								WHERE llave IN ('".implode("','",$arrayDocs)."')
 								ORDER BY LI.id";
 
 			$logDocumentsQuery=mysql_query($logDocumentsSql,$this->mysql);
