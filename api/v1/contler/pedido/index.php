@@ -4,12 +4,14 @@
 	header("Access-Control-Allow-Headers: *");
 	error_reporting(E_ERROR | E_PARSE);
 
-	require 'apiOrdenes.php';
+	require 'Pedido_Controller.php';
+
+	
 	// OBJETO DE LA CLASE
 	$method = $_SERVER['REQUEST_METHOD'];
 	$json   = file_get_contents('php://input');
 	$data   = json_decode($json,true);
-	$obj    = new ApiOrdenes();
+	$obj    = new Pedido_Controller();
 	switch($method){
 		/*
 		 * Nota: Por regla el JSON debe estar aramado con comilla doble no simple para los string.
@@ -31,16 +33,16 @@
 		break;
 
 		case 'POST':
-			$response['status'] = 405;
-        	$response['data']=array('failure'=>'Metodo HTTP no configurado para respuesta.');
-				// $result =$obj->store($data);
-				// if($result['status']){
-        		// 	$response['status'] = 202;
-        		// 	$response['data']=array('success'=>'Informacion registrada', 'consecutivo' => $result['consecutivo']);
-				// }else{
-				// 	$response['status'] = 400;
-        		// 	$response['data']=array('failure'=>'Ha ocurrido un error','detalle'=>$result['detalle']);
-				// }
+			// $response['status'] = 405;
+        	// $response['data']=array('failure'=>'Metodo HTTP no configurado para respuesta.');
+			$result =$obj->store($data);
+			if($result['status']){
+				$response['status'] = 202;
+				$response['data']=array('success'=>'Informacion registrada', 'consecutivo' => $result['consecutivo']);
+			}else{
+				$response['status'] = 400;
+				$response['data']=array('failure'=>'Ha ocurrido un error','detalle'=>$result['detalle']);
+			}
 			break;
 
 		case 'PUT':

@@ -1,5 +1,7 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].'/misc/ConnectDb/class.ConnectDb.php';
+	// echo '/misc/ConnectDb/class.ConnectDb.php';
+	// include $_SERVER['DOCUMENT_ROOT'].'/misc/ConnectDb/class.ConnectDb.php';
+	include '../../../../misc/ConnectDb/class.ConnectDb.php';
 
     /** 
      * Main functions to use in api's authentication, response, etc
