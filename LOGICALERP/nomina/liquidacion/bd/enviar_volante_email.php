@@ -140,7 +140,7 @@ function imprimirEnviaVolante($id_planilla,$id_empleado,$id_contrato,$mail,$mpdf
 	$email_personal       = mysql_result($query,0,'email_personal');
 	$email_empresa        = mysql_result($query,0,'email_empresa');
 	$email_notificaciones = mysql_result($query,0,'email_notificaciones');
-	$email_envio = ($email_notificaciones=='email_personal')? $email_personal : $email_empresa ;
+	$email_envio = ($email_notificaciones=='email_personal')? trim($email_personal) : trim($email_empresa) ;
 
 	if (!filter_var($email_envio, FILTER_VALIDATE_EMAIL)) {
     	return array('return' => 'false', 'mensaje' => 'Email de empleado invalido! configurelo desde el modulo de empleado e intentelo de nuevo' );
