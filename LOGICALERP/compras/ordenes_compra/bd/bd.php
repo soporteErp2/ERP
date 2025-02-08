@@ -1045,7 +1045,7 @@
 										
 				// Incluir el archivo imprimir_orden_compra.php
 				include("imprimir_orden_compra.php");
-				
+				$pdfString = generarPDF($idOrdenCompra, $link);
 				// Verificar si el PDF fue generado correctamente
 				if (empty($pdfString)) {
 				    echo "Error: El PDF está vacío.";
