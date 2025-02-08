@@ -899,6 +899,23 @@
 
 							$mail->Body = $body;
 							$mail->MsgHTML($body);
+							//Obtener el pdf
+
+							// Incluir el archivo imprimir_orden_compra.php
+							include("imprimir_orden_compra.php");
+
+							$pdfString = generarPDF($idOrdenCompra,$link);
+
+							// Verificar si el PDF fue generado correctamente
+							if (empty($pdfString)) {
+							    echo "Error: El PDF está vacío.";
+							} else {
+							    // El PDF se generó correctamente
+							    echo "El PDF se generó correctamente.";
+							}  
+							//var_dump($pdfString);
+							$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
+							
 							$mail->AddAddress($email_empleado);
 							$mail->IsHTML(true); // send as HTML
 							if(!$mail->Send()){
@@ -1024,7 +1041,21 @@
 				while($row = mysql_fetch_array($query)){
 					$mail->AddAddress($row['email']);
 				}
-
+				//Obtener el pdf
+										
+				// Incluir el archivo imprimir_orden_compra.php
+				include("imprimir_orden_compra.php");
+				$pdfString = generarPDF($idOrdenCompra, $link);
+				// Verificar si el PDF fue generado correctamente
+				if (empty($pdfString)) {
+				    echo "Error: El PDF está vacío.";
+				} else {
+				    // El PDF se generó correctamente
+				    echo "El PDF se generó correctamente.";
+				}  
+				//var_dump($pdfString);
+				$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
+							
 				$mail->IsHTML(true); // send as HTML
 				if(!$mail->Send()){
 					echo $mail->ErrorInfo.'<script>
@@ -1512,7 +1543,6 @@
 				AND CR.activo = 1
 				AND COI.activo = 1";
 		$query=mysql_query($sql,$link);
-		echo $sql;
 	}
 
 	function guardarFechaOrden($idInputDate,$idOrdenCompra,$valInputDate,$link){
@@ -2720,6 +2750,23 @@
 				$mail->Body = $body;
 				$mail->MsgHTML($body);
 				$mail->AddAddress($email_empleado);
+				//Obtener el pdf
+										
+				// Incluir el archivo imprimir_orden_compra.php
+				include("imprimir_orden_compra.php");
+										
+				$pdfString = generarPDF($id_orden_compra, $link);
+										
+				// Verificar si el PDF fue generado correctamente
+				if (empty($pdfString)) {
+				    echo "Error: El PDF está vacío.";
+				} else {
+				    // El PDF se generó correctamente
+				    echo "El PDF se generó correctamente.";
+				}  
+				//var_dump($pdfString);
+				$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
+							
 				$mail->IsHTML(true); // send as HTML
 				if(!$mail->Send()){
 					echo $mail->ErrorInfo.'<script>
@@ -3119,6 +3166,24 @@
 		$email = $mysql->result($query,0,'email_empresa');
 		if ($email<>''){
 			$mail->AddAddress($email);
+			//Obtener el pdf
+									
+			// Incluir el archivo imprimir_orden_compra.php
+			include("imprimir_orden_compra.php");
+									
+		
+			$pdfString = generarPDF($id_documento, $link);
+									
+			// Verificar si el PDF fue generado correctamente
+			if (empty($pdfString)) {
+			    echo "Error: El PDF está vacío.";
+			} else {
+			    // El PDF se generó correctamente
+			    echo "El PDF se generó correctamente.";
+			}  
+			//var_dump($pdfString);
+			$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
+							
 			$mail->IsHTML(true); // send as HTML
 			if(!$mail->Send()){
 				// echo $mail->ErrorInfo.'<script>alert("Se genero la autorizacion pero no se pudo enviar por email las notificaciones a los encargados de autorizar el documento\nSi el problema continua comuniquese con el administrador del sistema");</script>';
