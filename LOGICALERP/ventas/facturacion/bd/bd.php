@@ -1708,13 +1708,13 @@
 		?>
 			<div style="margin-top:5px;">
 				<select onchange="load_anticipos_ventas(this.value)" class="myfield" style="width:145px;">
-					<option value="">Todos</option>
 					<option value="tercero">Tercero Factura</option>
+					<option value="">Todos</option>
 				<select>
 			</div>
 			<script type="text/javascript">
 
-				load_anticipos_ventas("");
+				load_anticipos_ventas("tercero");
 
 				function load_anticipos_ventas(opcAnticipo){
 
