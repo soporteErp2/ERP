@@ -169,12 +169,12 @@ class Pedido_Controller extends ApiFunctions
         return  $arrayResult['id_cuenta'];
     }
 
-    public function add_account_client($params){
-        $randomico = $this->randomico();
+    public function add_account_client($data){
+        $randomico = $this->random();
 
-        if(isset($params['id_cuenta'])){
-            $sql = "SELECT id FROM ventas_pos_mesas_cuenta WHERE id=".$params['id_cuenta'];
-            // $deleteQuery=$this->mysql->query("DELETE FROM ventas_pos_mesas_cuenta_comensales WHERE id_cuenta=".$params['id_cuenta']);
+        if(isset($data['id_cuenta'])){
+            $sql = "SELECT id FROM ventas_pos_mesas_cuenta WHERE id=".$data['id_cuenta'];
+            // $deleteQuery=$this->mysql->query("DELETE FROM ventas_pos_mesas_cuenta_comensales WHERE id_cuenta=".$data['id_cuenta']);
         }
         else{
             $sql = "INSERT INTO ventas_pos_mesas_cuenta
@@ -197,19 +197,19 @@ class Pedido_Controller extends ApiFunctions
                 VALUES
                 (
                     '$randomico',
-                    '$params[id_mesa]',
-                    '$params[nombre_mesa]',
+                    '$data[id_mesa]',
+                    '$data[nombre_mesa]',
                     '2',
-                    '".$this->arrayEstado['id']['2']['nombre']."',
+                    '".$this->cash_register['nombre_caja_unica']."',
                     'no_disponible',
-                    '".$this->arrayEstado['id']['2']['color']."',
+                    '#f8a640',
                     '".date("Y-m-d")."',
                     '".date("H:i:s")."',
-                    '$params[id_usuario]',
-                    '$params[documento_usuario]',
-                    '$params[nombre_usuario]',
+                    '".$this->id_usuario."',
+                    '".$this->documento_usuario."',
+                    '".$this->nombre_usuario."',
                     'Abierta',
-                    '$this->id_empresa'
+                    '".$this->id_empresa."'
                 )";
 
             $query=$this->mysql->query($sql);
@@ -222,117 +222,90 @@ class Pedido_Controller extends ApiFunctions
             $sql = "SELECT id FROM ventas_pos_mesas_cuenta WHERE randomico='$randomico' ";
         }
 
-
         $query=$this->mysql->query($sql);
         $id_cuenta = $this->mysql->result($query,0,'id');
 
-
-
-        foreach ($params['comensales'] as $key => $arrayResult) {
-            if ($arrayResult['cantidad']<=0) { continue; }
-
-            if($arrayResult['tipo']=='Huesped'){
-
-
-                foreach ($arrayResult['detalle'] as  $valores) {
-                    $id_reserva         = $valores['id'];
-                    $numero_reserva     = $valores['numero_reserva'];
-                    $numero_habitacion  = $valores['numero_habitacion'];
-                    $id_comensal        = $valores['guest_id'];
-                    $documento_comensal = $valores['numero_documento'];
-                    $comensal           = $valores['primer_nombre'].' '.$valores['segundo_nombre'].' '.$valores['primer_apellido'].' '.$valores['segundo_apellido'];
-
-                    $sql = "INSERT INTO ventas_pos_mesas_cuenta_comensales
-                    (
-                        id_cuenta,
-                        tipo,
-                        cantidad,
-                        id_reserva,
-                        numero_reserva,
-                        numero_habitacion,
-                        id_comensal,
-                        documento_comensal,
-                        comensal,
-                        id_empresa
-
-                    )
-                    VALUES
-                    (
-                        '$id_cuenta',
-                        '$arrayResult[tipo]',
-                        '$arrayResult[cantidad]',
-                        '".$id_reserva."',							
-                        '".$numero_reserva."',
-                        '".$numero_habitacion."',
-                        '".$id_comensal."',
-                        '".$documento_comensal."',
-                        '".$comensal."',
-                        '$this->id_empresa'
-                    )";
-
-
-
-                    $query=$this->mysql->query($sql);
-                }
-
-            }else{
-                $sql = "INSERT INTO ventas_pos_mesas_cuenta_comensales
-                    (
-                        id_cuenta,
-                        tipo,
-                        cantidad,
-                        id_reserva,
-                        numero_habitacion,
-                        id_comensal,
-                        documento_comensal,
-                        comensal,
-                        id_empresa
-
-                    )
-                    VALUES
-                    (
-                        '$id_cuenta',
-                        '$arrayResult[tipo]',
-                        '$arrayResult[cantidad]',
-                        '',
-                        '',
-                        '',
-                        '',
-                        '',
-                        '$this->id_empresa'
-                    )";
-
-                    $query=$this->mysql->query($sql);
-            }
-
-
+        // consultar la informacion del huesped
+        $hotels_data['request_url']    = $this->apiHotels['url']."getPosHuesped/".$this->nit_empresa."/$data[num_hab]"; // ESTA VARIABLE ES HEREADA DE LA CLASE DE FUNCIONES GLOBALES
+        $hotels_data['request_method'] = "GET";
+        $huesped = json_decode($this->curlApi($hotels_data));
+        
+        if ($huesped->error) {
+            return ["status"=>false,"detalle"=>"no se encontro el huesped"];
         }
+        echo json_encode($huesped);
+        exit;
 
-        if (!$query) {
-            $arrayResult = array('status' => 'failed', 'message'=>'Se produjo un error al abrir la cuenta de la mesa' );
-            // $arrayResult = array('status' => 'success', 'estados'=> $arrayRest);
+        // consultar si ya se agrego el huesped entonces solo agregar el item a la cuenta y generar la comanda
+        $sql = "SELECT id_comensal FROM 
+                    ventas_pos_mesas_cuenta_comensales 
+                WHERE id_cuenta=$id_cuenta AND numero_habitacion=".$huesped->numero_habitacion." AND numero_reserva=".$huesped->numero_reserva;
+        $query=$this->mysql->query($sql);
+        $id_comensal = $this->mysql->result($query,0,'id_comensal');
+
+        if ($id_comensal) {
+            $add_items = $this->add_client_items($huesped,$data);
+            if (!$add_items) {
+                # code...
+            }
         }
         else{
+            $id_reserva         = $huesped->id;
+            $numero_reserva     = $huesped->numero_reserva;
+            $numero_habitacion  = $huesped->numero_habitacion;
+            $id_comensal        = $huesped->guest_id;
+            $documento_comensal = $huesped->numero_documento;
+            $comensal           = $huesped->primer_nombre.' '.$huesped->segundo_nombre.' '.$huesped->primer_apellido.' '.$huesped->segundo_apellido;
 
-            $sql="SELECT
-                        vc.*
-                    FROM
-                        ventas_pos_mesas_cuenta_comensales vc
-                    WHERE
-                    vc.tipo='Huesped'
-                    AND vc.activo=1
-                    AND vc.id_cuenta=$id_cuenta
-                    ";
+            
+            $sql = "INSERT INTO ventas_pos_mesas_cuenta_comensales
+            (
+                id_cuenta,
+                tipo,
+                cantidad,
+                id_reserva,
+                numero_reserva,
+                numero_habitacion,
+                id_comensal,
+                documento_comensal,
+                comensal,
+                id_empresa
+
+            )
+            VALUES
+            (
+                '$id_cuenta',
+                'Huesped',
+                '1',
+                '".$id_reserva."',							
+                '".$numero_reserva."',
+                '".$numero_habitacion."',
+                '".$id_comensal."',
+                '".$documento_comensal."',
+                '".$comensal."',
+                '$this->id_empresa'
+            )";
+
             $query=$this->mysql->query($sql);
-            while ($row=$this->mysql->fetch_array($query)) {
-                $arrayHuespedes[] = $row;
+
+            if (!$query) {
+                return ["status"=>false,"detalle"=>"error agregando el huesped al pedido","debug"=>$sql];
             }
 
-            $arrayHuespedes = isset($arrayHuespedes)?$arrayHuespedes:'';
-
-            $arrayResult = array('status' => 'success', 'id_cuenta'=>$id_cuenta, 'huespedes'=>$arrayHuespedes );
+            $add_items = $this->add_client_items($huesped,$data);
+            if (!$add_items) {
+                # code...
+            }
         }
+
+        $arrayHuespedes = isset($arrayHuespedes)?$arrayHuespedes:'';
+        $arrayResult = array('status' => 'success', 'id_cuenta'=>$id_cuenta, 'huespedes'=>$arrayHuespedes );
+
         echo json_encode($arrayResult);
+    }
+
+    public function add_client_items(){
+
     }
 
     public function store($data){
@@ -355,7 +328,13 @@ class Pedido_Controller extends ApiFunctions
         $params['nombre_usuario']    = '';
 
         
-        $this->add_account_client($params);
+        $order_add = $this->add_account_client($data);
+        if (!$order_add['status']) {
+            return ["status"=>false,"msg"=>"se produjo un error al agregar el pedido","detalle"=>$order_add['detalle']];
+        }
+        else{
+
+        }
 
         // echo $this->configuration_data['section'];
         echo json_encode($this->table_detail);

@@ -20,6 +20,8 @@
 		// private $ServidorDb = 'localhost';
 		private $NameDb     = 'erp_acceso';
 
+		public $apiHotels = array( 'url' => "https://logicalhotels.com/api/" );
+
         function __construct(){
 			$this->conexion();
 			$this->authentication();
@@ -110,6 +112,31 @@
 
 	    	$randomico = $random1.''.$random2; // ID UNICO
 	    	return $randomico;
+		}
+
+		public function curlApi($params){
+			$client = curl_init();
+			$options = array(
+								CURLOPT_HTTPHEADER     => array('Content-Type: application/json',"$params[Authorization]"),
+								CURLOPT_URL            => "$params[request_url]",
+								CURLOPT_CUSTOMREQUEST  => "$params[request_method]",
+								CURLOPT_RETURNTRANSFER => true,
+								CURLOPT_POSTFIELDS     => $params['data'],
+                        		CURLOPT_SSL_VERIFYPEER => false
+											);
+			curl_setopt_array($client,$options);
+			$response    = curl_exec($client);
+			$curl_errors = curl_error($client);
+
+			if(!empty($curl_errors)){
+				$response['status']               = 'failed';
+				$response['errors'][0]['titulo']  = curl_getinfo($client);
+				$response['errors'][0]['detalle'] = curl_error($client);
+			}
+
+			$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
+			curl_close($client);
+			return $response;
 		}
 
 		public function apiResponse($response){
