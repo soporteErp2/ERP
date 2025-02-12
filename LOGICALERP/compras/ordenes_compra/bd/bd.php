@@ -888,13 +888,15 @@
 											<td>'.$documento_usuario.' - '.$usuario.' </td>
 										</tr>
 									</table>
+									<!-- 
 									<table>
 										<tr>
-											<td>
+											<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
 												  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
 											</td>
 										</tr>
 									</table>
+									-->
 									<br>
 									<br>
 									Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -1027,6 +1029,7 @@
 								<td>'.$documento_usuario.' - '.$usuario.' </td>
 							</tr>
 						</table>
+						<!-- 
 						<table>
 								<tr>
 									<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
@@ -1034,6 +1037,7 @@
 									</td>
 								</tr>
 						</table>
+						-->
 						<br>
 						<br>
 						Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -2744,6 +2748,7 @@
 								<td>'.$documento_usuario.' - '.$usuario.' </td>
 							</tr>
 						</table>
+						<!-- 
 						<table>
 							<tr>
 								<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
@@ -2751,6 +2756,7 @@
 								</td>
 							</tr>
 						</table>
+						-->
 						<br>
 						<br>
 						Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -3157,6 +3163,7 @@
 						<td>'.$documento_usuario.' - '.$usuario.' </td>
 					</tr>
 				</table>
+				<!-- 
 				<table>
 					<tr>
 						<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
@@ -3164,6 +3171,7 @@
 						</td>
 					</tr>
 				</table>
+				-->
 				<br>
 				<br>
 				Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
