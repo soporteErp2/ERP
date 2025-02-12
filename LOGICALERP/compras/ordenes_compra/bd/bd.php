@@ -888,10 +888,13 @@
 											<td>'.$documento_usuario.' - '.$usuario.' </td>
 										</tr>
 									</table>
-
-									<!--El usuario '.$documento_usuario.' - '.$usuario.' creo la Orden de Compra No. <span style="font-size:18px;font-weight:bold;">'.$consecutivo.'</span> en la bodega <b>'.$bodega.'</b> de la sucursal <b>'.$sucursal.'</b> solicitado por '.$documento_solicitante.' - '.$nombre_solicitante.' del area de '.$area_solicitante.'  <br>
-									Ingrese a la aplicacion y dirijase al modulo de compras, en la pesta&ntilde;a Ordenes de compra, busque el documento, oprima el boton autorizar y seleccione la opcion de autorizacion que desee<br><br>-->
-									<br>
+									<table>
+										<tr>
+											<td>
+												  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+											</td>
+										</tr>
+									</table>
 									<br>
 									<br>
 									Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -1024,10 +1027,13 @@
 								<td>'.$documento_usuario.' - '.$usuario.' </td>
 							</tr>
 						</table>
-
-						<!--El usuario '.$documento_usuario.' - '.$usuario.' creo la Orden de Compra No. <span style="font-size:18px;font-weight:bold;">'.$consecutivo.'</span> en la bodega <b>'.$bodega.'</b> de la sucursal <b>'.$sucursal.'</b> solicitado por '.$documento_solicitante.' - '.$nombre_solicitante.' del area de '.$area_solicitante.'  <br>
-						Ingrese a la aplicacion y dirijase al modulo de compras, en la pesta&ntilde;a Ordenes de compra, busque el documento, oprima el boton autorizar y seleccione la opcion de autorizacion que desee<br><br>-->
-						<br>
+						<table>
+								<tr>
+									<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
+										  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+									</td>
+								</tr>
+						</table>
 						<br>
 						<br>
 						Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -2738,10 +2744,13 @@
 								<td>'.$documento_usuario.' - '.$usuario.' </td>
 							</tr>
 						</table>
-
-						<!--El usuario '.$documento_usuario.' - '.$usuario.' creo la Orden de Compra No. <span style="font-size:18px;font-weight:bold;">'.$consecutivo.'</span> en la bodega <b>'.$bodega.'</b> de la sucursal <b>'.$sucursal.'</b> solicitado por '.$documento_solicitante.' - '.$nombre_solicitante.' del area de '.$area_solicitante.'  <br>
-						Ingrese a la aplicacion y dirijase al modulo de compras, en la pesta&ntilde;a Ordenes de compra, busque el documento, oprima el boton autorizar y seleccione la opcion de autorizacion que desee<br><br>-->
-						<br>
+						<table>
+							<tr>
+								<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
+									  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+								</td>
+							</tr>
+						</table>
 						<br>
 						<br>
 						Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -3148,10 +3157,13 @@
 						<td>'.$documento_usuario.' - '.$usuario.' </td>
 					</tr>
 				</table>
-
-				<!--El usuario '.$documento_usuario.' - '.$usuario.' creo la Orden de Compra No. <span style="font-size:18px;font-weight:bold;">'.$consecutivo.'</span> en la bodega <b>'.$bodega.'</b> de la sucursal <b>'.$sucursal.'</b> solicitado por '.$documento_solicitante.' - '.$nombre_solicitante.' del area de '.$area_solicitante.'  <br>
-				Ingrese a la aplicacion y dirijase al modulo de compras, en la pesta&ntilde;a Ordenes de compra, busque el documento, oprima el boton autorizar y seleccione la opcion de autorizacion que desee<br><br>-->
-				<br>
+				<table>
+					<tr>
+						<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
+							  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+						</td>
+					</tr>
+				</table>
 				<br>
 				<br>
 				Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
