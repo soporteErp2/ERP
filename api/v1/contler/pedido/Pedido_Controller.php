@@ -197,12 +197,12 @@ class Pedido_Controller extends ApiFunctions
                 VALUES
                 (
                     '$randomico',
-                    '$data[id_mesa]',
+                    '".$this->configuration_data['table']."',
                     '$data[nombre_mesa]',
-                    '2',
+                    '3',
                     '".$this->cash_register['nombre_caja_unica']."',
                     'no_disponible',
-                    '#f8a640',
+                    '#db5957',
                     '".date("Y-m-d")."',
                     '".date("H:i:s")."',
                     '".$this->id_usuario."',
@@ -233,8 +233,7 @@ class Pedido_Controller extends ApiFunctions
         if ($huesped->error) {
             return ["status"=>false,"detalle"=>"no se encontro el huesped"];
         }
-        echo json_encode($huesped);
-        exit;
+        
 
         // consultar si ya se agrego el huesped entonces solo agregar el item a la cuenta y generar la comanda
         $sql = "SELECT id_comensal FROM 
@@ -244,18 +243,18 @@ class Pedido_Controller extends ApiFunctions
         $id_comensal = $this->mysql->result($query,0,'id_comensal');
 
         if ($id_comensal) {
-            $add_items = $this->add_client_items($huesped,$data);
+            $add_items = $this->add_client_items($huesped,$data['pedidos']);
             if (!$add_items) {
                 # code...
             }
         }
         else{
-            $id_reserva         = $huesped->id;
-            $numero_reserva     = $huesped->numero_reserva;
-            $numero_habitacion  = $huesped->numero_habitacion;
-            $id_comensal        = $huesped->guest_id;
-            $documento_comensal = $huesped->numero_documento;
-            $comensal           = $huesped->primer_nombre.' '.$huesped->segundo_nombre.' '.$huesped->primer_apellido.' '.$huesped->segundo_apellido;
+            $id_reserva         = $huesped->response[0]->guest_reservations;
+            $numero_reserva     = $huesped->response[0]->numero_reserva;
+            $numero_habitacion  = $huesped->response[0]->numero_habitacion;
+            $id_comensal        = $huesped->response[0]->guest_id;
+            $documento_comensal = $huesped->response[0]->numero_documento;
+            $comensal           = $huesped->response[0]->primer_nombre.' '.$huesped->response[0]->segundo_nombre.' '.$huesped->response[0]->primer_apellido.' '.$huesped->response[0]->segundo_apellido;
 
             
             $sql = "INSERT INTO ventas_pos_mesas_cuenta_comensales
@@ -292,20 +291,62 @@ class Pedido_Controller extends ApiFunctions
                 return ["status"=>false,"detalle"=>"error agregando el huesped al pedido","debug"=>$sql];
             }
 
-            $add_items = $this->add_client_items($huesped,$data);
+            $add_items = $this->add_client_items($huesped,$data['pedidos']);
             if (!$add_items) {
                 # code...
             }
         }
 
-        $arrayHuespedes = isset($arrayHuespedes)?$arrayHuespedes:'';
-        $arrayResult = array('status' => 'success', 'id_cuenta'=>$id_cuenta, 'huespedes'=>$arrayHuespedes );
+        // echo " --> ".$huesped->response[0]->numero_reserva." <---";
+        // echo json_encode($huesped->response);
+        // echo json_encode($huesped);
+        // exit;
 
-        echo json_encode($arrayResult);
+        // $arrayHuespedes = isset($arrayHuespedes)?$arrayHuespedes:'';
+        // $arrayResult = array('status' => 'success', 'id_cuenta'=>$id_cuenta, 'huespedes'=>$arrayHuespedes );
+
+        // echo json_encode($arrayResult);
     }
 
-    public function add_client_items(){
+    public function add_client_items($huesped,$items){
+        $id_items = array_column($items, 'id_item');
+        $sql = "SELECT id FROM items WHERE id IN (".implode(",",$id_items).")";
+        $query=$this->mysql->query($sql);
 
+        $result_ids = [];
+        while ($row = $this->mysql->fetch_assoc()) {
+            $result_ids[] = $row['id'];
+            $id_items[] = $row;
+        }
+
+        // Validar si todos los id_items están en los resultados
+        $missing_items = array_diff($id_items, $result_ids);
+
+
+        // id
+        // id_cuenta
+        // id_item
+        // codigo_item
+        // nombre_item
+        // cantidad
+        // cantidad_pendiente
+        // termino
+        // precio
+        // id_impuesto
+        // nombre_impuesto
+        // porcentaje_impuesto
+        // observaciones
+        // id_comanda
+        // id_usuario
+        // documento_usuario
+        // usuario
+        // id_bodega_produccion
+        // id_empresa
+        // activo
+        // id_comensal
+
+
+        echo json_encode($id_items);
     }
 
     public function store($data){
@@ -327,7 +368,9 @@ class Pedido_Controller extends ApiFunctions
         $params['documento_usuario'] = '';
         $params['nombre_usuario']    = '';
 
-        
+        if ($this->table_detail['id_cuenta']) {
+            $data['id_cuenta'] = $this->table_detail['id_cuenta'];
+        }
         $order_add = $this->add_account_client($data);
         if (!$order_add['status']) {
             return ["status"=>false,"msg"=>"se produjo un error al agregar el pedido","detalle"=>$order_add['detalle']];
