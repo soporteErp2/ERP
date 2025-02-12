@@ -347,6 +347,7 @@
             $resultItems['saldo_cantidad'] = 0;
           }
           else{
+            $this->cantidadTotal[$id_oc]  += $resultItems['cantidad']*1;
             if($resultItems['tipo_descuento'] == "porcentaje"){
               $this->subtotalOrden[$id_oc][$id_row]   = ($resultItems['costo_unitario'] * $resultItems['cantidad']) - ((($resultItems['costo_unitario'] * $resultItems['cantidad']) * $resultItems['descuento']) / 100);
               $this->descuentoOrden[$id_oc][$id_row]  = (($resultItems['costo_unitario'] * $resultItems['cantidad']) * $resultItems['descuento']) / 100;
@@ -374,7 +375,8 @@
                                           'impuesto'          => $this->totalImpuestoOrden[$id_oc],
                                           'total'             => $this->totalOrden[$id_oc],
                                           'valor_pendientes'  => $this->totalValorPendienteOrden[$id_oc],
-                                          'unidad_pendientes' => $this->totalUnidadPendienteOrden[$id_oc]
+                                          'unidad_pendientes' => $this->totalUnidadPendienteOrden[$id_oc],
+                                          'cantidad_total'    => $this->cantidadTotal[$id_oc]
                                         );
       }
     }
@@ -396,6 +398,7 @@
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[consecutivo]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[consecutivo_cruce]</td>
                             <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_factura]</td>
+                            <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['cantidad_total'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['subtotal'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['impuesto'],$_SESSION['DECIMALESMONEDA'])."</td>
                             <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['total'],$_SESSION['DECIMALESMONEDA'])."</td>
@@ -429,11 +432,15 @@
                               <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_inicio]</td>
                               <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_vencimiento]</td>
                               <td style='text-align:center; font-size:11px; $styleCancel'>$result[consecutivo]</td>
+                              <td style='text-align:center; font-size:11px; $styleCancel'>$result[consecutivo_cruce]</td>
+                              <td style='text-align:center; font-size:11px; $styleCancel'>$result[fecha_factura]</td>
+                              <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['cantidad_total'],$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['subtotal'],$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['impuesto'],$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['total'],$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['unidad_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
                               <td style='text-align:right;  font-size:11px; $styleCancel'>".round($result['valor_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
+                              <td style='text-align:center; font-size:11px; $styleCancel'>$result[nit_proveedor]</td>
                               <td style='text-align:center; font-size:11px; $styleCancel'>$result[proveedor]</td>
                               <td style='text-align:center; font-size:11px; $styleCancel'>$result[usuario]</td>
                               <td style=text-align:center;  font-size:11px; $styleCancel'>$result[tipo_nombre]</td>
@@ -508,6 +515,7 @@
           <td>CONSECUTIVO</td>
           <td>CONSECUTIVO CRUCE</td>
           <td>FECHA FACTURACION</td>
+          <td>CANTIDAD OC</td>
           <td>SUBTOTAL</td>
           <td>IVA</td>
           <td>TOTAL</td>
@@ -559,6 +567,7 @@
                             <td style='width:70px;text-align:center;'><b>CONSECUTIVO</b></td>
                             <td style='width:70px;text-align:center;'>CONSECUTIVO CRUCE</td>
                             <td style='width:70px;text-align:center;'>FECHA FACTURACION</td>
+                            <td style='width:70px;text-align:center;'>CANTIDAD OC</td>
                             <td style='width:70px;text-align:center;'><b>SUBTOTAL</b></td>
                             <td style='width:70px;text-align:center;'><b>IVA</b></td>
                             <td style='width:70px;text-align:center;'><b>UND. PENDIENTE(S)</b></td>
@@ -578,6 +587,7 @@
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[consecutivo]</td>
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[consecutivo_cruce]</td>
                           <td style='width:70px; text-align:center; font-size:11px; $styleCancel'>$result[fecha_factura]</td>
+                          <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['cantidad_total'],$_SESSION['DECIMALESMONEDA'])."</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['subtotal'],$_SESSION['DECIMALESMONEDA'])."</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['impuesto'],$_SESSION['DECIMALESMONEDA'])."</td>
                           <td style='width:70px; text-align:right;  font-size:11px; $styleCancel'>".round($result['unidad_pendientes'],$_SESSION['DECIMALESMONEDA'])."</td>
