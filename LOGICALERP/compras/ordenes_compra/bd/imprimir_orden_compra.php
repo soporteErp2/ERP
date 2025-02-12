@@ -1,6 +1,6 @@
 <?php
 function generarPDF($id, $conexionBD){
-	include($_SERVER['DOCUMENT_ROOT']."/LOGICALERP/compras/bd/functions_imprimir.php");
+	include($_SERVER['DOCUMENT_ROOT']."/ERP/LOGICALERP/compras/bd/functions_imprimir.php");
 
 	if($_SESSION['EMPRESA'] == ''){ echo "USUARIO NO REGISTRADO"; return; }
 	$id_empresa          = $_SESSION['EMPRESA'];
@@ -12,8 +12,8 @@ function generarPDF($id, $conexionBD){
 	$idTablaPrincipal    = 'id_orden_compra';
 	$tablaInventario     = 'compras_ordenes_inventario';
 
-	if(file_exists($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra.php")){
-		include($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra.php");
+	if(file_exists($_SERVER['DOCUMENT_ROOT']."/ERP/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra.php")){
+		include($_SERVER['DOCUMENT_ROOT']."/ERP/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra.php");
 	}
 	else{
 
@@ -473,7 +473,7 @@ function generarPDF($id, $conexionBD){
 
 	if(!isset($TAMANO_ENCA)){ $TAMANO_ENCA = 12; }
 
-	include($_SERVER['DOCUMENT_ROOT']."/misc/MPDF54/mpdf.php");
+	include($_SERVER['DOCUMENT_ROOT']."/ERP/misc/MPDF54/mpdf.php");
 	$mpdf = new mPDF(
 		'utf-8',   			// mode - default ''
 		$HOJA,					// format - A4, for example, default ''
