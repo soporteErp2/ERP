@@ -7,6 +7,7 @@ class Pedido_Controller extends ApiFunctions
     private $configuration_data = null;
     private $cash_register = null;
     private $table_detail = null;
+    private $id_comanda = null;
 
     public function show(){
         echo json_encode([1,2,3]);
@@ -238,14 +239,19 @@ class Pedido_Controller extends ApiFunctions
         // consultar si ya se agrego el huesped entonces solo agregar el item a la cuenta y generar la comanda
         $sql = "SELECT id_comensal FROM 
                     ventas_pos_mesas_cuenta_comensales 
-                WHERE id_cuenta=$id_cuenta AND numero_habitacion=".$huesped->numero_habitacion." AND numero_reserva=".$huesped->numero_reserva;
+                WHERE id_cuenta=$id_cuenta AND numero_habitacion=".$huesped->numero_habitacion." AND numero_reserva=".$huesped->response[0]->numero_reserva;
         $query=$this->mysql->query($sql);
         $id_comensal = $this->mysql->result($query,0,'id_comensal');
 
+        //insertar comanda
+        if(!$this->add_comanda($id_cuenta)){
+            return ["status"=>false,"detalle"=>"error al insertar comanda"];
+        }
+
         if ($id_comensal) {
-            $add_items = $this->add_client_items($huesped,$data['pedidos']);
-            if (!$add_items) {
-                # code...
+            $add_items = $this->add_client_items($huesped,$data['pedidos'],$id_cuenta);
+            if (!$add_items["status"]) {
+                return ["status"=>false,"detalle"=>"error agregando los items, ".$add_items["detalle"]];
             }
         }
         else{
@@ -291,62 +297,179 @@ class Pedido_Controller extends ApiFunctions
                 return ["status"=>false,"detalle"=>"error agregando el huesped al pedido","debug"=>$sql];
             }
 
-            $add_items = $this->add_client_items($huesped,$data['pedidos']);
-            if (!$add_items) {
-                # code...
+            $add_items = $this->add_client_items($huesped,$data['pedidos'],$id_cuenta);
+            if (!$add_items["status"]) {
+                return ["status"=>false,"detalle"=>"error agregando los items, ".$add_items["detalle"]];
             }
         }
 
-        // echo " --> ".$huesped->response[0]->numero_reserva." <---";
-        // echo json_encode($huesped->response);
-        // echo json_encode($huesped);
-        // exit;
+        return ["status"=>true,"id_pedido"=>$id_cuenta];
 
-        // $arrayHuespedes = isset($arrayHuespedes)?$arrayHuespedes:'';
-        // $arrayResult = array('status' => 'success', 'id_cuenta'=>$id_cuenta, 'huespedes'=>$arrayHuespedes );
-
-        // echo json_encode($arrayResult);
     }
 
-    public function add_client_items($huesped,$items){
+    public function add_comanda($id_cuenta){
+        $randomico = $this->random();
+        $sql = "INSERT INTO ventas_pos_comanda 
+                    (
+                        id_cuenta,
+                        fecha,
+                        hora,
+                        randomico,
+                        id_usuario,
+                        documento_usuario,
+                        usuario,
+                        id_caja,
+                        nombre_caja,
+                        id_empresa,
+                        estado
+                    )
+                    VALUES
+                    (
+                        '$id_cuenta',
+                        '".date("Y-m-d")."',
+                        '".date("H:i:s")."',
+                        '$randomico',
+                        '".$this->id_usuario."',
+                        '".$this->documento_usuario."',
+                        '".$this->nombre_usuario."',
+                        '".$this->cash_register['id_caja_unica']."',
+                        '".$this->cash_register['nombre_caja_unica']."',
+                        '".$this->id_empresa."',
+                        '1'
+                    )";
+        $query=$this->mysql->query($sql);
+        if (!$query) {
+            return false;
+        } 
+        $this->id_comanda = $this->mysql->insert_id();
+        return true;
+    }
+
+    public function add_client_items($huesped,$items,$id_cuenta){
         $id_items = array_column($items, 'id_item');
-        $sql = "SELECT id FROM items WHERE id IN (".implode(",",$id_items).")";
+        $sql = "SELECT id,codigo, nombre_equipo as nombre,id_impuesto,impuesto FROM items WHERE id IN (".implode(",",$id_items).")";
         $query=$this->mysql->query($sql);
 
         $result_ids = [];
         while ($row = $this->mysql->fetch_assoc()) {
             $result_ids[] = $row['id'];
-            $id_items[] = $row;
+            $erp_items[$row['id']] = $row;
         }
 
         // Validar si todos los id_items están en los resultados
         $missing_items = array_diff($id_items, $result_ids);
+        if (!empty($missing_items)) {
+            return ["status"=>false,"detalle"=>"los items con id ". implode(",", $missing_items)." no existe en el sistema"];
+        } 
+
+        // consultar las recetas de items
+        $sql = "SELECT 
+                    id_item,
+                    codigo_item,
+                    nombre_item,
+                    id_item_materia_prima,
+                    codigo_item_materia_prima,
+                    nombre_item_materia_prima,
+                    cantidad_item_materia_prima 
+                    FROM items_recetas WHERE id_item IN (".implode(",",$id_items).")";
+        $query=$this->mysql->query($sql);
+        while ($row = $this->mysql->fetch_assoc()) {
+            $items_receta[$row['id_item']][] = $row;
+        }
+
+        // guardar los items
+        foreach ($items as $key => $item) {
+           echo $sql = "INSERT INTO ventas_pos_mesas_cuenta_items
+                        (
+                            id_cuenta,
+                            id_item,
+                            codigo_item,
+                            nombre_item,
+                            cantidad,
+                            cantidad_pendiente,
+                            termino,
+                            precio,
+                            id_impuesto,
+                            nombre_impuesto,
+                            porcentaje_impuesto,
+                            observaciones,
+                            id_comanda,
+                            id_usuario,
+                            documento_usuario,
+                            usuario,
+                            id_bodega_produccion,
+                            id_empresa,
+                            activo,
+                            id_comensal
+                        )
+                        VALUES
+                        (
+                            '$id_cuenta',
+                            '".$erp_items[$item['id_item']]['id']."',
+                            '".$erp_items[$item['id_item']]['codigo']."',
+                            '".$erp_items[$item['id_item']]['nombre']."',
+                            '$item[cantidad]',
+                            '$item[cantidad]',
+                            '',
+                            '$item[precio]',
+                            '".$erp_items[$item['id_item']]['id_impuesto']."',
+                            '".$erp_items[$item['id_item']]['impuesto']."',
+                            '".$erp_items[$item['id_item']]['id']."porcentaje_impuesto',
+                            '',
+                            '".$this->id_comanda."',
+                            '".$this->id_usuario."',
+                            '".$this->documento_usuario."',
+                            '".$this->nombre_usuario."',
+                            '',
+                            '".$this->id_empresa."',
+                            '1',
+                            '".$huesped->response[0]->guest_id."'
+                        )";
+            $query =$this->mysql->query($sql);
+            $last_insert_id = $this->mysql->insert_id();
+            $insert_str = "";
+            //insertar receta del item
+            foreach ($items_receta[$item['id_item']] as $key => $receta) {
+                $insert_str .= "(
+                                    '$id_cuenta',
+                                    '$last_insert_id',
+                                    '$receta[id_item_materia_prima]',
+                                    '$receta[codigo_item_materia_prima]',
+                                    '$receta[nombre_item_materia_prima]',
+                                    '$receta[cantidad_item_materia_prima]',
+                                    '',
+                                    '".$this->id_usuario."',
+                                    '".$this->documento_usuario."',
+                                    '".$this->nombre_usuario."',
+                                    '".$this->id_empresa."',
+                                    '1'
+                                ),";
+            }
+
+            $insert_str = substr($insert_str, 0, -1);
+            $sql = "INSERT INTO 
+                                (
+                                    id_cuenta,
+                                    id_cuenta_item,
+                                    id_item,
+                                    codigo_item,
+                                    nombre_item,
+                                    cantidad,
+                                    observaciones,
+                                    id_usuario,
+                                    documento_usuario,
+                                    usuario,
+                                    id_empresa,
+                                    activo
+                                )
+                                VALUES $insert_str";
+            $query =$this->mysql->query($sql);
+
+        }
 
 
-        // id
-        // id_cuenta
-        // id_item
-        // codigo_item
-        // nombre_item
-        // cantidad
-        // cantidad_pendiente
-        // termino
-        // precio
-        // id_impuesto
-        // nombre_impuesto
-        // porcentaje_impuesto
-        // observaciones
-        // id_comanda
-        // id_usuario
-        // documento_usuario
-        // usuario
-        // id_bodega_produccion
-        // id_empresa
-        // activo
-        // id_comensal
-
-
-        echo json_encode($id_items);
+        return true;
+        // return ["status"=>true,"detalle"=>"los items con id ". implode(",", $missing_items)." no existe en el sistema"];
     }
 
     public function store($data){
@@ -360,14 +483,6 @@ class Pedido_Controller extends ApiFunctions
         
         // si ya existe una cuenta creada en la mesa
         $this->is_open_table($this->configuration_data['table']);
-        // agregar el cliente a la cuenta de la mesa
-        $params['id_cuenta']         = '';
-        $params['id_mesa']           = '';
-        $params['nombre_mesa']       = '';
-        $params['id_usuario']        = '';
-        $params['documento_usuario'] = '';
-        $params['nombre_usuario']    = '';
-
         if ($this->table_detail['id_cuenta']) {
             $data['id_cuenta'] = $this->table_detail['id_cuenta'];
         }
@@ -376,10 +491,10 @@ class Pedido_Controller extends ApiFunctions
             return ["status"=>false,"msg"=>"se produjo un error al agregar el pedido","detalle"=>$order_add['detalle']];
         }
         else{
-
+            return ["status"=>true,"id_pedido"=>$order_add['id_pedido']];
         }
 
         // echo $this->configuration_data['section'];
-        echo json_encode($this->table_detail);
+        // echo json_encode($this->table_detail);
     }
 }
