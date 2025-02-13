@@ -16,7 +16,6 @@
 			$informe->InformeTitle				=	'Informe de Contratos'; //TITULO DEL INFORME
 			$informe->InformeEmpreSucuBode		=	'false'; //FILTRO EMPRESA, SUCURSAL, BODEGA
 			$informe->InformeEmpreSucu			=	'true';	 //FILTRO EMPRESA, SUCURSAL
-			$informe->InformeFechaInicioFin		=	'true';	 //FILTRO FECHA
 			
 			$informe->InformeExportarPDF		= 	"true";	//SI EXPORTA A PDF
 			$informe->InformeExportarXLS		= 	"false";	//SI EXPORTA A XLS
