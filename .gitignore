@@ -19,3 +19,7 @@ configuracion/conexion.php
 LOGICALERP/pos/frontend/POS/pos/config.js
 
 LOGICALERP/pos/backend/configuracion/configuration.php
+
+node_modules/
+
+package-lock.json
