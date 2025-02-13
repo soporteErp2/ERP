@@ -276,7 +276,7 @@ else if(!isset($opcion)){  ?>
 			    autoDestroy : true,
 			    autoLoad    :
 			    {
-			        url     : '../funciones_globales/grillas/busquedaTerceros.php',
+			        url     : '../funciones_globales/grillas/BusquedaTerceros.php',
 			        scripts : true,
 			        nocache : true,
 			        params  :
