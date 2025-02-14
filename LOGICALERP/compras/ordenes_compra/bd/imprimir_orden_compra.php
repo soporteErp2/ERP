@@ -1,7 +1,6 @@
 <?php
 function generarPDF($id, $conexionBD){
 	include($_SERVER['DOCUMENT_ROOT']."/LOGICALERP/compras/bd/functions_imprimir.php");
-
 	if($_SESSION['EMPRESA'] == ''){ echo "USUARIO NO REGISTRADO"; return; }
 	$id_empresa          = $_SESSION['EMPRESA'];
 	$displayTablaTotales = "";
@@ -12,8 +11,9 @@ function generarPDF($id, $conexionBD){
 	$idTablaPrincipal    = 'id_orden_compra';
 	$tablaInventario     = 'compras_ordenes_inventario';
 
-	if(file_exists($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra.php")){
-		include($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra.php");
+	if(file_exists($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra_email.php")){
+		include($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra_email.php");
+		return  generar_PDF_plantilla($id,$conexionBD,$tablaPrincipal,$tablaInventario,$tipo_documento);
 	}
 	else{
 
@@ -327,8 +327,7 @@ function generarPDF($id, $conexionBD){
 		$totalOC_tc    = $totalOC;
 		$texto_tc      = 'EN LETRAS';
 
-	error_log($_SERVER['DOCUMENT_ROOT']. "Error con linea 333");
-	  $numeros_en_letras = utf8_decode(num2letras(round($totalOC_tc,$decimales)));
+	  	$numeros_en_letras = utf8_decode(num2letras(round($totalOC_tc,$decimales)));
 
 		if($id_moneda > 1){
 			$subtotalOC_tc     = $subtotalOC / $tasa_cambio;
