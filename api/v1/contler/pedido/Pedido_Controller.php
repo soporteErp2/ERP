@@ -9,8 +9,26 @@ class Pedido_Controller extends ApiFunctions
     private $table_detail = null;
     private $id_comanda = null;
 
-    public function show(){
-        echo json_encode([1,2,3]);
+    public function show($params){
+        $id_cuenta = explode("_",$params['pedido'])[0];
+        $id_comensal = explode("_",$params['pedido'])[1];
+        $sql = "SELECT id,cantidad,cantidad_pendiente FROM ventas_pos_mesas_cuenta_items WHERE id_cuenta=$id_cuenta AND id_comensal=$id_comensal";
+        $query = $this->mysql->query($sql);
+        // $n_rows = $this->mysql->numrows($query);
+        $db_id = false;
+        $state = 3;
+        while ($row=$this->mysql->fetch_array($query)) {
+            $db_id = $row['id'];
+            if ( ($row['cantidad']-$row['cantidad_pendiente']) > 0) {
+                $state = 1;
+            }
+        }
+
+        if (!$db_id) {
+            return ["status"=>false,"detalle"=>"no existe un pedido con ese id"];
+        }
+        return ["status"=>true,"estado"=>$state];
+
     }
 
     public function get_config(){
@@ -303,7 +321,7 @@ class Pedido_Controller extends ApiFunctions
             }
         }
 
-        return ["status"=>true,"id_pedido"=>$id_cuenta];
+        return ["status"=>true,"id_pedido"=>$id_cuenta."_".$id_comensal];
 
     }
 
@@ -351,7 +369,7 @@ class Pedido_Controller extends ApiFunctions
         $query=$this->mysql->query($sql);
 
         $result_ids = [];
-        while ($row = $this->mysql->fetch_assoc()) {
+        while ($row = $this->mysql->fetch_assoc($query)) {
             $result_ids[] = $row['id'];
             $erp_items[$row['id']] = $row;
         }
@@ -359,7 +377,7 @@ class Pedido_Controller extends ApiFunctions
         // Validar si todos los id_items están en los resultados
         $missing_items = array_diff($id_items, $result_ids);
         if (!empty($missing_items)) {
-            return ["status"=>false,"detalle"=>"los items con id ". implode(",", $missing_items)." no existe en el sistema"];
+            return ["status"=>false,"detalle"=>"los items con id ". implode(",", $missing_items)."  no existe en el sistema"];
         } 
 
         // consultar las recetas de items
@@ -371,15 +389,15 @@ class Pedido_Controller extends ApiFunctions
                     codigo_item_materia_prima,
                     nombre_item_materia_prima,
                     cantidad_item_materia_prima 
-                    FROM items_recetas WHERE id_item IN (".implode(",",$id_items).")";
+                    FROM items_recetas WHERE id_item IN (".implode(",",$result_ids).")";
         $query=$this->mysql->query($sql);
-        while ($row = $this->mysql->fetch_assoc()) {
+        while ($row = $this->mysql->fetch_assoc($query)) {
             $items_receta[$row['id_item']][] = $row;
         }
-
+        // echo json_encode($items_receta);
         // guardar los items
         foreach ($items as $key => $item) {
-           echo $sql = "INSERT INTO ventas_pos_mesas_cuenta_items
+           $sql = "INSERT INTO ventas_pos_mesas_cuenta_items
                         (
                             id_cuenta,
                             id_item,
@@ -409,7 +427,7 @@ class Pedido_Controller extends ApiFunctions
                             '".$erp_items[$item['id_item']]['codigo']."',
                             '".$erp_items[$item['id_item']]['nombre']."',
                             '$item[cantidad]',
-                            '$item[cantidad]',
+                            '0',
                             '',
                             '$item[precio]',
                             '".$erp_items[$item['id_item']]['id_impuesto']."',
@@ -428,6 +446,8 @@ class Pedido_Controller extends ApiFunctions
             $query =$this->mysql->query($sql);
             $last_insert_id = $this->mysql->insert_id();
             $insert_str = "";
+            // echo $item['id_item'];
+            // var_dump($items_receta[$item['id_item']]);
             //insertar receta del item
             foreach ($items_receta[$item['id_item']] as $key => $receta) {
                 $insert_str .= "(
@@ -445,9 +465,10 @@ class Pedido_Controller extends ApiFunctions
                                     '1'
                                 ),";
             }
-
+            // echo $insert_str;
             $insert_str = substr($insert_str, 0, -1);
-            $sql = "INSERT INTO 
+            // echo $insert_str;
+            $sql = "INSERT INTO ventas_pos_mesas_cuenta_items_recetas
                                 (
                                     id_cuenta,
                                     id_cuenta_item,
@@ -468,7 +489,7 @@ class Pedido_Controller extends ApiFunctions
         }
 
 
-        return true;
+        return ["status"=>true];
         // return ["status"=>true,"detalle"=>"los items con id ". implode(",", $missing_items)." no existe en el sistema"];
     }
 

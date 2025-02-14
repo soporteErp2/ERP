@@ -24,7 +24,7 @@
 				$result=$obj->show($_GET);
 				if($result['status']){
 					$response['status'] = 200;
-					$response['data']   = $result['data'];
+					$response['data']   =["estado" => $result['estado']];
 				}else{
 					$response['status'] = 200;
 					$response['data']   = array('failure'=>'No hay informacion para mostrar','detalle'=>$result['detalle']);
