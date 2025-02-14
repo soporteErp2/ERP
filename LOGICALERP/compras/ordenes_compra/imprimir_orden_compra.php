@@ -524,9 +524,9 @@
 
 		$mpdf->SetProtection(array('print'));
 		if($marcaAgua == 'true'){
-      $mpdf->SetWatermarkText('ANULADO');
-      $mpdf->showWatermarkText = true;
-    }
+      		$mpdf->SetWatermarkText('ANULADO');
+      		$mpdf->showWatermarkText = true;
+    	}
 		$mpdf->SetAutoPageBreak(TRUE, 15);
 		$mpdf->SetTitle($documento);
 		$mpdf->SetAuthor($_SESSION['NOMBREFUNCIONARIO']." // ".$_SESSION['NOMBREEMPRESA']);
@@ -540,7 +540,7 @@
 		$mpdf->WriteHTML(utf8_encode($texto));
 
 		if($id_empresa == 1 ||  $id_empresa == 47){
-    	$mpdf->AddPageByArray(
+    		$mpdf->AddPageByArray(
 				array(
 	        	    'condition' => 'NEXT-ODD',
 	        	    'ohvalue' => -1,
@@ -556,29 +556,29 @@
 			      	)
 			);
 
-    	include("../bd/clausula_orden_compra.php");
-    	$mpdf->WriteHTML($textoClausula);
-    	$mpdf->AddPage();
-    	$mpdf->WriteHTML($texto2);
-    }
+    		include("../bd/clausula_orden_compra.php");
+    		$mpdf->WriteHTML($textoClausula);
+    		$mpdf->AddPage();
+    		$mpdf->WriteHTML($texto2);
+    	}
 
 		if($PDF_GUARDA == 'F'){
 			$serv = $_SERVER['DOCUMENT_ROOT']."/";
-      $id_host = $_SESSION['ID_HOST'];
+      		$id_host = $_SESSION['ID_HOST'];
 
-      $ruta1 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/';
-      if(!file_exists($ruta1)){ mkdir ($ruta1); }
+      		$ruta1 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/';
+      		if(!file_exists($ruta1)){ mkdir ($ruta1); }
 
 
-      $ruta2 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/compras';
-      $url  = $ruta2.'/';
-      if(!file_exists($ruta2)){ mkdir ($ruta2); }
+      		$ruta2 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/compras';
+      		$url  = $ruta2.'/';
+      		if(!file_exists($ruta2)){ mkdir ($ruta2); }
 
-      $ruta3 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/compras/archivos_temporales';
-      $url  = $ruta3.'/';
-      if(!file_exists($ruta3)){ mkdir ($ruta3); }
+      		$ruta3 = $serv.'ARCHIVOS_PROPIOS/empresa_'.$id_host.'/compras/archivos_temporales';
+      		$url  = $ruta3.'/';
+      		if(!file_exists($ruta3)){ mkdir ($ruta3); }
 
-      $mpdf->Output($url.'orden_de_compra_'.$id.".pdf",'F');
+      		$mpdf->Output($url.'orden_de_compra_'.$id.".pdf",'F');
 		}
 		else{
 			$mpdf->Output($documento.".pdf",'I');

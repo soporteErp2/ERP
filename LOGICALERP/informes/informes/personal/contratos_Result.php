@@ -7,14 +7,15 @@
 	//echo $MyInformeFiltroFechaInicio.'?????';
 
 	$id_empresa = $_SESSION['EMPRESA'];
+	$id_sucursal = $_SESSION['SUCURSAL'];
 
 	$whereVenc = " AND EC.estado = '$MyInformeFiltro_0'";
 	
 ?>
 
 <?php
-	$nombre_empresa	 = mysql_result(mysql_query("SELECT * FROM empresas WHERE id = $MyInformeFiltroEmpresa",$link),0,"nombre");
-	$nombre_sucursal = mysql_result(mysql_query("SELECT * FROM empresas_sucursales WHERE id = $MyInformeFiltroSucursal",$link),0,"nombre");	
+	$nombre_empresa	 = mysql_result(mysql_query("SELECT * FROM empresas WHERE id = $id_empresa",$link),0,"nombre");
+	$nombre_sucursal = mysql_result(mysql_query("SELECT * FROM empresas_sucursales WHERE id = $id_sucursal",$link),0,"nombre");	
 ?>
 <style>
 	.my_informe_Contenedor_Titulo_informe{
@@ -48,14 +49,6 @@
 	<div style="float:left; width:1015px">
         <div style="float:left;width:100%">
             <div style="width:100%; border-bottom:1px solid #CCC; font-weight:bold; font-size:18px; text-align:left;"><?php echo $nombre_informe ?></div>
-        </div>
-        <div style="float:left;width:100%">
-            <div class="my_informe_Contenedor_Titulo_informe_label">Fecha Inicial</div>
-            <div class="my_informe_Contenedor_Titulo_informe_detalle"><?php echo fecha_larga($MyInformeFiltroFechaInicio)?></div>    
-        </div>
-        <div style="float:left;width:100%">
-            <div class="my_informe_Contenedor_Titulo_informe_label">Fecha Final</div>
-            <div class="my_informe_Contenedor_Titulo_informe_detalle"><?php echo fecha_larga($MyInformeFiltroFechaFinal)?></div>    
         </div>
         <div style="float:left;width:100%">
             <div class="my_informe_Contenedor_Titulo_informe_label">Empresa</div>
@@ -101,9 +94,8 @@
 			FROM 
 				 empleados_contratos AS EC						
 			WHERE
-				EC.activo = 1				
-				AND EC.fecha_inicio_contrato >= '$MyInformeFiltroFechaInicio' 
-				AND EC.fecha_fin_contrato <= '$MyInformeFiltroFechaFinal'
+				EC.activo = 1
+				AND EC.id_empleado <> 0
 				AND EC.id_empresa = '$id_empresa'
 				$whereVenc
 			ORDER BY EC.nombre_empleado";
