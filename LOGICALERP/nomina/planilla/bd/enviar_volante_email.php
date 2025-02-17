@@ -65,7 +65,7 @@ function imprimirEnviaVolante($id_planilla,$id_empleado,$id_contrato,$mail,$mpdf
 													</div>' : '' ;
 
 	//BUSCAR LA INFORMACION DEL CONTRATO Y DEL EMPLEADO
-	$sql = "SELECT documento_empleado,nombre_empleado,numero_contrato,grupo_trabajo
+	$sql = "SELECT documento_empleado,nombre_empleado,numero_contrato,grupo_trabajo,salario_basico
 			FROM empleados_contratos
 			WHERE activo=1
 				AND id_empresa=$id_empresa
@@ -76,6 +76,7 @@ function imprimirEnviaVolante($id_planilla,$id_empleado,$id_contrato,$mail,$mpdf
 	$documento_empleado = mysql_result($query,0,'documento_empleado');
 	$nombre_empleado    = mysql_result($query,0,'nombre_empleado');
 	$numero_contrato    = mysql_result($query,0,'numero_contrato');
+	$salario   		 	= mysql_result($query,0,'salario_basico');
 	$grupo_trabajo      = mysql_result($query,0,'grupo_trabajo');
 
 	//CONSULTAR LOS CONCEPTOS DEL EMPLEADO
@@ -151,7 +152,12 @@ function imprimirEnviaVolante($id_planilla,$id_empleado,$id_contrato,$mail,$mpdf
 								<div style="float:left; width:17%;">Contrato N&deg;:</div>
 								<div style="float:left; width:50%;">'.$numero_contrato.' </div>
 							</div>
-
+							
+							<div style="float:left; width:90%; margin:0px 5px 0px 10px;">
+								<div style="float:left; width:17%;">Salario B&aacute;sico;:</div>
+								<div style="float:left; width:50%;">'.$salario.' </div>
+							</div>
+							
 							<div style="float:left; width:90%; margin:0px 5px 0px 10px;">
 								<div style="float:left; width:17%;">Grupo de Trabajo:</div>
 								<div style="float:left; width:60%;">'.$grupo_trabajo.' </div>

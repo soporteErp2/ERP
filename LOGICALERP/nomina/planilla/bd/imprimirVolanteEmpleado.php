@@ -66,7 +66,7 @@
 																	</table>' : '' ;
 
 	//BUSCAR LA INFORMACION DEL CONTRATO Y DEL EMPLEADO
-	$sql = "SELECT id,id_empleado,documento_empleado,nombre_empleado,numero_contrato,grupo_trabajo
+	$sql = "SELECT id,id_empleado,documento_empleado,nombre_empleado,numero_contrato,grupo_trabajo,salario_basico
 			FROM empleados_contratos
 			WHERE activo=1
 				AND id = $id_contrato
@@ -79,6 +79,8 @@
 		$nombre_empleado    = $row['nombre_empleado'];
 		$numero_contrato    = $row['numero_contrato'];
 		$grupo_trabajo      = $row['grupo_trabajo'];
+		$salario    		= $row['salario_basico'];
+
 	}
 
 	//CONSULTAR LOS CONCEPTOS DEL EMPLEADO
@@ -143,7 +145,12 @@
 							<div style="float:left; width:17%;">Contrato N&deg;:</div>
 							<div style="float:left; width:50%;">'.$numero_contrato.' </div>
 						</div>
-
+							
+						<div style="float:left; width:90%; margin:0px 5px 0px 10px;">
+							<div style="float:left; width:17%;">Salario B&aacute;sico;:</div>
+							<div style="float:left; width:50%;">'.$salario.' </div>
+						</div>
+							
 						<div style="float:left; width:90%; margin:0px 5px 0px 10px;">
 							<div style="float:left; width:17%;">Grupo de Trabajo:</div>
 							<div style="float:left; width:60%;">'.$grupo_trabajo.' </div>
