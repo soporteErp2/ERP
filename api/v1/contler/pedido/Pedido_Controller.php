@@ -9,6 +9,32 @@ class Pedido_Controller extends ApiFunctions
     private $table_detail = null;
     private $id_comanda = null;
 
+    /**
+     * @api {get} /contler/pedido?pedido=35604_34315 Consultar Pedido
+     * @apiVersion 1.0.0
+     * @apiDescription Consultar pedido del pos
+     * @apiName get_pos_contler
+     * @apiGroup Contler
+     *
+     * @apiParam {String} [pedido] Numero del pedido a consultar
+     * 
+     * @apiError Unauthorized datos incorrectos de autenticacion
+     * @apiError failure No se recibieron parametros para la consulta
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "failure": "No se recibieron parametros para la consulta"
+     *     }
+     *
+     * @apiSuccess {Number} estado Estado del pedido
+     *
+     * @apiSuccessExample Success-Response:
+     * 
+     * 
+     * {
+     * 		"estado": 3,
+     * }
+     */
     public function show($params){
         $id_cuenta = explode("_",$params['pedido'])[0];
         $id_comensal = explode("_",$params['pedido'])[1];
@@ -31,6 +57,7 @@ class Pedido_Controller extends ApiFunctions
 
     }
 
+    
     public function get_config(){
         $sql = "SELECT data FROM configuracion_general WHERE modulo='panel_de_control/contler' AND activo=1 AND id_empresa=$this->id_empresa";
         $query = $this->mysql->query($sql);
@@ -493,6 +520,65 @@ class Pedido_Controller extends ApiFunctions
         // return ["status"=>true,"detalle"=>"los items con id ". implode(",", $missing_items)." no existe en el sistema"];
     }
 
+    /**
+     * @api {post} /contler/pedido/ Crear pedido en el POS
+     * @apiVersion 1.0.0
+     * @apiDescription Registrar pedido en el pos
+     * @apiName store_pos_contler
+     * @apiPermission Pos
+     * @apiGroup Contler
+     *
+     * @apiParam {String} nit Nit de la empresa
+     * @apiParam {String} num_hab Numero de habitacion del huesped
+     * @apiParam {String} doc_huesped Numero del documento del huesped
+     * @apiParam {Object[]} pedidos Listado de los articulos a facturar
+     * @apiParam {Number} pedidos.id_item Id del item en ERP
+     * @apiParam {Number} pedidos.precio Precio de venta
+     * @apiParam {Number} pedidos.cantidad Cantidad vendida
+     *
+     * @apiParamExample {json} Request-Example:
+     * {
+     *    "nit": "2002",
+     *    "num_hab": "9023",
+     *    "doc_huesped": "9085357",
+     *    "pedidos": [
+     *        {
+     *            "id_item": 332,
+     *            "precio": 1200,
+     *            "cantidad": 1
+     *        },
+     *        {
+     *            "id_item": 1751,
+     *            "precio": 25000,
+     *            "cantidad": 3
+     *        }
+     *    ]
+     * }
+     * 
+     * @apiSuccess {200} success  informacion registrada
+     * @apiSuccess {200} pedido  Consecutivo del Pedido
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *        "success": "informacion registrada",
+     *        "pedido": "Prefijo de la factura Ej. 35605_34315",
+     *     }
+     * @apiErrorExample Error-Response:
+     * HTTP/1.1 400 Bad Response
+     * {
+     *  "failure": "Ha ocurrido un error",
+     *   "detalle": "detalle del o los errores"
+     * }
+     *
+     * @apiError failure Ha ocurrido un error
+     * @apiError detalle
+     *     HTTP/1.1 400 Bad Response
+     *     {
+     *     	"failure":"Ha ocurrido un error",
+     *     "detalle": "detalle del error"
+     *     }
+     */
     public function store($data){
         $this->get_config();
         if (!$this->configuration_data) {
