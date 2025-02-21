@@ -1148,6 +1148,14 @@
 				}
 
 			}
+			// <------------------------ Dar de baja los items de la mesa ---------------------------->
+			$updateItemsMesa = "UPDATE ventas_pos_mesas_cuenta_items
+								 SET activo = 0 
+								 WHERE 
+								 	id_cuenta = ".$params["mesa"]["id_cuenta"]." 
+									AND id_comensal=".$params['huespedesSelect'][0]['id_comensal']
+									AND id_comensal IS NOT NULL;
+			$queryUpdateItemsMesa=$this->mysql->query($updateItemsMesa);
 
 			// <------------------------------ validacion comanda ------------------------------------>
 			$sql = "SELECT
