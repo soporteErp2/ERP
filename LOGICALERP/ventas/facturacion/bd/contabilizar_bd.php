@@ -685,7 +685,7 @@
 		$saldoGlobalFacturaSinAbono = ROUND($saldoGlobalFacturaSinAbono,$decimalesMoneda);
 		$totalDebito  = ROUND($totalDebito,$decimalesMoneda);
 		$totalCredito = ROUND($totalCredito,$decimalesMoneda);
-		if($totalDebito != $totalCredito && (ABS($totalDebito-$totalCredito)>1)){
+		if($totalDebito != $totalCredito && (ABS($totalDebito-$totalCredito)>5)){
 			echo '<script>
 					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida colgaap, Confirme su configuracion en el modulo panel de control.");
 					console.log("totalDebito: '.$totalDebito.' totalCredito: '.$totalCredito.'");
