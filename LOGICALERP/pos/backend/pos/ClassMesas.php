@@ -157,17 +157,16 @@
 						vm.id_estado,
 						vm.descripcion,
 						vm.estado,
-						vm.color_estado,
-						SUM(vc.cantidad) AS cantidad
+						vm.color_estado,						
+						COUNT(vc.id) as cantidad
 					FROM
-						ventas_pos_mesas_cuenta vm
-					LEFT JOIN ventas_pos_mesas_cuenta_comensales vc ON vc.id_cuenta = vm.id
+						ventas_pos_mesas_cuenta AS vm
+					LEFT JOIN ventas_pos_mesas_cuenta_comensales vc ON vc.id_cuenta = vm.id AND vc.tipo<>'Huesped'
 					WHERE
 						vm.activo = 1
 					AND vm.id_empresa=$this->id_empresa
 					AND vm.id_mesa = $id_mesa
 					AND vm.estado<>'Cerrada'
-					#AND vc.tipo<>'Huesped'
 					GROUP BY
 						vc.id_cuenta";
 			$query=$this->mysql->query($sql);
@@ -215,7 +214,8 @@
 							VPI.observaciones,
 							VPI.id_usuario,
 							VPI.documento_usuario,
-							VPI.usuario
+							VPI.usuario,
+							VPI.id_comensal
 						FROM ventas_pos_mesas_cuenta_items AS VPI LEFT JOIN ventas_pos_comanda AS VPC ON VPC.id=VPI.id_comanda
 						WHERE VPI.activo=1 AND VPI.id_empresa=$this->id_empresa AND VPI.id_cuenta=$id_cuenta ";
 				$query=$this->mysql->query($sql);
@@ -272,6 +272,7 @@
 											"id_usuario"          => $row['id_usuario'],
 											"documento_usuario"   => $row['documento_usuario'],
 											"usuario"             => $row['usuario'],
+											"id_comensal"         => $row['id_comensal'],
 											);
 				}
 

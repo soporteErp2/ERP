@@ -712,7 +712,7 @@
 
 		$totalDebito  = ROUND($totalDebito,$decimalesMoneda);
 		$totalCredito = ROUND($totalCredito,$decimalesMoneda);
-		if($totalDebito != $totalCredito && (ABS($totalDebito-$totalCredito)>1)){
+		if($totalDebito != $totalCredito && (ABS($totalDebito-$totalCredito)>5)){
 			echo '<script>
 					alert("Aviso.\nLa contabilizacion ingresada no cumple doble partida, Confirme su configuracion en el modulo panel de control.");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
