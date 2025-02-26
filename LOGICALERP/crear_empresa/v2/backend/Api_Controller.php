@@ -3,17 +3,48 @@ include_once '../../../../configuracion/conexion.php';
 
 class Api_Controller
 {
-    private $link = null;
-    public function connect(){
-        global $server;
-        $this->link = mysql_connect($server->server_name,$server->user,$server->password);
-        if(!$this->link){ return ["error conectando al servidor"]; }
-        mysql_select_db($server->database,$this->link);
-        if(!@mysql_select_db($server->database,$this->link)){ return ["error conectando a la bd ".$server->database]; }
-        return $this->link;
+    private $mysqli = null;
+    
+    public function __construct() 
+    {
+        $this->connect();
     }
 
-    public function verify_db(){
-        echo json_encode([1,2,3]);
+    public function connect()
+    {
+        global $server;
+        $this->mysqli = new mysqli($server->server_name, $server->user, $server->password, $server->database);
+        if ($this->mysqli->connect_error) {
+            return ["error conectando al servidor: " . $this->mysqli->connect_error];
+        }
+
+        return $this->mysqli;
+    }
+
+    public function verify_db($data)
+    {
+        $sql = "SELECT id FROM host WHERE nit = '$data[company]'";
+        $result = $this->mysqli->query($sql);
+        // $rows = $result->fetch_all(MYSQLI_ASSOC);
+        if ($result->num_rows>0) 
+        {
+            $this->structure_db();
+        }
+        else
+        {
+            $this->create_db();
+        }
+
+        // echo $result->num_rows;
+    }
+
+    public function create_db()
+    {
+        echo json_encode("create db");
+        
+    }
+
+    function structure_db(){
+        echo json_encode("db exist, structure");
     }
 }
