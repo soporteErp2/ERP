@@ -1,3 +1,35 @@
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sections = document.querySelectorAll("div[id^='card-']");
+    let currentIndex = 0;
+
+    function scrollToNext() {
+        if (currentIndex < sections.length - 1) {
+            currentIndex++;
+            sections[currentIndex].scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
+    function scrollToPrevious() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            sections[currentIndex].scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
+    // Agregar evento para teclas de flecha
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+            scrollToNext();
+        } else if (event.key === "ArrowUp") {
+            scrollToPrevious();
+        }
+    });
+
+    // Exponer la función globalmente para que los botones la usen
+    window.scrollToNext = scrollToNext;
+});
+
 // modal functions
 var modal = document.getElementById("modal");
 Object.assign(modal, {
@@ -47,6 +79,7 @@ async function verify_db() {
         const datos = await respuesta.json();
         console.log( datos);
         modal.close();
+        scrollToNext();
     } catch (error) {
         modal.close();
         console.error('Error al obtener datos:', error);

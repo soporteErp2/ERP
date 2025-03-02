@@ -9,7 +9,7 @@
 </head>
 <body class="w-screen h-screen">
 
-    <div class="flex items-center w-full h-full justify-center flex-col gap-4" >
+    <div class="flex items-center w-full h-full justify-center flex-col gap-4" id="card-1" >
         <span class="text-xl font-bold text-white">creacion de la base de datos</span>
         <div class="bg-[#1c252e] p-10 rounded-lg flex justify-center flex-col gap-4">
             <div>
@@ -22,6 +22,38 @@
             </div>
             <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="verify_db()">Crear</button>
         </div>
+        <button class="bg-blue-500 text-white p-2 rounded-lg" onclick="scrollToNext()">Siguiente</button>
+    </div>
+
+    <div class="flex items-center w-full h-full justify-center flex-col gap-4" id="card-2" >
+        <span class="text-xl font-bold text-white">Informacion de la empresa</span>
+        <div class="bg-[#1c252e] p-10 rounded-lg flex justify-center flex-col gap-4">
+            <div>
+                <legend class="text-[#67748e]">Nombre empresa</legend>
+                <input id="support-licence" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+            </div>
+            <div>
+                <legend class="text-[#67748e]">Razon social</legend>
+                <input id="company-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+            </div>
+            <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="verify_db()">Crear</button>
+        </div>
+        <button class="bg-blue-500 text-white p-2 rounded-lg" onclick="scrollToNext()">Siguiente</button>
+    </div>
+    <div class="flex items-center w-full h-full justify-center flex-col gap-4" id="card-2" >
+        <span class="text-xl font-bold text-white">Informacion de la empresa</span>
+        <div class="bg-[#1c252e] p-10 rounded-lg flex justify-center flex-col gap-4">
+            <div>
+                <legend class="text-[#67748e]">Nombre empresa</legend>
+                <input id="support-licence" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+            </div>
+            <div>
+                <legend class="text-[#67748e]">Razon social</legend>
+                <input id="company-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+            </div>
+            <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="verify_db()">Crear</button>
+        </div>
+        <button class="bg-blue-500 text-white p-2 rounded-lg" onclick="scrollToNext()">Siguiente</button>
     </div>
         
     <div class="absolute w-full h-full top-0 bg-gray-100 opacity-10 flex items-center justify-center" id="modal">
