@@ -866,7 +866,7 @@
 					document.getElementById("idArticuloFactura_'.$contArticulo.'").value        ="'.$id.'";
 					document.getElementById("eanArticuloFactura_'.$contArticulo.'").value       ="'.$codigo.'";
 					document.getElementById("costoArticuloFactura_'.$contArticulo.'").value     ="'.$costos.'";
-					document.getElementById("nombreArticuloFactura_'.$contArticulo.'").value    ="'.$nombreArticulo.'";
+					document.getElementById("nombreArticuloFactura_'.$contArticulo.'").value    ="'.addslashes($nombreArticulo).'";
 					document.getElementById("ivaArticuloFacturaCompra_'.$contArticulo.'").value ="'.$id_impuesto.'";
 					'.$script.'
 					setTimeout(function(){ document.getElementById("cantArticuloFactura_'.$contArticulo.'").focus(); },100);

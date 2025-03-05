@@ -18,7 +18,7 @@
 	## CONFIGURACION GENERAL DATAVIEW
 		$grilla->Name       = 'AnularFacturas';
 		$grilla->Table      = 'ventas_pos';
-		$grilla->SqlLimit   = '0,50';
+		$grilla->SqlLimit   = '0,100';
 		$grilla->SqlWhere   = "T1.activo=1 $whereGrilla AND estado<>0";
 		$grilla->SqlOrder   = 'id DESC';
 		// $grilla->SqlDebug = 'true';
