@@ -103,7 +103,7 @@ CREATE TABLE `activos_fijos` (
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_cuentas
@@ -125,7 +125,7 @@ CREATE TABLE `activos_fijos_cuentas` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `cuenta` (`cuenta`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_depreciaciones
@@ -153,7 +153,7 @@ CREATE TABLE `activos_fijos_depreciaciones` (
   `estado` int(11) DEFAULT '0',
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_depreciaciones_inventario
@@ -189,7 +189,7 @@ CREATE TABLE `activos_fijos_depreciaciones_inventario` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_activo_fijo` (`id_activo_fijo`) USING BTREE,
   KEY `id_nota_contable` (`id_nota_contable`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_deterioro
@@ -217,7 +217,7 @@ CREATE TABLE `activos_fijos_deterioro` (
   `estado` int(11) DEFAULT '0',
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_deterioro_inventario
@@ -250,7 +250,7 @@ CREATE TABLE `activos_fijos_deterioro_inventario` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_activo_fijo` (`id_activo_fijo`) USING BTREE,
   KEY `id_nota_contable` (`id_nota_contable`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_upload
@@ -273,7 +273,7 @@ CREATE TABLE `activos_fijos_upload` (
   `activo` int(1) DEFAULT '1',
   `tercero` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for activos_fijos_upload_registro
@@ -314,7 +314,7 @@ CREATE TABLE `activos_fijos_upload_registro` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for amortizaciones
@@ -336,7 +336,7 @@ CREATE TABLE `amortizaciones` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for amortizaciones_diferidos
@@ -371,7 +371,7 @@ CREATE TABLE `amortizaciones_diferidos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for anticipos
@@ -395,7 +395,7 @@ CREATE TABLE `anticipos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=31457 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for api_conections
@@ -419,7 +419,7 @@ CREATE TABLE `api_conections` (
   `archivo` varchar(255) COLLATE latin1_general_ci DEFAULT NULL COMMENT 'archivo a cargar para generar el consumo del api',
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for asientos_colgaap
@@ -472,7 +472,7 @@ CREATE TABLE `asientos_colgaap` (
   KEY `fecha` (`fecha`) USING BTREE,
   KEY `activo` (`activo`) USING BTREE,
   KEY `idx_filtros` (`activo`,`id_empresa`,`fecha`,`id_sucursal`)
-) ENGINE=MyISAM AUTO_INCREMENT=2349724 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for asientos_colgaap_default
@@ -492,7 +492,7 @@ CREATE TABLE `asientos_colgaap_default` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `cuenta` (`cuenta`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for asientos_colgaap_default_grupos
@@ -514,7 +514,7 @@ CREATE TABLE `asientos_colgaap_default_grupos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `cuenta` (`cuenta`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=98 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for asientos_niif
@@ -564,7 +564,7 @@ CREATE TABLE `asientos_niif` (
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `codigo_cuenta` (`codigo_cuenta`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2105642 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for asientos_niif_default
@@ -583,7 +583,7 @@ CREATE TABLE `asientos_niif_default` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `cuenta` (`cuenta`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for asientos_niif_default_grupos
@@ -605,7 +605,7 @@ CREATE TABLE `asientos_niif_default_grupos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `cuenta` (`cuenta`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=98 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for autorizacion_ordenes_compra_area
@@ -628,7 +628,7 @@ CREATE TABLE `autorizacion_ordenes_compra_area` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for autorizacion_requisicion
@@ -651,7 +651,7 @@ CREATE TABLE `autorizacion_requisicion` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for boletas_formulario
@@ -674,7 +674,7 @@ CREATE TABLE `boletas_formulario` (
   `evento` varchar(20) COLLATE latin1_general_ci DEFAULT '',
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for calendario
@@ -697,7 +697,7 @@ CREATE TABLE `calendario` (
   `id_objetivo_crm` int(11) NOT NULL DEFAULT '0',
   `id_actividad_crm` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for calendario_notificaciones
@@ -717,7 +717,7 @@ CREATE TABLE `calendario_notificaciones` (
   `pospuesto` varchar(10) COLLATE latin1_general_ci DEFAULT 'false',
   `descartar` varchar(10) COLLATE latin1_general_ci DEFAULT 'false',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for calendario_notificaciones_personas
@@ -730,7 +730,7 @@ CREATE TABLE `calendario_notificaciones_personas` (
   `id_calendario` int(11) DEFAULT NULL,
   `asignado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for calendario_personas
@@ -742,7 +742,7 @@ CREATE TABLE `calendario_personas` (
   `id_asignado` int(11) DEFAULT NULL,
   `asignado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for centro_costos
@@ -762,7 +762,7 @@ CREATE TABLE `centro_costos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for certificado_ingreso_retenciones_empleados_conceptos
@@ -779,7 +779,7 @@ CREATE TABLE `certificado_ingreso_retenciones_empleados_conceptos` (
   `activo` int(11) DEFAULT '1',
   `id_empresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for certificado_ingreso_retenciones_empleados_secciones
@@ -793,7 +793,7 @@ CREATE TABLE `certificado_ingreso_retenciones_empleados_secciones` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for certificado_ingreso_retenciones_empleados_secciones_filas
@@ -807,7 +807,7 @@ CREATE TABLE `certificado_ingreso_retenciones_empleados_secciones_filas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for cierre_por_periodo
@@ -832,7 +832,7 @@ CREATE TABLE `cierre_por_periodo` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for codigo_paises
@@ -843,7 +843,7 @@ CREATE TABLE `codigo_paises` (
   `codigo` varchar(15) COLLATE latin1_general_ci DEFAULT NULL,
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_entrada_almacen
@@ -889,7 +889,7 @@ CREATE TABLE `compras_entrada_almacen` (
   KEY `id_cliente` (`id_proveedor`) USING BTREE,
   KEY `plantillas_id` (`plantillas_id`) USING BTREE,
   KEY `id_forma_pago` (`id_forma_pago`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1140 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_entrada_almacen_inventario
@@ -933,7 +933,7 @@ CREATE TABLE `compras_entrada_almacen_inventario` (
   KEY `id_consecutivo_referencia` (`id_consecutivo_referencia`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=20893 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas
@@ -1011,7 +1011,7 @@ CREATE TABLE `compras_facturas` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=48116 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_archivos_adjuntos
@@ -1038,7 +1038,7 @@ CREATE TABLE `compras_facturas_archivos_adjuntos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_nota_general` (`id_factura_compra`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_contabilidad_manual
@@ -1084,7 +1084,7 @@ CREATE TABLE `compras_facturas_contabilidad_manual` (
   KEY `id_cuenta_niif_total` (`id_cuenta_niif_total`) USING BTREE,
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_cuentas
@@ -1126,7 +1126,7 @@ CREATE TABLE `compras_facturas_cuentas` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=22929 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_inventario
@@ -1172,7 +1172,7 @@ CREATE TABLE `compras_facturas_inventario` (
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_tabla_referencia` (`id_tabla_referencia`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=70321 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_inventario_archivos_adjuntos
@@ -1218,7 +1218,7 @@ CREATE TABLE `compras_facturas_inventario_archivos_adjuntos` (
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_tabla_referencia` (`id_tabla_referencia`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_retenciones
@@ -1241,7 +1241,7 @@ CREATE TABLE `compras_facturas_retenciones` (
   KEY `id` (`id`) USING BTREE,
   KEY `id_factura_compra` (`id_factura_compra`) USING BTREE,
   KEY `id_retencion` (`id_retencion`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7802 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_facturas_tipos
@@ -1255,7 +1255,7 @@ CREATE TABLE `compras_facturas_tipos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_ordenes
@@ -1309,7 +1309,7 @@ CREATE TABLE `compras_ordenes` (
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_proveedor` (`id_proveedor`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=298 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_ordenes_autorizaciones
@@ -1328,7 +1328,7 @@ CREATE TABLE `compras_ordenes_autorizaciones` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_ordenes_documentos
@@ -1343,7 +1343,7 @@ CREATE TABLE `compras_ordenes_documentos` (
   `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_ordenes_doc_cruce
@@ -1357,7 +1357,7 @@ CREATE TABLE `compras_ordenes_doc_cruce` (
   `tipo_documento_cruce` varchar(5) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` bit(1) DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_ordenes_inventario
@@ -1395,7 +1395,7 @@ CREATE TABLE `compras_ordenes_inventario` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_inventario` (`id_inventario`) USING BTREE,
   KEY `id_orden_compra` (`id_orden_compra`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_ordenes_retenciones
@@ -1409,7 +1409,7 @@ CREATE TABLE `compras_ordenes_retenciones` (
   `retencion` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `porcentaje` double DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for compras_ordenes_tipos
@@ -1421,7 +1421,7 @@ CREATE TABLE `compras_ordenes_tipos` (
   `activo` int(11) DEFAULT '1',
   `id_empresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_requisicion
@@ -1467,7 +1467,7 @@ CREATE TABLE `compras_requisicion` (
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_proveedor` (`id_solicitante`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=235 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_requisicion_documentos
@@ -1482,7 +1482,7 @@ CREATE TABLE `compras_requisicion_documentos` (
   `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_requisicion_doc_cruce
@@ -1496,7 +1496,7 @@ CREATE TABLE `compras_requisicion_doc_cruce` (
   `tipo_documento_cruce` varchar(5) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` bit(1) DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_requisicion_inventario
@@ -1528,7 +1528,7 @@ CREATE TABLE `compras_requisicion_inventario` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_inventario` (`id_inventario`) USING BTREE,
   KEY `id_orden_compra` (`id_requisicion_compra`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for compras_requisicion_tipo
@@ -1540,7 +1540,7 @@ CREATE TABLE `compras_requisicion_tipo` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for comprobante_egreso
@@ -1582,7 +1582,7 @@ CREATE TABLE `comprobante_egreso` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=14061 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for comprobante_egreso_cuentas
@@ -1618,7 +1618,7 @@ CREATE TABLE `comprobante_egreso_cuentas` (
   KEY `id_puc` (`id_puc`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=34040 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for conciliaciones
@@ -1645,7 +1645,7 @@ CREATE TABLE `conciliaciones` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for conciliacion_bancos
@@ -1662,7 +1662,7 @@ CREATE TABLE `conciliacion_bancos` (
   `descripcion_cuenta` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for conciliacion_bancos_items
@@ -1675,7 +1675,7 @@ CREATE TABLE `conciliacion_bancos_items` (
   `observacion` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_arl
@@ -1688,7 +1688,7 @@ CREATE TABLE `configuracion_arl` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_carnet
@@ -1704,7 +1704,7 @@ CREATE TABLE `configuracion_carnet` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_carnet_datos
@@ -1725,7 +1725,7 @@ CREATE TABLE `configuracion_carnet_datos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_carnet` (`id_carnet`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_clausulas_contrato
@@ -1745,7 +1745,7 @@ CREATE TABLE `configuracion_clausulas_contrato` (
   `nombre_5` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `default_5` varchar(5000) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_comprobante_egreso
@@ -1758,7 +1758,7 @@ CREATE TABLE `configuracion_comprobante_egreso` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_consecutivos_documentos
@@ -1777,7 +1777,7 @@ CREATE TABLE `configuracion_consecutivos_documentos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_cuentas_pago
@@ -1805,7 +1805,7 @@ CREATE TABLE `configuracion_cuentas_pago` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_cuentas_pago_pos
@@ -1841,7 +1841,7 @@ CREATE TABLE `configuracion_cuentas_pago_pos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_descuentos_pos
@@ -1857,7 +1857,7 @@ CREATE TABLE `configuracion_descuentos_pos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_documentos
@@ -1878,7 +1878,7 @@ CREATE TABLE `configuracion_documentos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_documentos_erp
@@ -1896,7 +1896,7 @@ CREATE TABLE `configuracion_documentos_erp` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_documentos_tipo
@@ -1909,7 +1909,7 @@ CREATE TABLE `configuracion_documentos_tipo` (
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_estados_proyectos
@@ -1921,7 +1921,7 @@ CREATE TABLE `configuracion_estados_proyectos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_festivos
@@ -1935,7 +1935,7 @@ CREATE TABLE `configuracion_festivos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_pais` (`id_pais`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_formas_pago
@@ -1950,7 +1950,7 @@ CREATE TABLE `configuracion_formas_pago` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_general
@@ -1964,7 +1964,7 @@ CREATE TABLE `configuracion_general` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for configuracion_global
@@ -2011,7 +2011,7 @@ CREATE TABLE `configuracion_global` (
   `conexion_siip3` varchar(5) COLLATE latin1_general_ci NOT NULL DEFAULT 'false',
   `salario_minimo` float NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_global_api_google
@@ -2022,7 +2022,7 @@ CREATE TABLE `configuracion_global_api_google` (
   `email` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `password` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `dominio` varchar(255) COLLATE latin1_general_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_global_app
@@ -2039,7 +2039,7 @@ CREATE TABLE `configuracion_global_app` (
   `style_backimage_desktop_autoresize` varchar(5) COLLATE latin1_general_ci NOT NULL,
   `style_backcolor` varchar(10) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_horas_extras
@@ -2061,7 +2061,7 @@ CREATE TABLE `configuracion_horas_extras` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_pais` (`id_pais`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_imagenes_documentos
@@ -2076,7 +2076,7 @@ CREATE TABLE `configuracion_imagenes_documentos` (
   `id_empresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_informe_estado_flujo_efectivo
@@ -2095,7 +2095,7 @@ CREATE TABLE `configuracion_informe_estado_flujo_efectivo` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_informe_estado_resultado_niif
@@ -2114,7 +2114,7 @@ CREATE TABLE `configuracion_informe_estado_resultado_niif` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_puc_niif` (`id_puc_niif`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_inventarios_documentos
@@ -2126,7 +2126,7 @@ CREATE TABLE `configuracion_inventarios_documentos` (
   `activo` int(1) DEFAULT '1',
   `id_empresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_lineas_negocio
@@ -2138,7 +2138,7 @@ CREATE TABLE `configuracion_lineas_negocio` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_mantenimiento_checklist
@@ -2149,7 +2149,7 @@ CREATE TABLE `configuracion_mantenimiento_checklist` (
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_mantenimiento_checklist_detalles
@@ -2163,7 +2163,7 @@ CREATE TABLE `configuracion_mantenimiento_checklist_detalles` (
   `obligatorio` varchar(5) COLLATE latin1_general_ci NOT NULL,
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_metodos_pago
@@ -2178,7 +2178,7 @@ CREATE TABLE `configuracion_metodos_pago` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=78 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_moneda
@@ -2196,7 +2196,7 @@ CREATE TABLE `configuracion_moneda` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`,`moneda`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_motivos_cancelacion
@@ -2209,7 +2209,7 @@ CREATE TABLE `configuracion_motivos_cancelacion` (
   `motivo` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_origen
@@ -2225,7 +2225,7 @@ CREATE TABLE `configuracion_origen` (
   `sucursal` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(2) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_propinas_pos
@@ -2246,7 +2246,7 @@ CREATE TABLE `configuracion_propinas_pos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_proyectos
@@ -2258,7 +2258,7 @@ CREATE TABLE `configuracion_proyectos` (
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_proyectos_actividades
@@ -2271,7 +2271,7 @@ CREATE TABLE `configuracion_proyectos_actividades` (
   `id_proyecto` int(11) NOT NULL,
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_sector_empresarial
@@ -2286,7 +2286,7 @@ CREATE TABLE `configuracion_sector_empresarial` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_tipos_contacto
@@ -2298,7 +2298,7 @@ CREATE TABLE `configuracion_tipos_contacto` (
   `unico` varchar(3) COLLATE latin1_general_ci DEFAULT 'no' COMMENT 'si es un unico parentesco por ej: una sola esposa',
   `activo` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_vencimiento_documentos
@@ -2313,7 +2313,7 @@ CREATE TABLE `configuracion_vencimiento_documentos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_zonas
@@ -2332,7 +2332,7 @@ CREATE TABLE `configuracion_zonas` (
   `ancho_mapa` int(5) DEFAULT NULL,
   `alto_mapa` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for configuracion_zona_horaria
@@ -2344,7 +2344,7 @@ CREATE TABLE `configuracion_zona_horaria` (
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for consecutivos
@@ -2360,7 +2360,7 @@ CREATE TABLE `consecutivos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for contabilizacion_compra_venta
@@ -2387,7 +2387,7 @@ CREATE TABLE `contabilizacion_compra_venta` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1794251 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for contabilizacion_compra_venta_niif
@@ -2414,7 +2414,7 @@ CREATE TABLE `contabilizacion_compra_venta_niif` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1701447 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for control_gastos_concepto
@@ -2428,7 +2428,7 @@ CREATE TABLE `control_gastos_concepto` (
   `detalles` varchar(5000) COLLATE latin1_general_ci NOT NULL,
   `valor` float(11,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for control_gastos_documento
@@ -2448,7 +2448,7 @@ CREATE TABLE `control_gastos_documento` (
   `fecha` datetime NOT NULL,
   `estado` int(1) NOT NULL COMMENT '1 - Documento Abierto  \r\n2 - Documento Cerrado  \r\n3 - Documento Contabilizado  ',
   PRIMARY KEY (`id`,`empleado`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for control_gastos_soportes
@@ -2461,7 +2461,7 @@ CREATE TABLE `control_gastos_soportes` (
   `ext` varchar(5) COLLATE latin1_general_ci NOT NULL,
   `document_type` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_autorizadores_ordenes_compra
@@ -2477,7 +2477,7 @@ CREATE TABLE `costo_autorizadores_ordenes_compra` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_autorizadores_ordenes_compra_area
@@ -2496,7 +2496,7 @@ CREATE TABLE `costo_autorizadores_ordenes_compra_area` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_autorizadores_requisicion
@@ -2515,7 +2515,7 @@ CREATE TABLE `costo_autorizadores_requisicion` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_cuentas_transito
@@ -2538,7 +2538,7 @@ CREATE TABLE `costo_cuentas_transito` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_departamentos
@@ -2552,7 +2552,7 @@ CREATE TABLE `costo_departamentos` (
   `activo` int(1) DEFAULT '1',
   `id_empresa` int(15) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_documento
@@ -2565,7 +2565,7 @@ CREATE TABLE `costo_documento` (
   `activo` int(1) DEFAULT '1',
   `id_empresa` int(15) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for costo_documento_porcentaje
@@ -2587,7 +2587,7 @@ CREATE TABLE `costo_documento_porcentaje` (
   `activo` int(1) DEFAULT '1',
   `id_empresa` int(15) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_configuracion_actividades
@@ -2606,7 +2606,7 @@ CREATE TABLE `crm_configuracion_actividades` (
   `id_departamento` tinyint(3) DEFAULT NULL,
   `departamento` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_configuracion_actividades_departamentos
@@ -2617,7 +2617,7 @@ CREATE TABLE `crm_configuracion_actividades_departamentos` (
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` bit(1) DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for crm_configuracion_tipos_proyecto
@@ -2629,7 +2629,7 @@ CREATE TABLE `crm_configuracion_tipos_proyecto` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` bit(1) DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_log
@@ -2640,7 +2640,7 @@ CREATE TABLE `crm_log` (
   `fecha` datetime DEFAULT NULL,
   `log` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_notificaciones
@@ -2659,7 +2659,7 @@ CREATE TABLE `crm_notificaciones` (
   `fecha` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ID` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_objetivos
@@ -2699,7 +2699,7 @@ CREATE TABLE `crm_objetivos` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ID` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_objetivos_actividades
@@ -2737,7 +2737,7 @@ CREATE TABLE `crm_objetivos_actividades` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ID` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_objetivos_actividades_acciones
@@ -2754,7 +2754,7 @@ CREATE TABLE `crm_objetivos_actividades_acciones` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ID` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_objetivos_actividades_personas
@@ -2766,7 +2766,7 @@ CREATE TABLE `crm_objetivos_actividades_personas` (
   `id_asignado` int(11) DEFAULT NULL,
   `asignado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_objetivos_adjuntos
@@ -2786,7 +2786,7 @@ CREATE TABLE `crm_objetivos_adjuntos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_nota_general` (`id_objetivo`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for crm_objetivos_log
@@ -2803,7 +2803,7 @@ CREATE TABLE `crm_objetivos_log` (
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `accion` varchar(200) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for cuentas_default_activos_fijos
@@ -2839,7 +2839,7 @@ CREATE TABLE `cuentas_default_activos_fijos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_cuenta` (`id_cuenta_depreciacion_colgaap_debito`) USING BTREE,
   KEY `cuenta` (`cuenta_depreciacion_colgaap_debito`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for debug
@@ -2847,7 +2847,7 @@ CREATE TABLE `cuentas_default_activos_fijos` (
 DROP TABLE IF EXISTS `debug`;
 CREATE TABLE `debug` (
   `prueba` varchar(255) COLLATE latin1_general_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for deterioro_cartera_clientes
@@ -2870,7 +2870,7 @@ CREATE TABLE `deterioro_cartera_clientes` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for deterioro_cartera_clientes_cuentas
@@ -2888,7 +2888,7 @@ CREATE TABLE `deterioro_cartera_clientes_cuentas` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for deterioro_cartera_clientes_facturas
@@ -2916,7 +2916,7 @@ CREATE TABLE `deterioro_cartera_clientes_facturas` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for deterioro_cartera_proveedores
@@ -2939,7 +2939,7 @@ CREATE TABLE `deterioro_cartera_proveedores` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for deterioro_cartera_proveedores_cuentas
@@ -2957,7 +2957,7 @@ CREATE TABLE `deterioro_cartera_proveedores_cuentas` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for deterioro_cartera_proveedores_facturas
@@ -2985,7 +2985,7 @@ CREATE TABLE `deterioro_cartera_proveedores_facturas` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for devoluciones_compra
@@ -3024,7 +3024,7 @@ CREATE TABLE `devoluciones_compra` (
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_proveedor` (`id_proveedor`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=160 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for devoluciones_compra_inventario
@@ -3060,7 +3060,7 @@ CREATE TABLE `devoluciones_compra_inventario` (
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE,
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1398 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for devoluciones_venta
@@ -3110,7 +3110,7 @@ CREATE TABLE `devoluciones_venta` (
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_cliente` (`id_cliente`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=822 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for devoluciones_venta_grupos
@@ -3141,7 +3141,7 @@ CREATE TABLE `devoluciones_venta_grupos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for devoluciones_venta_inventario
@@ -3177,7 +3177,7 @@ CREATE TABLE `devoluciones_venta_inventario` (
   KEY `id_inventario` (`id_inventario`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1573 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for diferidos
@@ -3214,7 +3214,7 @@ CREATE TABLE `diferidos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados
@@ -3331,7 +3331,7 @@ CREATE TABLE `empleados` (
   KEY `id_cargo` (`id_cargo`) USING BTREE,
   KEY `id_celular_empresa` (`id_celular_empresa`) USING BTREE,
   KEY `id_contrato` (`id_contrato`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=234 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_adicional
@@ -3350,7 +3350,7 @@ CREATE TABLE `empleados_adicional` (
   `toma_medicamento` varchar(3) COLLATE latin1_general_ci DEFAULT 'no',
   `cual_toma_medicamento` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=125 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_cargos
@@ -3363,7 +3363,7 @@ CREATE TABLE `empleados_cargos` (
   `activo` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_contratos
@@ -3420,7 +3420,7 @@ CREATE TABLE `empleados_contratos` (
   KEY `id_tipo_contrato` (`id_tipo_contrato`) USING BTREE,
   KEY `id_grupo_trabajo` (`id_grupo_trabajo`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=172 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_contratos_documentos
@@ -3437,7 +3437,7 @@ CREATE TABLE `empleados_contratos_documentos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ID` (`id`) USING BTREE,
   KEY `ID_PEDIDO` (`id_contrato`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_contratos_entidades
@@ -3460,7 +3460,7 @@ CREATE TABLE `empleados_contratos_entidades` (
   KEY `id_entidad` (`id_entidad`) USING BTREE,
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1155 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_contratos_entidades_traslados
@@ -3482,7 +3482,7 @@ CREATE TABLE `empleados_contratos_entidades_traslados` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_contratos_modificacion_salarios
@@ -3505,7 +3505,7 @@ CREATE TABLE `empleados_contratos_modificacion_salarios` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empleado` (`id_empleado`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=155 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_documentos
@@ -3524,7 +3524,7 @@ CREATE TABLE `empleados_documentos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empleado` (`id_empleado`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_estudios
@@ -3546,7 +3546,7 @@ CREATE TABLE `empleados_estudios` (
   `tarjeta_profesional` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_experiencia_laboral
@@ -3570,7 +3570,7 @@ CREATE TABLE `empleados_experiencia_laboral` (
   `mensual` varchar(255) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_historial_vinculacion
@@ -3586,7 +3586,7 @@ CREATE TABLE `empleados_historial_vinculacion` (
   `id_sucursal` int(3) NOT NULL,
   `sucursal` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`,`sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=242 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_hoja_de_vida
@@ -3598,7 +3598,7 @@ CREATE TABLE `empleados_hoja_de_vida` (
   `ciudad_expedicion_documento` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `ciudad_nacimiento` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_horas_extras
@@ -3623,7 +3623,7 @@ CREATE TABLE `empleados_horas_extras` (
   `change_update` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `cedula` (`cedula`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_idiomas
@@ -3641,7 +3641,7 @@ CREATE TABLE `empleados_idiomas` (
   `habla` varchar(2) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_informacion_contacto
@@ -3662,7 +3662,7 @@ CREATE TABLE `empleados_informacion_contacto` (
   `contacto_principal` varchar(3) COLLATE latin1_general_ci DEFAULT 'no',
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_permisos
@@ -3677,7 +3677,7 @@ CREATE TABLE `empleados_permisos` (
   `modulo` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=301 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_registro
@@ -3692,7 +3692,7 @@ CREATE TABLE `empleados_registro` (
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `tipo` varchar(5) COLLATE latin1_general_ci DEFAULT 'in',
   PRIMARY KEY (`id`,`fecha`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_roles
@@ -3708,7 +3708,7 @@ CREATE TABLE `empleados_roles` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_roles_permisos
@@ -3722,7 +3722,7 @@ CREATE TABLE `empleados_roles_permisos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_rol` (`id_rol`) USING BTREE,
   KEY `id_permiso` (`id_permiso`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6075 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for empleados_sucursales_traslados
@@ -3743,7 +3743,7 @@ CREATE TABLE `empleados_sucursales_traslados` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empleados_tipo_documento
@@ -3757,7 +3757,7 @@ CREATE TABLE `empleados_tipo_documento` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empresas
@@ -3813,7 +3813,7 @@ CREATE TABLE `empresas` (
   KEY `id_ciudad` (`id_ciudad`) USING BTREE,
   KEY `id_responsable` (`id_responsable`) USING BTREE,
   KEY `id_moneda` (`id_moneda`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empresas_config_correo
@@ -3829,7 +3829,7 @@ CREATE TABLE `empresas_config_correo` (
   `password` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `seguridad_smtp` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empresas_formatos
@@ -3842,7 +3842,7 @@ CREATE TABLE `empresas_formatos` (
   `ext_formato` varchar(5) COLLATE latin1_general_ci DEFAULT NULL,
   `formato` mediumblob,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empresas_sucursales
@@ -3872,7 +3872,7 @@ CREATE TABLE `empresas_sucursales` (
   KEY `id_responsable` (`id_responsable`) USING BTREE,
   KEY `id_departamento` (`id_departamento`) USING BTREE,
   KEY `id_ciudad` (`id_ciudad`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for empresas_sucursales_bodegas
@@ -3890,7 +3890,7 @@ CREATE TABLE `empresas_sucursales_bodegas` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for equipos_registro
@@ -3912,7 +3912,7 @@ CREATE TABLE `equipos_registro` (
   `fecha_autorizacion` datetime DEFAULT NULL,
   `envio_confirmacion` int(5) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for extractos
@@ -3940,7 +3940,7 @@ CREATE TABLE `extractos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for extractos_detalle
@@ -3957,7 +3957,7 @@ CREATE TABLE `extractos_detalle` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for facturas_saldos_iniciales
@@ -3987,7 +3987,7 @@ CREATE TABLE `facturas_saldos_iniciales` (
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_cuenta_pago` (`id_cuenta_pago`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for flujo_efectivo
@@ -4001,7 +4001,7 @@ CREATE TABLE `flujo_efectivo` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for grupos_empresariales
@@ -4013,7 +4013,7 @@ CREATE TABLE `grupos_empresariales` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for historico_equipos
@@ -4030,7 +4030,7 @@ CREATE TABLE `historico_equipos` (
   `usuario` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `id_evento` varchar(20) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2187 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for impuestos
@@ -4058,7 +4058,7 @@ CREATE TABLE `impuestos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos
@@ -4077,7 +4077,7 @@ CREATE TABLE `informes_formatos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones
@@ -4092,7 +4092,7 @@ CREATE TABLE `informes_formatos_secciones` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones_columnas
@@ -4109,7 +4109,7 @@ CREATE TABLE `informes_formatos_secciones_columnas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones_filas
@@ -4127,7 +4127,7 @@ CREATE TABLE `informes_formatos_secciones_filas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones_filas_centro_costos
@@ -4150,7 +4150,7 @@ CREATE TABLE `informes_formatos_secciones_filas_centro_costos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones_filas_cuentas
@@ -4180,7 +4180,7 @@ CREATE TABLE `informes_formatos_secciones_filas_cuentas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=149 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones_filas_documentos
@@ -4201,7 +4201,7 @@ CREATE TABLE `informes_formatos_secciones_filas_documentos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_formatos_secciones_filas_terceros
@@ -4224,7 +4224,7 @@ CREATE TABLE `informes_formatos_secciones_filas_terceros` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_listado
@@ -4239,7 +4239,7 @@ CREATE TABLE `informes_listado` (
   `icono` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` varchar(5) COLLATE latin1_general_ci NOT NULL DEFAULT 'false',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_niif_formatos
@@ -4258,7 +4258,7 @@ CREATE TABLE `informes_niif_formatos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_niif_formatos_secciones
@@ -4281,7 +4281,7 @@ CREATE TABLE `informes_niif_formatos_secciones` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_niif_formatos_secciones_cuentas
@@ -4301,7 +4301,7 @@ CREATE TABLE `informes_niif_formatos_secciones_cuentas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_niif_formatos_secciones_filas
@@ -4319,7 +4319,7 @@ CREATE TABLE `informes_niif_formatos_secciones_filas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=128 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for informes_niif_formatos_secciones_filas_cuentas
@@ -4340,7 +4340,7 @@ CREATE TABLE `informes_niif_formatos_secciones_filas_cuentas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_ajuste
@@ -4382,7 +4382,7 @@ CREATE TABLE `inventario_ajuste` (
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_centro_costo` (`id_centro_costo`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2370 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_ajuste_detalle
@@ -4409,7 +4409,7 @@ CREATE TABLE `inventario_ajuste_detalle` (
   KEY `id_inventario` (`id_inventario`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_ajuste_inventario` (`id_ajuste_inventario`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=173551 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_consecutivo
@@ -4417,7 +4417,7 @@ CREATE TABLE `inventario_ajuste_detalle` (
 DROP TABLE IF EXISTS `inventario_consecutivo`;
 CREATE TABLE `inventario_consecutivo` (
   `consecutivo` int(11) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for inventario_documentos
@@ -4437,7 +4437,7 @@ CREATE TABLE `inventario_documentos` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `id` (`id`) USING BTREE,
   KEY `id_inventario` (`id_inventario`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_estadisticas_uso
@@ -4453,7 +4453,7 @@ CREATE TABLE `inventario_estadisticas_uso` (
   `desde` datetime DEFAULT NULL,
   `hasta` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_grupo
@@ -4469,7 +4469,7 @@ CREATE TABLE `inventario_grupo` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_grupo_subgrupo
@@ -4484,7 +4484,7 @@ CREATE TABLE `inventario_grupo_subgrupo` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_grupo` (`id_grupo`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_movimiento_notas
@@ -4515,7 +4515,7 @@ CREATE TABLE `inventario_movimiento_notas` (
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=498 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_prestamos
@@ -4545,7 +4545,7 @@ CREATE TABLE `inventario_prestamos` (
   `codigo` varchar(50) COLLATE latin1_general_ci NOT NULL,
   `prestamos_devolucion` varchar(5) COLLATE latin1_general_ci NOT NULL DEFAULT 'true',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_proceso
@@ -4573,7 +4573,7 @@ CREATE TABLE `inventario_proceso` (
   `fecha_fin_inventario` date NOT NULL,
   `hora_fin_inventario` time NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_proceso_items
@@ -4590,7 +4590,7 @@ CREATE TABLE `inventario_proceso_items` (
   `es_prestado` varchar(20) COLLATE latin1_general_ci NOT NULL,
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_proceso_items_out
@@ -4618,7 +4618,7 @@ CREATE TABLE `inventario_proceso_items_out` (
   `id_bodega_prestamo` int(11) DEFAULT NULL,
   `bodega_prestamo` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_totales
@@ -4669,7 +4669,7 @@ CREATE TABLE `inventario_totales` (
   KEY `id_grupo` (`id_grupo`) USING BTREE,
   KEY `id_subgrupo` (`id_subgrupo`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16990 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_totales_historico
@@ -4697,7 +4697,7 @@ CREATE TABLE `inventario_totales_historico` (
   `bodega` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=221377 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_totales_log
@@ -4732,7 +4732,7 @@ CREATE TABLE `inventario_totales_log` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_ubicacion` (`id_ubicacion`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1005320 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_totales_log_mensual
@@ -4775,7 +4775,7 @@ CREATE TABLE `inventario_totales_log_mensual` (
   KEY `id_familia` (`id_familia`) USING BTREE,
   KEY `id_grupo` (`id_grupo`) USING BTREE,
   KEY `id_subgrupo` (`id_subgrupo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=46438 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for inventario_totales_traslados
@@ -4813,7 +4813,7 @@ CREATE TABLE `inventario_totales_traslados` (
   KEY `id_sucursal_destino` (`id_sucursal_destino`) USING BTREE,
   KEY `id_bodega_destino` (`id_bodega_destino`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_totales_traslados_manual
@@ -4851,7 +4851,7 @@ CREATE TABLE `inventario_totales_traslados_manual` (
   KEY `id_sucursal_destino` (`id_sucursal_destino`) USING BTREE,
   KEY `id_bodega_destino` (`id_bodega_destino`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_traslados
@@ -4883,7 +4883,7 @@ CREATE TABLE `inventario_traslados` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=11086 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_traslados_unidades
@@ -4906,7 +4906,7 @@ CREATE TABLE `inventario_traslados_unidades` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_inventario` (`id_inventario`) USING BTREE,
   KEY `id_orden_compra` (`id_traslado`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=94403 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventario_unidades
@@ -4922,7 +4922,7 @@ CREATE TABLE `inventario_unidades` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items
@@ -5011,7 +5011,7 @@ CREATE TABLE `items` (
   KEY `id_usuario_elimino` (`id_usuario_elimino`) USING BTREE,
   KEY `id_usuario_creacion` (`id_usuario_creacion`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2187 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_cod_tx
@@ -5026,7 +5026,7 @@ CREATE TABLE `items_cod_tx` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_items` (`id_item`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_cuentas
@@ -5050,7 +5050,7 @@ CREATE TABLE `items_cuentas` (
   KEY `id_items` (`id_items`) USING BTREE,
   KEY `id_puc` (`id_puc`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=22313 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_cuentas_niif
@@ -5076,7 +5076,7 @@ CREATE TABLE `items_cuentas_niif` (
   KEY `id_items` (`id_items`) USING BTREE,
   KEY `id_puc` (`id_puc`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=20616 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_documentos
@@ -5096,7 +5096,7 @@ CREATE TABLE `items_documentos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_inventario` (`id_inventario`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_familia
@@ -5112,7 +5112,7 @@ CREATE TABLE `items_familia` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_familia_grupo
@@ -5132,7 +5132,7 @@ CREATE TABLE `items_familia_grupo` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_familia` (`id_familia`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_familia_grupo_subgrupo
@@ -5156,7 +5156,7 @@ CREATE TABLE `items_familia_grupo_subgrupo` (
   KEY `id_familia` (`id_familia`) USING BTREE,
   KEY `id_grupo` (`id_grupo`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=127 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_recetas
@@ -5178,7 +5178,7 @@ CREATE TABLE `items_recetas` (
   `id_empresa` int(11) DEFAULT '0',
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4311 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_terminos
@@ -5192,7 +5192,7 @@ CREATE TABLE `items_terminos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for items_terminos_detalle
@@ -5207,7 +5207,7 @@ CREATE TABLE `items_terminos_detalle` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for kanban_actividades
@@ -5227,7 +5227,7 @@ CREATE TABLE `kanban_actividades` (
   `estado` int(1) DEFAULT '0',
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for kanban_proyectos
@@ -5249,7 +5249,7 @@ CREATE TABLE `kanban_proyectos` (
   `terminado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `fecha_actualizacion` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for licencia_soporte
@@ -5262,7 +5262,7 @@ CREATE TABLE `licencia_soporte` (
   `autorizado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id_unico` (`id_unico`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for log
@@ -5276,7 +5276,7 @@ CREATE TABLE `log` (
   `log` varchar(5000) COLLATE latin1_general_ci NOT NULL,
   `modulo` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=22465 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for logistico_vehiculos
@@ -5290,7 +5290,7 @@ CREATE TABLE `logistico_vehiculos` (
   `placa` varchar(30) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for logs_inventario
@@ -5337,7 +5337,7 @@ CREATE TABLE `logs_inventario` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=203159 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for logs_mysql
@@ -5355,7 +5355,7 @@ CREATE TABLE `logs_mysql` (
   `usuario` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `fecha` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4426 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for log_documentos_contables
@@ -5383,7 +5383,7 @@ CREATE TABLE `log_documentos_contables` (
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=151855 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for log_js
@@ -5398,7 +5398,7 @@ CREATE TABLE `log_js` (
   `ip` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `Index` (`fecha`,`user`,`username`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for mantenimiento
@@ -5421,7 +5421,7 @@ CREATE TABLE `mantenimiento` (
   `activo` int(11) NOT NULL DEFAULT '1',
   `cod_equipo` varchar(50) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for mantenimiento_datos
@@ -5437,7 +5437,7 @@ CREATE TABLE `mantenimiento_datos` (
   `id_checklist_detalle` int(11) NOT NULL,
   `checklist_detalle` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for medios_magneticos_formatos
@@ -5450,7 +5450,7 @@ CREATE TABLE `medios_magneticos_formatos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for medios_magneticos_formatos_columnas
@@ -5465,7 +5465,7 @@ CREATE TABLE `medios_magneticos_formatos_columnas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for medios_magneticos_formatos_conceptos
@@ -5479,7 +5479,7 @@ CREATE TABLE `medios_magneticos_formatos_conceptos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for medios_magneticos_formatos_conceptos_cuentas
@@ -5506,7 +5506,7 @@ CREATE TABLE `medios_magneticos_formatos_conceptos_cuentas` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=93 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for meet
@@ -5529,7 +5529,7 @@ CREATE TABLE `meet` (
   `part_ini_cam` varchar(5) COLLATE latin1_general_ci NOT NULL DEFAULT 'false',
   `activo` smallint(1) NOT NULL DEFAULT '1' COMMENT '1: activo 0: inactivo',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for meet_config
@@ -5546,7 +5546,7 @@ CREATE TABLE `meet_config` (
   `promof` date DEFAULT NULL,
   `num_reuniones` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for meet_suscripcion
@@ -5562,7 +5562,7 @@ CREATE TABLE `meet_suscripcion` (
   `usuario_activa` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `tipo` int(1) DEFAULT NULL COMMENT '1-> automatica ,   2->manual',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for modulos_erp
@@ -5580,7 +5580,7 @@ CREATE TABLE `modulos_erp` (
   `ancho` int(10) NOT NULL DEFAULT '0',
   `alto` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_conceptos
@@ -5647,7 +5647,7 @@ CREATE TABLE `nomina_conceptos` (
   KEY `id_cuenta_colgaap` (`id_cuenta_colgaap`) USING BTREE,
   KEY `id_cuenta_niif` (`id_cuenta_niif`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_conceptos_base_liquidacion
@@ -5666,7 +5666,7 @@ CREATE TABLE `nomina_conceptos_base_liquidacion` (
   `activo` int(11) DEFAULT '1',
   `id_empresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_conceptos_cargo
@@ -5686,7 +5686,7 @@ CREATE TABLE `nomina_conceptos_cargo` (
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_cargo` (`id_cargo`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_conceptos_empleados
@@ -5707,7 +5707,7 @@ CREATE TABLE `nomina_conceptos_empleados` (
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_cargo` (`id_empleado`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=777 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_conceptos_grupos_trabajo
@@ -5763,7 +5763,7 @@ CREATE TABLE `nomina_conceptos_grupos_trabajo` (
   KEY `id_cuenta_colgaap` (`id_cuenta_colgaap`) USING BTREE,
   KEY `id_cuenta_niif` (`id_cuenta_niif`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_consecutivos
@@ -5782,7 +5782,7 @@ CREATE TABLE `nomina_configuracion_consecutivos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_formas_pago
@@ -5799,7 +5799,7 @@ CREATE TABLE `nomina_configuracion_formas_pago` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_hora_extra
@@ -5847,7 +5847,7 @@ CREATE TABLE `nomina_configuracion_idiomas` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=185 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_medios_pago
@@ -5864,7 +5864,7 @@ CREATE TABLE `nomina_configuracion_medios_pago` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=79 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_monedas
@@ -5880,7 +5880,7 @@ CREATE TABLE `nomina_configuracion_monedas` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=180 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_subtipo_trabajador
@@ -5897,7 +5897,7 @@ CREATE TABLE `nomina_configuracion_subtipo_trabajador` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_tipo_documentos
@@ -5915,7 +5915,7 @@ CREATE TABLE `nomina_configuracion_tipo_documentos` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_tipo_documentos_ajuste
@@ -5932,7 +5932,7 @@ CREATE TABLE `nomina_configuracion_tipo_documentos_ajuste` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_configuracion_tipo_trabajador
@@ -5949,7 +5949,7 @@ CREATE TABLE `nomina_configuracion_tipo_trabajador` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `is_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_consolidacion_provision
@@ -5997,7 +5997,7 @@ CREATE TABLE `nomina_consolidacion_provision` (
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_consolidacion_provision_cuentas
@@ -6033,7 +6033,7 @@ CREATE TABLE `nomina_consolidacion_provision_cuentas` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_cuentas_pago
@@ -6055,7 +6055,7 @@ CREATE TABLE `nomina_cuentas_pago` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_electronica_estructura_conceptos
@@ -6069,7 +6069,7 @@ CREATE TABLE `nomina_electronica_estructura_conceptos` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_formulas_conceptos
@@ -6083,7 +6083,7 @@ CREATE TABLE `nomina_formulas_conceptos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_grupos_conceptos
@@ -6099,7 +6099,7 @@ CREATE TABLE `nomina_grupos_conceptos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_grupos_trabajo
@@ -6113,7 +6113,7 @@ CREATE TABLE `nomina_grupos_trabajo` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_motivo_fin_contrato
@@ -6127,7 +6127,7 @@ CREATE TABLE `nomina_motivo_fin_contrato` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_niveles_riesgos_laborales
@@ -6140,7 +6140,7 @@ CREATE TABLE `nomina_niveles_riesgos_laborales` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas
@@ -6174,7 +6174,7 @@ CREATE TABLE `nomina_planillas` (
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=542 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_ajuste
@@ -6204,7 +6204,7 @@ CREATE TABLE `nomina_planillas_ajuste` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_ajuste_empleados
@@ -6227,7 +6227,7 @@ CREATE TABLE `nomina_planillas_ajuste_empleados` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_ajuste_empleados_conceptos
@@ -6294,7 +6294,7 @@ CREATE TABLE `nomina_planillas_ajuste_empleados_conceptos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_consolidacion_provision
@@ -6325,7 +6325,7 @@ CREATE TABLE `nomina_planillas_consolidacion_provision` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_consolidacion_provision_empleados
@@ -6357,7 +6357,7 @@ CREATE TABLE `nomina_planillas_consolidacion_provision_empleados` (
   KEY `id_empleado` (`id_empleado`) USING BTREE,
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_consolidacion_provision_empleados_conceptos
@@ -6427,7 +6427,7 @@ CREATE TABLE `nomina_planillas_consolidacion_provision_empleados_conceptos` (
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_electronica
@@ -6459,7 +6459,7 @@ CREATE TABLE `nomina_planillas_electronica` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_electronica_empleados
@@ -6494,7 +6494,7 @@ CREATE TABLE `nomina_planillas_electronica_empleados` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1214 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_electronica_empleados_conceptos
@@ -6523,7 +6523,7 @@ CREATE TABLE `nomina_planillas_electronica_empleados_conceptos` (
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16181 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_electronica_empleados_fechas_pago
@@ -6541,7 +6541,7 @@ CREATE TABLE `nomina_planillas_electronica_empleados_fechas_pago` (
   KEY `id_planilla` (`id_planilla`) USING BTREE,
   KEY `id_empleado` (`id_empleado`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=584 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_electronica_fechas_pago
@@ -6553,7 +6553,7 @@ CREATE TABLE `nomina_planillas_electronica_fechas_pago` (
   `fecha` date DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=69 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_empleados
@@ -6582,7 +6582,7 @@ CREATE TABLE `nomina_planillas_empleados` (
   KEY `id_planilla` (`id_planilla`) USING BTREE,
   KEY `id_empleado` (`id_empleado`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6880 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_empleados_conceptos
@@ -6646,7 +6646,7 @@ CREATE TABLE `nomina_planillas_empleados_conceptos` (
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=95265 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_empleados_conceptos_datos_nomina_electronica
@@ -6664,7 +6664,7 @@ CREATE TABLE `nomina_planillas_empleados_conceptos_datos_nomina_electronica` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2634 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_empleados_contabilizacion
@@ -6699,7 +6699,7 @@ CREATE TABLE `nomina_planillas_empleados_contabilizacion` (
   `activo` int(11) DEFAULT '1',
   `debug_nomina` varchar(255) COLLATE latin1_general_ci DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=218307 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_liquidacion
@@ -6729,7 +6729,7 @@ CREATE TABLE `nomina_planillas_liquidacion` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=358 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_liquidacion_conceptos_deducir
@@ -6756,7 +6756,7 @@ CREATE TABLE `nomina_planillas_liquidacion_conceptos_deducir` (
   KEY `id_prestamo` (`id_prestamo`) USING BTREE,
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=265 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_liquidacion_empleados
@@ -6790,7 +6790,7 @@ CREATE TABLE `nomina_planillas_liquidacion_empleados` (
   KEY `id_empleado` (`id_empleado`) USING BTREE,
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1263 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_planillas_liquidacion_empleados_conceptos
@@ -6862,7 +6862,7 @@ CREATE TABLE `nomina_planillas_liquidacion_empleados_conceptos` (
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_concepto` (`id_concepto`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4311 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_prestamos_empleados
@@ -6900,7 +6900,7 @@ CREATE TABLE `nomina_prestamos_empleados` (
   `estado` int(11) DEFAULT '0' COMMENT '0=sin cruzar, 1=cruzado (con comprobante o nomina)',
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_prestamos_empleados_pagos
@@ -6920,7 +6920,7 @@ CREATE TABLE `nomina_prestamos_empleados_pagos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_tipos_liquidacion
@@ -6936,7 +6936,7 @@ CREATE TABLE `nomina_tipos_liquidacion` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_tipo_contrato
@@ -6952,7 +6952,7 @@ CREATE TABLE `nomina_tipo_contrato` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_vacaciones_empleados
@@ -6991,7 +6991,7 @@ CREATE TABLE `nomina_vacaciones_empleados` (
   KEY `id_empleado` (`id_empleado`) USING BTREE,
   KEY `id_contrato` (`id_contrato`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=152 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nomina_wizard_process
@@ -7005,7 +7005,7 @@ CREATE TABLE `nomina_wizard_process` (
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nota_cierre
@@ -7047,7 +7047,7 @@ CREATE TABLE `nota_cierre` (
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nota_cierre_cuentas
@@ -7088,7 +7088,7 @@ CREATE TABLE `nota_cierre_cuentas` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=260521 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nota_cierre_niif
@@ -7130,7 +7130,7 @@ CREATE TABLE `nota_cierre_niif` (
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nota_cierre_niif_cuentas
@@ -7171,7 +7171,7 @@ CREATE TABLE `nota_cierre_niif_cuentas` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nota_contable_general
@@ -7214,7 +7214,7 @@ CREATE TABLE `nota_contable_general` (
   KEY `id_centro_costos` (`id_centro_costos`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=39988 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for nota_contable_general_cuentas
@@ -7256,7 +7256,7 @@ CREATE TABLE `nota_contable_general_cuentas` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=697022 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for planes
@@ -7269,7 +7269,7 @@ CREATE TABLE `planes` (
   `sucursales` varchar(255) COLLATE latin1_general_ci DEFAULT '',
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for plantillas
@@ -7284,7 +7284,7 @@ CREATE TABLE `plantillas` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for plantillas_configuracion
@@ -7304,7 +7304,7 @@ CREATE TABLE `plantillas_configuracion` (
   KEY `plantillas_id` (`plantillas_id`) USING BTREE,
   KEY `codigo_niif` (`codigo_niif`) USING BTREE,
   KEY `codigo_puc` (`codigo_puc`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for principios_niif
@@ -7316,7 +7316,7 @@ CREATE TABLE `principios_niif` (
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for propiedades
@@ -7327,7 +7327,7 @@ CREATE TABLE `propiedades` (
   `nombre` varchar(100) CHARACTER SET latin1 NOT NULL,
   `activo` int(1) NOT NULL,
   PRIMARY KEY (`id_propiedades`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for prospectos_upload_registro
@@ -7368,7 +7368,7 @@ CREATE TABLE `prospectos_upload_registro` (
   KEY `id_pais` (`id_pais`) USING BTREE,
   KEY `id_departamento` (`id_departamento`) USING BTREE,
   KEY `id_ciudad` (`id_ciudad`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for puc
@@ -7398,7 +7398,7 @@ CREATE TABLE `puc` (
   KEY `cuenta` (`cuenta`) USING BTREE,
   KEY `id_departamento` (`id_departamento`) USING BTREE,
   KEY `id_ciudad` (`id_ciudad`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1999 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for puc_carga_auxiliares
@@ -7409,7 +7409,7 @@ CREATE TABLE `puc_carga_auxiliares` (
   `cuenta` bigint(20) DEFAULT NULL,
   `nombre` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for puc_configuracion
@@ -7422,7 +7422,7 @@ CREATE TABLE `puc_configuracion` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for puc_configuraciones_default
@@ -7437,7 +7437,7 @@ CREATE TABLE `puc_configuraciones_default` (
   `id_empresa` int(11) DEFAULT NULL,
   `id_sucursal` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for puc_niff_respaldo
@@ -7450,7 +7450,7 @@ CREATE TABLE `puc_niff_respaldo` (
   `descripcion` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for puc_niif
@@ -7479,7 +7479,7 @@ CREATE TABLE `puc_niif` (
   KEY `cuenta` (`cuenta`) USING BTREE,
   KEY `id_departamento` (`id_departamento`) USING BTREE,
   KEY `id_ciudad` (`id_ciudad`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1962 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for rango_autorizaciones_ordenes_compra
@@ -7492,7 +7492,7 @@ CREATE TABLE `rango_autorizaciones_ordenes_compra` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for recibo_caja
@@ -7538,7 +7538,7 @@ CREATE TABLE `recibo_caja` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_flujo_efectivo` (`id_flujo_efectivo`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=52918 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for recibo_caja_cuentas
@@ -7573,7 +7573,7 @@ CREATE TABLE `recibo_caja_cuentas` (
   KEY `id_puc` (`id_puc`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=63942 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for reparacion
@@ -7599,7 +7599,7 @@ CREATE TABLE `reparacion` (
   `activo` int(11) NOT NULL DEFAULT '1',
   `equipo` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for resolucion_documento_soporte
@@ -7621,7 +7621,7 @@ CREATE TABLE `resolucion_documento_soporte` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for resolucion_documento_soporte_sucursales
@@ -7640,7 +7640,7 @@ CREATE TABLE `resolucion_documento_soporte_sucursales` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for retenciones
@@ -7670,7 +7670,7 @@ CREATE TABLE `retenciones` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_departamento` (`id_departamento`) USING BTREE,
   KEY `id_ciudad` (`id_ciudad`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for reunion_coope
@@ -7690,7 +7690,7 @@ CREATE TABLE `reunion_coope` (
   `usuario` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for reunion_coope_datos
@@ -7707,7 +7707,7 @@ CREATE TABLE `reunion_coope_datos` (
   `id_checklist_detalle` int(11) NOT NULL,
   `checklist_detalle` varchar(1500) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for seccion_items
@@ -7718,7 +7718,7 @@ CREATE TABLE `seccion_items` (
   `id_item` int(11) DEFAULT NULL,
   `id_seccion` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for solicitudes
@@ -7748,7 +7748,7 @@ CREATE TABLE `solicitudes` (
   `propiedad` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros
@@ -7853,7 +7853,7 @@ CREATE TABLE `terceros` (
   KEY `id_sector_empresarial` (`id_sector_empresarial`) USING BTREE,
   KEY `id_tercero_tributario` (`id_tercero_tributario`) USING BTREE,
   KEY `id_forma_pago` (`id_forma_pago`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=62333 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_asignados
@@ -7866,7 +7866,7 @@ CREATE TABLE `terceros_asignados` (
   `id_asignado` int(11) DEFAULT NULL,
   `asignado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_contactos
@@ -7903,7 +7903,7 @@ CREATE TABLE `terceros_contactos` (
   KEY `id_tratamiento` (`id_tratamiento`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_siip` (`id_siip`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=57975 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_contactos_email
@@ -7919,7 +7919,7 @@ CREATE TABLE `terceros_contactos_email` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_contacto` (`id_contacto`) USING BTREE,
   KEY `id_siip` (`id_siip`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_datos_asiste
@@ -7938,7 +7938,7 @@ CREATE TABLE `terceros_datos_asiste` (
   `observaciones` varchar(5000) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_direcciones
@@ -7973,7 +7973,7 @@ CREATE TABLE `terceros_direcciones` (
   KEY `id_ciudad` (`id_ciudad`) USING BTREE,
   KEY `id_pais` (`id_pais`) USING BTREE,
   KEY `id_siip` (`id_siip`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=62355 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_direcciones_email
@@ -7989,7 +7989,7 @@ CREATE TABLE `terceros_direcciones_email` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_contacto` (`id_direccion`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=343 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_documentos
@@ -8009,7 +8009,7 @@ CREATE TABLE `terceros_documentos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_emails
@@ -8023,7 +8023,7 @@ CREATE TABLE `terceros_emails` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_tercero` (`id_tercero`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_ficha_tecnica
@@ -8059,7 +8059,7 @@ CREATE TABLE `terceros_ficha_tecnica` (
   `activo` int(1) DEFAULT '1',
   `id_forma_pago` int(15) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_log
@@ -8077,7 +8077,7 @@ CREATE TABLE `terceros_log` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ID` (`id`) USING BTREE,
   KEY `ID_PEDIDO` (`id_tercero`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=62333 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_retenciones
@@ -8103,7 +8103,7 @@ CREATE TABLE `terceros_retenciones` (
   KEY `id_ciudad` (`id_ciudad`) USING BTREE,
   KEY `id_proveedor` (`id_proveedor`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for terceros_tipo
@@ -8115,7 +8115,7 @@ CREATE TABLE `terceros_tipo` (
   `activo` smallint(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_tipo_documento
@@ -8129,7 +8129,7 @@ CREATE TABLE `terceros_tipo_documento` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_tratamiento
@@ -8144,7 +8144,7 @@ CREATE TABLE `terceros_tratamiento` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_tributario
@@ -8160,7 +8160,7 @@ CREATE TABLE `terceros_tributario` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_pais` (`id_pais`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_upload
@@ -8183,7 +8183,7 @@ CREATE TABLE `terceros_upload` (
   `activo` int(1) DEFAULT '1',
   `tercero` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for terceros_upload_registro
@@ -8273,7 +8273,7 @@ CREATE TABLE `terceros_upload_registro` (
   KEY `id_sector_empresarial` (`id_sector_empresarial`) USING BTREE,
   KEY `id_tercero_tributario` (`id_tercero_tributario`) USING BTREE,
   KEY `id_forma_pago` (`id_forma_pago`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for tipo_documento
@@ -8292,7 +8292,7 @@ CREATE TABLE `tipo_documento` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for tipo_nota_contable
@@ -8310,7 +8310,7 @@ CREATE TABLE `tipo_nota_contable` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ubicacion_ciudad
@@ -8330,7 +8330,7 @@ CREATE TABLE `ubicacion_ciudad` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_pais` (`id_pais`) USING BTREE,
   KEY `id_departamento` (`id_departamento`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5167 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ubicacion_departamento
@@ -8346,7 +8346,7 @@ CREATE TABLE `ubicacion_departamento` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_pais` (`id_pais`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1379 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ubicacion_pais
@@ -8368,28 +8368,7 @@ CREATE TABLE `ubicacion_pais` (
   `codigo` varchar(15) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=243 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Table structure for ubicacion_pais_copy
--- ----------------------------
-DROP TABLE IF EXISTS `ubicacion_pais_copy`;
-CREATE TABLE `ubicacion_pais_copy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pais` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
-  `continente` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
-  `subcontinente` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
-  `prefijo` int(11) NOT NULL,
-  `moneda` varchar(3) COLLATE latin1_general_ci NOT NULL,
-  `nombre-moneda` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
-  `iso2` varchar(2) COLLATE latin1_general_ci NOT NULL,
-  `iso3` varchar(3) COLLATE latin1_general_ci NOT NULL,
-  `time_zone` varchar(255) COLLATE latin1_general_ci DEFAULT 'America/Bogota',
-  `activo` int(1) NOT NULL DEFAULT '1',
-  `impuesto` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for variables
@@ -8410,7 +8389,7 @@ CREATE TABLE `variables` (
   `change_update` varchar(5) COLLATE latin1_general_ci DEFAULT NULL,
   `proyecto` varchar(20) COLLATE latin1_general_ci DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=67 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for variables_grupos
@@ -8423,7 +8402,7 @@ CREATE TABLE `variables_grupos` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_cotizaciones
@@ -8472,7 +8451,7 @@ CREATE TABLE `ventas_cotizaciones` (
   KEY `id_sucursal_cliente` (`id_sucursal_cliente`) USING BTREE,
   KEY `plantillas_id` (`plantillas_id`) USING BTREE,
   KEY `id_forma_pago` (`id_forma_pago`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=69 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_cotizaciones_inventario
@@ -8503,7 +8482,7 @@ CREATE TABLE `ventas_cotizaciones_inventario` (
   KEY `id_inventario` (`id_inventario`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas
@@ -8592,7 +8571,7 @@ CREATE TABLE `ventas_facturas` (
   KEY `id_bodega` (`id_bodega`) USING BTREE,
   KEY `id_centro_costo` (`id_centro_costo`) USING BTREE,
   KEY `id_saldo_inicial` (`id_saldo_inicial`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=78705 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_configuracion
@@ -8620,7 +8599,7 @@ CREATE TABLE `ventas_facturas_configuracion` (
   KEY `id_usuario` (`id_usuario`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_configuracion_sucursales
@@ -8639,7 +8618,7 @@ CREATE TABLE `ventas_facturas_configuracion_sucursales` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_cuentas
@@ -8682,7 +8661,7 @@ CREATE TABLE `ventas_facturas_cuentas` (
   KEY `id_tercero` (`id_tercero`) USING BTREE,
   KEY `id_documento_cruce` (`id_documento_cruce`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=185045 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_documentos
@@ -8697,7 +8676,7 @@ CREATE TABLE `ventas_facturas_documentos` (
   `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_grupos
@@ -8727,7 +8706,7 @@ CREATE TABLE `ventas_facturas_grupos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_inventario
@@ -8777,7 +8756,7 @@ CREATE TABLE `ventas_facturas_inventario` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=83197 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_inventario_grupos
@@ -8792,7 +8771,7 @@ CREATE TABLE `ventas_facturas_inventario_grupos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_factura_venta` (`id_factura_venta`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_retenciones
@@ -8815,7 +8794,7 @@ CREATE TABLE `ventas_facturas_retenciones` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_factura_venta` (`id_factura_venta`) USING BTREE,
   KEY `id_retencion` (`id_retencion`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3661 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_facturas_update_fecha
@@ -8832,7 +8811,7 @@ CREATE TABLE `ventas_facturas_update_fecha` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_factura` (`id_factura`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=148 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pedidos
@@ -8878,7 +8857,7 @@ CREATE TABLE `ventas_pedidos` (
   KEY `id_cliente` (`id_cliente`) USING BTREE,
   KEY `plantillas_id` (`plantillas_id`) USING BTREE,
   KEY `id_forma_pago` (`id_forma_pago`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=119 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pedidos_configuracion
@@ -8892,7 +8871,7 @@ CREATE TABLE `ventas_pedidos_configuracion` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pedidos_inventario
@@ -8929,7 +8908,7 @@ CREATE TABLE `ventas_pedidos_inventario` (
   KEY `id_consecutivo_referencia` (`id_consecutivo_referencia`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos
@@ -9001,7 +8980,7 @@ CREATE TABLE `ventas_pos` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=37827 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_auditoria_cierre
@@ -9020,7 +8999,7 @@ CREATE TABLE `ventas_pos_auditoria_cierre` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1563 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_auditoria_precierre
@@ -9040,7 +9019,7 @@ CREATE TABLE `ventas_pos_auditoria_precierre` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1693 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_cajas
@@ -9061,7 +9040,7 @@ CREATE TABLE `ventas_pos_cajas` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_cajas_movimientos
@@ -9093,7 +9072,7 @@ CREATE TABLE `ventas_pos_cajas_movimientos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3789 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_cajas_secciones
@@ -9110,7 +9089,7 @@ CREATE TABLE `ventas_pos_cajas_secciones` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_comanda
@@ -9141,7 +9120,7 @@ CREATE TABLE `ventas_pos_comanda` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=57029 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_configuracion
@@ -9174,7 +9153,7 @@ CREATE TABLE `ventas_pos_configuracion` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_configuracion_cuenta_cobro` (`id_configuracion_cuenta_cobro`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_configuracion_consecutivos
@@ -9190,7 +9169,7 @@ CREATE TABLE `ventas_pos_configuracion_consecutivos` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for ventas_pos_configuracion_sucursales
@@ -9209,7 +9188,7 @@ CREATE TABLE `ventas_pos_configuracion_sucursales` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_consecutivos_caja
@@ -9233,7 +9212,7 @@ CREATE TABLE `ventas_pos_consecutivos_caja` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_resolucion` (`id_resolucion`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_consecutivos_liberados
@@ -9252,7 +9231,7 @@ CREATE TABLE `ventas_pos_consecutivos_liberados` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_resolucion` (`id_resolucion`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Table structure for ventas_pos_cuenta_comensales_porborrar
@@ -9268,7 +9247,7 @@ CREATE TABLE `ventas_pos_cuenta_comensales_porborrar` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_cuenta_porborrar
@@ -9283,7 +9262,7 @@ CREATE TABLE `ventas_pos_cuenta_porborrar` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_formas_pago
@@ -9300,7 +9279,7 @@ CREATE TABLE `ventas_pos_formas_pago` (
   `activo` int(11) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=38096 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_inventario
@@ -9341,7 +9320,7 @@ CREATE TABLE `ventas_pos_inventario` (
   KEY `id_empresa` (`id_empresa`) USING BTREE,
   KEY `id_sucursal` (`id_sucursal`) USING BTREE,
   KEY `id_bodega` (`id_bodega`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=155837 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_inventario_receta
@@ -9369,7 +9348,7 @@ CREATE TABLE `ventas_pos_inventario_receta` (
   KEY `id_item` (`id_item`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=512076 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas
@@ -9387,7 +9366,7 @@ CREATE TABLE `ventas_pos_mesas` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas_cuenta
@@ -9420,7 +9399,7 @@ CREATE TABLE `ventas_pos_mesas_cuenta` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=35606 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas_cuenta_comensales
@@ -9442,7 +9421,7 @@ CREATE TABLE `ventas_pos_mesas_cuenta_comensales` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=60584 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas_cuenta_items
@@ -9473,7 +9452,7 @@ CREATE TABLE `ventas_pos_mesas_cuenta_items` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=89931 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas_cuenta_items_recetas
@@ -9496,7 +9475,7 @@ CREATE TABLE `ventas_pos_mesas_cuenta_items_recetas` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=463897 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas_estados
@@ -9512,7 +9491,7 @@ CREATE TABLE `ventas_pos_mesas_estados` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_mesas_traslados
@@ -9536,7 +9515,7 @@ CREATE TABLE `ventas_pos_mesas_traslados` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4179 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_secciones
@@ -9564,7 +9543,7 @@ CREATE TABLE `ventas_pos_secciones` (
   `cuenta_pago` int(11) DEFAULT NULL,
   `metodo_pago` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for ventas_pos_terceros
@@ -9582,7 +9561,7 @@ CREATE TABLE `ventas_pos_terceros` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_pos_tope_facturacion
@@ -9593,7 +9572,7 @@ CREATE TABLE `ventas_pos_tope_facturacion` (
   `tope` double DEFAULT NULL,
   `id_empresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for ventas_recibo_caja_documentos
@@ -9608,7 +9587,7 @@ CREATE TABLE `ventas_recibo_caja_documentos` (
   `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_remisiones
@@ -9663,7 +9642,7 @@ CREATE TABLE `ventas_remisiones` (
   KEY `plantillas_id` (`plantillas_id`) USING BTREE,
   KEY `id_forma_pago` (`id_forma_pago`) USING BTREE,
   KEY `id_centro_costo` (`id_centro_costo`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=43564 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_remisiones_configuracion
@@ -9677,7 +9656,7 @@ CREATE TABLE `ventas_remisiones_configuracion` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `id_empresa` (`id_empresa`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ventas_remisiones_inventario
@@ -9718,7 +9697,7 @@ CREATE TABLE `ventas_remisiones_inventario` (
   KEY `id_consecutivo_referencia` (`id_consecutivo_referencia`) USING BTREE,
   KEY `id_unidad_medida` (`id_unidad_medida`) USING BTREE,
   KEY `id_impuesto` (`id_impuesto`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=424381 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for web_service_log
@@ -9735,7 +9714,7 @@ CREATE TABLE `web_service_log` (
   `estado` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=62337 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for web_service_metodos
@@ -9756,7 +9735,7 @@ CREATE TABLE `web_service_metodos` (
   `propiedad` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for web_service_software
@@ -9770,7 +9749,7 @@ CREATE TABLE `web_service_software` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for web_service_tercero_causacion
@@ -9786,7 +9765,7 @@ CREATE TABLE `web_service_tercero_causacion` (
   `id_empresa` int(11) DEFAULT NULL,
   `activo` int(1) DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- View structure for vista_saldo_sin_restar_bug_fc
