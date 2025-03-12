@@ -127,7 +127,7 @@
 		//************************************************************************//
 		// AGREGAR LOS ARTICULOS
 		$marcaAgua = ($estado == 3)? 'true': 'false';
-		v = ($tablaInventario == 'ventas_facturas_inventario')? 'AND activo = 1' : '';
+		$activo = ($tablaInventario == 'ventas_facturas_inventario')? 'AND activo = 1' : '';
 		$sqlArticulos =  "SELECT
 												*,
 												SUM(cantidad) AS cantidad_total,COUNT(id) AS cant_filas
