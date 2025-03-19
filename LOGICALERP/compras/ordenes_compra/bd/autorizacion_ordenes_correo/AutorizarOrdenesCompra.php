@@ -29,6 +29,6 @@
 	$responseEnvioCorreo = $objOrdenes->getResponse();
 	
 	//respuesta final
-    echo json_encode(["success"=>true,"responseOrden"=>$responseOrden,"responseEnvioCorreo"=>$responseEnvioCorreo]);
+    echo json_encode(["success"=>true,"responseEnvioCorreo"=>$responseEnvioCorreo]);
 
 ?>
