@@ -300,7 +300,8 @@ class AutorizaOrdenesCorreo{
                 break;
 
             default:
-                return false;
+                $this->response = ['success'=>false,"message"=>"Error inesperado: Por favor contacte con soporte"];
+                break;
         }
     }
 
@@ -414,13 +415,16 @@ class AutorizaOrdenesCorreo{
         
         $tableAutorizarOC = '';
         $mensaje = "La orden de compra que solicito ha sido $this->tipoAutorizacion";
-	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? $_SERVER['DOCUMENT_ROOT']."/ERP":$_SERVER['DOCUMENT_ROOT'];
+	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP/":$_SERVER['DOCUMENT_ROOT'];
         
         if($this->idSiguienteAutorizador){
            $tableAutorizarOC = '<table>
                                     <tr>
                                         <td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
-                                              <a href="'.$serverRoot.'/LOGICALERP/compras/ordenes_compra/bd/autorizacion_ordenes_correo/autorizar_ordenes_correo.php?data='.$datos.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+                                              <a href="'.$serverRoot.'/LOGICALERP/compras/ordenes_compra/bd/autorizacion_ordenes_correo/autorizar_ordenes_correo.php?data='.$datos.'"
+                                               target="_blank" 
+                                               style="font-family:tahoma,arial,verdana,sans-serif; 
+                                               font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
                                         </td>
                                     </tr>
                                 </table>';
