@@ -97,7 +97,7 @@ async function enviarFormulario(tipoAutorizacion) {
         const data = await response.json();
 
         if (data.success && data.responseEnvioCorreo.success) {
-            mostrarModal(`✅ Éxito: ${data.responseOrden.message}`);
+            mostrarModal(`✅ Éxito: ${data.responseEnvioCorreo.message}`);
         } else if(data.success && !data.responseEnvioCorreo.success){
             mostrarModal(`⚠️ Alerta: ${data.responseEnvioCorreo.message}`);
         } 
