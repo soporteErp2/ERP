@@ -10,22 +10,26 @@ class AutorizaOrdenesCorreo{
     private $orm;  // clase ORM
     private $idSiguienteAutorizador;  // id del siguiente autorizador
     private $empresaData;  // id del siguiente autorizador
+    private  $response;  // Contiene el estado actual de cualquier transaccion
+    private  $mailConnection; // Datos de conexion al email
+    private  $mail; // Objeto de email
     private static $mensajesErrorEstadoDocumento = array(  //Mensajes de error para cada estado del documento
         0 => "El documento no está generado",
         2 => "El documento está bloqueado",
         3 => "El documento se encuentra cancelado"
     );
-    private  $response;  // respuesta
-    private  $mailConnection;
-    private  $mail;
 
     /**
-     * Constructor de la clase que inicializa las credenciales de la base de datos.
-     * @param string $servidor - Dirección del servidor MySQL.
-     * @param string $usuario - Nombre de usuario de la base de datos.
-     * @param string $clave - Contraseña de acceso.
-     * @param string $baseDatos - Nombre de la base de datos predeterminada.
+     * Constructor de la clase que inicializa los datos de autorización y la información de la empresa y el documento.
+     * 
+     * @param Orm_Controller $orm - Instancia del ORM para la gestión de datos.
+     * @param int $idEmpresa - Identificador de la empresa asociada.
+     * @param int $idDocumento - Identificador del documento relacionado.
+     * @param string $usuario - Nombre de usuario que autoriza la operación.
+     * @param string $contrasena - Contraseña del usuario autorizador (se almacena encriptada).
+     * @param string $tipoAutorizacion - Tipo de autorización aplicada.
      */
+
     public function __construct(Orm_Controller $orm, $idEmpresa, $idDocumento, $usuario, $contrasena,$tipoAutorizacion) {
         $this->orm                      = $orm;
         $this->idEmpresa                = $idEmpresa;
@@ -40,7 +44,7 @@ class AutorizaOrdenesCorreo{
     }
 
     /**
-     *  valida el usuario puede o no autorizar el documento
+     *  valida si el usuario puede o no autorizar el documento
      * @return void 
      */
     private function validarPermisoAutorizacionUsuario() {
@@ -78,7 +82,7 @@ class AutorizaOrdenesCorreo{
     }
 
     /**
-     * Seter del id del usuario. Se validan las credenciales y se setea el id en caso de que sean correctas
+     * Se validan las credenciales y se setea los datos del usuario en caso de que sean correctas
      * @return void
      */
     private function autenticaUsuario() {
@@ -159,6 +163,10 @@ class AutorizaOrdenesCorreo{
         $this->documentData = $docDataArray;
     }
 
+    /**
+     * Seter de los datos de la empresa
+     * @return void
+     */
     public function setEmpresaData(){
         $sqlEmpresa   = "SELECT nombre,
                                 tipo_documento_nombre,
@@ -236,12 +244,10 @@ class AutorizaOrdenesCorreo{
         }
     }
     
-
-
     /**
      * Guarda la autorización de la orden de compra en la base de datos.
      * 
-     * @return bool Retorna true si la operación fue exitosa, false en caso contrario.
+     * @return void
      */
     private function guardarAutorizacion() {
         $idAutorizador = $this->dataAutorizador['id'];
@@ -283,7 +289,7 @@ class AutorizaOrdenesCorreo{
     /**
      * Procesa el estado de la orden según el tipo de autorización.
      * 
-     * @return bool Retorna true si la operación fue exitosa, false en caso contrario.
+     * @return void
      */
     private function procesarEstadoOrden() {
         switch ($this->tipoAutorizacion) {
@@ -308,7 +314,7 @@ class AutorizaOrdenesCorreo{
     /**
      * Maneja la autorización de la orden,  confirmando la autorización si no hay mas autorizadores
      * 
-     * @return bool Retorna true si la operación fue exitosa, false en caso contrario.
+     * @return void 
      */
     private function manejarAutorizacion() {
         $ordenAutorizador = $this->documentData['autorizadores'][$this->dataAutorizador['id']]['orden'];
@@ -335,7 +341,7 @@ class AutorizaOrdenesCorreo{
      * @param string $asunto  Asunto del correo de notificación
      * @param string $mensaje Contenido del correo de notificación
      * 
-     * @return bool Retorna true si la actualización fue exitosa, false en caso contrario.
+     * @return void
      */
     private function actualizarEstadoOrden($estado) {
         $sql = "UPDATE compras_ordenes SET autorizado='$estado' WHERE id='$this->idDocumento'";
@@ -349,11 +355,9 @@ class AutorizaOrdenesCorreo{
     /**
      * Envía una notificación por correo electrónico.
      * 
-     * @param string $destinatario ID del destinatario (puede ser un usuario o el solicitante)
-     * @param string $asunto       Asunto del correo
-     * @param string $mensaje      Contenido del correo
+     * @param PHPMailer $mail - Instancia del PHPMailer para la gestión de envio de correos.
      * 
-     * @return bool Retorna true si el correo se envió correctamente, false en caso contrario.
+     * @return void 
      */
     public function enviarNotificacion(PHPMailer $mail) {
         $this->mail = $mail;
@@ -376,6 +380,10 @@ class AutorizaOrdenesCorreo{
         }
     }
 
+    /**
+     * Se establecen los datos de conexion para enviar correos 
+     * @return void 
+     */
     private function conexionCorreo(){
         //Consultar la configuracion de correo
         $sqlConexion    = "SELECT * FROM empresas_config_correo WHERE id_empresa=$this->idEmpresa LIMIT 0,1";
@@ -389,6 +397,10 @@ class AutorizaOrdenesCorreo{
         $this->response = ["success"=>true];
     }
     
+     /**
+     * Se establecen la configuracion del objeto mail
+     * @return void 
+     */
     private function configuracionSMTP(){
         $this->mail->IsSMTP();
 		$this->mail->SMTPAuth   = true;                  				// enable SMTP authentication
@@ -404,6 +416,10 @@ class AutorizaOrdenesCorreo{
 		$this->mail->WordWrap   = 50; // set word wrap
     }
 
+    /**
+     * Se establecen el cuerpo del correo
+     * @return void 
+     */
     private function setEmailBody(){
         $datos = base64_encode($this->idDocumento   .'|'. 
 					   $this->documentData['consecutivo'] .'|'. 
@@ -478,6 +494,10 @@ class AutorizaOrdenesCorreo{
 		$this->mail->MsgHTML($body);
     }
 
+    /**
+     * Se establece el correo del receptor
+     * @return void 
+     */
     private function addAddresses(){
         $sqlCorreo = ($this->idSiguienteAutorizador)? 
                         "SELECT email_empresa FROM empleados WHERE activo=1 AND id_empresa=$this->idEmpresa AND id = $this->idSiguienteAutorizador" :
@@ -502,6 +522,10 @@ class AutorizaOrdenesCorreo{
         return;
     }
 
+    /**
+     * Envio de email
+     * @return void 
+     */
     private function sendEmail(){
         if(!$this->mail->Send()){
             $this->response = [ "success"=>false,
@@ -513,6 +537,10 @@ class AutorizaOrdenesCorreo{
                             "message"=>"La OC fue autorizada y se envio un correo electronico informando la actualizacion"];
     }
 
+    /**
+     * Retorna el valor actual del parametro response
+     * @return void 
+     */
     public function getResponse(){
         return $this->response;
     }
