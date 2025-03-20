@@ -2597,7 +2597,7 @@
 							);
 		
 		// SI SE DEBE ENVIAR LA NOTIFICACION A QUIEN SOLICITO LA REQUISICIONES
-	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":$_SERVER['DOCUMENT_ROOT'];
+	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":$_SERVER['SERVER_NAME'];
 		if ($id_empleado=='solicitante') {
 			$id_empleado = $id_usuario;
 			$tableAutorizarOC = '';
