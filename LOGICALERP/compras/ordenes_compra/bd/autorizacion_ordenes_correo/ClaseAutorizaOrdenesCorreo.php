@@ -431,7 +431,7 @@ class AutorizaOrdenesCorreo{
         
         $tableAutorizarOC = '';
         $mensaje = "La orden de compra que solicito ha sido $this->tipoAutorizacion";
-	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP/":$_SERVER['DOCUMENT_ROOT'];
+	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":$_SERVER['DOCUMENT_ROOT'];
         
         if($this->idSiguienteAutorizador){
            $tableAutorizarOC = '<table>

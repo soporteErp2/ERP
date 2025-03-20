@@ -2597,6 +2597,7 @@
 							);
 		
 		// SI SE DEBE ENVIAR LA NOTIFICACION A QUIEN SOLICITO LA REQUISICIONES
+	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP/":$_SERVER['DOCUMENT_ROOT'];
 		if ($id_empleado=='solicitante') {
 			$id_empleado = $id_usuario;
 			$tableAutorizarOC = '';
@@ -2604,7 +2605,7 @@
 			$tableAutorizarOC = '<table>
 									<tr>
 										<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
-											  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizacion_ordenes_correo/autorizar_ordenes_correo.php?data='.$datos.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+											  <a href="'.$serverRoot.'LOGICALERP/compras/ordenes_compra/bd/autorizacion_ordenes_correo/autorizar_ordenes_correo.php?data='.$datos.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
 										</td>
 									</tr>
 								</table>';
