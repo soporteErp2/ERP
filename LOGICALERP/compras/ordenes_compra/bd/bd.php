@@ -62,7 +62,7 @@
 			break;
 
 		case 'btnTerminarOrdenCompra':
-			btnTerminarOrdenCompra($idOrdenCompra,$link);
+			btnTerminarOrdenCompra($idOrdenCompra,$link,$mysql);
 			break;
 
 		case 'noUpdateArticuloOrdenCompra':
@@ -602,7 +602,7 @@
 		else{ echo '<script>(document.getElementById("bodyDivArticulos_'.$cont.'")).parentNode.removeChild(document.getElementById("bodyDivArticulos_'.$cont.'"));</script>'; }
 	}
 
-	function btnTerminarOrdenCompra($idOrdenCompra,$link){
+	function btnTerminarOrdenCompra($idOrdenCompra,$link,$mysql){
 		$id_sucursal = $_SESSION['SUCURSAL'];
 		$id_empresa  = $_SESSION['EMPRESA'];
 
@@ -726,357 +726,46 @@
   		//============================================================================//
   		// ENVIAR UN EMAIL A LAS PERSONAS ENCARGADAS DE AUTORIZAR LA ORDEN DE COMPRA  //
   		//============================================================================//
+		$mensajeEmail = "Nueva Orden de Compra: a la espera de su Autorizacion";
+		$subjectEmail ="Notificacion: ".$mensajeEmail;
 
-  		// CONSULTAR EL TOTAL DEL DOCUMENTO
-			$sqlItems = "SELECT consecutivo_referencia,cantidad,costo_unitario,valor_impuesto,tipo_descuento,descuento FROM compras_ordenes_inventario WHERE activo = 1 AND id_orden_compra = $idOrdenCompra";
-			$query = mysql_query($sqlItems,$link);
-			while ($array = mysql_fetch_array($query)) {
-				$tipoDesc = $array["tipo_descuento"];
-
-				//variables para los calculos
-				$subtotal         = 0;
-				$valorIva         = 0;
-				$descuentoTotal   = 0;
-				$descuentoMostrar = 0;
-
-				if($array['consecutivo_referencia'] != ""){
-					$consecutivo_referencia .= " $array[consecutivo_referencia] -";
+		if($aut_precio > 0){
+			// CONSULTAR LOS TOPES DE VERIFICACION
+			$sql   = "SELECT id,rango_inicial,rango_final FROM rango_autorizaciones_ordenes_compra WHERE activo = 1 AND id_empresa = $id_empresa ORDER BY rango_inicial ASC LIMIT 0,1";
+			$query = mysql_query($sql,$link);
+			while ($row = mysql_fetch_array($query)) {
+				if ($costo_total>=$row["rango_inicial"] && $costo_total<=$row["rango_final"] || ($row["rango_inicial"]==0 && $row["rango_final"]==0) ) {
+					$whereIdRango= 'id_rango='.$row['id'];
+					break;
 				}
-
-				//calculamos el subtotal por articulo
-				$subtotal = $array["cantidad"]*$array["costo_unitario"];
-
-				if($tipoDesc == 'porcentaje'){
-					$valorDescuento   = (($subtotal * $array["descuento"]) / 100);
-					$descuentoMostrar = $array["descuento"];
-					$tipodesart       = '%';
-				}
-				else if($tipoDesc == 'pesos'){
-					$valorDescuento   = $array["descuento"];
-					$descuentoMostrar = $valorDescuento;
-					$tipodesart       = '$';
-				}
-				$iva = $subtotal * $array['valor_impuesto'] / 100;
-				$costo_total += $subtotal - $valorDescuento + $iva;
 			}
-
-			if($consecutivo_referencia != ""){
-				$consecutivo_referencia = substr ($consecutivo_referencia, 0, strlen($consecutivo_referencia) - 1);
-				$consecutivo_referencia = ". Consecutivo R: $consecutivo_referencia";
-			}
-
-			if($aut_precio > 0){
-				// CONSULTAR LOS TOPES DE VERIFICACION
-				$sql   = "SELECT id,rango_inicial,rango_final FROM rango_autorizaciones_ordenes_compra WHERE activo = 1 AND id_empresa = $id_empresa ORDER BY rango_inicial ASC LIMIT 0,1";
-				$query = mysql_query($sql,$link);
-				while ($row = mysql_fetch_array($query)) {
-			  		$bodyTable.= $row['id'].": { costo: '".$costo_total."',rango_inicial: '".$row['rango_inicial']."', rango_final: '".$row['rango_final']."'},";
-
-					if ($costo_total>=$row["rango_inicial"] && $costo_total<=$row["rango_final"] || ($row["rango_inicial"]==0 && $row["rango_final"]==0) ) {
-						$whereIdRango= 'id_rango='.$row['id'];
-						break;
-					}
-
-				}
-
-				// SI ES AUTORIZACION POR RANGO DE PRECIOS Y TIENE REALIZADA ALGUNA CONFIGURACION
-				if($whereIdRango <> ''){
-					// CONSULTAR EL ROL
-					$sql   = "SELECT id_rol FROM costo_autorizadores_ordenes_compra WHERE activo = 1 AND id_empresa = $id_empresa AND $whereIdRango ORDER BY orden ASC LIMIT 0,1";
+			// SI ES AUTORIZACION POR RANGO DE PRECIOS Y TIENE REALIZADA ALGUNA CONFIGURACION
+			if($whereIdRango <> ''){
+				// CONSULTAR EL ROL
+				$sql   = "SELECT id_rol FROM costo_autorizadores_ordenes_compra WHERE activo = 1 AND id_empresa = $id_empresa AND $whereIdRango ORDER BY orden ASC LIMIT 0,1";
     			$query = mysql_query($sql,$link);
     			$id_rol = mysql_result($query,0,'id_rol');
     			// SI TIENE UN ROL CONFIGURADO
-    			if($id_rol <> ''){
-    				// CONSULTAR EL PRIMER EMPLEADO DE ESE ROL
-    				$sql = "SELECT email_empresa FROM empleados WHERE activo=1 AND id_empresa = $id_empresa AND id_rol = $id_rol ORDER BY id ASC LIMIT 0,1";
+    			if($id_rol <> ''){    					// CONSULTAR EL PRIMER EMPLEADO DE ESE ROL
+    				$sql = "SELECT email_empresa, id FROM empleados WHERE activo=1 AND id_empresa = $id_empresa AND id_rol = $id_rol ORDER BY id ASC LIMIT 0,1";
     				$query = mysql_query($sql,$link);
     				$email_empleado = mysql_result($query,0,'email_empresa');
+    				$id_empleado = mysql_result($query,0,'id');
     				// SI EXISTE EL EMPLEADO CON ESE ROL
     				if($email_empleado <> ''){
-    					// EVNIAR EMAIL A LOS ENCARGADOS DE AUTORIZAR LAS REQUISICIONES
-							include_once('../../../../misc/phpmailer/PHPMailerAutoload.php');
-							$mail  = new PHPMailer();
-
-							$sqlConexion   = "SELECT * FROM empresas_config_correo WHERE id_empresa = $id_empresa LIMIT 0,1";
-							$queryConexion = mysql_query ($sqlConexion,$link);
-							if($row_consulta = mysql_fetch_array($queryConexion)){
-								$seguridad     = $row_consulta['seguridad_smtp'];
-								$pass          = $row_consulta['password'];
-								$user          = $row_consulta['correo'];
-								$puerto        = $row_consulta['puerto'];
-								$servidor      = $row_consulta['servidor'];
-								$from          = $row_consulta['correo'];
-								$autenticacion = $row_consulta['autenticacion'];
-							}
-
-							if($user == ''){
-								echo '<script>
-												alert("No exite ninguna configuracion de correo SMTP!\nConfigure el correo desde el panel de control en el boton configuracion SMTP\nPara que se puedan enviar las notificaciones a las personas encargadas de autorizar el documento");
-												if(document.getElementById("modal")){
-													document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-												}
-											</script>';
-							}
-
-							//CONSULTAR LA INFORMACION DE LA EMPRESA
-							$sqlEmpresa  = "SELECT nombre,tipo_documento_nombre,nit_completo,actividad_economica,pais,ciudad,direccion,razon_social,tipo_regimen,telefono,celular
-															FROM empresas
-															WHERE id = '$id_empresa'
-															LIMIT 0,1";
-							$queryEmpresa = mysql_query($sqlEmpresa,$link);
-
-							$nombre_empresa        = mysql_result($queryEmpresa,0,'nombre');
-							$tipo_documento_nombre = mysql_result($queryEmpresa,0,'tipo_documento_nombre');
-							$documento_empresa     = mysql_result($queryEmpresa,0,'nit_completo');
-							$ciudad                = mysql_result($queryEmpresa,0,'ciudad');
-							$direccion_empresa     = mysql_result($queryEmpresa,0,'direccion');
-							$razon_social          = mysql_result($queryEmpresa,0,'razon_social');
-							$tipo_regimen          = mysql_result($queryEmpresa,0,'tipo_regimen');
-							$telefonos             = mysql_result($queryEmpresa,0,'telefono').' - '.mysql_result($queryEmpresa,0,'celular');
-							$actividad_economica   = mysql_result($queryEmpresa,0,'actividad_economica');
-
-							$mail->IsSMTP();
-							$mail->SMTPAuth   = true;        // enable SMTP authentication
-							$mail->SMTPSecure = $seguridad;  // sets the prefix to the servier
-							$mail->Host       = $servidor;   // sets GMAIL as the SMTP server
-							$mail->Port       = $puerto;     // set the SMTP port
-							$mail->Username   = $user; 			 // GMAIL username
-							$mail->Password   = $pass; 			 // GMAIL password
-							$mail->From       = $from;
-							$mail->FromName   = "Sistema de Notificaciones Automaticas LOGICALSOFT ERP";
-							$mail->Subject    = "Notificacion: Nueva Orden de Compra creada. Pendiente su Autorizacion $consecutivo_referencia";
-							$mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
-							$mail->WordWrap   = 50; // set word wrap
-
-							$body  = '<font color="black">
-									<br>
-									<b>'.$razon_social.'</b><br>
-									<b>'.$tipo_regimen.'</b><br>
-									<b>'.$tipo_documento_nombre.': </b>'.$documento_empresa.'<br>
-									<b>Direccion: </b>'.$direccion_empresa.' - <b>'.$ciudad.' </b><br>
-									<b>Telefono: </b>'.$telefonos.'<br>
-
-									<br>
-
-									<table>
-										<tr>
-											<td>Asunto:</td>
-											<td>Nueva Orden de Compra a la espera de su Autorizacion</td>
-										</tr>
-										<tr>
-											<td>Consecutivo</td>
-											<td style="font-size:24px;font-weight:bold;">'.$consecutivo.'</td>
-										</tr>
-										<tr>
-											<td>Bodega: </td>
-											<td> '.$bodega.'</td>
-										</tr>
-										<tr>
-											<td>Sucursal: </td>
-											<td>'.$sucursal.'</td>
-										</tr>
-										<tr>
-											<td>Proveedor: </td>
-											<td>'.$nit.' - '.$proveedor.' </td>
-										</tr>
-										<tr>
-											<td>Monto de la orden: </td>
-											<td>$ '.number_format($costo_total).'</td>
-										</tr>
-										<tr>
-											<td>Usuario Creador</td>
-											<td>'.$documento_usuario.' - '.$usuario.' </td>
-										</tr>
-									</table>
-									<!-- 
-									<table>
-										<tr>
-											<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
-												  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
-											</td>
-										</tr>
-									</table>
-									-->
-									<br>
-									<br>
-									Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
-								</font><br>';
-
-							$mail->Body = $body;
-							$mail->MsgHTML($body);
-							//Obtener el pdf
-
-							// Incluir el archivo imprimir_orden_compra.php
-							include("imprimir_orden_compra.php");
-
-							$pdfString = generarPDF($idOrdenCompra,$link);
-
-							// Verificar si el PDF fue generado correctamente
-							if (empty($pdfString)) {
-							    echo "Error: El PDF está vacío.";
-							} else {
-							    // El PDF se generó correctamente
-							    echo "El PDF se generó correctamente.";
-							}  
-							//var_dump($pdfString);
-							$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
-							
-							$mail->AddAddress($email_empleado);
-							$mail->IsHTML(true); // send as HTML
-							if(!$mail->Send()){
-								echo $mail->ErrorInfo.'<script>
-														alert("Se genero el documento pero no se pudo enviar por email las notificaciones a los encargados de autorizar el documento\nSi el problema continua comuniquese con el administrador del sistema");
-														if(document.getElementById("modal")){
-															document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-														}
-													</script>';
-							}
-							$mail->ClearAddresses();
+						enviaEmailAutorizacion($idOrdenCompra,$id_empleado,$id_empresa,$subjectEmail,$mensajeEmail,$mysql);
     				}
     			}
-				}
 			}
-			else if($aut_area > 0){
-				// EVNIAR EMAIL A LOS ENCARGADOS DE AUTORIZAR LAS REQUISICIONES
-				include_once('../../../../misc/phpmailer/PHPMailerAutoload.php');
-				$mail  = new PHPMailer();
-
-				$sqlConexion   = "SELECT * FROM empresas_config_correo WHERE id_empresa=$id_empresa LIMIT 0,1";
-				$queryConexion = mysql_query ($sqlConexion,$link);
-				if($row_consulta= mysql_fetch_array($queryConexion)){
-					$seguridad     = $row_consulta['seguridad_smtp'];
-					$pass          = $row_consulta['password'];
-					$user          = $row_consulta['correo'];
-					$puerto        = $row_consulta['puerto'];
-					$servidor      = $row_consulta['servidor'];
-					$from          = $row_consulta['correo'];
-					$autenticacion = $row_consulta['autenticacion'];
-				}
-
-				if($user == ''){
-					echo '<script>
-									alert("No exite ninguna configuracion de correo SMTP!\nConfigure el correo desde el panel de control en el boton configuracion SMTP\nPara que se puedan enviar las notificaciones a las personas encargadas de autorizar el documento");
-								</script>';
-				}
-
-				//CONSULTAR LA INFORMACION DE LA EMPRESA
-				$sqlEmpresa   = "SELECT nombre,tipo_documento_nombre,nit_completo,actividad_economica,pais,ciudad,direccion,razon_social,tipo_regimen,telefono,celular
-								FROM empresas
-								WHERE id='$id_empresa'
-								LIMIT 0,1";
-				$queryEmpresa = mysql_query($sqlEmpresa,$link);
-
-				$nombre_empresa        = mysql_result($queryEmpresa,0,'nombre');
-				$tipo_documento_nombre = mysql_result($queryEmpresa,0,'tipo_documento_nombre');
-				$documento_empresa     = mysql_result($queryEmpresa,0,'nit_completo');
-				$ciudad                = mysql_result($queryEmpresa,0,'ciudad');
-				$direccion_empresa     = mysql_result($queryEmpresa,0,'direccion');
-				$razon_social          = mysql_result($queryEmpresa,0,'razon_social');
-				$tipo_regimen          = mysql_result($queryEmpresa,0,'tipo_regimen');
-				$telefonos             = mysql_result($queryEmpresa,0,'telefono') . ' - ' . mysql_result($queryEmpresa,0,'celular');
-				$actividad_economica   = mysql_result($queryEmpresa,0,'actividad_economica');
-
-				$mail->IsSMTP();
-				$mail->SMTPAuth   = true;       // enable SMTP authentication
-				$mail->SMTPSecure = $seguridad; // sets the prefix to the servier
-				$mail->Host       = $servidor;  // sets GMAIL as the SMTP server
-				$mail->Port       = $puerto;    // set the SMTP port
-				$mail->Username   = $user; 			// GMAIL username
-				$mail->Password   = $pass; 			// GMAIL password
-				$mail->From       = $from;
-				$mail->FromName   = "Sistema de Notificaciones Automaticas LOGICALSOFT ERP";
-				$mail->Subject    = "Notificacion: Nueva Orden de Compra creada. Pendiente su Autorizacion $consecutivo_referencia";
-				$mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
-				$mail->WordWrap   = 50; // set word wrap
-
-				$body  = '<font color="black">
-						<br>
-						<b>'.$razon_social.'</b><br>
-						<b>'.$tipo_regimen.'</b><br>
-						<b>'.$tipo_documento_nombre.': </b>'.$documento_empresa.'<br>
-						<b>Direccion: </b>'.$direccion_empresa.' - <b>'.$ciudad.' </b><br>
-						<b>Telefono: </b>'.$telefonos.'<br>
-
-						<br>
-
-						<table>
-							<tr>
-								<td>Asunto:</td>
-								<td>Nueva Orden de Compra; a la espera de su Autorizacion</td>
-							</tr>
-							<tr>
-								<td>Consecutivo</td>
-								<td style="font-size:24px;font-weight:bold;">'.$consecutivo.'</td>
-							</tr>
-							<tr>
-								<td>Bodega: </td>
-								<td> '.$bodega.'</td>
-							</tr>
-							<tr>
-								<td>Sucursal: </td>
-								<td>'.$sucursal.'</td>
-							</tr>
-							<tr>
-								<td>Proveedor: </td>
-								<td>'.$nit.' - '.$proveedor.' </td>
-							</tr>
-							<tr>
-								<td>Monto de la orden: </td>
-								<td>$ '.number_format($costo_total).'</td>
-							</tr>
-							<tr>
-								<td>Usuario Creador</td>
-								<td>'.$documento_usuario.' - '.$usuario.' </td>
-							</tr>
-						</table>
-						<!-- 
-						<table>
-								<tr>
-									<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
-										  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
-									</td>
-								</tr>
-						</table>
-						-->
-						<br>
-						<br>
-						Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
-					</font><br>';
-
-				$mail->Body = $body;
-				$mail->MsgHTML($body);
-				// CONSULTAR LAS DIRECCIONES DE EMAIL DE LOS ENCARGADOS DE AUTORIZAR EL DOCUMENTO
-				$sql = "SELECT email FROM costo_autorizadores_ordenes_compra_area WHERE activo = 1 AND id_empresa = $id_empresa AND id_area = $id_area_solicitante AND orden = 1 LIMIT 0,1";
-				$query = mysql_query($sql,$link);
-				while($row = mysql_fetch_array($query)){
-					$mail->AddAddress($row['email']);
-				}
-				//Obtener el pdf
-										
-				// Incluir el archivo imprimir_orden_compra.php
-				include("imprimir_orden_compra.php");
-				$pdfString = generarPDF($idOrdenCompra, $link);
-				// Verificar si el PDF fue generado correctamente
-				if (empty($pdfString)) {
-				    echo "Error: El PDF está vacío.";
-				} else {
-				    // El PDF se generó correctamente
-				    echo "El PDF se generó correctamente.";
-				}  
-				//var_dump($pdfString);
-				$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
-							
-				$mail->IsHTML(true); // send as HTML
-				if(!$mail->Send()){
-					echo $mail->ErrorInfo.'<script>
-											alert("Se genero el documento pero no se pudo enviar por email las notificaciones a los encargados de autorizar el documento\nSi el problema continua comuniquese con el administrador del sistema");
-											if(document.getElementById("modal")){
-												document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-											}
-										</script>';
-				}
-				$mail->ClearAddresses();
+		
+		}else if($aut_area > 0){
+			$sql = "SELECT id_empleado FROM costo_autorizadores_ordenes_compra_area WHERE activo = 1 AND id_empresa = $id_empresa AND id_area = $id_area_solicitante AND orden = 1";
+			$query = mysql_query($sql,$link);
+			while($row=mysql_fetch_array($query)){
+				$id_empleados[] = $row['id_empleado'];
 			}
+			enviaEmailAutorizacion($idOrdenCompra,$id_empleados,$id_empresa,$subjectEmail,$mensajeEmail,$mysql);
+		}
 
 			echo '<script>
 							Ext.getCmp("Btn_nueva_orden_compra").enable();
@@ -2289,7 +1978,6 @@
 		$sql   = "SELECT id,rango_inicial,rango_final FROM rango_autorizaciones_ordenes_compra WHERE activo=1 AND id_empresa=$id_empresa";
 		$query = $mysql->query($sql,$mysql->link);
 		while ($row = $mysql->fetch_array($query)) {
-	  		// $bodyTable.= $row['id'].": { costo: '".$costo_total."',rango_inicial: '".$row['rango_inicial']."', rango_final: '".$row['rango_final']."'},";
 
 			if ($costo_total>=$row["rango_inicial"] && $costo_total<=$row["rango_final"] || ($row["rango_inicial"]==0 && $row["rango_final"]==0) ) {
 				$whereIdRango= 'id_rango='.$row['id'];
@@ -2546,53 +2234,22 @@
  			echo '<script>alert("Error\nNo se logro generar la autorizacion");</script>';
  		}
  		else{
- 			// ENVIAR EMAIL A LOS ENCARGADOS DE AUTORIZAR LAS REQUISICIONES
-			include_once('../../../../misc/phpmailer/PHPMailerAutoload.php');
-			$mail  = new PHPMailer();
-
 			// CONSULTAR EL TOTAL DEL DOCUMENTO
-			$sqlItems = "SELECT consecutivo_referencia,cantidad,costo_unitario,valor_impuesto,tipo_descuento,descuento FROM compras_ordenes_inventario WHERE activo = 1 AND id_orden_compra = $id_orden_compra";
+			$sqlItems = "SELECT cantidad,costo_unitario,valor_impuesto,tipo_descuento,descuento FROM compras_ordenes_inventario WHERE activo = 1 AND id_orden_compra = $id_orden_compra";
 			$query = $mysql->query($sqlItems,$mysql->link);
+			$costo_total = 0;
 			while($array = $mysql->fetch_array($query)){
-				$tipoDesc = $array["tipo_descuento"];
-
-				if($array['consecutivo_referencia'] != ""){
-					$consecutivo_referencia .= " $array[consecutivo_referencia] -";
-				}
-
-				//variables para los calculos
-				$subtotal         = 0;
-				$valorIva         = 0;
-				$descuentoTotal   = 0;
-				$descuentoMostrar = 0;
-
-				//calculamos el subtotal por articulo
 				$subtotal = $array["cantidad"] * $array["costo_unitario"];
-
-				if($tipoDesc == 'porcentaje'){
-					$valorDescuento   = (($subtotal * $array["descuento"]) / 100);
-					$descuentoMostrar = $array["descuento"];
-					$tipodesart       = '%';
-				}
-				else if($tipoDesc == 'pesos'){
-					$valorDescuento   = $array["descuento"];
-					$descuentoMostrar = $valorDescuento;
-					$tipodesart       = '$';
-				}
 				$iva = $subtotal * $array['valor_impuesto'] / 100;
+				$valorDescuento = ($array["tipo_descuento"] == 'porcentaje')?	(($subtotal * $array["descuento"]) / 100) : $array["descuento"];
+																
 				$costo_total += $subtotal - $valorDescuento + $iva;
-			}
-
-			if($consecutivo_referencia != ""){
-				$consecutivo_referencia = substr ($consecutivo_referencia, 0, strlen($consecutivo_referencia) - 1);
-				$consecutivo_referencia = ". Consecutivo R: $consecutivo_referencia";
 			}
 
 			// CONSULTAR LOS TOPES DE VERIFICACION
 			$sql   = "SELECT id,rango_inicial,rango_final FROM rango_autorizaciones_ordenes_compra WHERE activo = 1 AND id_empresa = $id_empresa";
 			$query = $mysql->query($sql,$mysql->link);
 			while($row = $mysql->fetch_array($query)){
-		  	$bodyTable.= $row['id'].": { costo: '".$costo_total."',rango_inicial: '".$row['rango_inicial']."', rango_final: '".$row['rango_final']."'},";
 
 				if ($costo_total>=$row["rango_inicial"] && $costo_total<=$row["rango_final"] || ($row["rango_inicial"]==0 && $row["rango_final"]==0) ) {
 					$whereIdRango= 'id_rango='.$row['id'];
@@ -2600,210 +2257,18 @@
 				}
 			}
 
-			// CONSULTAR LOS ROLES QUE CORRESPONDEN A ESOS RANGOS
-			$sql   = "SELECT id_rol,orden,codigo_rol,rol FROM costo_autorizadores_ordenes_compra WHERE activo=1 /*AND id_empresa=$id_empresa*/ AND($whereIdRango) ORDER BY orden ASC";
-			$query = $mysql->query($sql,$mysql->link);
-			while ($row=$mysql->fetch_array($query)) {
-				$id_rol = $row['id_rol'];
-				// CONSULTAR LOS EMPLEADOS QUE YA REALIZARON UNA AUTORIZACION SOBRE EL DOCUMENTO
-				$sqlAutorizaciones   = "SELECT id_empleado FROM compras_ordenes_autorizaciones WHERE activo = 1 AND id_empresa = $id_empresa AND id_orden_compra = $id_orden_compra AND id_rol = $row[id_rol]";
-				$queryAutorizaciones = $mysql->query($sqlAutorizaciones,$mysql->link);
-				while ($rowAutorizaciones=$mysql->fetch_array($queryAutorizaciones)) {
-					$whereIdEmpleados.=($whereIdEmpleados=='')? 'id<>'.$rowAutorizaciones['id_empleado'] : ' OR id<>'.$rowAutorizaciones['id_empleado'] ;
-				}
-
-				// CONSULTAR LOS EMPLEADOS DEL ROL, CON SUS RESPECTIVOS EMAIL
-				$sqlEmpleados   = "SELECT id,documento,nombre,email_empresa,cargo FROM empleados WHERE activo=1 AND /*id_empresa=$id_empresa AND*/ id_rol=$id_rol AND ($whereIdEmpleados) ORDER BY id ASC LIMIT 0,1";
-				$queryEmpleados = $mysql->query($sqlEmpleados,$mysql->link);
-
-				while ($rowEmpleados=$mysql->fetch_array($queryEmpleados)) {
-					$email_empleado=$rowEmpleados['email_empresa'];
-					break;
-				}
-				if ($email_empleado<>'') { break; }
-			}
-
-			// SI EXISTE UNA DIRECCION DE CORREO ENTONCES SE ENVIA LA NOTIFICACION
-			if($email_empleado <> ''){
-
-				$sqlConexion   = "SELECT * FROM empresas_config_correo WHERE id_empresa=$id_empresa LIMIT 0,1";
-				$queryConexion = $mysql->query ($sqlConexion,$mysql->link);
-				if($row_consulta= $mysql->fetch_array($queryConexion)){
-					$seguridad     = $row_consulta['seguridad_smtp'];
-					$pass          = $row_consulta['password'];
-					$user          = $row_consulta['correo'];
-					$puerto        = $row_consulta['puerto'];
-					$servidor      = $row_consulta['servidor'];
-					$from          = $row_consulta['correo'];
-					$autenticacion = $row_consulta['autenticacion'];
-				}
-
-				if($user == ''){
-					echo '<script>
-									alert("No exite ninguna configuracion de correo SMTP!\nConfigure el correo desde el panel de control en el boton configuracion SMTP\nPara que se puedan enviar las notificaciones a las personas encargadas de autorizar el documento");
-									if(document.getElementById("modal")){
-										document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-									}
-								</script>';
-				}
-
-				//CONSULTAR LA INFORMACION DE LA EMPRESA
-				$sqlEmpresa   = "SELECT nombre,tipo_documento_nombre,nit_completo,actividad_economica,pais,ciudad,direccion,razon_social,tipo_regimen,telefono,celular
-								FROM empresas
-								WHERE id='$id_empresa'
-								LIMIT 0,1";
-				$queryEmpresa = $mysql->query($sqlEmpresa,$mysql->link);
-
-				$nombre_empresa        = $mysql->result($queryEmpresa,0,'nombre');
-				$tipo_documento_nombre = $mysql->result($queryEmpresa,0,'tipo_documento_nombre');
-				$documento_empresa     = $mysql->result($queryEmpresa,0,'nit_completo');
-				$ciudad                = $mysql->result($queryEmpresa,0,'ciudad');
-				$direccion_empresa     = $mysql->result($queryEmpresa,0,'direccion');
-				$razon_social          = $mysql->result($queryEmpresa,0,'razon_social');
-				$tipo_regimen          = $mysql->result($queryEmpresa,0,'tipo_regimen');
-				$telefonos             = $mysql->result($queryEmpresa,0,'telefono').' - '.mysql_result($queryEmpresa,0,'celular');
-				$actividad_economica   = $mysql->result($queryEmpresa,0,'actividad_economica');
-
-				// CONSULTAR LA INFORMACION DEL DOCUMENTO
-				$sql = "SELECT
-									sucursal,
-									bodega,
-									fecha_inicio,
-									consecutivo,
-									nit,
-									proveedor,
-									observacion,
-									documento_usuario,
-									usuario
-								FROM
-									compras_ordenes
-								WHERE
-									activo = 1
-								AND
-									id_empresa = $id_empresa
-								AND
-									id = $id_orden_compra";
-				$query = $mysql->query($sql,$mysql->link);
-
-				$sucursal          = $mysql->result($query,0,'sucursal');
-				$bodega            = $mysql->result($query,0,'bodega');
-				$fecha_inicio      = $mysql->result($query,0,'fecha_inicio');
-				$consecutivo       = $mysql->result($query,0,'consecutivo');
-				$nit               = $mysql->result($query,0,'nit');
-				$proveedor         = $mysql->result($query,0,'proveedor');
-				$observacion       = $mysql->result($query,0,'observacion');
-				$documento_usuario = $mysql->result($query,0,'documento_usuario');
-				$usuario           = $mysql->result($query,0,'usuario');
-
-				$mail->IsSMTP();
-				$mail->SMTPAuth   = true;         // enable SMTP authentication
-				$mail->SMTPSecure = $seguridad;   // sets the prefix to the servier
-				$mail->Host       = $servidor;    // sets GMAIL as the SMTP server
-				$mail->Port       = $puerto;      // set the SMTP port
-				$mail->Username   = $user; 				// GMAIL username
-				$mail->Password   = $pass; 				// GMAIL password
-				$mail->From       = $from;
-				$mail->FromName   = "Sistema de Notificaciones Automaticas LOGICALSOFT ERP";
-				$mail->Subject    = "Notificacion: Nueva Orden de Compra creada. Pendiente su Autorizacion $consecutivo_referencia";
-				$mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
-				$mail->WordWrap   = 50; // set word wrap
-
-				$body  = '<font color="black">
-						<br>
-						<b>'.$razon_social.'</b><br>
-						<b>'.$tipo_regimen.'</b><br>
-						<b>'.$tipo_documento_nombre.': </b>'.$documento_empresa.'<br>
-						<b>Direccion: </b>'.$direccion_empresa.' - <b>'.$ciudad.' </b><br>
-						<b>Telefono: </b>'.$telefonos.'<br>
-
-						<br>
-
-						<table>
-							<tr>
-								<td>Asunto:</td>
-								<td>Nueva Orden de Compra a la espera de su Autorizacion</td>
-							</tr>
-							<tr>
-								<td>Consecutivo</td>
-								<td style="font-size:24px;font-weight:bold;">'.$consecutivo.'</td>
-							</tr>
-							<tr>
-								<td>Bodega: </td>
-								<td> '.$bodega.'</td>
-							</tr>
-							<tr>
-								<td>Sucursal: </td>
-								<td>'.$sucursal.'</td>
-							</tr>
-							<tr>
-								<td>Proveedor: </td>
-								<td>'.$nit.' - '.$proveedor.' </td>
-							</tr>
-							<tr>
-								<td>Monto de la orden: </td>
-								<td>$ '.number_format($costo_total).'  </td>
-							</tr>
-							<tr>
-								<td>Usuario Creador</td>
-								<td>'.$documento_usuario.' - '.$usuario.' </td>
-							</tr>
-						</table>
-						<!-- 
-						<table>
-							<tr>
-								<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
-									  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
-								</td>
-							</tr>
-						</table>
-						-->
-						<br>
-						<br>
-						Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
-					</font><br>';
-
-				$mail->Body = $body;
-				$mail->MsgHTML($body);
-				$mail->AddAddress($email_empleado);
-				//Obtener el pdf
-										
-				// Incluir el archivo imprimir_orden_compra.php
-				include("imprimir_orden_compra.php");
-										
-				$pdfString = generarPDF($id_orden_compra, $link);
-										
-				// Verificar si el PDF fue generado correctamente
-				if (empty($pdfString)) {
-				    echo "Error: El PDF está vacío.";
-				} else {
-				    // El PDF se generó correctamente
-				    echo "El PDF se generó correctamente.";
-				}  
-				//var_dump($pdfString);
-				$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
-							
-				$mail->IsHTML(true); // send as HTML
-				if(!$mail->Send()){
-					echo $mail->ErrorInfo.'<script>
-											alert("Se genero la autorizacion pero no se pudo enviar por email las notificaciones a los encargados de autorizar el documento\nSi el problema continua comuniquese con el administrador del sistema");
-										</script>';
-				}
-				$mail->ClearAddresses();
-			}
-
 			//////////////////////////////////////////////
 			// VALIDAR SI SE AUTORIZO TODO EL DOCUMENTO //
 			//////////////////////////////////////////////
 			// CONSULTAR LOS ROLES QUE CORRESPONDEN A ESOS RANGOS
-			$sql    = "SELECT id_rol,orden,codigo_rol,rol FROM  costo_autorizadores_ordenes_compra WHERE activo = 1 AND($whereIdRango) ORDER BY orden ASC";
+			$sql    = "SELECT id_rol FROM  costo_autorizadores_ordenes_compra WHERE activo = 1 AND($whereIdRango) ORDER BY orden ASC";
 			$query  = $mysql->query($sql,$mysql->link);
 			while ($row=$mysql->fetch_array($query)) {
 				$whereIdRol.=($whereIdRol=='')? 'id_rol='.$row['id_rol'] : ' OR id_rol='.$row['id_rol'] ;
 			}
-			$id_rol = $mysql->result($query,0,'id_rol');
 
-			// CONSULTAR LOS EMPLEADOS DEL ROL, CON SUS RESPECTIVOS EMAIL
-			$sql   = "SELECT id,documento,nombre,email_empresa,cargo FROM empleados WHERE activo = 1 AND ($whereIdRol) ORDER BY id";
+			// CONSULTAR LOS EMPLEADOS DEL ROL
+			$sql   = "SELECT id FROM empleados WHERE activo = 1 AND ($whereIdRol) ORDER BY id";
 			$query = $mysql->query($sql,$mysql->link);
 			$validate_user = 'false';
 			while($row = $mysql->fetch_array($query)){
@@ -2811,7 +2276,7 @@
 				$contAutorizadores++;
 			}
 
-			$sql = "SELECT id,id_empleado,documento_empleado,nombre_empleado,tipo_autorizacion
+			$sql = "SELECT tipo_autorizacion
  							FROM compras_ordenes_autorizaciones
 							WHERE activo = 1 AND id_empresa = $id_empresa AND id_orden_compra = $id_orden_compra AND ($whereIdEmpleados) AND ($whereIdRol)";
 	 		$query = $mysql->query($sql,$mysql->link);
@@ -2822,6 +2287,12 @@
 			}
 
 			$autorizado = ($contAutorizadores == $contAutorizaciones)? 'true' : 'false';
+
+			if($autorizado == 'true'){
+				$Subject       = "Orden de Compra Autorizada";
+				$mensaje_email = "La orden de compra que solicito ha sido autorizada";
+				enviaEmailAutorizacion($id_documento,'solicitante',$id_empresa,$Subject,$mensaje_email,$mysql);
+			}
 			$sql = "UPDATE compras_ordenes SET autorizado = '$autorizado' WHERE id = '$id_orden_compra'";
 			$query = $mysql->query($sql,$mysql->link);
 
@@ -2835,53 +2306,63 @@
  	//============================ FUNCION PARA RESTAURAR UN DOCUMENTO CANCELADO ====================================================================//
  	function ventanaAutorizaDocumentoArea($idDocumento,$opcGrillaContable,$id_sucursal,$id_empresa,$mysql){
  		$id_empleado = $_SESSION['IDUSUARIO'];
- 		// echo $id_empleado."<br>";
+		$disabledSelect = '';
+
  		// CONSULTAR EL AREA DEL DOCUMENTO
  		$sql   = "SELECT id_area_solicitante,estado FROM compras_ordenes WHERE activo=1 ANd id_empresa=$id_empresa AND id=$idDocumento";
  		$query = $mysql->query($sql,$mysql->link);
 		$id_area = $mysql->result($query,0,'id_area_solicitante');
 		$estado  = $mysql->result($query,0,'estado');
 
- 		$sql="SELECT id,id_empleado,documento_empleado,nombre_empleado,cargo,tipo_autorizacion,orden
+		//Consultar las autorizaciones del documento
+ 		$sql="SELECT id,tipo_autorizacion,orden,id_empleado
  			FROM autorizacion_ordenes_compra_area WHERE activo=1 AND id_empresa=$id_empresa AND id_orden_compra=$idDocumento AND id_area=$id_area";
- 		$query=$mysql->query($sql,$mysql->link);
-		while ($row=$mysql->fetch_array($query)){
-			// $arrayTipoAutorizacion[$row['id_empleado']]              = $row['tipo_autorizacion'];
-			$arrayAutorizaciones[$row['orden']][$row['id_empleado']] = array( 'id' => $row['id'], 'tipo_autorizacion' => $row['tipo_autorizacion'] );
+		$query = $mysql->query($sql, $mysql->link);
+		while ($row = $mysql->fetch_array($query)) {
+			$arrayAutorizaciones[$row['id_empleado']] = $row;
+		}
+		//Consultar los autorizadores del area
+		$sql="SELECT id,id_empleado,documento_empleado,nombre_empleado,cargo,orden FROM costo_autorizadores_ordenes_compra_area WHERE activo=1 AND id_empresa=$id_empresa AND id_area=$id_area ORDER BY orden ASC";
+		$query=$mysql->query($sql,$mysql->link);
+		while ($row = $mysql->fetch_array($query)) {
+			$arrayAutorizadores[$row['id_empleado']] = $row;
 		}
 
-		// print_r($arrayAutorizaciones);
- 		$sql="SELECT id,id_empleado,documento_empleado,nombre_empleado,cargo,orden
- 				FROM costo_autorizadores_ordenes_compra_area WHERE activo=1 AND id_empresa=$id_empresa AND id_area=$id_area ORDER BY orden ASC";
- 		$query=$mysql->query($sql,$mysql->link);
- 		while ($row=$mysql->fetch_array($query)) {
+		//Consultar la autorizacion anterior
+		$tipoAutorizacionUsuarioAnterior = '';
+		foreach ($arrayAutorizaciones as $autorizacion) {
+			if ($autorizacion['orden'] == ($arrayAutorizadores[$id_empleado]['orden'] - 1)) {
+				$tipoAutorizacionUsuarioAnterior = $autorizacion['tipo_autorizacion'];
+				break;
+			}
+		}
+
+		foreach($arrayAutorizadores as $row){ //Para cada autorizador
 			$selectAutorizacion = '';
 			$contentAut         = '';
+			$tipoAutorizacionEmpleado = $arrayAutorizaciones[$row['id_empleado']]['tipo_autorizacion'];
+			$disabledSelect = ($tipoAutorizacionUsuarioAnterior <> 'Autorizada' && $row['orden']<>1)? 'disabled' : '';
 
 			// SI NO ES EL USUARIO O SI EL DOCUMENTO NO ESTA GENERADO O ESTA CRUZADO O ELIMINADO, NO MOSTRAR LOS SELECT SI NO SOLO TEXTO
 			if ($id_empleado<>$row['id_empleado'] || $estado<>1){
- 				$contentAut = ($arrayAutorizaciones[$row['orden']][$row['id_empleado']]['tipo_autorizacion']<>'')? '<img style="height:11px;" src="img/'.$arrayAutorizaciones[$row['orden']][$row['id_empleado']]['tipo_autorizacion'].'.png" > '.$arrayAutorizaciones[$row['orden']][$row['id_empleado']]['tipo_autorizacion']
+ 				$contentAut = ($tipoAutorizacionEmpleado<>'')? '<img style="height:11px;" src="img/'.$tipoAutorizacionEmpleado.'.png" > '.$tipoAutorizacionEmpleado
  																				: '<span style="color:#A8A8A8;font-style:italic;">Sin Autorizacion</span>' ;
 				$padding = '';
- 			}
- 			// SI ES EL USUARIO Y EL DOCUMENTO ESTA HABILITADO, MOSTRAR LOS SELECT PARA QUE PUEDAN REALIZAR EL PROCESO DE AUTORIZACION
- 			else if ($id_empleado==$row['id_empleado']) {
- 				$selectAutorizacion = "<select id='tipo_autorizacion_$row[id]' style='border:none;' onchange='autorizarOrdenCompraArea($row[id],$id_area,$row[orden])'>
+ 			
+			}else if ($id_empleado==$row['id_empleado']) {
+				// SI ES EL USUARIO Y EL DOCUMENTO ESTA HABILITADO  MOSTRAR LOS SELECT PARA QUE PUEDAN REALIZAR EL PROCESO DE AUTORIZACION
+
+ 				$selectAutorizacion = "<select id='tipo_autorizacion_$row[id]' style='border:none;' onchange='autorizarOrdenCompraArea($row[id],$id_area,$row[orden])' $disabledSelect>
 											<option value=''>Sin Autorizacion</option>
 											<option value='Autorizada'>Autorizada</option>
 											<option value='Aplazada'>Aplazada</option>
 											<option value='Rechazada'>Rechazada</option>
 										</select>";
 				$padding = 'padding:1.5px;';
-				if ($arrayAutorizaciones[$row['orden']][$row['id_empleado']]['tipo_autorizacion']<>'') {
-					$script .= "document.getElementById('tipo_autorizacion_$row[id]').value='".$arrayAutorizaciones[$row['orden']][$row['id_empleado']]['tipo_autorizacion']."';";
+				if ($tipoAutorizacionEmpleado<>'') {
+					$script .= "document.getElementById('tipo_autorizacion_$row[id]').value='".$tipoAutorizacionEmpleado."';";
 				}
-
-				if (!empty($arrayAutorizaciones[$row['orden']+1])) {
-					$script .= "document.getElementById('tipo_autorizacion_$row[id]').disabled=true;";
-				}
-
-				$script .="console.log('".$arrayAutorizaciones[$row['orden']][$row['id_empleado']]['tipo_autorizacion']."');";
+				$script .="console.log('".$tipoAutorizacionEmpleado."');";
  			}
 
  			$bodyUsuarios .="<div class='row' id='row_centro_costo_$row[documento_empleado]'>
@@ -2910,6 +2391,7 @@
 		  .content-grilla-filtro .cell[data-col="3"]{width: 145px;}
 		  .content-grilla-filtro .cell[data-col="4"]{width: 115px;border-right: none;}
 		  .sub-content [data-width="input"]{width: 150px;}
+		  .content-grilla-filtro .row {height:30px;}
 		</style>
 
 		<div class="main-content">
@@ -2952,23 +2434,10 @@
 		$cargo              = $mysql->result($query,0,'cargo');
 
  		// CONSULTAR QUIEN AUTORIZA Y EL ORDEN EN QUE LO HACEN
- 		$sql="SELECT * FROM costo_autorizadores_ordenes_compra_area WHERE activo=1 AND id_empresa=$id_empresa AND id_area=$id_area ORDER BY orden ASC";
- 		$query=$mysql->query($sql,$mysql->link);
- 		while ($row=$mysql->fetch_array($query)) {
- 			$orden_arr=$row['orden'];
-
- 			$arrayAutorizadores[$orden_arr][$row['id_empleado']] = array(
-																	'id_empleado'        => $row['id_empleado'],
-																	'orden'              => $row['orden'],
-																	'documento_empleado' => $row['documento_empleado'],
-																	'nombre_empleado'    => $row['nombre_empleado'],
-																	'id_cargo'           => $row['id_cargo'],
-																	'cargo'              => $row['cargo'],
-																	'email'              => $row['email'],
-																	'id_area'            => $row['id_area'],
-				 												);
- 		}
- 		// print_r($arrayAutorizadores);
+		$sql="SELECT id_empleado,orden FROM costo_autorizadores_ordenes_compra_area WHERE activo=1 AND id_empresa=$id_empresa AND id_area=$id_area ORDER BY orden ASC";
+		$query=$mysql->query($sql,$mysql->link);
+		while ($row=$mysql->fetch_array($query)) { $arrayAutorizadores[$row['orden']] = $row['id_empleado'];}
+		print_r($arrayAutorizadores);
  		// CONSULTAR SI EL DOCUMENTO YA TIENE UNA AUTORIZACION POR PARTE DEL USURAIO
  		$sql="SELECT id FROM autorizacion_ordenes_compra_area
  				WHERE activo=1 AND id_empresa=$id_empresa AND id_empleado=$id_empleado AND id_orden_compra=$id_documento AND id_area=$id_area AND orden=$orden";
@@ -2980,7 +2449,6 @@
  			$sql="UPDATE autorizacion_ordenes_compra_area SET tipo_autorizacion='$tipo_autorizacion'
  					WHERE activo=1 ANd id_empresa=$id_empresa AND id_empleado=$id_empleado AND id_orden_compra=$id_documento AND orden=$orden AND id_area=$id_area";
  			$query=$mysql->query($sql,$mysql->link);
-
  		}
  		// SI SE INSERTA LA NUEVA AUTORIZACION
  		else{
@@ -2994,11 +2462,10 @@
 
  			// SI SE AUTORIZO EL DOCUMENTO, ENTONCES ENVIAR EMAIL AL SIGUIENTE EMPLEADO ENCARGADO PARA QUE REALICE SU RESPECTIVA AUTORIZACION
  			if ($tipo_autorizacion=='Autorizada') {
- 				$orden++;
  				$id_empleado_sigt = 0;
- 				foreach ($arrayAutorizadores[$orden] as $id_empleado_orden => $datosEmp) {
- 					$id_empleado_sigt = $id_empleado_orden;
- 				}
+ 				if(array_key_exists($orden+1,$arrayAutorizadores)){
+					$id_empleado_sigt = $arrayAutorizadores[$orden+1];
+				}
 
  				// SI NO HAY MAS EMPLEADOS PARA AUTORIZAR, Y ESTA TODO AUTORIZADO, ENTONCES ACTUALIZAR EL DOCUMENTO COMO AUTORIZA
  				if ($id_empleado_sigt==0) {
@@ -3008,14 +2475,11 @@
 					$Subject       = "Orden de Compra Autorizada";
 					$mensaje_email = "La orden de compra que solicito ha sido autorizada";
  					enviaEmailAutorizacion($id_documento,'solicitante',$id_empresa,$Subject,$mensaje_email,$mysql);
- 				}
- 				// SI AUN FALTA UN EMPLEADO EN AUTORIZAR, ENTONCES ENVIAR LA NOTIFICACION POR CORREO ELECTRONICO
- 				else{
+				} else{
 					$Subject       = "Orden de Compra Pendiente por Autorizacion";
 					$mensaje_email = "Orden de compra a la espera de su Autorizacion";
  					enviaEmailAutorizacion($id_documento,$id_empleado_sigt,$id_empresa,$Subject,$mensaje_email,$mysql);
  				}
-
  			}
  			// SI EL DOCUMENTO NO FUE AUTORIZADO ENTONCES ENVIAR UNA NOTIFICACION AL SOLICITANTE INDICANDO QUE LA REQUISICION NO FUE APROBADA
  			else if ($tipo_autorizacion=='Rechazada') {
@@ -3030,16 +2494,19 @@
  			else {
  				$sql   = "UPDATE compras_ordenes SET autorizado='false' WHERE id='$id_documento'";
 				$query = $mysql->query($sql,$mysql->link);
- 				echo '<script>MyLoading2("off")</script>';
- 			}
+				$Subject       = "Orden de Compra Aplazada";
+				$mensaje_email = "La orden de compra que solicito ha sido aplazada, comuniquese con el departamento de compras";
+				enviaEmailAutorizacion($id_documento,'solicitante',$id_empresa,$Subject,$mensaje_email,$mysql);
+				echo '<script>MyLoading2("off")</script>';
 
+ 			}
  		}
  		else{
 			echo '<script>MyLoading2("off",{icono:"fail",texto:"Error al autorizar intentelo de nuevo"})</script>';
  		}
  	}
 
- 	//=========================== ENVIAR UN EMAIL CUANDO SE AUTORIZA O RECHAZA UNA REQUICISION  DE COMPRA ========================================== //
+ 	//=========================== ENVIAR UN EMAIL CUANDO SE AUTORIZA O RECHAZA UNA ORDEN  DE COMPRA ========================================== //
  	function enviaEmailAutorizacion($id_documento,$id_empleado,$id_empresa,$Subject,$mensaje_email,$mysql){
  		// EVNIAR EMAIL A LOS ENCARGADOS DE AUTORIZAR LAS REQUISICIONES
 		include_once('../../../../misc/phpmailer/PHPMailerAutoload.php');
@@ -3064,7 +2531,7 @@
 		}
 
 		//CONSULTAR LA INFORMACION DE LA EMPRESA
-		$sqlEmpresa   = "SELECT nombre,tipo_documento_nombre,nit_completo,actividad_economica,pais,ciudad,direccion,razon_social,tipo_regimen,telefono,celular
+		$sqlEmpresa   = "SELECT nombre,tipo_documento_nombre,documento,nit_completo,actividad_economica,pais,ciudad,direccion,razon_social,tipo_regimen,telefono,celular
 						FROM empresas
 						WHERE id='$id_empresa'
 						LIMIT 0,1";
@@ -3072,11 +2539,11 @@
 
 		$nombre_empresa        = $mysql->result($queryEmpresa,0,'nombre');
 		$tipo_documento_nombre = $mysql->result($queryEmpresa,0,'tipo_documento_nombre');
+		$nit_empresa		   = $mysql->result($queryEmpresa,0,'documento');
 		$documento_empresa     = $mysql->result($queryEmpresa,0,'nit_completo');
 		$ciudad                = $mysql->result($queryEmpresa,0,'ciudad');
 		$direccion_empresa     = $mysql->result($queryEmpresa,0,'direccion');
 		$razon_social          = $mysql->result($queryEmpresa,0,'razon_social');
-		$tipo_regimen          = $mysql->result($queryEmpresa,0,'tipo_regimen');
 		$telefonos             = $mysql->result($queryEmpresa,0,'telefono').' - '.$mysql->result($queryEmpresa,0,'celular');
 		$actividad_economica   = $mysql->result($queryEmpresa,0,'actividad_economica');
 
@@ -3109,11 +2576,6 @@
 		$id_area_solicitante = $mysql->result($query,0,'id_area_solicitante');
 		$id_usuario          = $mysql->result($query,0,'id_usuario');
 
-		// SI SE DEBE ENVIAR LA NOTIFICACION A QUIEN SOLICITO LA REQUISICIONES
-		if ($id_empleado=='solicitante') {
-			$id_empleado = $mysql->result($query,0,'id_usuario');
-		}
-
 		$mail->IsSMTP();
 		$mail->SMTPAuth   = true;                  				// enable SMTP authentication
 		$mail->SMTPSecure = $seguridad;                         // sets the prefix to the servier
@@ -3126,11 +2588,32 @@
 		$mail->Subject    = $Subject;
 		$mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
 		$mail->WordWrap   = 50; // set word wrap
+		$datos = base64_encode($id_documento .'|'. 
+							   $consecutivo  .'|'. 
+							   $sucursal 	 .'|'. 
+							   $nit_empresa  .'|'. 
+							   $id_empresa   .'|'.
+							   $_SESSION['BD']
+							);
+		
+		// SI SE DEBE ENVIAR LA NOTIFICACION A QUIEN SOLICITO LA REQUISICIONES
+	    $serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":$_SERVER['SERVER_NAME'];
+		if ($id_empleado=='solicitante') {
+			$id_empleado = $id_usuario;
+			$tableAutorizarOC = '';
+		}else{
+			$tableAutorizarOC = '<table>
+									<tr>
+										<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
+											  <a href="'.$serverRoot.'/LOGICALERP/compras/ordenes_compra/bd/autorizacion_ordenes_correo/autorizar_ordenes_correo.php?data='.$datos.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
+										</td>
+									</tr>
+								</table>';
+		}
 
 		$body  = '<font color="black">
 				<br>
 				<b>'.$razon_social.'</b><br>
-				<b>'.$tipo_regimen.'</b><br>
 				<b>'.$tipo_documento_nombre.': </b>'.$documento_empresa.'<br>
 				<b>Direccion: </b>'.$direccion_empresa.' - <b>'.$ciudad.' </b><br>
 				<b>Telefono: </b>'.$telefonos.'<br>
@@ -3163,15 +2646,7 @@
 						<td>'.$documento_usuario.' - '.$usuario.' </td>
 					</tr>
 				</table>
-				<!-- 
-				<table>
-					<tr>
-						<td  font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">
-							  <a href="http://localhost/ERP/LOGICALERP/compras/ordenes_compra/bd/autorizar_ordenes_correo.php?idOrden='.$idOrdenCompra.'" target="_blank" style="font-family:tahoma,arial,verdana,sans-serif; font-size:32px; font-weight:bold; ">Click aqui para autorizar</a>
-						</td>
-					</tr>
-				</table>
-				-->
+				'.$tableAutorizarOC.'
 				<br>
 				<br>
 				Esta es una notificacion automatica generada por el software LogicalSoft ERP, por favor no responda este email.
@@ -3181,26 +2656,18 @@
 		$mail->MsgHTML($body);
 
 		// CONSULTAR LAS DIRECCIONES DE EMAIL DE LOS ENCARGADOS DE AUTORIZAR EL DOCUMENTO
-		$sql = "SELECT email_empresa FROM empleados WHERE activo=1 AND id_empresa=$id_empresa AND id=$id_empleado";
+		$id_list =  (is_array($id_empleado))? "(".implode(',', $id_empleado).")" : "(".$id_empleado.")";
+		$sql = "SELECT email_empresa FROM empleados WHERE activo=1 AND id_empresa=$id_empresa AND id IN $id_list";
 		$query=$mysql->query($sql,$mysql->link);
-		$email = $mysql->result($query,0,'email_empresa');
-		if ($email<>''){
-			$mail->AddAddress($email);
+
+		if ($mysql->num_rows($query) <> 0){
+			while($row = $mysql->fetch_array($query)){
+				$mail->AddAddress($row['email_empresa']);
+			}
 			//Obtener el pdf
-									
-			// Incluir el archivo imprimir_orden_compra.php
 			include("imprimir_orden_compra.php");
 									
-		
-			$pdfString = generarPDF($id_documento, $link);
-									
-			// Verificar si el PDF fue generado correctamente
-			if (empty($pdfString)) {
-			    echo "Error: El PDF está vacío.";
-			} else {
-			    // El PDF se generó correctamente
-			    echo "El PDF se generó correctamente.";
-			}  
+			$pdfString = generarPDF($id_documento, $mysql);
 			//var_dump($pdfString);
 			$mail->addStringAttachment($pdfString,"orden_$consecutivo.pdf");
 							
