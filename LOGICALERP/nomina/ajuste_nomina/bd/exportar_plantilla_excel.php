@@ -89,6 +89,7 @@
 		WHERE
 			NPEC.activo = 1
 		AND NPEC.id_empresa = $id_empresa
+		AND NC.id_empresa = $id_empresa
 		AND NC.concepto_ajustable = 'true'
 		AND NC.id=NPEC.id_concepto
 		AND ($whereIdPlanillas)
