@@ -85,3 +85,93 @@ async function verify_db() {
         console.error('Error al obtener datos:', error);
     }
 }
+
+async function create_company()
+{
+    let licence = document.getElementById('support-licence')
+    let company = document.getElementById('company-doc')
+    let company_dv = document.getElementById('company-doc-dv')
+    let company_name = document.getElementById('company-name')
+    let company_rs = document.getElementById('company-social-name')
+
+    if (licence.value=="" || company.value=="" || company_dv.value=='') {
+        alert("los campos licencia y nit son obligatorios");
+        // licence.focus();
+        return;
+    }
+
+    try {
+        modal.show();
+        const respuesta = await fetch('backend/index.php?method=create_company',{
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "licence" : licence.value,
+                "company" : company.value,
+                "company_dv" : company_dv.value,
+                "company_name" : company_name.value,
+                "company_rs" : company_rs.value,
+            })
+        });
+        
+        if (!respuesta.ok) {
+            throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
+
+        const datos = await respuesta.json();
+        console.log( datos);
+        modal.close();
+        scrollToNext();
+    } catch (error) {
+        modal.close();
+        console.error('Error al obtener datos:', error);
+    }
+}
+
+async function create_user()
+{
+    let licence = document.getElementById('support-licence')
+    let user_doc = document.getElementById('user-doc').value
+    let user_firstname = document.getElementById('user-firstname').value
+    let user_secondname = document.getElementById('user-secondname').value
+    let user_firstlastname = document.getElementById('user-firstlastname').value
+    let usersecondlastename = document.getElementById('user-econdlastename').value
+
+    if (licence.value=="") {
+        alert("los campos licencia");
+        // licence.focus();
+        return;
+    }
+
+    try {
+        modal.show();
+        const respuesta = await fetch('backend/index.php?method=create_user',{
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "licence" : licence.value,
+                user_doc,
+                user_firstname,
+                user_secondname,
+                user_firstlastname,
+                usersecondlastename
+            })
+        });
+        
+        if (!respuesta.ok) {
+            throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
+
+        const datos = await respuesta.json();
+        console.log( datos);
+        modal.close();
+        scrollToNext();
+    } catch (error) {
+        modal.close();
+        console.error('Error al obtener datos:', error);
+    }
+}

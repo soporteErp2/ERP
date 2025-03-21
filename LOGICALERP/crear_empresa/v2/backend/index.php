@@ -17,6 +17,10 @@ switch ($_GET['method']) {
         $obj->verify_db($data);
         break;
     
+    case 'create_company':
+        $obj->create_company($data);
+        break;
+    
     default:
         # code...
         break;

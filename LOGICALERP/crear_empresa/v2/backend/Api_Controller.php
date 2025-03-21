@@ -22,6 +22,20 @@ class Api_Controller
         return $this->mysqli;
     }
 
+    public function change_connection($database)
+    {
+        $this->mysqli->close();
+
+        global $server;
+        $this->mysqli = new mysqli($server->server_name, $server->user, $server->password, $database);
+        if ($this->mysqli->connect_error) {
+            return ["error conectando al servidor: " . $this->mysqli->connect_error];
+        }
+
+        $this->mysqli->set_charset("utf8mb4");
+        return $this->mysqli;
+    }
+
     public function verify_db($data)
     {
         $sql = "SELECT id FROM host WHERE nit = '$data[company]'";
@@ -100,4 +114,21 @@ class Api_Controller
     function structure_db(){
         echo json_encode("db exist, structure");
     }
+
+    public function create_company($data)
+    {
+        $this->change_connection("erp_".$data["licence"]);
+
+        $sql = "INSERT INTO empresas (nombre,tipo_documento_nombre,id_pais,pais,id_departamento,id_ciudad, razon_social,tipo_regimen,actividad_economica,direccion,documento,digito_verificacion,telefono,celular,zona_horaria,id_moneda,formato_hora,interface,grupo_empresarial)
+			 	VALUES ('$data[company_name]','','','','','','$data[company_rs]','','','','$data[company]',$data[company_dv],'','','','','','','')";
+        $query = $this->mysqli->query($sql);
+
+        $this->change_connection("erp_acceso");
+        $sql = "INSERT INTO host (`nit`, `nombre`, `servidor`, `bd`, `id_plan`, `fecha_creacion`, `hora_creacion`, `fecha_vencimiento_plan`, `timezone`, `almacenamiento`, `activo`, `usuario_nombre1`, `usuario_nombre2`, `usuario_apellido1`, `usuario_apellido2`) 
+                VALUES 
+                ('$data[company]', '$data[company_name]', 'localhost', 'erp_$data[licence]', '1', '".date("Y-m-d")."', '".date("H:i:s")."', '2100-04-02', 'America/Bogota', '50', '1', NULL, NULL, NULL, NULL);";
+        $query = $this->mysqli->query($sql);
+
+    }
+
 }

@@ -32,13 +32,13 @@
         <div class="bg-[#1c252e] p-10 rounded-lg flex justify-center flex-col gap-4">
             <div>
                 <legend class="text-[#67748e]">Nombre empresa</legend>
-                <input id="support-licence" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+                <input id="company-name" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
             </div>
             <div>
                 <legend class="text-[#67748e]">Razon social</legend>
-                <input id="company-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+                <input id="company-social-name" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
             </div>
-            <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="verify_db()">Guardar</button>
+            <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="create_company()">Guardar</button>
         </div>
     </div>
     <div class="flex items-center w-full h-full justify-center flex-col gap-4" id="card-2" >
@@ -46,20 +46,20 @@
         <div class="bg-[#1c252e] p-10 rounded-lg flex justify-center flex-col gap-4">
             <div>
                 <legend class="text-[#67748e]">Documento</legend>
-                <input id="company-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
+                <input id="user-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white w-full">
             </div>
             <div>
                 <legend class="text-[#67748e]">Nombre</legend>
                 <div class="flex flex-row gap-4">
-                    <input placeholder="primer nombre" id="company-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
-                    <input placeholder="segundo nombre" id="company-doc-dv" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
+                    <input placeholder="primer nombre" id="user-firstname" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
+                    <input placeholder="segundo nombre" id="user-secondname" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
                 </div>
             </div>
             <div>
                 <legend class="text-[#67748e]">Apellido</legend>
                 <div class="flex flex-row gap-4">
-                    <input placeholder="primer apellido" id="company-doc" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
-                    <input placeholder="segundo apellido" id="company-doc-dv" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
+                    <input placeholder="primer apellido" id="user-firstlastname" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
+                    <input placeholder="segundo apellido" id="user-secondlastename" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
                 </div>
             </div>
             <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="verify_db()">Guardar</button>
