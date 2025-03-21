@@ -1,62 +1,87 @@
 <?php
-	include('../../../../../configuracion/define_variables.php');
+include('../../../../../configuracion/define_variables.php');
 
-	if(isset($op) && $op == "guardaFile"){//VARIABLE QUE INDICA QUE DEBE GUARDAR EL ARCHVIO CON EL CONTENIDO EN DISCO
-		$file = "temp/".$nombre;
-		if (file_exists($file)) {
-			$fp = fopen("temp/".$nombre, "w");
-		} else {
-			file_put_contents("temp/$nombre.pdf","");
-			$fp = fopen("temp/".$nombre, "w");
-		}
+header('Content-Type: application/json'); // Asegura que no haya salida previa si se usa JSON
 
-		fwrite($fp, $html);		
-		fclose($fp);
+if (isset($op) && $op == "guardaFile") {
+    $file = "temp/" . $nombre;
+    
+    if (empty($html)) {
+        echo json_encode(["status" => "error", "message" => "El contenido del archivo está vacío."]);
+        exit;
+    }
+    
+    if (file_put_contents($file, $html) === false) {
+        echo json_encode(["status" => "error", "message" => "No se pudo escribir en el archivo."]);
+        exit;
+    }
+    
+    echo json_encode(["status" => "success", "message" => "Archivo guardado correctamente.", "file" => $file]);
+    exit;
+}
 
-	}else{//SI LA VARIABLE DE GUARDADO DE CONTENIDO NO EXISTE GENERA EL PDF
+// GENERAR EL PDF
+set_time_limit(240);
+ini_set("memory_limit", "500M");
 
-		set_time_limit(240);
-		ini_set("memory_limit","500M");
+$file = "temp/" . $nombre;
+if (!file_exists($file)) {
+    echo json_encode(["status" => "error", "message" => "El archivo no existe."]);
+    exit;
+}
 
-		$file     = "temp/".$nombre;
-		$fp       = fopen("temp/".$nombre, "r");
-		$contents = fread($fp, filesize($file));
-		fclose($fp);
-		unlink($file);
+$contents = file_get_contents($file);
+if ($contents === false) {
+    echo json_encode(["status" => "error", "message" => "No se pudo leer el archivo."]);
+    exit;
+}
 
-		$params = base64_decode($params);
-		$options = json_decode($params,true);
-		$texto   = base64_decode($contents);
+$params = base64_decode($params);
+$options = json_decode($params, true);
+$texto = base64_decode($contents);
 
-		if($options["orientacion"] == "V"){$orientacion = "P";}
-		if($options["orientacion"] == "H"){$orientacion = "L";}
-		if(!isset($TAMANO_ENCA)){$TAMANO_ENCA = 12 ;}
-		if($options["debug"] == "false"){
-			include("../../misc/MPDF54/mpdf.php");
-			$mpdf = new mPDF(
-				"utf-8",  						// mode - default "
-				'A4',	// format - A4, for example, default "
-				12,								// font size - default 0
-				"",								// default font family
-				$options["margins"]["left"],	// margin_left
-				$options["margins"]["right"],	// margin right
-				$options["margins"]["top"],		// margin top
-				$options["margins"]["bottom"],	// margin bottom
-				3,								// margin header
-				10,								// margin footer
-			    $orientacion    				// orientacion
-			);
-			$mpdf->SetAutoPageBreak(TRUE, 15);
-			$mpdf->SetTitle ("GENERADOR DE INFORMES LOGICALSOFT");
-			$mpdf->SetAuthor ( "LOGICALSOFT" );
-			$mpdf->SetDisplayMode ( "fullpage" );
-			$mpdf->SetHeader("");
-			$mpdf->WriteHTML(utf8_encode($texto));
-			if($options["op"]=="view"){$mpdf->Output($nombre.".pdf","I");}
-			if($options["op"]=="download"){$mpdf->Output($nombre.".pdf","D");}
-			exit;
+$orientacion = ($options["orientacion"] == "V") ? "P" : "L";
+$TAMANO_ENCA = isset($TAMANO_ENCA) ? $TAMANO_ENCA : 12;
 
-		}else{echo $texto;}
-
-	}
-?>
+if ($options["debug"] == "false") {
+    include("../../misc/MPDF54/mpdf.php");
+    
+    ob_start(); // Previene salida inesperada
+    
+    try {
+        $mpdf = new mPDF(
+            "utf-8", 
+            'A4', 
+            12, 
+            "", 
+            $options["margins"]["left"], 
+            $options["margins"]["right"], 
+            $options["margins"]["top"], 
+            $options["margins"]["bottom"], 
+            3, 
+            10, 
+            $orientacion
+        );
+        
+        $mpdf->SetAutoPageBreak(TRUE, 15);
+        $mpdf->SetTitle("GENERADOR DE INFORMES LOGICALSOFT");
+        $mpdf->SetAuthor("LOGICALSOFT");
+        $mpdf->SetDisplayMode("fullpage");
+        $mpdf->SetHeader("");
+        
+        $mpdf->WriteHTML(utf8_encode($texto));
+        
+        ob_end_clean(); // Limpia el buffer antes de salida
+        
+        if ($options["op"] == "view") {
+            $mpdf->Output($nombre . ".pdf", "I");
+        } elseif ($options["op"] == "download") {
+            $mpdf->Output($nombre . ".pdf", "D");
+        }
+    } catch (Exception $e) {
+        echo json_encode(["status" => "error", "message" => "Error al generar el PDF: " . $e->getMessage()]);
+    }
+    exit;
+} else {
+    echo $texto;
+}

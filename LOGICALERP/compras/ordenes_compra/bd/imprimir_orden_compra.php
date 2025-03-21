@@ -1,6 +1,7 @@
 <?php
-function generarPDF($id, $conexionBD){
-	include($_SERVER['DOCUMENT_ROOT']."/LOGICALERP/compras/bd/functions_imprimir.php");
+function generarPDF($id, $mysql){
+	$serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? $_SERVER['DOCUMENT_ROOT']."/ERP":$_SERVER['DOCUMENT_ROOT'];
+	include($serverRoot."/LOGICALERP/compras/bd/functions_imprimir.php");
 	if($_SESSION['EMPRESA'] == ''){ echo "USUARIO NO REGISTRADO"; return; }
 	$id_empresa          = $_SESSION['EMPRESA'];
 	$displayTablaTotales = "";
@@ -11,12 +12,11 @@ function generarPDF($id, $conexionBD){
 	$idTablaPrincipal    = 'id_orden_compra';
 	$tablaInventario     = 'compras_ordenes_inventario';
 
-	if(file_exists($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra_email.php")){
-		include($_SERVER['DOCUMENT_ROOT']."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra_email.php");
-		return  generar_PDF_plantilla($id,$conexionBD,$tablaPrincipal,$tablaInventario,$tipo_documento);
+	if(file_exists($serverRoot."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra_email.php")){
+		include($serverRoot."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/panel_de_control/formato_documentos/formato_orden_compra_email.php");
+		return  generar_PDF_plantilla($id,$mysql,$tablaPrincipal,$tablaInventario,$tipo_documento,$serverRoot);
 	}
 	else{
-
 		$subtotalOC       = 0.00;
 		$ivaOC            = 0.00;
 		$retefuenteOC     = 0.00;
@@ -24,10 +24,10 @@ function generarPDF($id, $conexionBD){
 		$totalOC          = 0.00;
 
 		$SQLMoneda        = "SELECT * FROM configuracion_moneda WHERE activo=1 AND id = $id_moneda";
-		$consul_moneda    = mysql_query($SQLMoneda,$conexionBD);
-		$simbolo_moneda   = mysql_result($consul_moneda,0,'simbolo');
-		$decimales_moneda = mysql_result($consul_moneda,0,'decimales');
-		$descripcion      = mysql_result($consul_moneda,0,'descripcion');
+		$consul_moneda    = $mysql->query($SQLMoneda,$mysql->link);
+		$simbolo_moneda   = $mysql->result($consul_moneda,0,'simbolo');
+		$decimales_moneda = $mysql->result($consul_moneda,0,'decimales');
+		$descripcion      = $mysql->result($consul_moneda,0,'descripcion');
 
 		if($descripcion == 'Euro'){
 			$simbolo_moneda = '&#8364;';
@@ -36,33 +36,34 @@ function generarPDF($id, $conexionBD){
 		//ALMACENAR EN LA ORDEN DE COMPRA LA MONEDA Y TASA DE CAMBIO PARA GENERAR PROXIMOS DOCUMENTOS
 
 		$sql_orden_compra = "UPDATE $tablaPrincipal SET id_moneda = $id_moneda, tasa_cambio = $tasa_cambio WHERE id = $id";
-		mysql_query($sql_orden_compra,$conexionBD);
+		$mysql->query($sql_orden_compra,$mysql->link);
 
 		//CONSULTAR LA INFORMACION DE LA EMPRESA
 		$sqlEmpresa   = "SELECT nombre,tipo_documento_nombre,documento, pais,ciudad,direccion,razon_social,telefono,celular,tipo_regimen FROM empresas WHERE id='$id_empresa' LIMIT 0,1";
-		$queryEmpresa = mysql_query($sqlEmpresa,$conexionBD);
+		$queryEmpresa = $mysql->query($sqlEmpresa,$mysql->link);
 
 		//CONSULTAR EL LOGO O IMAGEN DE LA EMPRESA QUE SE CARGO DESDE EL PANEL DE CONTROL
 		$sqlImagen   = "SELECT nombre,ext FROM configuracion_imagenes_documentos WHERE activo=1 AND id_empresa='$id_empresa'";
-		$queryImagen = mysql_query($sqlImagen,$conexionBD);
-		$nombre      = mysql_result($queryImagen,0,'nombre');
-		$ext         = mysql_result($queryImagen,0,'ext');
+		$queryImagen = $mysql->query($sqlImagen,$mysql->link);
+		$nombre      = $mysql->result($queryImagen,0,'nombre');
+		$ext         = $mysql->result($queryImagen,0,'ext');
 
 		if ($nombre==''){ $imagen=' &nbsp;'; }
 		else{ $imagen='<img src="../../../ARCHIVOS_PROPIOS/imagenes_empresas/empresa_'.$id_empresa."/logos/".$nombre.'.'.$ext.'" width="150px" height="100px" >'; }
 
-		$nombre_empresa        = mysql_result($queryEmpresa,0,'nombre');
-		$tipo_documento_nombre = mysql_result($queryEmpresa,0,'tipo_documento_nombre');
-		$documento_empresa     = mysql_result($queryEmpresa,0,'documento');
-		$ubicacion_empresa     = mysql_result($queryEmpresa,0,'ciudad').' - '.mysql_result($queryEmpresa,0,'pais');
-		$direccion_empresa     = mysql_result($queryEmpresa,0,'direccion');
-		$razon_social          = mysql_result($queryEmpresa,0,'razon_social');
-		$telefonos             = mysql_result($queryEmpresa,0,'telefono').' - '.mysql_result($queryEmpresa,0,'celular');
-		$tipo_regimen          = mysql_result($queryEmpresa,0,'tipo_regimen');
+		$nombre_empresa        = $mysql->result($queryEmpresa,0,'nombre');
+		$tipo_documento_nombre = $mysql->result($queryEmpresa,0,'tipo_documento_nombre');
+		$documento_empresa     = $mysql->result($queryEmpresa,0,'documento');
+		$ubicacion_empresa     = $mysql->result($queryEmpresa,0,'ciudad').' - '.$mysql->result($queryEmpresa,0,'pais');
+		$direccion_empresa     = $mysql->result($queryEmpresa,0,'direccion');
+		$razon_social          = $mysql->result($queryEmpresa,0,'razon_social');
+		$telefonos             = $mysql->result($queryEmpresa,0,'telefono').' - '.$mysql->result($queryEmpresa,0,'celular');
+		$tipo_regimen          = $mysql->result($queryEmpresa,0,'tipo_regimen');
 
 		//============================ QUERY NOMBRE PROVEEDOR ============================//
 		$sqlNombreEmpresa = "SELECT nombre FROM empresas WHERE id = '$id_empresa'";
-		$nombre_empresa   = mysql_result(mysql_query($sqlNombreEmpresa,$conexionBD),0,'nombre');
+		$queryNombreEmpresa = $mysql->query($sqlNombreEmpresa,$mysql->link);
+		$nombre_empresa   = $mysql->result($queryNombreEmpresa,0,'nombre');
 
 		//============================== QUERY ORDEN COMPRA ==============================//
 		$SQLComprasOrdenes   = "SELECT O.*,
@@ -77,30 +78,30 @@ function generarPDF($id, $conexionBD){
 									AND O.activo=1
 									AND O.id_empresa='$id_empresa'
 								LIMIT 0,1";
-		$queryComprasOrdenes = mysql_query($SQLComprasOrdenes,$conexionBD);
+		$queryComprasOrdenes = $mysql->query($SQLComprasOrdenes,$mysql->link);
 
-		$idOC              = mysql_result($queryComprasOrdenes,0,'id');
-		$estadoOC          = mysql_result($queryComprasOrdenes,0,'estado');
+		$idOC              = $mysql->result($queryComprasOrdenes,0,'id');
+		$estadoOC          = $mysql->result($queryComprasOrdenes,0,'estado');
 
-		$tercero_dpto      = mysql_result($queryComprasOrdenes,0,'departamento');
-		$tercero_ciudad    = mysql_result($queryComprasOrdenes,0,'ciudad');
-		$tercero_regimen   = mysql_result($queryComprasOrdenes,0,'tercero_tributario');
+		$tercero_dpto      = $mysql->result($queryComprasOrdenes,0,'departamento');
+		$tercero_ciudad    = $mysql->result($queryComprasOrdenes,0,'ciudad');
+		$tercero_regimen   = $mysql->result($queryComprasOrdenes,0,'tercero_tributario');
 
-		$tercero_nit       = mysql_result($queryComprasOrdenes,0,'nit_tercero');
-		$tercero_telefono  = mysql_result($queryComprasOrdenes,0,'telefono1');
-		$tercero_direccion = mysql_result($queryComprasOrdenes,0,'direccion');
+		$tercero_nit       = $mysql->result($queryComprasOrdenes,0,'nit_tercero');
+		$tercero_telefono  = $mysql->result($queryComprasOrdenes,0,'telefono1');
+		$tercero_direccion = $mysql->result($queryComprasOrdenes,0,'direccion');
 
-		$id_sucursal       = mysql_result($queryComprasOrdenes,0,'id_sucursal');
-		$consecutivo       = mysql_result($queryComprasOrdenes,0,'consecutivo');
-		$proveedor         = mysql_result($queryComprasOrdenes,0,'proveedor');
-		$sucursal          = mysql_result($queryComprasOrdenes,0,'sucursal');
-		$bodega            = mysql_result($queryComprasOrdenes,0,'bodega');
-		$fecha             = mysql_result($queryComprasOrdenes,0,'fecha_inicio');
-		$fecha_vencimiento = mysql_result($queryComprasOrdenes,0,'fecha_vencimiento');
-		$forma_pago        = mysql_result($queryComprasOrdenes,0,'forma_pago');
+		$id_sucursal       = $mysql->result($queryComprasOrdenes,0,'id_sucursal');
+		$consecutivo       = $mysql->result($queryComprasOrdenes,0,'consecutivo');
+		$proveedor         = $mysql->result($queryComprasOrdenes,0,'proveedor');
+		$sucursal          = $mysql->result($queryComprasOrdenes,0,'sucursal');
+		$bodega            = $mysql->result($queryComprasOrdenes,0,'bodega');
+		$fecha             = $mysql->result($queryComprasOrdenes,0,'fecha_inicio');
+		$fecha_vencimiento = $mysql->result($queryComprasOrdenes,0,'fecha_vencimiento');
+		$forma_pago        = $mysql->result($queryComprasOrdenes,0,'forma_pago');
 
-		$observaciones     = mysql_result($queryComprasOrdenes,0,'observacion');
-		$autorizado        = mysql_result($queryComprasOrdenes,0,'autorizado');
+		$observaciones     = $mysql->result($queryComprasOrdenes,0,'observacion');
+		$autorizado        = $mysql->result($queryComprasOrdenes,0,'autorizado');
 		//SI NO EXISTE LA ORDEN DE COMPRA RETURN-->
 		
 
@@ -128,11 +129,11 @@ function generarPDF($id, $conexionBD){
 							WHERE $idTablaPrincipal='$id'
 								AND activo = 1
 							GROUP BY id_inventario,observaciones,id_impuesto,tipo_descuento,descuento,costo_unitario";
-		$queryArticulos = mysql_query($sqlArticulos,$conexionBD);
+		$queryArticulos = $mysql->query($sqlArticulos,$mysql->link);
 
 
 
-		while ($array = mysql_fetch_array($queryArticulos)) {
+		while ($array = $mysql->fetch_array($queryArticulos)) {
 
 			//SE ELIMINAN ESTAS COLUMNAS SOLO EN LA REQUISICION
 
@@ -246,9 +247,9 @@ function generarPDF($id, $conexionBD){
 							WHERE COR.id_orden_compra='$id'
 							GROUP BY R.id";
 
-		$queryRetenciones = mysql_query($sqlRetenciones,$conexionBD);
+		$queryRetenciones = $mysql->query($sqlRetenciones,$mysql->link);
 
-		while ($arrayRetenciones=mysql_fetch_array($queryRetenciones)) {
+		while ($arrayRetenciones=$mysql->fetch_array($queryRetenciones)) {
 
 			if ($arrayRetenciones["retencion"]=='reteiva') {
 				$acum1 = ($ivaOC * $arrayRetenciones["valor"])/100;
@@ -428,30 +429,30 @@ function generarPDF($id, $conexionBD){
 					</style>';
 
 		$sqlConfig   = "SELECT COUNT(id) AS contConfig, id FROM configuracion_documentos_erp WHERE id_empresa = '$id_empresa' AND id_sucursal = '$id_sucursal' AND tipo='$tipo_documento' AND activo=1";
-		$queryConfig = mysql_query($sqlConfig,$conexionBD);
-		$contConfig  = mysql_result($queryConfig, 0, 'contConfig');
+		$queryConfig = $mysql->query($sqlConfig,$mysql->link);
+		$contConfig  = $mysql->result($queryConfig, 0, 'contConfig');
 
 		if($contConfig == 0){
 
 			$sqlConfig   = "SELECT COUNT(id) AS contConfig, id FROM configuracion_documentos_erp WHERE id_empresa = '$id_empresa' AND tipo='$tipo_documento' AND activo=1";
-			$queryConfig = mysql_query($sqlConfig,$conexionBD);
-			$contConfig  = mysql_result($queryConfig, 0, 'contConfig');
+			$queryConfig = $mysql->query($sqlConfig,$mysql->link);
+			$contConfig  = $mysql->result($queryConfig, 0, 'contConfig');
 
 			if($contConfig > 0){
 
 				$sqlInsert   = "INSERT INTO configuracion_documentos_erp (nombre,tipo,id_empresa,id_sucursal) VALUES ('Orden de Compra','$tipo_documento','$id_empresa','$id_sucursal')";
-				$queryInsert = mysql_query($sqlInsert,$conexionBD);
+				$queryInsert = $mysql->query($sqlInsert,$mysql->link);
 			}
 			else{
 
 				$sqlConfig   = "SELECT COUNT(id) AS contConfig, id, texto FROM configuracion_documentos_erp WHERE id_empresa = '0' AND tipo='$tipo_documento' AND activo=1";
-				$queryConfig = mysql_query($sqlConfig,$conexionBD);
-				$contConfig  = mysql_result($queryConfig, 0, 'contConfig');
-				$textoConfig = mysql_result($queryConfig, 0, 'texto');
+				$queryConfig = $mysql->query($sqlConfig,$mysql->link);
+				$contConfig  = $mysql->result($queryConfig, 0, 'contConfig');
+				$textoConfig = $mysql->result($queryConfig, 0, 'texto');
 
 				if ($contConfig > 0) {
 					$sqlInsert   = "INSERT INTO configuracion_documentos_erp (nombre,tipo,id_empresa,id_sucursal,texto) VALUES ('Orden de Compra','$tipo_documento','$id_empresa','$id_sucursal','$textoConfig')";
-					$queryInsert = mysql_query($sqlInsert,$conexionBD);
+					$queryInsert = $mysql->query($sqlInsert,$mysql->link);
 				}
 			}
 		}
@@ -472,7 +473,7 @@ function generarPDF($id, $conexionBD){
 
 	if(!isset($TAMANO_ENCA)){ $TAMANO_ENCA = 12; }
 
-	include($_SERVER['DOCUMENT_ROOT']."/misc/MPDF54/mpdf.php");
+	include($serverRoot."/misc/MPDF54/mpdf.php");
 	$mpdf = new mPDF(
 		'utf-8',   			// mode - default ''
 		$HOJA,					// format - A4, for example, default ''
