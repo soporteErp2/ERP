@@ -91,18 +91,18 @@
     $classBody          = ($documento_cruce == 'Si' )? 'contenedorNotaContableCruce' : 'contenedorNotaContable' ;
     $observacion        = str_replace($arrayReplaceString, "\\n", $observacion);
 
-    $acumScript .=  'document.getElementById("codigoTercero'.$opcGrillaContable.'").value = "'.$codigo_tercero.'";
-                    document.getElementById("nitCliente'.$opcGrillaContable.'").value     = "'.$tipo_nit_tercero.' - '.$nit_tercero.'";
-                    document.getElementById("nombreCliente'.$opcGrillaContable.'").value  = "'.$tercero.'";
-                    document.getElementById("fecha'.$opcGrillaContable.'").value          = "'.date("Y", strtotime($fecha_nota)).'";
-                    document.getElementById("usuario'.$opcGrillaContable.'").value        = "'.$usuario.'";
-                    document.getElementById("observacion'.$opcGrillaContable.'").value    = "'.$observacion.'";
-                    document.getElementById("selectTipoNota").value                       = "'.$tipo_nota.'";
+    // $acumScript .=  'document.getElementById("codigoTercero'.$opcGrillaContable.'").value = "'.$codigo_tercero.'";
+    //                 document.getElementById("nitCliente'.$opcGrillaContable.'").value     = "'.$tipo_nit_tercero.' - '.$nit_tercero.'";
+    //                 document.getElementById("nombreCliente'.$opcGrillaContable.'").value  = "'.$tercero.'";
+    //                 document.getElementById("fecha'.$opcGrillaContable.'").value          = "'.date("Y", strtotime($fecha_nota)).'";
+    //                 document.getElementById("usuario'.$opcGrillaContable.'").value        = "'.$usuario.'";
+    //                 document.getElementById("observacion'.$opcGrillaContable.'").value    = "'.$observacion.'";
+    //                 document.getElementById("selectTipoNota").value                       = "'.$tipo_nota.'";
 
-                    id_cliente_'.$opcGrillaContable.'   = "'.$id_tercero.'";
-                    observacion'.$opcGrillaContable.'   = "'.$observacion.'";
-                    nitCliente'.$opcGrillaContable.'    = "'.$nit_tercero.'";
-                    nombreCliente'.$opcGrillaContable.' = "'.$tercero.'";';
+    //                 id_cliente_'.$opcGrillaContable.'   = "'.$id_tercero.'";
+    //                 observacion'.$opcGrillaContable.'   = "'.$observacion.'";
+    //                 nitCliente'.$opcGrillaContable.'    = "'.$nit_tercero.'";
+    //                 nombreCliente'.$opcGrillaContable.' = "'.$tercero.'";';
 
     $bodyArticle = cargaArticulosSaveConTercero($id_nota,$observacion,$estado,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link);
 
@@ -136,65 +136,66 @@
 
 ?>
 
-<div class="<?php echo $classBody; ?>" style="height:calc(100% - 95px);overflow:auto;">
-
-    <!-- Campo Izquierdo -->
-    <div class="bodyTop">
-        <div class="contInfoFact">
-            <div id="terminar<?php echo $opcGrillaContable; ?>"></div>
-            <div class="contTopFila">
-                 <?php echo $imgBloqueo; ?>
-                <div class="renglonTop">
-                    <div class="labelTop">Sucursal</div>
-                    <div class="campoTop"><input type="text" id="nombreSucursal<?php echo $opcGrillaContable; ?>" value="<?php echo $_SESSION['NOMBRESUCURSAL']; ?>" readonly></div>
-                </div>
-                <div class="renglonTop" style="min-width: 50px !important; width: 60px;">
-                    <div id="cargaFecha<?php echo $opcGrillaContable; ?>"></div>
-                    <div class="labelTop">Periodo</div>
-                    <div class="campoTop"><input type="text" id="fecha<?php echo $opcGrillaContable; ?>"  readonly></div>
-                </div>
-                <?php if($tercero!='NOTA INTERNA'){ ?>
-                <div class="renglonTop">
-                    <div class="labelTop">Codigo</div>
-                    <div class="campoTop"><input type="text" id="codigoTercero<?php echo $opcGrillaContable; ?>" readonly/></div>
-                </div>
-                <div style="float:left;max-width:20px;overflow:hidden;margin-top:17px;" id="cargarFecha"></div>
-                <div class="renglonTop">
-                    <div class="labelTop">N. de Identificacion</div>
-                    <div class="campoTop" style="width:160px">
-                        <input type="text" style="width:160px"  id="nitCliente<?php echo $opcGrillaContable; ?>" readonly/>
-                    </div>
-                </div>
-                <?php } ?>
-                <div class="renglonTop">
-                    <div class="labelTop">Entidad - Empresa - Tercero</div>
-                    <div class="campoTop" style="width:277px;"><input type="text" id="nombreCliente<?php echo $opcGrillaContable; ?>" style="width:100%" readonly/></div>
-                </div>
-                <div class="renglonTop">
-                    <div class="labelTop">Usuario</div>
-                    <div class="campoTop"style="width:277px;"><input type="text" id="usuario<?php echo $opcGrillaContable; ?>" value="<?php echo $usuario; ?>" readonly/></div>
-                </div>
-                <div class="renglonTop" style="display:none;">
-                    <div class="labelTop">Filtro</div>
-                    <div class="campoTop" style="width:150px;">
-                        <input type="text" id="selectTipoNota" title="<?php echo $tipo_nota; ?>" style="width:135;" readonly/>
-                    </div>
-                </div>
-                <?php if ($tercero=='NOTA INTERNA') { ?>
-                <div class="renglonTop">
-                    <div class="labelTop">Opciones</div>
-                    <div class="campoTop" align="center">
-                        <input type="checkbox" style="margin-top: 4px;"  id="notaInterna<?php echo $opcGrillaContable; ?>" onchange="this.checked=true;" > Nota Interna
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="bodyArticulos" id="bodyArticulos<?php echo $opcGrillaContable; ?>">
-        <div class="renderFilasArticulo" id="renderizaNewArticulo<?php echo $opcGrillaContable; ?>"><?php echo $bodyArticle; ?></div>
-    </div>
+<div class="w-full h-full bg-white p-6">
+    <div class="flex justify-between w-full gap-2">
+        <table class="">
+            <tr>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Sucursal</th>
+                <th class="p-2 text-sm">sucursal</th>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">periodo</th>
+                <th class="p-2 text-sm">periodo</th>
+            </tr>
+            <tr>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">N. documento</th>
+                <th class="p-2 text-sm">123</th>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Nombre</th>
+                <th class="p-2 text-sm">hotel</th>
+            </tr>
+            <tr>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Usuario</th>
+                <th class="p-2 text-sm">pepito</th>
+            </tr>
+        </table>
+        <table class="">
+            <tr>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Debito</th>
+                <th class="p-2 text-sm">100</th>
+            </tr>
+            <tr>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Credito</th>
+                <th class="p-2 text-sm">200</th>
+            </tr>
+        </table>
+    </div>    
+    <table class="w-full mt-4">
+        <tr>
+            <th class="px-6 py-3 bg-gray-300 text-gray-800 font-semibold text-sm">Observaciones</th>
+        </tr>
+        <tr>
+            <th>sssss</th>
+        </tr>
+    </table>
+    <data-table 
+	endpoint='{
+				"url" : "consulta_documentos_cuentas_colgaap/bd/Api.php",
+				"method" : "GET",
+				"params" : [
+							{"id_empresa":"<?=$_SESSION['EMPRESA']?>"},
+							{"id_sucursal":"<?=$filtro_sucursal?>"},
+							{"contabilidad":"<?=$contabilidad?>"},
+							{"tipo_documento":"<?=$tipo_documento?>"},
+							{"fecha_inicial":"<?=$fecha_inicial?>"},
+							{"fecha_final":"<?=$fecha_final?>"}
+						]
+			}' 
+	columns='[
+				{"field":"cuenta_puc", "alias":"Cuenta", "class":"","type":"","options":"","callback":"document_details"},
+				{"field":"descripcion_puc", "alias":"Descripcion", "class":"","type":"","options":"","callback":"document_details"},
+				{"field":"tercero", "alias":"Tercero", "class":"","type":"","options":"","callback":"document_details"},
+				{"field":"debe", "alias":"Debito", "class":"","type":"","options":"","callback":"document_details"},
+				{"field":"haber", "alias":"Credito", "class":"","type":"","options":"","callback":"document_details"}
+			]'
+></data-table>
 </div>
 
 <script>
@@ -315,58 +316,5 @@
         });
     }
 
-    //=============== FUNCION PARA LOS ARTICULOS RELACIONADOS ====================================================//
-    function ventanaArticulosRelacionados(){
-        var myalto  = Ext.getBody().getHeight();
-        var myancho = Ext.getBody().getWidth();
-
-        Win_Ventana_articulos_relacionados = new Ext.Window({
-            width       : myancho-100,
-            height      : myalto-50,
-            id          : 'Win_Ventana_articulos_relacionados',
-            title       : 'Articulos Relacionados en la nota No. <?php echo $consecutivo; ?>',
-            modal       : true,
-            autoScroll  : false,
-            closable    : false,
-            autoDestroy : true,
-            autoLoad    :
-            {
-                url     : '<?php echo $carpeta; ?>bd/buscarArticulosRelacionados.php',
-                scripts : true,
-                nocache : true,
-                params  :
-                {
-                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
-                    consecutivo       : '<?php echo $consecutivo; ?>'
-                }
-            },
-            tbar        :
-            [
-                {
-                    xtype   : 'buttongroup',
-                    columns : 3,
-                    title   : 'Opciones',
-                    items   :
-                    [
-                        {
-                             xtype      : 'button',
-                            text        : 'Regresar',
-                            scale       : 'large',
-                            iconCls     : 'regresar',
-                            height      : 56,
-                            iconAlign   : 'top',
-                            handler     : function(){ Win_Ventana_articulos_relacionados.close(id) }
-                        }
-                    ]
-                },
-                '->',
-                {
-                    xtype : "tbtext",
-                    text  : '<div id="motivoMovimientoArticulos" style="text-align:center; font-size:18px; font-weight:bold;"></div>',
-                    scale : "large",
-                }
-            ]
-        }).show();
-    }
 
 </script>
