@@ -2,8 +2,6 @@
     include("../../../../configuracion/conectar.php");
     include("../../../../configuracion/define_variables.php");
     include("../config_var_global.php");
-    include("../../../funciones_globales/funciones_php/randomico.php");
-    include("../../../funciones_globales/funciones_javascript/totalesNotaContable.php");
 
     $id_empresa  = $_SESSION['EMPRESA'];
     $id_sucursal = $_SESSION['SUCURSAL'];
@@ -44,9 +42,8 @@
     $user_permiso_cancelar  = 'Ext.getCmp("Btn_cancelar_'.$opcGrillaContable.'").enable();';      //calcelar
     $user_permiso_restaurar = 'Ext.getCmp("Btn_restaurar_'.$opcGrillaContable.'").enable();Ext.getCmp("Btn_exportar_NotaCierre").disable();';     //restaurar
 
-    include("../bd/functions_body_article.php");
-
-    $sql  = "SELECT consecutivo,
+    $sql  = "SELECT 
+                    consecutivo,
                     fecha_nota,
                     id_tercero,
                     codigo_tercero,
@@ -57,6 +54,7 @@
                     tipo_nota,
                     usuario,
                     observacion,
+                    sucursal,
                     estado
                 FROM $tablaPrincipal
                 WHERE id='$id_nota'";
@@ -72,49 +70,18 @@
     $id_tipo_nota     = mysql_result($query,0,'id_tipo_nota');
     $tipo_nota        = mysql_result($query,0,'tipo_nota');
     $usuario          = mysql_result($query,0,'usuario');
+    $sucursal          = mysql_result($query,0,'sucursal');
     $estado           = mysql_result($query,0,'estado');
     $observacion      = mysql_result($query,0,'observacion');
 
-    //CONSULTAR SI LA NOTA TIENE CRUCE DE DOCUMENTOS
-    $sql   = "SELECT documento_cruce FROM tipo_nota_contable WHERE id_empresa='$id_empresa' AND id='$id_tipo_nota' ";
-    $query = mysql_query($sql,$link);
-    $documento_cruce=mysql_result($query,0,'documento_cruce');
 
     if ($estado == 0) { $acumScript .= $user_permiso_editar.$user_permiso_cancelar; }         //documento por editar
     if ($estado == 1) { $acumScript .='Ext.getCmp("Btn_exportar_NotaCierre").enable();'.$user_permiso_editar.$user_permiso_cancelar; }         //documento generado
     else if($estado == 3){ $acumScript .= $user_permiso_restaurar; }      //documento cancelado
 
-    // if($sinc_nota != 'colgaap_niif' && $sinc_nota != 'niif' && $sinc_nota != 'colgaap'){ echo "ESTA NOTA NO TIENE DEFINIDA UNA FORMA DE SINCRONIZACION CONTABLE"; exit; }
-    // $acumScript .= 'var sinc_nota_'.$opcGrillaContable.' = "'.$sinc_nota.'";';
-
     $arrayReplaceString = array("\n", "\r","<br>");
-    $classBody          = ($documento_cruce == 'Si' )? 'contenedorNotaContableCruce' : 'contenedorNotaContable' ;
     $observacion        = str_replace($arrayReplaceString, "\\n", $observacion);
 
-    // $acumScript .=  'document.getElementById("codigoTercero'.$opcGrillaContable.'").value = "'.$codigo_tercero.'";
-    //                 document.getElementById("nitCliente'.$opcGrillaContable.'").value     = "'.$tipo_nit_tercero.' - '.$nit_tercero.'";
-    //                 document.getElementById("nombreCliente'.$opcGrillaContable.'").value  = "'.$tercero.'";
-    //                 document.getElementById("fecha'.$opcGrillaContable.'").value          = "'.date("Y", strtotime($fecha_nota)).'";
-    //                 document.getElementById("usuario'.$opcGrillaContable.'").value        = "'.$usuario.'";
-    //                 document.getElementById("observacion'.$opcGrillaContable.'").value    = "'.$observacion.'";
-    //                 document.getElementById("selectTipoNota").value                       = "'.$tipo_nota.'";
-
-    //                 id_cliente_'.$opcGrillaContable.'   = "'.$id_tercero.'";
-    //                 observacion'.$opcGrillaContable.'   = "'.$observacion.'";
-    //                 nitCliente'.$opcGrillaContable.'    = "'.$nit_tercero.'";
-    //                 nombreCliente'.$opcGrillaContable.' = "'.$tercero.'";';
-
-    $bodyArticle = cargaArticulosSaveConTercero($id_nota,$observacion,$estado,$opcGrillaContable,$tablaCuentasNota,$idTablaPrincipal,$link);
-
-    //VERIFICAR SI LA NOTA TIENE ARTICULOS RELACIONADOS
-    $sqlArticulos   = "SELECT COUNT(id) AS cant FROM inventario_movimiento_notas WHERE activo=1 AND consecutivo_nota='$consecutivo ' AND id_empresa='$id_empresa'";
-    $queryArticulos = mysql_query($sqlArticulos,$link);
-    $cantArticulos  = mysql_result($queryArticulos,0,'cant');
-
-    if ($cantArticulos>0) {
-        // $acumScript  .= 'Ext.getCmp("Btn_articulos_Relacionados").enable();';
-        $mensajeEdit  = '\nY los articulos relacionados se eliminaran y se reversara el proceso de los mismos';
-    }
 
     if ($estado==1) {
         $acumScript.='Ext.getCmp("Btn_restaurar_'.$opcGrillaContable.'").disable();
@@ -136,34 +103,44 @@
 
 ?>
 
-<div class="w-full h-full bg-white p-6">
+<div class="w-full bg-white p-6 ">
     <div class="flex justify-between w-full gap-2">
         <table class="">
             <tr>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Sucursal</th>
-                <th class="p-2 text-sm">sucursal</th>
+                <th class="p-2 text-sm"><?= $sucursal; ?></th>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">periodo</th>
-                <th class="p-2 text-sm">periodo</th>
+                <th class="p-2 text-sm"><?= explode("-",$fecha_nota)[0]?></th>
             </tr>
             <tr>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">N. documento</th>
-                <th class="p-2 text-sm">123</th>
+                <th class="p-2 text-sm"><?= $nit_tercero; ?></th>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Nombre</th>
-                <th class="p-2 text-sm">hotel</th>
+                <th class="p-2 text-sm"><?= $tercero; ?></th>
             </tr>
             <tr>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Usuario</th>
-                <th class="p-2 text-sm">pepito</th>
+                <th class="p-2 text-sm"><?= $usuario;?></th>
             </tr>
         </table>
-        <table class="">
+        <table class="animate-pulse" id="total-pulse">
+            <tr>
+                <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm"><div class="border-4 rounded-full w-10  border-white"></div></th>
+                <th class="p-2 text-sm"><div class="border-4 rounded-full w-10  border-white"></div></th>
+            </tr>
+            <tr>
+            <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm"><div class="border-4 rounded-full w-10  border-white"></div></th>
+                <th class="p-2 text-sm"><div class="border-4 rounded-full w-10  border-white"></div></th>
+            </tr>
+        </table>
+        <table class="hidden" id="content-total">
             <tr>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Debito</th>
-                <th class="p-2 text-sm">100</th>
+                <th class="p-2 text-sm" id="total-debit"></th>
             </tr>
             <tr>
                 <th class="px-3 py-2 bg-gray-300 text-gray-800 font-semibold text-sm">Credito</th>
-                <th class="p-2 text-sm">200</th>
+                <th class="p-2 text-sm" id="total-credit"></th>
             </tr>
         </table>
     </div>    
@@ -172,35 +149,50 @@
             <th class="px-6 py-3 bg-gray-300 text-gray-800 font-semibold text-sm">Observaciones</th>
         </tr>
         <tr>
-            <th>sssss</th>
+            <th><?= $observacion; ?></th>
         </tr>
     </table>
-    <data-table 
-	endpoint='{
-				"url" : "consulta_documentos_cuentas_colgaap/bd/Api.php",
-				"method" : "GET",
-				"params" : [
-							{"id_empresa":"<?=$_SESSION['EMPRESA']?>"},
-							{"id_sucursal":"<?=$filtro_sucursal?>"},
-							{"contabilidad":"<?=$contabilidad?>"},
-							{"tipo_documento":"<?=$tipo_documento?>"},
-							{"fecha_inicial":"<?=$fecha_inicial?>"},
-							{"fecha_final":"<?=$fecha_final?>"}
-						]
-			}' 
-	columns='[
-				{"field":"cuenta_puc", "alias":"Cuenta", "class":"","type":"","options":"","callback":"document_details"},
-				{"field":"descripcion_puc", "alias":"Descripcion", "class":"","type":"","options":"","callback":"document_details"},
-				{"field":"tercero", "alias":"Tercero", "class":"","type":"","options":"","callback":"document_details"},
-				{"field":"debe", "alias":"Debito", "class":"","type":"","options":"","callback":"document_details"},
-				{"field":"haber", "alias":"Credito", "class":"","type":"","options":"","callback":"document_details"}
-			]'
-></data-table>
+    <div class="w-full" style="height: 50%;">
+        <data-table 
+            endpoint='{
+                        "url" : "nota_cierre/bd/Api.php",
+                        "method" : "GET",
+                        "params" : [
+                                    {"id_nota":"<?=$id_nota?>"}
+                                ]
+                    }' 
+            columns='[
+                        {"field":"cuenta_puc", "alias":"Cuenta", "class":"","type":"","options":"","callback":""},
+                        {"field":"descripcion_puc", "alias":"Descripcion", "class":"","type":"","options":"","callback":""},
+                        {"field":"tercero", "alias":"Tercero", "class":"","type":"","options":"","callback":""},
+                        {"field":"debe", "alias":"Debito", "class":"","type":"","options":"","callback":""},
+                        {"field":"haber", "alias":"Credito", "class":"","type":"","options":"","callback":""}
+                    ]'
+        ></data-table>
+    </div>
 </div>
 
 <script>
-    var observacion<?php echo $opcGrillaContable; ?> = '';
     <?php echo $acumScript; ?>
+    
+    async function fetch_debit_credit() {
+        try {
+            const response = await fetch("nota_cierre/bd/bd.php?opc=get_debit_credit&id_nota=<?=$id_nota?>"); // Espera la respuesta de la API
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`); // Manejo de errores
+            }
+            const data = await response.json(); // Espera la conversión a JSON
+
+            document.getElementById("total-pulse").classList.toggle("hidden")
+            document.getElementById("content-total").classList.toggle("hidden")
+            document.getElementById("total-debit").innerHTML = data.debito;
+            document.getElementById("total-credit").innerHTML = data.credito;
+
+        } catch (error) {
+            console.error("Error obteniendo los datos:", error);
+        }
+    }
+    fetch_debit_credit();
 
     // CERRAR LA VENTANA MODAL
     if (document.getElementById("modal")) {
