@@ -1077,7 +1077,7 @@
 		// opcGrillaContable_colgaap = 'NotaGeneral';
 		// opcGrillaContable_niif    = 'NotaGeneralNiif';
 
-		if(alto == 0){ WinAlto = myalto2-20; }
+		if(alto == 0){ WinAlto = myalto2-100; }
 		else{ WinAlto = alto; }
 
 		if(ancho == 0){ WinAncho = myancho2-30 }
@@ -1098,14 +1098,14 @@
 					border      : false,
 					autoScroll  : true,
 					iconCls     : '',
-					bodyStyle   : 'background-color:#FFF;',
+					bodyStyle   : 'background-color:#FFF;height: calc(100% - 85px);',
 					items       :
 					[
 						{
 							xtype       : "panel",
 							id          : 'contenedor_'+opcGrillaContable,
 							border      : false,
-							bodyStyle   : 'background-color:#FFF;',
+							bodyStyle   : 'background-color:#FFF;height:100%;',
 							autoLoad    :
 							{
 								url     : 'nota_cierre/grilla/grillaContable.php',
@@ -1117,41 +1117,6 @@
 					],
 					tbar        :
 					[
-
-						// {
-						//     xtype   : 'buttongroup',
-						//     columns : 3,
-						//     title   : 'Filtro Contabilidad',
-						//     items   :
-						//     [
-						//         {
-						//             xtype       : 'panel',
-						//             border      : false,
-						//             width       : 160,
-						//             height      : 56,
-						//             bodyStyle   : 'background-color:rgba(255,255,255,0)',
-						//             autoLoad    :
-						//             {
-						//                 url     : '../funciones_globales/filtros/filtro_tipo_contabilidad.php',
-						//                 scripts : true,
-						//                 nocache : true,
-						//                 params  :
-						//                 {
-						//                     opc                       : "NotaGeneral",
-						//                     // contenedor             : 'contenedor_'+opcGrillaContable,
-						//                     imprimeScriptPhp          : 'document.getElementById("titleDocumentoNotaGeneral").innerHTML="";',
-						//                     renderizaBody             : 'true',
-						//                     url_render                : 'nota_general/grilla/grillaContable.php',
-						//                     opcGrillaContable         : "NotaGeneral",
-						//                     url_render_colgaap        : url_render_colgaap,
-						//                     url_render_niif           : url_render_niif,
-						//                     opcGrillaContable_colgaap : opcGrillaContable_colgaap,
-						//                     opcGrillaContable_niif    : opcGrillaContable_niif,
-						//                 }
-						//             }
-						//         }
-						//     ]
-						// },
 						{
 							xtype   : 'buttongroup',
 							id      : 'BtnGroup_Guardar_NotaCierre',

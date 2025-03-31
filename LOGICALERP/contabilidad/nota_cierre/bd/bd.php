@@ -118,7 +118,26 @@
 		case 'eliminar_todas_cuentas':
 			eliminar_todas_cuentas($opcGrillaContable,$id_documento,$id_sucursal,$id_empresa,$link);
 			break;
+		case 'get_debit_credit':
+			get_debit_credit($id_nota,$mysql);
+			break;
 
+	}
+
+	function get_debit_credit($id_nota,$mysql){
+		$sql = "SELECT
+					SUM(debe) AS debito,
+					SUM(haber) AS credito
+                    FROM
+                        nota_cierre_cuentas
+                    WHERE
+                        id_nota_general = '$id_nota'";
+		$query = $mysql->query($sql);
+		$debito = $mysql->result($query,0,'debito');
+		$credito =$mysql->result($query,0,'credito');
+
+		echo json_encode(["debito"=>number_format($debito,$_SESSION['DECIMALESMONEDA']),"credito"=>number_format($credito,$_SESSION['DECIMALESMONEDA'])]);
+		
 	}
 
 	//=========================== FUNCION PARA BUSCAR UN CLIENTE ===============================================================================//

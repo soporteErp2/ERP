@@ -6,6 +6,9 @@ if(!$_GET['autorizado']){
 	header ("Location: /");
 }
 ?>
+    <head>
+        <link rel="stylesheet" href="../../assets/css/tailwind.css">
+    </head>
     <link rel="stylesheet" type="text/css" href="../../misc/extjs3/resources/css/ext-all.php"/>
     <link rel="stylesheet" type="text/css" href="../../misc/MyGrilla/MyGrilla.css"/>
     <link rel="stylesheet" type="text/css" href="../../misc/NewGrilla/NewGrilla.css"/>
