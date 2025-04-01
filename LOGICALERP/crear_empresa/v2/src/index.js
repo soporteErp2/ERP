@@ -137,8 +137,10 @@ async function create_user()
     let user_firstname = document.getElementById('user-firstname').value
     let user_secondname = document.getElementById('user-secondname').value
     let user_firstlastname = document.getElementById('user-firstlastname').value
-    let usersecondlastename = document.getElementById('user-econdlastename').value
-
+    let user_secondlastename = document.getElementById('user-secondlastename').value
+    let user_email = document.getElementById('user-email').value
+    let company_doc = document.getElementById('company-doc').value
+    
     if (licence.value=="") {
         alert("los campos licencia");
         // licence.focus();
@@ -158,7 +160,9 @@ async function create_user()
                 user_firstname,
                 user_secondname,
                 user_firstlastname,
-                usersecondlastename
+                user_secondlastename,
+                user_email,
+                company_doc
             })
         });
         
@@ -175,3 +179,5 @@ async function create_user()
         console.error('Error al obtener datos:', error);
     }
 }
+
+

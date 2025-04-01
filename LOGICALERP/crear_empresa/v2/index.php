@@ -62,7 +62,13 @@
                     <input placeholder="segundo apellido" id="user-secondlastename" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
                 </div>
             </div>
-            <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="verify_db()">Guardar</button>
+            <div>
+                <legend class="text-[#67748e]">email</legend>
+                <div class="flex flex-row gap-4">
+                    <input placeholder="email para usuario" id="user-email" type="text" class="border border-[#2c3640] p-2 rounded-md hover:border-white bg-[#1c252e] text-white ">
+                </div>
+            </div>
+            <button class="bg-white font-bold p-2 rounded-lg text-lg hover:bg-[#C4CDD5]" onclick="create_user()">Guardar</button>
         </div>
     </div>
         

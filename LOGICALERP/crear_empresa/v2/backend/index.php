@@ -21,6 +21,10 @@ switch ($_GET['method']) {
         $obj->create_company($data);
         break;
     
+    case 'create_user':
+        $obj->create_user($data);
+        break;
+    
     default:
         # code...
         break;
