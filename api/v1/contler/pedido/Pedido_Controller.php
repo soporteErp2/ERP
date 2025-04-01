@@ -348,7 +348,7 @@ class Pedido_Controller extends ApiFunctions
             }
         }
 
-        return ["status"=>true,"id_pedido"=>$id_cuenta."_".$id_comensal];
+        return ["status"=>true,"id_pedido"=>$id_cuenta."_".$id_comensal."_".$this->id_comanda];
 
     }
 
