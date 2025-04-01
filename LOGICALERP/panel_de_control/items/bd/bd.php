@@ -40,7 +40,99 @@
 		case 'descargar_items_excel':
 			descargar_items_excel($id_empresa,$mysql);
 			break;
+		case 'copiaBD':
+			copiaBD($idItem,$id_empresa,$link);
+			break;
 	}
+
+	function copiaBD($idItem, $id_empresa, $link) {
+		$nombreItem = "SELECT nombre_equipo FROM items WHERE id = '$idItem' LIMIT 1";
+		$query_nombre_item = mysql_query($nombreItem, $link);
+	
+		if (!$query_nombre_item || mysql_num_rows($query_nombre_item) == 0) {
+			echo "No existe el item"; 
+			return;
+		}
+	
+		$row = mysql_fetch_assoc($query_nombre_item);
+		$nombre_equipo = $row['nombre_equipo'];
+	
+		mysql_query("START TRANSACTION", $link);
+	
+		$id_new_item = duplicarRegistro($link, 'items', 'id', $idItem, [
+			'codigo_auto' => 'true',
+			'code_bar' => '',
+			'nombre_equipo' => 'copia de ' . $nombre_equipo
+		]);
+	
+		if (empty($id_new_item)) {
+			mysql_query("ROLLBACK", $link);
+			echo "No se duplicó el registro en la tabla de items"; 
+			return;
+		}
+	
+		$tablasRelacionadas = [
+			['tabla' => 'items_cuentas', 'campoClave' => 'id_items'],
+			['tabla' => 'items_cuentas_niif', 'campoClave' => 'id_items'],
+			['tabla' => 'items_recetas', 'campoClave' => 'id_item']
+		];
+	
+		foreach ($tablasRelacionadas as $relacion) {
+			$tabla = $relacion['tabla'];
+			$campoClave = $relacion['campoClave'];
+	
+			$resultado = duplicarRegistro($link, $tabla, $campoClave, $idItem, [
+				$campoClave => $id_new_item[0]
+			]);
+	
+			if (!$resultado || count($resultado) == 0) {
+				mysql_query("ROLLBACK", $link);
+				echo "Error al duplicar registros en $tabla";
+				return;
+			}
+		}
+	
+		mysql_query("COMMIT", $link);
+		echo "true";
+	}
+	
+	function duplicarRegistro($link, $tabla, $campoClave, $valorClave, $modificaciones = []) {
+		$query = "SELECT * FROM $tabla WHERE $campoClave = '$valorClave'";
+		$result = mysql_query($query, $link);
+	
+		if (!$result || mysql_num_rows($result) == 0) {
+			return false;
+		}
+	
+		$nuevosIDs = [];
+	
+		while ($valores = mysql_fetch_assoc($result)) {
+			unset($valores['id']);
+	
+			foreach ($modificaciones as $campo => $valor) {
+				$valores[$campo] = $valor;
+			}
+	
+			$lista_campos = implode(", ", array_keys($valores));
+			$lista_valores = implode(", ", array_map(function ($valor) use ($link) {
+				if (is_null($valor)) return "NULL";
+				return "'" . mysql_real_escape_string($valor, $link) . "'";
+			}, $valores));
+	
+			$sql_insert = "INSERT INTO $tabla ($lista_campos) VALUES ($lista_valores)";
+			mysql_query($sql_insert, $link);
+	
+			$nuevoID = mysql_insert_id($link);
+			if (!$nuevoID) {
+				return false;
+			}
+	
+			$nuevosIDs[] = $nuevoID;
+		}
+	
+		return $nuevosIDs;
+	}
+	
 
 	function descargar_items_excel($id_empresa,$mysql){
 		$sql = "SELECT

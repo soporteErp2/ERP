@@ -10,6 +10,24 @@
 	var opcion = '<?php echo $opcion ?>'
 	,	cual   = '<?php echo $cual ?>';
 
+	function copiaitemsGeneral() {
+		Ext.Ajax.request({
+            url     : 'items/bd/bd.php',
+            params  :
+            {
+				op     : 'copiaBD',
+				idItem : cual
+            },
+            success :function (result, request){
+
+                        if(result.responseText != 'true'){
+                        	alert("Error \n"+result.responseText+".\nHa ocurrido un problema en la conexion con la base de datos, si el problema persiste comuniquese con el administrador del sistema.");
+                        	Win_Editar_itemsGeneral.close();
+                        }
+                    },
+            failure : function(){ console.log('Error de conexion con el servidor'); }
+        });
+	}
 
 	if(opcion == 'Vagregar'){
 		var contactos 		= true
@@ -93,6 +111,17 @@
 				hidden		: ElBtnElimina,
 				iconAlign	: 'left',
 				handler 	: function(){ BloqBtn(this); eliminaitemsGeneral(); }
+			}
+			,'-',
+			{
+				xtype		: 'button',
+				text		: 'Copiar',
+				id  		: 'BtnV2_itemsGeneral',
+				scale		: 'large',
+				iconCls		: 'doc_sinc',
+				hidden		: ElBtnActualiza,
+				iconAlign	: 'left',
+				handler 	: function(){ BloqBtn(this); copiaitemsGeneral(); }
 			}
 		]
 	});
