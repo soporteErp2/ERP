@@ -394,6 +394,7 @@
 							numero_factura_completo = '".$respuesta["numero_factura_completo"]."'
 						WHERE id = ".$this->id_documento;
 				$query=$this->mysql->query($sql);
+				$this->set_accounts();
 				$this->generate_remission();
 			}
 			else{
@@ -437,7 +438,6 @@
 						WHERE id = ".$this->id_documento;
 				$query=$this->mysql->query($sql);
 
-				$this->set_accounts();
 				echo json_encode(array('status' => true,"consecutivo"=>$this->consecutivo,"cuentas"=>$this->arrayCuentas) );
 			}
 			else{
@@ -479,27 +479,85 @@
 
 		public function get_recipie()
 		{
-			$sql = "SELECT 
-						R.codigo, 
-						R.cantidad, 
-						I.costos
+			$retval = [];
+			$sql = "SELECT R.id_item, R.codigo, R.cantidad, I.costos
 					FROM ventas_pos_inventario_receta AS R 
 					LEFT JOIN inventario_totales AS I ON I.id_item = R.id_item
 					WHERE R.activo=1
 					AND R.id_pos = '$this->id_documento'
-					AND R.id_empresa  = $this->id_empresa 
+					AND R.id_empresa = $this->id_empresa
 					AND I.id_ubicacion = $this->id_bodega_ambiente";
-			$query=$this->mysql->query($sql);
-			while ($row=$this->mysql->fetch_array($query)) {
-				$retval[] = [
-					"codigo" => $row["codigo"],
-					"cantidad" => $row["cantidad"],
-					"precio" => $row["costos"],
+			
+			$query = $this->mysql->query($sql);
+			
+			while ($row = $this->mysql->fetch_array($query)) {
+				$ingredientes = $this->obtenerIngredientes($row['id_item'], $row['cantidad']);
+				$retval = array_merge($retval, $ingredientes);
+			}
+			
+			return $retval;
+			
+			
+		}
+		private function obtenerIngredientes($id_item, $cantidadBase) {
+			$ingredientes = [];
+			
+			// Verificar si el ítem tiene receta
+			$count = "SELECT COUNT(id) AS counReceta FROM items_recetas 
+					  WHERE id_item = $id_item AND activo = 1 AND id_empresa = $this->id_empresa";
+			$queryCont = $this->mysql->query($count);
+			
+			if ($this->mysql->result($queryCont, 0, 'counReceta') > 0) {
+				// Obtener los ingredientes de la receta
+				$sqlReceta = "SELECT IR.codigo_item_materia_prima AS codigo, 
+									 IR.cantidad_item_materia_prima AS cantidad, 
+									 I.costos, IR.id_item_materia_prima
+							  FROM items_recetas AS IR
+							  INNER JOIN inventario_totales AS I 
+							  ON I.id_item = IR.id_item_materia_prima
+							  WHERE IR.activo = 1 
+							  AND IR.id_empresa = $this->id_empresa
+							  AND I.id_ubicacion = $this->id_bodega_ambiente
+							  AND IR.id_item = $id_item";
+				
+				$queryReceta = $this->mysql->query($sqlReceta);
+				
+				while ($rowReceta = $this->mysql->fetch_array($queryReceta)) {
+					// Multiplicamos la cantidad por la base (cantidad de la receta superior)
+					$cantidadFinal = $cantidadBase * $rowReceta['cantidad'];
+					
+					// Llamar recursivamente si este ingrediente también tiene receta
+					$subIngredientes = $this->obtenerIngredientes($rowReceta['id_item_materia_prima'], $cantidadFinal);
+					
+					if (!empty($subIngredientes)) {
+						// Si el ingrediente tiene más sub-ingredientes, agregarlos
+						$ingredientes = array_merge($ingredientes, $subIngredientes);
+					} else {
+						// Si no tiene más sub-recetas, agregarlo directamente
+						$ingredientes[] = [
+							"codigo" => $rowReceta["codigo"],
+							"cantidad" => $cantidadFinal,
+							"precio" => $rowReceta["costos"],
+						];
+					}
+				}
+			} else {
+				// Si no tiene receta, devolverlo tal cual
+				$sqlItem = "SELECT codigo, costos FROM inventario_totales 
+							WHERE id_item = $id_item AND id_ubicacion = $this->id_bodega_ambiente";
+				$queryItem = $this->mysql->query($sqlItem);
+				$rowItem = $this->mysql->fetch_array($queryItem);
+		
+				$ingredientes[] = [
+					"codigo" => $rowItem["codigo"],
+					"cantidad" => $cantidadBase,
+					"precio" => $rowItem["costos"],
 				];
 			}
-			return $retval;
+			
+			return $ingredientes;
 		}
-
+		
 		public function set_accounts()
 		{
 			// payment methods and accounts
