@@ -23,7 +23,10 @@
                         if(result.responseText != 'true'){
                         	alert("Error \n"+result.responseText+".\nHa ocurrido un problema en la conexion con la base de datos, si el problema persiste comuniquese con el administrador del sistema.");
                         	Win_Editar_itemsGeneral.close();
-                        }
+                        }else{
+							alert("El item se ha copiado exitosamente.");
+                        	Win_Editar_itemsGeneral.close();
+						}
                     },
             failure : function(){ console.log('Error de conexion con el servidor'); }
         });
