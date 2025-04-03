@@ -1905,6 +1905,17 @@
 			echo json_encode($arrayResult);
 		}
 
+		/**
+		 * getConfigContler Obtener la configuracion de contler
+		 * @param  Array $params parametros necesarios para la validacion
+		 * @return Array         Json con la respuesta de la peticion
+		 */
+		public function getConfigContler(){
+			$sql = "SELECT data FROM configuracion_general WHERE modulo='panel_de_control/contler' AND activo=1 AND id_empresa=$this->id_empresa";
+			$query = $this->mysql->query($sql);
+			$response = $this->mysql->result($query,0,'data');
+			echo json_decode($response);
+		}
 
 	}
 
