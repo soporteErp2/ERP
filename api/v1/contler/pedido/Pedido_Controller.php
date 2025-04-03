@@ -598,6 +598,23 @@ class Pedido_Controller extends ApiFunctions
             return ["status"=>false,"msg"=>"se produjo un error al agregar el pedido","detalle"=>$order_add['detalle']];
         }
         else{
+            $params = array();
+
+            $params["request_url"]    = "https://contler.conserje.vip/api/pos/set_estado_pedido";
+            $params["request_method"] = "POST";
+            $params["Authorization"]  = ""; // Si la API lo requiere
+
+            $data = array();
+            $data["Pedidos"] = array();
+            $data["Pedidos"]["pedido"]      = $order_add['id_pedido'];
+            $data["Pedidos"]["id_estado"]   = "1";
+            $data["Pedidos"]["estado"]      = "En proceso";
+            $data["Pedidos"]["observacion"] = "Pedido en preparación";
+
+            $params["data"] = json_encode($data);
+
+            $response = $this->curlApi($params); // Llamada a la función
+
             return ["status"=>true,"id_pedido"=>$order_add['id_pedido']];
         }
 
