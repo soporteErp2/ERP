@@ -605,6 +605,7 @@ class Pedido_Controller extends ApiFunctions
             $params["Authorization"]  = ""; // Si la API lo requiere
 
             $data = array();
+            $data["token"] = ''; // Un identificador unico de cada hotel que genera Jhon Rozo (falta por recibir)
             $data["Pedidos"] = array();
             $data["Pedidos"]["pedido"]      = $order_add['id_pedido'];
             $data["Pedidos"]["id_estado"]   = "1";
