@@ -1283,10 +1283,10 @@
 	
 				$params["data"] = json_encode($data);
 	
-				$response = $this->curlApi($params); // Llamada a la función
+				$response .= $this->curlApi($params); // Llamada a la función
 			}
 
-			$result = array('status' => 'success', 'message'=>'','idPos'=>$id_pos , 'sd'=>$itemValidate,"debug"=>$sqlRecipies );
+			$result = array('status' => 'success', 'message'=>'','idPos'=>$id_pos , 'sd'=>$itemValidate,"debug"=>$sqlRecipies, 'debugContler'=>$response );
 
 			echo json_encode($result);
 			return ;
