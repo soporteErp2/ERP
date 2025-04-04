@@ -1284,7 +1284,7 @@
 	
 				$params["data"] = json_encode($data);
 	
-				$response .= $this->curlApi($params); // Llamada a la función
+				$response .= $id_pedido."_".$this->curlApi($params); // Llamada a la función
 			}
 
 			$result = array('status' => 'success', 
@@ -1293,7 +1293,7 @@
 							'sd'=>$itemValidate,
 							"debug"=>$sqlRecipies, 
 							'debugContler'=>$response,
-							"id_pedido" =>  $id_pedido);
+							"id_pedidos" =>  $id_comanda_pedido);
 
 			echo json_encode($result);
 			return ;
