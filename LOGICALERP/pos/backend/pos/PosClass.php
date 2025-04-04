@@ -9,12 +9,17 @@
 		public $id_sucursal;
 		public $id_empresa;
 		public $mysql;
+		public $hotel_tokens;
+
 
 		function __construct($id_sucursal,$id_empresa,$id_host,$mysql){
-			$this->id_sucursal = $id_sucursal;
-			$this->id_empresa  = $id_empresa;
-			$this->id_host     = $id_host;
-			$this->mysql       = $mysql;
+			$this->id_sucursal 	= $id_sucursal;
+			$this->id_empresa  	= $id_empresa;
+			$this->id_host     	= $id_host;
+			$this->mysql       	= $mysql;
+			$this->hotel_tokens = array('900542975'=>'bea52e88-9367-4704-ab47-e03d3c9052fe',
+										'901227063'=>'bea52e88-9367-4704-ab47-e03d3c9052fe',
+										'2002'=>'bea52e88-9367-4704-ab47-e03d3c9052fe');
 
 			parent::__construct($id_sucursal,$id_empresa,$id_host,$mysql);
 		}
@@ -763,6 +768,9 @@
 		}
 
 		public function savePayPos($params){
+			$id_cuenta_pedido = $params["mesa"]["id_cuenta"];
+			$id_huesped_pedido = (count($params['huespedesSelect'])>0)?$params['huespedesSelect'][0]['id_comensal']:'';
+			$id_comanda_pedido = array();
 			// IDENTIFICAR SI SE REALIZARA UNA SOLA FACTURA O FACTURA Y CHEQUE CUENTA
 			global $SERVER;
 
@@ -806,7 +814,12 @@
 										'id_item'=> $row['id_item'],
 										'cantidad_pendiente'=> $row['cantidad_pendiente']
 									);
+			
+				//Para evitar tener que validar si el id comanda existe en el array
+				$id_comanda_pedido[$row['id_comanda']] = true;
 			}
+			//Se obtienen las llaves
+			$id_comanda_pedido = array_keys($id_comanda_pedido);
 
 			$id_reserva        = '';
 			$numero_reserva    = '';
@@ -1245,6 +1258,32 @@
 						 estado   = 'Cerrada'
 					WHERE id=".$params["mesa"]["id_cuenta"];
 				$query=$this->mysql->query($sql);
+			}
+
+			//Actualizar el estado del pedido en contler
+
+			//Recorrer el array de id comandas
+			$datosEmpresa = $this->getInfoEmpresa();
+			foreach($id_comanda_pedido as $id_comanda){
+
+				$id_pedido = $id_cuenta_pedido.'_'.$id_huesped_pedido.'_'.$id_comanda;
+				$params = array();
+	
+				$params["request_url"]    = "https://contler.conserje.vip/api/pos/set_estado_pedido";
+				$params["request_method"] = "POST";
+				$params["Authorization"]  = ""; // Si la API lo requiere
+	
+				$data = array();
+				$data["token"] = $this->hotel_tokens[$datosEmpresa['documento']]; // Un identificador unico de cada hotel que genera Jhon Rozo
+				$data["Pedidos"] = array();
+				$data["Pedidos"]["pedido"]      = $id_pedido;
+				$data["Pedidos"]["id_estado"]   = "1";
+				$data["Pedidos"]["estado"]      = "Entregado";
+				$data["Pedidos"]["observacion"] = "";
+	
+				$params["data"] = json_encode($data);
+	
+				$response = $this->curlApi($params); // Llamada a la función
 			}
 
 			$result = array('status' => 'success', 'message'=>'','idPos'=>$id_pos , 'sd'=>$itemValidate,"debug"=>$sqlRecipies );
