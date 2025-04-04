@@ -1264,6 +1264,7 @@
 
 			//Recorrer el array de id comandas
 			$datosEmpresa = $this->getInfoEmpresa();
+			$id_pedido= '';
 			foreach($id_comanda_pedido as $id_comanda){
 
 				$id_pedido = $id_cuenta_pedido.'_'.$id_huesped_pedido.'_'.$id_comanda;
@@ -1286,7 +1287,13 @@
 				$response .= $this->curlApi($params); // Llamada a la función
 			}
 
-			$result = array('status' => 'success', 'message'=>'','idPos'=>$id_pos , 'sd'=>$itemValidate,"debug"=>$sqlRecipies, 'debugContler'=>$response );
+			$result = array('status' => 'success', 
+							'message'=>'',
+							'idPos'=>$id_pos , 
+							'sd'=>$itemValidate,
+							"debug"=>$sqlRecipies, 
+							'debugContler'=>$response,
+							"id_pedido" =>  $id_pedido);
 
 			echo json_encode($result);
 			return ;
