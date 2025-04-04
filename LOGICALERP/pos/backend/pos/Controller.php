@@ -145,7 +145,15 @@
 			if ($params==''){ return; }
 			$objectPos->logOutToken($params);
 			break;
-
+		case 'getConfigContler':
+			$objectPos->getConfigContler();
+			break;
+		case 'updateEstadoPedido':
+			$json   = file_get_contents('php://input');
+			$params = json_decode($json,true);
+			if ($params==''){ return; }
+			$objectPos->updateEstadoPedido($params);
+			break;
 		default:
 			echo json_encode(array('status' => 'success', 'mensaje' => 'Consumo api default, debe enviar el metodo' ));
 			break;
