@@ -1260,40 +1260,42 @@
 				$query=$this->mysql->query($sql);
 			}
 
-			//Actualizar el estado del pedido en contler
-
-			//Recorrer el array de id comandas
-			$datosEmpresa = $this->getInfoEmpresa();
-			$id_pedido= '';
-			foreach($id_comanda_pedido as $id_comanda){
-
-				$id_pedido = $id_cuenta_pedido.'_'.$id_huesped_pedido.'_'.$id_comanda;
-				$params = array();
-	
-				$params["request_url"]    = "https://contler.conserje.vip/api/pos/set_estado_pedido";
-				$params["request_method"] = "POST";
-				$params["Authorization"]  = ""; // Si la API lo requiere
-	
-				$data = array();
-				$data["token"] = $this->hotel_tokens[$datosEmpresa['documento']]; // Un identificador unico de cada hotel que genera Jhon Rozo
-				$data["Pedidos"] = array();
-				$data["Pedidos"]["pedido"]      = $id_pedido;
-				$data["Pedidos"]["id_estado"]   = "1";
-				$data["Pedidos"]["estado"]      = "Entregado";
-				$data["Pedidos"]["observacion"] = "";
-	
-				$params["data"] = json_encode($data);
-	
-				$response .= $id_pedido."_".$this->curlApi($params); // Llamada a la función
-			}
-
 			$result = array('status' => 'success', 
 							'message'=>'',
 							'idPos'=>$id_pos , 
 							'sd'=>$itemValidate,
-							"debug"=>$sqlRecipies, 
-							'debugContler'=>$response,
-							"id_pedidos" =>  $id_comanda_pedido);
+							"debug"=>$sqlRecipies);
+
+			//Actualizar el estado del pedido en contler
+			if($this->getConfigContler()){
+				//Recorrer el array de id comandas
+				$datosEmpresa = $this->getInfoEmpresa();
+				$id_pedido= '';
+				foreach($id_comanda_pedido as $id_comanda){
+	
+					$id_pedido = $id_cuenta_pedido.'_'.$id_huesped_pedido.'_'.$id_comanda;
+					$params = array();
+		
+					$params["request_url"]    = "https://contler.conserje.vip/api/pos/set_estado_pedido";
+					$params["request_method"] = "POST";
+					$params["Authorization"]  = ""; // Si la API lo requiere
+		
+					$data = array();
+					$data["token"] = $this->hotel_tokens[$datosEmpresa['documento']]; // Un identificador unico de cada hotel que genera Jhon Rozo
+					$data["Pedidos"] = array();
+					$data["Pedidos"]["pedido"]      = $id_pedido;
+					$data["Pedidos"]["id_estado"]   = "1";
+					$data["Pedidos"]["estado"]      = "Entregado";
+					$data["Pedidos"]["observacion"] = "";
+		
+					$params["data"] = json_encode($data);
+		
+					$response .= $id_pedido."_".$this->curlApi($params); // Llamada a la función
+				}
+	
+				$result['debugContler'] = $response;
+				$result['id_pedidos'] = $id_comanda_pedido;
+			}
 
 			echo json_encode($result);
 			return ;
@@ -1960,7 +1962,7 @@
 			$sql = "SELECT data FROM configuracion_general WHERE modulo='panel_de_control/contler' AND activo=1 AND id_empresa=$this->id_empresa";
 			$query = $this->mysql->query($sql);
 			$response = $this->mysql->result($query,0,'data');
-			echo json_decode($response);
+			return json_decode($response);
 		}
 
 	}
