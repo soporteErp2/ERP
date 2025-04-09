@@ -144,10 +144,20 @@ class Api_Controller
             return;
         }
 
-        $id_empresa = $this->get_company_id($data['licence'],$data['company_doc']);
+        $id_empresa = $this->get_company_id($data['licence'],$data['company']);
         $sql = "INSERT INTO `empresas_sucursales` ( `id_empresa`, `nombre` ) VALUES ('$id_empresa', 'SUCURSAL PRINCIPAL')";
         $query = $this->mysqli->query($sql);
         
+        $idGrupoEmpresarial = 0;
+        // insertar el puff
+        include "../../configuraciones/configuracion_col/puc_colgaap.php";
+        $query = $this->mysqli->query($sqlPucColgaap);
+        include "../../configuraciones/configuracion_col/puc_niif.php";
+        $query = $this->mysqli->query($sqlPucNiif);
+
+        //nomina
+        include "Nomina_Controller.php";        
+        Nomina_Controller::insert_concepts($this->mysqli,$id_empresa);
 
         $this->change_connection("erp_acceso");
         $sql = "INSERT INTO host (id,`nit`, `nombre`, `servidor`, `bd`, `id_plan`, `fecha_creacion`, `hora_creacion`, `fecha_vencimiento_plan`, `timezone`, `almacenamiento`, `activo`, `usuario_nombre1`, `usuario_nombre2`, `usuario_apellido1`, `usuario_apellido2`) 
@@ -159,6 +169,9 @@ class Api_Controller
             echo json_encode("error al insertar la empresa en la tabla host");
             return;
         }
+
+        
+
         echo json_encode("compañia creada!");
     }
 
@@ -168,7 +181,7 @@ class Api_Controller
         $password=md5("12345678");
         $sql ="INSERT INTO `empleados` 
                 ( `tipo_documento`, `tipo_documento_nombre`, `documento`, `nombre1`, `nombre2`, `apellido1`, `apellido2`, `nombre`, `id_empresa`, `empresa`, `id_sucursal`, `sucursal`, `id_unidad_negocio`, `unidad_negocio`, `id_pais`, `pais`, `id_departamento`, `departamento`, `id_ciudad`, `ciudad`, `id_rol`, `rol`, `id_cargo`, `cargo`, `username`, `password`, `email_empresa`, `nacimiento`, `direccion`, `email_personal`, `telefono1`, `telefono2`, `celular1`, `id_celular_empresa`, `celular_empresa`, `foto`, `id_contrato`, `contrato`, `salario_base`, `salario`, `ad_contrato`, `ad_certificado_judicial`, `ad_cedula`, `ad_certificado_estudios`, `ad_hoja_vida`, `ad_afiliaciones`, `alerta_actualizacion`, `activo`, `ciudad_cedula`, `eps`, `arp`, `tecnico_operativo`, `conductor`, `vendedor`, `qrcode`, `color_menu`, `color_fondo`, `change_update`, `sinc_tercero`, `id_tercero`)
-                VALUES ('1', 'C.C', '$data[user_doc]', '$data[user_firstname]', '$data[user_secondname]', '$data[user_firstlastname]',' $data[user_secondlastename]', NULL, '$id_empresa', '', '$id_sucursal', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', 'Administrador', '0', NULL, 'data[user_email]', '$password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '00', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, 'false', '1', NULL, NULL, NULL, 'false', 'false', 'false', NULL, '0,0,0', '32,124,229', NULL, 'false', NULL);";
+                VALUES ('1', 'C.C', '$data[user_doc]', '$data[user_firstname]', '$data[user_secondname]', '$data[user_firstlastname]',' $data[user_secondlastename]', NULL, '$id_empresa', '', '$id_sucursal', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', 'Administrador', '0', NULL, '$data[user_email]', '$password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '00', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, 'false', '1', NULL, NULL, NULL, 'false', 'false', 'false', NULL, '0,0,0', '32,124,229', NULL, 'false', NULL);";
         $query = $this->mysqli->query($sql);
         if (!$query) {
             echo json_encode("error al insertar el usuario a la empresa");
