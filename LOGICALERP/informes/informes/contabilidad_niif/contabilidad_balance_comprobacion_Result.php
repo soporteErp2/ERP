@@ -80,8 +80,6 @@
         $subtitulo_cabecera.='<b>Sucursal</b> '.mysql_result($query,0,'nombre').'<br>';
     }
 
-    $whereCuentasCierre = ($cuentas_cierre=='true')? '' : "AND tipo_documento<>'NCC' " ;
-
     //SALDOS
     $totalDebe          = 0;
     $totalHaber         = 0;
@@ -114,7 +112,6 @@
                             FROM asientos_niif
                             WHERE activo=1
                                 AND id_empresa = '$id_empresa'
-                                $whereCuentasCierre
                                 $whereSucursal
                                 $whereClientes
                                 $whereRangoCuentas
@@ -169,6 +166,8 @@
 
     //=======================================// SALDO ACTUAL //=======================================//
     //************************************************************************************************//
+    $whereCuentasCierre = ($cuentas_cierre=='true')? '' : "AND tipo_documento<>'NCC' " ;
+
     $sqlAsientos   = "SELECT SUM(debe) AS debe,
                             SUM(haber) AS haber,
                             cuenta,
