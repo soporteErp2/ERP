@@ -80,7 +80,7 @@
         $subtitulo_cabecera.='<b>Sucursal</b> '.mysql_result($query,0,'nombre').'<br>';
     }
 
-    // $whereCuentasCierre = ($cuentas_cierre=='true')? '' : "AND tipo_documento<>'NCC' " ;
+    $whereCuentasCierre = ($cuentas_cierre=='true')? '' : "AND tipo_documento<>'NCC' " ;
 
     //SALDOS
     $totalDebe          = 0;
