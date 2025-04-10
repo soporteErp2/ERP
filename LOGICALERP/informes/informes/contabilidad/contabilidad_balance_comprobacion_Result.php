@@ -115,7 +115,6 @@
                             activo = 1
                           AND
                             id_empresa = '$id_empresa'
-                            $whereCuentasCierre
                             $whereSucursal
                             $whereClientes
                             $whereRangoCuentas
@@ -175,6 +174,8 @@
 
   //=======================================// SALDO ACTUAL //=======================================//
   //************************************************************************************************//
+  $whereCuentasCierre = ($cuentas_cierre=='true')? '' : "AND tipo_documento<>'NCC' " ;
+
   $sqlAsientos = "SELECT
                     SUM(debe) AS debe,
                     SUM(haber) AS haber,
