@@ -104,7 +104,7 @@
 			// $row['tercero'] = htmlentities($row['tercero'], null, 'utf-8');
             $row['tercero'] = str_replace("&nbsp;", "", $row['tercero']);
 
-			echo "$row[consecutivo_documento];$row[tipo_documento];$row[tipo_documento_extendido];$row[descripcion];$row[tipo_documento_cruce];$row[numero_documento_cruce];$row[fecha];$row[debe];$row[haber];$row[codigo_cuenta];$row[cuenta];$row[nit_tercero];".$row['tercero'].";$row[sucursal];$row[sucursal_cruce];$row[codigo_centro_costos];$row[centro_costos]\n";
+			echo "$row[consecutivo_documento];$row[tipo_documento];$row[tipo_documento_extendido];$row[descripcion];$row[tipo_documento_cruce];$row[numero_documento_cruce];$row[fecha];$row[debe];$row[haber];$row[codigo_cuenta];\"$row[cuenta]\";$row[nit_tercero];".$row['tercero'].";$row[sucursal];$row[sucursal_cruce];$row[codigo_centro_costos];$row[centro_costos]\n";
 		}
 	}
 
