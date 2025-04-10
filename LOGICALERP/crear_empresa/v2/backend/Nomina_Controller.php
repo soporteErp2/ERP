@@ -17,7 +17,7 @@ class Nomina_Controller
 		// INSERTAR LOS CONCEPTOS
 		// CONSULTAR LOS ID DE LOS GRUPOS DE LOS CONCEPTOS
 		$sql   = "SELECT id,descripcion FROM nomina_grupos_conceptos WHERE activo=1 AND id_empresa=$id_empresa";
-		$query = $mysqli->query($sqlGruposConceptos);
+		$query = $mysqli->query($sql);
 		while ($row= $query->fetch_array()) {
 			$id_grupo          = $row['id'];
 			$descripcion_grupo = $row['descripcion'];
@@ -947,7 +947,7 @@ class Nomina_Controller
 		}
 
 		$valueInsert = substr($valueInsert, 0,-1);
-		$sqlInsertConceptos="INSERT INTO nomina_conceptos (
+		$sql="INSERT INTO nomina_conceptos (
 															id_grupo,
 															grupo,
 															codigo,
@@ -972,7 +972,7 @@ class Nomina_Controller
 															id_empresa
 															)
 							VALUES $valueInsert";
-		$queryConceptos=$mysqli->query($sql);
+		$query=$mysqli->query($sql);
 
 	}
 }
