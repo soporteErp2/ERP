@@ -96,16 +96,40 @@
 
 		echo "CONSECUTIVO DOCUMENTO;TIPO DOCUMENTO;NOMBRE DOCUMENTO;DESCRIPCION;TIPO DOCUMENTO CRUCE;NUMERO DOCUMENTO CRUCE;FECHA;DEBITO;CREDITO;CUENTA;DESCRIPCION CUENTA;NUMERO DE IDENTIFICACION TERCERO;TERCERO;SUCURSAL;SUCURSAL CRUCE;CODIGO CENTRO COSTOS;CETRO COSTOS\n";
 
-		while ($row=mysql_fetch_array($query)) {
-			// $row['tercero'] = htmlentities($row['tercero'], null, 'utf-8');
-			// $row['tercero'] = str_replace("&nbsp;", " ", $row['tercero']);
-			// $row['tercero'] = html_entity_decode($row['tercero']);
-			// $row['tercero'] = preg_replace("/\s/",'',$row['tercero']);
-			// $row['tercero'] = htmlentities($row['tercero'], null, 'utf-8');
-            $row['tercero'] = str_replace("&nbsp;", "", $row['tercero']);
-
-			echo "$row[consecutivo_documento];$row[tipo_documento];$row[tipo_documento_extendido];$row[descripcion];$row[tipo_documento_cruce];$row[numero_documento_cruce];$row[fecha];$row[debe];$row[haber];$row[codigo_cuenta];\"$row[cuenta]\";$row[nit_tercero];".$row['tercero'].";$row[sucursal];$row[sucursal_cruce];$row[codigo_centro_costos];$row[centro_costos]\n";
+		while ($row = mysql_fetch_array($query)) {
+			// Limpieza básica del campo 'tercero'
+			$row['tercero'] = str_replace("&nbsp;", "", $row['tercero']);
+		
+			echo escapar_csv($row['consecutivo_documento']) . ';' .
+				 escapar_csv($row['tipo_documento']) . ';' .
+				 escapar_csv($row['tipo_documento_extendido']) . ';' .
+				 escapar_csv($row['descripcion']) . ';' .
+				 escapar_csv($row['tipo_documento_cruce']) . ';' .
+				 escapar_csv($row['numero_documento_cruce']) . ';' .
+				 escapar_csv($row['fecha']) . ';' .
+				 escapar_csv($row['debe']) . ';' .
+				 escapar_csv($row['haber']) . ';' .
+				 escapar_csv($row['codigo_cuenta']) . ';' .
+				 escapar_csv($row['cuenta']) . ';' .
+				 escapar_csv($row['nit_tercero']) . ';' .
+				 escapar_csv($row['tercero']) . ';' .
+				 escapar_csv($row['sucursal']) . ';' .
+				 escapar_csv($row['sucursal_cruce']) . ';' .
+				 escapar_csv($row['codigo_centro_costos']) . ';' .
+				 escapar_csv($row['centro_costos']) . "\n";
 		}
+		
 	}
 
-?>52054801
+	// Función auxiliar para escapar campos
+	function escapar_csv($valor) {
+		// Reemplazar comillas dobles con dobles comillas
+		$valor = str_replace('"', '""', $valor);
+		// Envolver en comillas si contiene ; , salto de línea o comillas
+		if (preg_match('/[;,\"\r\n]/', $valor)) {
+			$valor = '"' . $valor . '"';
+		}
+		return $valor;
+	}
+
+?>
