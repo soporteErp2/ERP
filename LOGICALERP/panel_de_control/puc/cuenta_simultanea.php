@@ -49,7 +49,7 @@
 			// $grilla->AddRow('Codigo','id',60,'codigo'); //(Nombre Columna, Nombre del Campo, Largo de la Celda, Funcion PHP definida dentro de la clase para dar formato)
 			$grilla->AddRow('Cuenta','cuenta',100);
 			$grilla->AddRow('Descripcion','descripcion',250);
-			$grilla->AddRow('Naturaleza','naturaleza',100);
+			$grilla->AddRow('Tipo de movimiento','naturaleza',150);
 
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 300;
@@ -78,7 +78,7 @@
 		//CONFIGURACION DE LO FORMULARIOS DE CAPTURA Y EDICION
 			$grilla->AddTextField('Codigo:','cuenta',120,'true','false');
 			$grilla->AddTextField('Descripcion:','descripcion',150,'true','false');
-			$grilla->AddComboBox('Naturaleza','naturaleza',150,'true','false','debito:Debito,credito:Credito');
+			$grilla->AddComboBox('Movimiento','naturaleza',150,'true','false','contrapartida:Contrapartida,partida:Partida');
 			$grilla->AddTextField('','id_cuenta',200,'false','hidden');
 			$grilla->AddTextField('','id_cuenta_principal',200,'false','hidden',$id_cuenta);
 			$grilla->AddTextField('','id_empresa',200,'false','hidden', $id_empresa);

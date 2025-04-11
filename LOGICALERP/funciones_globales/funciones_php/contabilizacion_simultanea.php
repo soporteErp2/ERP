@@ -90,16 +90,13 @@
                 // RECORRER LAS CUENTAS SIMULTANEAS DE CADA CUENTA CAUSADA
                 foreach ($arrayCtasSimultaneas[$id_cuenta_principal] as $key2 => $arrayResultCtas) {
 
-                        switch ($arrayResultCtas['naturaleza']) {
-                            case 'debito':
-                                $debe  = ($arrayResult['debe']>0)? $arrayResult['debe'] : $arrayResult['haber'] ;
-                                $haber = 0;
-                                break;
-                            case 'credito':
-                                $debe  = 0;
-                                $haber = ($arrayResult['debe']>0)? $arrayResult['debe'] : $arrayResult['haber'] ;
-                                break;
-                        }
+                        if ($arrayResultCtas['naturaleza'] == 'contrapartida') {
+                            $debe  = max(0, $arrayResult['haber']);
+                            $haber = max(0, $arrayResult['debe']);
+                        } else {
+                            $debe  = max(0, $arrayResult['debe']);
+                            $haber = max(0, $arrayResult['haber']);
+                        }    
 
                         $valueInsert .= "(
                                         '$arrayResult[id_documento]',
