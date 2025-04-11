@@ -2839,13 +2839,48 @@
                             iconCls     : 'regresar',
                             iconAlign   : 'top',
                             handler     : function(){ Win_Ventana_configRetenciones_FacturaCompra.close() }
-                        }
+                        },
+                        {
+                            xtype       : 'button',
+                            width       : 60,
+                            height      : 56,
+                            text        : 'Modificar base',
+                            scale       : 'large',
+                            iconCls     : 'edit',
+                            iconAlign   : 'top',
+                            handler     : function(){ wizard_modifica_base() }
+                        },
                     ]
                 }
             ]
         }).show();
     }
+    	// VENTANA DE CONFIGURACION DEL ARCHIVO PLANO
+	function wizard_modifica_base() {
+		var myalto  = Ext.getBody().getHeight();
+		var myancho = Ext.getBody().getWidth();
 
+		Win_Ventana_wizard = new Ext.Window({
+		   	width       : 480,
+			height      : 100,
+		    id          : 'Win_Ventana_wizard_modifica_base_retenciones',
+		    title       : 'Modificar base retenciones',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : true,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : 'facturacion/wizard_modifica_base_retenciones.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+		            id_factura_compra : '<?php echo $id_factura_compra ?>'
+		        }
+		    }
+		}).show();
+	}
     //BUSCAR LA CUENTA COLGAAP DE LOS VALORES MANUALES
     function ventana_buscar_cuenta(opc,nombreCampoId,nombreCampo) {
         var myalto  = Ext.getBody().getHeight();
