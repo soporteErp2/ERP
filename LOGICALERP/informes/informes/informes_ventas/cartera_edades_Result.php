@@ -115,6 +115,7 @@
          * @return array Array con la informacion de todas las facturas
          */
         public function getInformData(){
+            
             $nombreTempo = "asientosTempo$_SESSION[ID_HOST]";
             $sqlTempoTable = "CREATE TEMPORARY TABLE $nombreTempo
                               SELECT SUM(debe - haber) AS saldo,id_documento_cruce,codigo_cuenta,activo,fecha,tipo_documento_cruce,id_empresa
@@ -268,10 +269,12 @@
         }
 
         public function getTitle(){
+            $fechaInforme = ($this->MyInformeFiltroFechaInicio)? $this->MyInformeFiltroFechaInicio . " - " .$this->MyInformeFiltroFechaFinal : $this->MyInformeFiltroFechaFinal;
             $title = "<table align='center' style='text-align:center;margin-bottom:10px;'>
                         <tr><td class='titulo_informe_empresa' style='text-align:center;'> $_SESSION[NOMBREEMPRESA]</td></tr>
                         <tr><td style='font-size:13px;text-align:center;'><b>NIT</b> $_SESSION[NITEMPRESA]</td></tr>
                         <tr><td style='width:100%; font-weight:bold; font-size:14px; text-align:center;'>Cartera de Clientes</td></tr>
+                        <tr><td style='width:100%; font-weight:bold; font-size:14px; text-align:center;'>".$fechaInforme." </td></tr>
                     </table>";
             return $title;
         }
