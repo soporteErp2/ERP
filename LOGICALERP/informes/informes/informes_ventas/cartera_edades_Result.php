@@ -115,7 +115,6 @@
          * @return array Array con la informacion de todas las facturas
          */
         public function getInformData(){
-            
             $nombreTempo = "asientosTempo$_SESSION[ID_HOST]";
             $sqlTempoTable = "CREATE TEMPORARY TABLE $nombreTempo
                               SELECT SUM(debe - haber) AS saldo,id_documento_cruce,codigo_cuenta,activo,fecha,tipo_documento_cruce,id_empresa
@@ -125,8 +124,9 @@
                               AND tipo_documento_cruce = 'FV'
                               AND id_empresa = '$this->id_empresa'
                               GROUP BY id_documento_cruce
-                              HAVING saldo > 1";
+                              HAVING saldo > 0";
             $queryTempoTable = $this->mysql->query($sqlTempoTable,$this->mysql->link);
+            $whereSaldo = ($_SESSION['NITEMPRESA']==900474556)? "AND  A.saldo>0" : 'AND  VF.total_factura_sin_abono>1';
             $sql = "SELECT
                         T.telefono1,
                         T.celular1,
@@ -135,7 +135,8 @@
                         VF.id,
                         VF.id_cliente,
                         VF.nit,
-                        VF.cliente AS cliente,
+                        REPLACE(VF.cliente, ' ', '') AS cliente,
+                        VF.cliente AS cliente_real,
                         VF.fecha_inicio,
                         VF.fecha_vencimiento,
                         VF.numero_factura_completo,
@@ -150,6 +151,7 @@
                         AND A.codigo_cuenta = VF.cuenta_pago
                         AND VF.activo = 1
                         AND VF.estado = 1
+                        $whereSaldo
                         AND VF.id_empresa = '$this->id_empresa'
                         $this->whereInnerJoin
                     )
@@ -177,7 +179,7 @@
                                                 "codigo_cuenta"           => $row['codigo_cuenta'],
                                                 "dias"                    => $row['dias'],
                                                 "nit"                     => $row['nit'],
-                                                "cliente"                 => $row['cliente'],
+                                                "cliente"                 => $row['cliente_real'],
                                                 "fecha_inicio"            => $row['fecha_inicio'],
                                                 "fecha_vencimiento"       => $row['fecha_vencimiento'],
                                                 "numero_factura_completo" => $row['numero_factura_completo'],
@@ -189,7 +191,7 @@
                                                 "unoAtreinta"             => $unoAtreinta,
                                                 "treintayunoAsesenta"     => $treintayunoAsesenta,
                                                 "sesentayunoAnoventa"     => $sesentayunoAnoventa,
-                                                "masDenoventa"            => $masDenoventa
+                                                "masDenoventa"            => $masDenoventa,
                                                 );
             }
             return $arrayTemp;
@@ -269,12 +271,10 @@
         }
 
         public function getTitle(){
-            $fechaInforme = ($this->MyInformeFiltroFechaInicio)? $this->MyInformeFiltroFechaInicio . " - " .$this->MyInformeFiltroFechaFinal : $this->MyInformeFiltroFechaFinal;
             $title = "<table align='center' style='text-align:center;margin-bottom:10px;'>
                         <tr><td class='titulo_informe_empresa' style='text-align:center;'> $_SESSION[NOMBREEMPRESA]</td></tr>
                         <tr><td style='font-size:13px;text-align:center;'><b>NIT</b> $_SESSION[NITEMPRESA]</td></tr>
                         <tr><td style='width:100%; font-weight:bold; font-size:14px; text-align:center;'>Cartera de Clientes</td></tr>
-                        <tr><td style='width:100%; font-weight:bold; font-size:14px; text-align:center;'>".$fechaInforme." </td></tr>
                     </table>";
             return $title;
         }
