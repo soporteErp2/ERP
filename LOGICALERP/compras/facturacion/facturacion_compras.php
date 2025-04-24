@@ -2862,7 +2862,7 @@
 
 		Win_Ventana_wizard = new Ext.Window({
 		   	width       : 480,
-			height      : 100,
+			height      : 250,
 		    id          : 'Win_Ventana_wizard_modifica_base_retenciones',
 		    title       : 'Modificar base retenciones',
 		    modal       : true,
