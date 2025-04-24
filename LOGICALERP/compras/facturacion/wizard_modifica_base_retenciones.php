@@ -32,7 +32,7 @@
 			$grilla->AddRow('Retencion','retencion',200);
 			$grilla->AddRow('%','valor',50);
 			$grilla->AddRow('Base','base',70);
-			$grilla->AddRow('Base modificada','base_modificada',70);
+			$grilla->AddRow('Base modificada','base_modificada',150);
 			$grilla->AddColStyle('valor','text-align:right; width:45px !important; margin-right:5px;');   //ALINEAR NUMEROS LA DERECHA
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 340;
