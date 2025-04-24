@@ -764,7 +764,7 @@
 		$acumRetenciones  = 0;
 		$contRetencion    = 0;
 		$estadoRetencion  = $estadoCuentaClientes; 													//ESTADO CONTRARIO DE LAS RETENCIONES A LA CUENTA CLIENTES
-		$sqlRetenciones   = "SELECT valor,codigo_cuenta,tipo_retencion,cuenta_autoretencion,base FROM compras_facturas_retenciones WHERE id_factura_compra='$idFactura' AND activo=1";
+		$sqlRetenciones   = "SELECT valor,codigo_cuenta,tipo_retencion,cuenta_autoretencion,base,base_modificada FROM compras_facturas_retenciones WHERE id_factura_compra='$idFactura' AND activo=1";
 		$queryRetenciones = mysql_query($sqlRetenciones,$link);
 
 		while($rowRetenciones = mysql_fetch_array($queryRetenciones)){
@@ -773,11 +773,14 @@
 			$codigoRetencion     = $rowRetenciones['codigo_cuenta'];
 			$tipoRetencion       = $rowRetenciones['tipo_retencion'];
 			$cuentaAutoretencion = $rowRetenciones['cuenta_autoretencion'];
+			$baseModificada      = $rowRetenciones['base_modificada'];
+			$acumSubtotal = ($baseModificada > 0)? $baseModificada : $acumSubtotal;
+			$acumImpuesto = ($baseModificada > 0)? $baseModificada : $acumImpuesto;
 
 			if(is_nan($arrayAsiento[0][$codigoRetencion][$estadoRetencion])){ $arrayAsiento[0][$codigoRetencion][$estadoRetencion] = 0; }
 
 			//CALCULO RETEIVA
-			if($tipoRetencion == "ReteIva"){ 																		      //CALCULO RETEIVA
+			if($tipoRetencion == "ReteIva"){
 				if($acumImpuesto < $valorBase){ continue; }															//BASE RETENCION
 
 				$acumRetenciones += ROUND($acumImpuesto * $valorRetencion/100, $decimalesMoneda);
