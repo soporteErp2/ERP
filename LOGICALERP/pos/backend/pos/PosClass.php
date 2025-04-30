@@ -17,9 +17,9 @@
 			$this->id_empresa  	= $id_empresa;
 			$this->id_host     	= $id_host;
 			$this->mysql       	= $mysql;
-			$this->hotel_tokens = array('900542975'=>'bea52e88-9367-4704-ab47-e03d3c9052fe',
-										'901227063'=>'bea52e88-9367-4704-ab47-e03d3c9052fe',
-										'2002'=>'bea52e88-9367-4704-ab47-e03d3c9052fe');
+			$this->hotel_tokens = array('900542975'=>'a82a3582-2073-440c-afa7-b7a42a233374',
+										'901227063'=>'a82a3582-2073-440c-afa7-b7a42a233374',
+										'2002'=>'a82a3582-2073-440c-afa7-b7a42a233374');
 
 			parent::__construct($id_sucursal,$id_empresa,$id_host,$mysql);
 		}
