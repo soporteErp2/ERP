@@ -804,7 +804,7 @@
 		$acumRetenciones  = 0;
 		$contRetencion    = 0;
 		$estadoRetencion  = $estadoCuentaClientes; 													//ESTADO CONTRARIO DE LAS RETENCIONES A LA CUENTA CLIENTES
-		$sqlRetenciones   = "SELECT valor,codigo_cuenta_niif,tipo_retencion,cuenta_autoretencion_niif,base FROM compras_facturas_retenciones WHERE id_factura_compra='$idFactura' AND activo=1";
+		$sqlRetenciones   = "SELECT valor,codigo_cuenta_niif,tipo_retencion,cuenta_autoretencion_niif,base,base_modificada FROM compras_facturas_retenciones WHERE id_factura_compra='$idFactura' AND activo=1";
 		$queryRetenciones = mysql_query($sqlRetenciones,$link);
 
 		while($rowRetenciones = mysql_fetch_array($queryRetenciones)){
@@ -813,6 +813,9 @@
 			$codigoRetencion     = $rowRetenciones['codigo_cuenta_niif'];
 			$tipoRetencion       = $rowRetenciones['tipo_retencion'];
 			$cuentaAutoretencion = $rowRetenciones['cuenta_autoretencion_niif'];
+			$baseModificada      = $rowRetenciones['base_modificada'];
+			$acumSubtotal = ($baseModificada > 0)? $baseModificada : $acumSubtotal;
+			$acumImpuesto = ($baseModificada > 0)? $baseModificada : $acumImpuesto;
 
 			if(is_nan($arrayAsiento[0][$codigoRetencion][$estadoRetencion])){ $arrayAsiento[0][$codigoRetencion][$estadoRetencion] = 0; }
 

@@ -1457,7 +1457,7 @@
 
 
 		// CONTABILIZACION FACTURA
-		if($idPlantilla > 0){ 					//CONTABILIZACION SIN PLANTILLA
+		if($idPlantilla > 0){ 					//CONTABILIZACION CON PLANTILLA
 			contabilizarConPlantilla($fechaInicioFactura,$consecutivoFactura,$idBodega,$id_sucursal,$id_empresa,$idPlantilla,$idFactura,$idProveedor,$link);
 			contabilizarConPlantillaNiif($fechaInicioFactura,$consecutivoFactura,$idBodega,$id_sucursal,$id_empresa,$idPlantilla,$idFactura,$idProveedor,$link);
 		}
@@ -1466,7 +1466,7 @@
 				contabilizarSinPlantillaManual($arrayCuentaPago,$fechaInicioFactura,$consecutivoFactura,$consecutivoDocReferencia,$idBodega,$id_sucursal,$id_empresa,$idFactura,$idProveedor,$link); //COLGAAP
 				contabilizarSinPlantillaManualNiif($arrayCuentaPago,$fechaInicioFactura,$consecutivoFactura,$consecutivoDocReferencia,$idBodega,$id_sucursal,$id_empresa,$idFactura,$idProveedor,$link); //NIIF
 			}
-			else{								//CONTABILIZACION CON PLANTILLA
+			else{								//CONTABILIZACION SIN PLANTILLA
 				contabilizarSinPlantilla($arrayAnticipo,$arrayCuentaPago,$fechaInicioFactura,$consecutivoFactura,$consecutivoDocReferencia,$idBodega,$id_sucursal,$id_empresa,$idFactura,$idProveedor,$link);
 				contabilizarSinPlantillaNiif($arrayAnticipo,$arrayCuentaPago,$fechaInicioFactura,$consecutivoFactura,$consecutivoDocReferencia,$idBodega,$id_sucursal,$id_empresa,$idFactura,$idProveedor,$link);
 			}

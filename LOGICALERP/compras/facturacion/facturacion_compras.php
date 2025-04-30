@@ -600,7 +600,7 @@
 
 
         // CHECKBOX RETENCIONES ALMACENADAS
-        $sqlRetenciones   = "SELECT id_retencion AS id,retencion,valor,tipo_retencion,base
+        $sqlRetenciones   = "SELECT id_retencion AS id,retencion,valor,tipo_retencion,base,base_modificada
                             FROM compras_facturas_retenciones
                             WHERE activo=1
                                 AND id_factura_compra='$id_factura_compra'
@@ -637,6 +637,7 @@
                                                                                         .'tipo_retencion : "'.$row['tipo_retencion'].'",'
                                                                                         .'base           : "'.$row['base'].'",'
                                                                                         .'valor          : "'.$row['valor'].'",'
+                                                                                        .'base_modificada   : "'.$row['base_modificada'].'",'
                                                                                     .'}';
         }
 
@@ -691,7 +692,7 @@
 
     //IMPRIMIR OBJECT RETENCIONES//
     $plainRetenciones = implode(';', $objectRetenciones).';';
-    echo '<script>'.$plainRetenciones.' //console.log(objectRetenciones_FacturaVenta);</script>';
+    echo '<script>'.$plainRetenciones.' //console.log(objectRetenciones_FacturaCompra);</script>';
 
 
     //=============================// ANTICIPOS //=============================//
@@ -2127,9 +2128,16 @@
           }
           else{
             if (objectRetenciones_FacturaCompra[id_retencion].base>subtotalFacturaCompra) {continue;}
-            valorRetencion    += ((parseFloat(subtotalFacturaCompra) * objectRetenciones_FacturaCompra[id_retencion].valor) / 100);
-            valoresRetenciones = formato_numero((parseFloat(subtotalFacturaCompra)* objectRetenciones_FacturaCompra[id_retencion].valor)/100,<?php echo $_SESSION['DECIMALESMONEDA'] ?>,'.',',');
-          }
+            let baseModificada = parseFloat(objectRetenciones_FacturaCompra[id_retencion].base_modificada);
+                    
+            let baseRetencion = baseModificada > 0 
+                ? baseModificada 
+                : parseFloat(subtotalFacturaCompra); 
+
+            valorRetencion    += ((baseRetencion * objectRetenciones_FacturaCompra[id_retencion].valor) / 100);
+            valoresRetenciones = formato_numero((baseRetencion * objectRetenciones_FacturaCompra[id_retencion].valor)/100,<?php echo $_SESSION['DECIMALESMONEDA'] ?>,'.',',');
+          
+        }
           listadoRetenciones    += '<div style="margin-bottom:5px; overflow:hidden; width:100%;">'+labelRetenciones[i].innerHTML+'</div>';
           simboloRetencion      += '<div style="margin-bottom:5px">$</div>';
           divValoresRetenciones += '<div style="margin-bottom:5px">'+valoresRetenciones+'</div>';
@@ -2839,13 +2847,48 @@
                             iconCls     : 'regresar',
                             iconAlign   : 'top',
                             handler     : function(){ Win_Ventana_configRetenciones_FacturaCompra.close() }
-                        }
+                        },
+                        {
+                            xtype       : 'button',
+                            width       : 60,
+                            height      : 56,
+                            text        : 'Modificar base',
+                            scale       : 'large',
+                            iconCls     : 'edit',
+                            iconAlign   : 'top',
+                            handler     : function(){ wizard_modifica_base() }
+                        },
                     ]
                 }
             ]
         }).show();
     }
+    	// VENTANA DE CONFIGURACION DEL ARCHIVO PLANO
+	function wizard_modifica_base() {
+		var myalto  = Ext.getBody().getHeight();
+		var myancho = Ext.getBody().getWidth();
 
+		Win_Ventana_wizard = new Ext.Window({
+		   	width       : 480,
+			height      : 250,
+		    id          : 'Win_Ventana_wizard_modifica_base_retenciones',
+		    title       : 'Modificar base retenciones',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : true,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : 'facturacion/wizard_modifica_base_retenciones.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+		            id_factura_compra : '<?php echo $id_factura_compra ?>'
+		        }
+		    }
+		}).show();
+	}
     //BUSCAR LA CUENTA COLGAAP DE LOS VALORES MANUALES
     function ventana_buscar_cuenta(opc,nombreCampoId,nombreCampo) {
         var myalto  = Ext.getBody().getHeight();
