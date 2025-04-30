@@ -600,7 +600,7 @@
 
 
         // CHECKBOX RETENCIONES ALMACENADAS
-        $sqlRetenciones   = "SELECT id_retencion AS id,retencion,valor,tipo_retencion,base
+        $sqlRetenciones   = "SELECT id_retencion AS id,retencion,valor,tipo_retencion,base,base_modificada
                             FROM compras_facturas_retenciones
                             WHERE activo=1
                                 AND id_factura_compra='$id_factura_compra'
@@ -637,6 +637,7 @@
                                                                                         .'tipo_retencion : "'.$row['tipo_retencion'].'",'
                                                                                         .'base           : "'.$row['base'].'",'
                                                                                         .'valor          : "'.$row['valor'].'",'
+                                                                                        .'base_modificada   : "'.$row['base_modificada'].'",'
                                                                                     .'}';
         }
 
@@ -691,7 +692,7 @@
 
     //IMPRIMIR OBJECT RETENCIONES//
     $plainRetenciones = implode(';', $objectRetenciones).';';
-    echo '<script>'.$plainRetenciones.' //console.log(objectRetenciones_FacturaVenta);</script>';
+    echo '<script>'.$plainRetenciones.' //console.log(objectRetenciones_FacturaCompra);</script>';
 
 
     //=============================// ANTICIPOS //=============================//
@@ -2127,9 +2128,16 @@
           }
           else{
             if (objectRetenciones_FacturaCompra[id_retencion].base>subtotalFacturaCompra) {continue;}
-            valorRetencion    += ((parseFloat(subtotalFacturaCompra) * objectRetenciones_FacturaCompra[id_retencion].valor) / 100);
-            valoresRetenciones = formato_numero((parseFloat(subtotalFacturaCompra)* objectRetenciones_FacturaCompra[id_retencion].valor)/100,<?php echo $_SESSION['DECIMALESMONEDA'] ?>,'.',',');
-          }
+            let baseModificada = parseFloat(objectRetenciones_FacturaCompra[id_retencion].base_modificada);
+                    
+            let baseRetencion = baseModificada > 0 
+                ? baseModificada 
+                : parseFloat(subtotalFacturaCompra); 
+
+            valorRetencion    += ((baseRetencion * objectRetenciones_FacturaCompra[id_retencion].valor) / 100);
+            valoresRetenciones = formato_numero((baseRetencion * objectRetenciones_FacturaCompra[id_retencion].valor)/100,<?php echo $_SESSION['DECIMALESMONEDA'] ?>,'.',',');
+          
+        }
           listadoRetenciones    += '<div style="margin-bottom:5px; overflow:hidden; width:100%;">'+labelRetenciones[i].innerHTML+'</div>';
           simboloRetencion      += '<div style="margin-bottom:5px">$</div>';
           divValoresRetenciones += '<div style="margin-bottom:5px">'+valoresRetenciones+'</div>';
