@@ -792,13 +792,13 @@ class ClassFacturaJSON_V2{
 				if($this->acumuladorBaseRetenciones > $this->baseVFR[$i]){
 					if($this->tipo_retencionVFR[$i] == "ReteFuente"){
 						$arrayImpuesto[] = array(
-                                      "Base"           => (string) $this->baseVFR[$i],
-																			// "Base"           => "0",
-																			"CodigoImpuesto" => "06",
-																			"Nombre"         => (string) "ReteFuente",
-																			"Porcentaje"     => (float) $this->valorVFR[$i],
-																			"Impuesto"       => (string) round(($this->acumuladorBaseRetenciones * $this->valorVFR[$i] / 100),$_SESSION['DECIMALESMONEDA'])
-																		);
+                                      				"Base"           => (string) round($this->acumuladorBaseRetenciones,$_SESSION['DECIMALESMONEDA']),
+													"CodigoImpuesto" => "06",
+													"Nombre"         => (string) "ReteFuente",
+													"Porcentaje"     => (float) $this->valorVFR[$i],
+													"Impuesto"       => (string) round(($this->acumuladorBaseRetenciones * $this->valorVFR[$i] / 100),$_SESSION['DECIMALESMONEDA'])
+												);
+
 						$totalRetencionesVF += ($this->acumuladorBaseRetenciones * $this->valorVFR[$i] / 100);
 
 						$completar_retencion[] = "ReteFuente";
@@ -806,13 +806,13 @@ class ClassFacturaJSON_V2{
 					else if($this->tipo_retencionVFR[$i] == "ReteIva"){
 						if($totalIVA > $this->baseVFR[$i]){
 							$arrayImpuesto[] = array(
-																				"Base"           => (string) $this->baseVFR[$i],
-                                        // "Base"           => "0",
-																				"CodigoImpuesto" => "05",
-																				"Nombre"         => (string) "ReteIVA",
-																				"Porcentaje"     => (float) $this->valorVFR[$i],
-																				"Impuesto"       => (string) round(($totalIVA * $this->valorVFR[$i] / 100),$_SESSION['DECIMALESMONEDA'])
-																		  );
+														"Base"           => (string) round($totalIVA,$_SESSION['DECIMALESMONEDA']),
+														"CodigoImpuesto" => "05",
+														"Nombre"         => (string) "ReteIVA",
+														"Porcentaje"     => (float) $this->valorVFR[$i],
+														"Impuesto"       => (string) round(($totalIVA * $this->valorVFR[$i] / 100),$_SESSION['DECIMALESMONEDA'])
+													);
+
 							$totalRetencionesVF += ($totalIVA * $this->valorVFR[$i] / 100);
 						}
 
@@ -820,7 +820,7 @@ class ClassFacturaJSON_V2{
 					}
 					else if($this->tipo_retencionVFR[$i] == "ReteIca"){
 							$arrayImpuesto[] = array(
-																			"Base"           => (string) $this->baseVFR[$i],
+																			"Base"           => (string) round($this->acumuladorBaseRetenciones,$_SESSION['DECIMALESMONEDA']),
                                       // "Base"           => "0",
 																			"CodigoImpuesto" => "07",
 																			"Nombre"         => (string) "ReteICA",
