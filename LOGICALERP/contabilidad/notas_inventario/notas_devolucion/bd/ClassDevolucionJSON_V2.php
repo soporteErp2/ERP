@@ -773,7 +773,7 @@
 				if($subTotal > $this->baseDVR[$i]){
 					if($this->tipo_retencionDVR[$i] == "ReteFuente"){
 						$arrayImpuesto[] = array(
-                                      "Base"           => (string) round(($subTotal,$_SESSION['DECIMALESMONEDA'])),
+                                      "Base"           => (string) round($subTotal,$_SESSION['DECIMALESMONEDA']),
                                       "CodigoImpuesto" => "06",
 																			"Nombre"         => (string) "ReteFuente",
                                       "Porcentaje"     => (float) $this->valorDVR[$i],
@@ -784,7 +784,7 @@
           else if($this->tipo_retencionDVR[$i] == "ReteIva"){
             if($totalIVA > $this->baseDVR[$i]){
   						$arrayImpuesto[] = array(
-                                        "Base"           => (string) round(($totalIVA,$_SESSION['DECIMALESMONEDA'])),
+                                        "Base"           => (string) round($totalIVA,$_SESSION['DECIMALESMONEDA']),
                                         "CodigoImpuesto" => "05",
   																			"Nombre"         => (string) "ReteIVA",
                                         "Porcentaje"     => (float) $this->valorDVR[$i],
@@ -795,7 +795,7 @@
 					}
           else if($this->tipo_retencionDVR[$i] == "ReteIca"){
 						$arrayImpuesto[] = array(
-                                      "Base"           => (string) round(($subTotal,$_SESSION['DECIMALESMONEDA'])),
+                                      "Base"           => (string) round($subTotal,$_SESSION['DECIMALESMONEDA']),
                                       "CodigoImpuesto" => "07",
 																			"Nombre"         => (string) "ReteICA",
                                       "Porcentaje"     => (float) $this->valorDVR[$i],
