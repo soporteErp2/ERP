@@ -1750,27 +1750,21 @@
     //============================= FUNCION QUE SE LLAMA CUANDO SE CANBIA EL SELECT DEL DOCUMENTO CRUCE ===================================//
     function cambiaDocumentoCruce(typeDoc,cont,opc) {
 
-        if (typeDoc=='CE' || typeDoc=='') {
-            document.getElementById('iconBuscarArticulo_'+cont).style.display                                = 'inline';
             document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly = true;
             document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly  = true;
-            document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('style','width :calc(100% - 20px);border:none;');
-
             if (typeDoc=='') {
                 document.getElementById('iconBuscarArticulo_'+cont).style.display = 'none';
                 document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('style','width:100%;border:none;');
+        }else{
+                document.getElementById('iconBuscarArticulo_'+cont).style.display                                = 'inline';
+            document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('style','width :calc(100% - 20px);border:none;');
+        
             }
-        }
-        else{
-            document.getElementById('iconBuscarArticulo_'+cont).style.display                                = 'none';
-            document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly = false;
-            document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly  = false;
-            document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('style','width:100%;border:none;');
-        }
 
         if (opc=='') {
             eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>(cont,'true');
         }
+        document.getElementById('imgBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('onclick','ventanaBuscarDocumentoCruceFacturaCompraCuentas('+cont+',"'+typeDoc+'")');
     }
 
     //====================================// UPLOAD FILE NOTA CONTABLE //====================================//
