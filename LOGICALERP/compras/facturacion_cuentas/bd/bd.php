@@ -313,7 +313,7 @@
 				 	</select>
 				 </div>
 				 <div class="iconBuscarArticulo" id="iconBuscarArticulo_'.$cont.'">
-					<img onclick="ventanaBuscarDocumentoCruce'.$opcGrillaContable.'('.$cont.');" id="imgBuscarDocumentoCruce'.$opcGrillaContable.'_'.$cont.'" title="Buscar Documento Cruce" src="img/buscar20.png" />
+					<img id="imgBuscarDocumentoCruce'.$opcGrillaContable.'_'.$cont.'" title="Buscar Documento Cruce" src="img/buscar20.png" />
 				</div>
 
 				<div class="campoNotaGeneral ">
@@ -336,9 +336,10 @@
 				<input type="hidden" id="idTercero'.$opcGrillaContable.'_'.$cont.'" value="0" />
 				<input type="hidden" id="idDocumentoCruce'.$opcGrillaContable.'_'.$cont.'" value="0" />
 				<input type="hidden" id="idTablaReferencia'.$opcGrillaContable.'_'.$cont.'" value="0" />
-
 				<script>
 					cambiaDocumentoCruce("",'.$cont.',"false");
+					let tipoDocumento = document.getElementById("documentoCruce'.$opcGrillaContable.'_'.$cont.'").value;
+        			document.getElementById("imgBuscarDocumentoCruce'.$opcGrillaContable.'_'.$cont.'").setAttribute("onclick","ventanaBuscarDocumentoCruce'.$opcGrillaContable.'('.$cont.',tipoDocumento)");
 					// console.log("in");
 					document.getElementById("cuenta'.$opcGrillaContable.'_'.$cont.'").focus();
 				</script>
