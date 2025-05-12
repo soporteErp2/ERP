@@ -93,7 +93,7 @@ class Inventario_pp
                      $params['accion_inventario'] == 'reversar traslado ingreso' ) {
                 $nuevoCostoTotal = ($item_antes['cantidad'] * $item_antes['costos']) - ($item['cantidad'] * $item['costo']);
                 $nuevaCantidadTotal = $item_antes['cantidad'] - $item['cantidad'];
-                $nuevoCostoPromedio = ($nuevaCantidadTotal > 0) ? $nuevoCostoTotal / $nuevaCantidadTotal : 0;
+                $nuevoCostoPromedio = ($nuevaCantidadTotal > 0) ? $nuevoCostoTotal / $nuevaCantidadTotal : $item_antes['costos'];
                 $sql_costo=",costos = $nuevoCostoPromedio";
             }
             else if (
