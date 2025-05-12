@@ -88,7 +88,6 @@
  			$grilla->MenuContext		= 'true';
 	 		$grilla->MenuContextEliminar= 'false';
 		//OPCIONES ADICIONALES EN EL MENU CONTEXTUAL
- 			$grilla->AddMenuContext('Realizar Gestion con el Cliente','crm16','CRMobjetivos([id])');
  			$grilla->AddMenuContext('Convertir Prospecto en Cliente','cliente16','VentanaAgregarCliente3([id])');
 			$grilla->AddMenuContext('Cambiar Funcionario Asignado','carpeta_personal16','VentanaCambiaFuncionario([id])');
 			$grilla->AddMenuContext('Enviar Email','enviaremail16','VentanaEnviarEmail([id])');
