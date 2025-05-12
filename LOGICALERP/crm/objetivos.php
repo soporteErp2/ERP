@@ -38,27 +38,31 @@
 	/*******************************************************************************************************/
 </style>
 
-<div id="ToolbarTareas" style="width:100%; height:60px; padding: 10px 0 0 10px; overflow:hidden; ">
+<div id="ToolbarTareasObjetivos" style="width:100%; height:60px; padding:10px 0 0 10px; overflow:hidden;">
 
+    <!-- Botón Cerrar con SVG -->
     <div style="width:48px; height:48px; float:right; margin:0 20px 0 0; cursor:pointer;" onclick="Win_Ventana_CRMObjetivos.close();">
-        <div class="ic_highlight_remove_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-        <div style="text-align:center">Cerrar</div>
+        <div style="float:left; width:36px; height:36px; margin:0 0 0 6px;">
+            <!-- SVG de Cerrar (X) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </div>
+        <div style="text-align:center; color:#dc3545; font-weight:bold;">Cerrar</div>
     </div>
 
+    <!-- Imagen tipo tercero -->
     <div style="float:left; width:50px; margin:0 5px 0 0; border-right:1px solid <?php echo $_SESSION['COLOR_LINEA'] ?>">
-		<img id="imgTipoTerceroX" src="../crm/images/<?php echo mysql_result($consul2,0,'tipo') ?>.png?v1">
-	</div>
+        <img id="imgTipoTerceroX" src="../crm/images/<?php echo mysql_result($consul2,0,'tipo') ?>.png?v1">
+    </div>
 
-	<!--<div style="float:left; width:50px; margin:0 10px 0 0 ; border-right:1px solid <?php echo $_SESSION['COLOR_LINEA'] ?>">
-		<img src="../crm/images/<?php echo mysql_result($consul2,0,'clasificacion') ?>_44.png">
-	</div>	-->
-
-	<div style="float:left; width:400px">
-		<div style="float:left; width:100%; ">
-			<div style="float:left; width:350px; font-size:14px;"><?php echo $LabelCli ?></div>
-		</div>
-	</div>
-
+    <!-- Información del cliente -->
+    <div style="float:left; width:400px;">
+        <div style="float:left; width:100%;">
+            <div style="float:left; width:350px; font-size:14px;"><?php echo $LabelCli ?></div>
+        </div>
+    </div>
 
 </div>
 
