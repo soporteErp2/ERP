@@ -1634,7 +1634,7 @@
     }
 
     //============================= FUNCION PARA BUSCAR EL DOCUMENTO CRUCE DEL COMPROBANTE ========================================//
-    function ventanaBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>(cont){
+    function ventanaBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>(cont,tipoDocumento){
 
         var myalto  = Ext.getBody().getHeight()
         ,   myancho = Ext.getBody().getWidth();
@@ -1681,7 +1681,7 @@
                                     contenedor           : "contenedor_buscar_documento_cruce_<?php echo $opcGrillaContable; ?>",
                                     opc                  : '<?php echo $opcGrillaContable; ?>',
                                     cont                 : cont,
-                                    documento_cruce      : 'CE',
+                                    documento_cruce      : tipoDocumento,
                                     carpeta              : "facturacion_cuentas/",
                                     tablaPrincipal       : "<?php echo $tablaPrincipal; ?>",
                                     idTablaPrincipal     : "id_factura_compra",
