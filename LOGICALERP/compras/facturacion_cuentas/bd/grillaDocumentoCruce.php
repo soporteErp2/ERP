@@ -51,6 +51,9 @@
 	 	else{
 	 		$where='AND id=0';
 	 	}
+	 }else{
+		$tablaBuscar = 'compras_facturas';
+
 	 }
 
 
