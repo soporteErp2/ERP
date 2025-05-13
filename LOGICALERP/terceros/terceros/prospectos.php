@@ -68,7 +68,7 @@
 			$grilla->FColumnaGeneralAncho	= 380;
 			$grilla->FColumnaGeneralAlto	= 25;
 			$grilla->FColumnaLabelAncho		= 150;
-			$grilla->FColumnaFieldAncho		= 150;
+			$grilla->FColumnaFieldAncho		= 230;
 
 		//CONFIGURACION LAS INSERT UPDATE
 			//$grilla->LastInsert		= 'sinc_tercero_erp(id_registro,"false");';
@@ -105,17 +105,13 @@
 
 		//DATOS DE TERCEROS
 			$grilla->AddSeparator('Datos Tercero');
-			//$grilla->AddTextField('','crm_asignado',0,'true','true',$_SESSION['IDUSUARIO']);
-			$grilla->AddTextField('Identificacion','id_tipo_identificacion',200,'true','true','0');
-			//$grilla->AddComboBox ('Tipo Identificacion','id_tipo_identificacion',200,'false','true','tipo_documento,id,nombre,true');
-			//$grilla->AddTextField('Identificacion','numero_identificacion',100,'false','false','false','true');
-			//$grilla->AddValidation('numero_identificacion','unico_global');
-			//$grilla->AddValidation('numero_identificacion','numero');
-			//$grilla->AddTextField('Ciudad de Identificacion','ciudad_identificacion',200,'false','false');
+			$grilla->AddComboBox ('Tipo de Documento','id_tipo_identificacion',200,'true','true','tipo_documento,id,nombre,true','activo = 1');
+			$grilla->AddTextField('Numero de documento','numero_identificacion',150,'true','false','false','true');
+      		$grilla->AddValidation('numero_identificacion','unico_global');
 			$grilla->AddTextField('Nombre Comercial','nombre_comercial',200,'true','false');
 			$grilla->AddTextField('Nombre o Razon Social','nombre',200,'false','false');
-      $grilla->AddValidation('nombre','mayuscula');
-      $grilla->AddValidation('nombre_comercial','mayuscula');
+      		$grilla->AddValidation('nombre','mayuscula');
+      		$grilla->AddValidation('nombre_comercial','mayuscula');
 
 		///DIRECCION PRINCIPAL
 			$grilla->AddSeparator('Direccion Principal');
