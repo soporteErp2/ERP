@@ -48,19 +48,12 @@
 			$grilla->AddFilter('Ejecutivo Comercial','IdFuncionarioAsignado','FuncionarioAsignado');
 			$grilla->AddFilter('Ciudad','id_ciudad','ciudad');
 			$grilla->AddRowImage('','<center><img src="../terceros/images/prioridades/prioridad_[prioridad_prospecto].png" style="" width="16" height="16" onclick=""></center>','32','');
-			$grilla->AddRow('','nombre_comercial',200);
 			$grilla->AddRow('Nombre Comercial','nombre_comercial',200);
-			$grilla->AddRow('Telefono 1','telefono1',100);
-			$grilla->AddRow('Telefono 2','telefono2',100);
-			$grilla->AddRow('Celular 1','celular1',100);
-			$grilla->AddRow('Celular 2','celular2',100);
+			$grilla->AddRow('Tipo doc.','tipo_identificacion',55);
+			$grilla->AddRow('Identificacion','numero_identificacion',90);
+			$grilla->AddRow('Telefono','telefono1',80);
+			$grilla->AddRow('Celular','celular1',80);
 			$grilla->AddRow('Correo Electronico','email',180);
-			$grilla->AddRow('Direccion','direccion',180);
-			$grilla->AddRow('Ciudad','ciudad',130);
-			$grilla->AddRow('Estado/Departamento','departamento',150);
-			$grilla->AddRowImage('Pais','<img src="../../temas/clasico/images/Banderas/[iso2].png" width="16" height="12">&nbsp;&nbsp;[pais]',130);
-			$grilla->AddRowImage('Contactos','<center><div style="float:left; margin: 0 0 0 7px"><img src="../../temas/clasico/images/BotonesTabs/contactos16.png?" style="cursor:pointer" width="16" height="16" onclick="TituloSubVentanaTerceros([id],\'contactos\');"></div><div style="float:left">&nbsp;([contactos])</div></center>',60);
-			$grilla->AddRow('Fecha Creacion','fecha_creacion',100);
 			$grilla->AddRow('Funcionario Asignado','FuncionarioAsignado',180);
 
 		//CONFIGURACION FORMULARIO
