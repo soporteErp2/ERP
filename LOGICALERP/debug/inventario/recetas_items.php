@@ -1,9 +1,9 @@
 <?php
 //Informe de items con recetas ordenado por familias
 
-include("../../../../configuracion/conectar.php");
-include("../../../../configuracion/define_variables.php");
-include('../../../../misc/excel/Classes/PHPExcel.php');
+include("../../../configuracion/conectar.php");
+include("../../../configuracion/define_variables.php");
+include('../../../misc/excel/Classes/PHPExcel.php');
 // Crear el objeto de Excel
 $objPHPExcel = new PHPExcel();
 header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
