@@ -59,6 +59,7 @@
 		,	totalizadoBC               = document.getElementById('totalizadoBC').value
 		,	separador_miles            = document.getElementById('separador_milesBC').value
 		,	separador_decimales        = document.getElementById('separador_decimalesBC').value
+		,	cuentas_cierre        	   = document.getElementById('incluir_cuentas_cierre_BC').value
 		,	arraytercerosJSON          = Array()
 		,	i                          = 0
 
@@ -99,7 +100,7 @@
 									totalizadoBC			 			   : totalizadoBC,
 									separador_miles 		   		 : separador_miles,
 									separador_decimales 	   	 : separador_decimales,
-									cuentas_cierre             : document.getElementById('incluir_cuentas_cierre_BC').value,
+									cuentas_cierre             : cuentas_cierre,
 								}
 		});
 
@@ -112,6 +113,7 @@
 		localStorage.totalizadoBC                                  = totalizadoBC;
 		localStorage.separador_milesBC                             = separador_miles;
 		localStorage.separador_decimalesBC                         = separador_decimales;
+		localStorage.cuentas_cierre             				   = cuentas_cierre,
 
 		document.getElementById("RecibidorInforme_contabilidad_balance_comprobacion").style.padding = 20;
 	}
@@ -128,8 +130,9 @@
 		,	totalizadoBC               = document.getElementById('totalizadoBC').value
 		,	separador_miles            = document.getElementById('separador_milesBC').value
 		,	separador_decimales        = document.getElementById('separador_decimalesBC').value
-		,	arraytercerosJSON 				 = Array()
-		,	i                 				 = 0
+		,	cuentas_cierre		       = document.getElementById('incluir_cuentas_cierre_BC').value
+		,	arraytercerosJSON 		   = Array()
+		,	i                 		   = 0
 
 		if(cuenta_inicial.value != "" && cuenta_final.value != ""){
 			whereRangoCuentas = ' AND (CAST(codigo_cuenta AS CHAR) >= "'+cuenta_inicial.value+'" AND CAST(codigo_cuenta AS CHAR) <= "'+cuenta_final.value+'" OR codigo_cuenta LIKE "'+cuenta_inicial.value+'{.}" OR codigo_cuenta LIKE "'+cuenta_final.value+'{.}")';
@@ -160,6 +163,7 @@
 							+"&totalizadoBC="+totalizadoBC
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
+							+"&cuentas_cierre="+cuentas_cierre
 
 		window.open("../informes/informes/contabilidad/contabilidad_balance_comprobacion_Result.php?"+data);
 	}
@@ -227,6 +231,10 @@
 		if(typeof(localStorage.separador_decimalesBC))
 			if(localStorage.separador_decimalesBC != "")
 				separador_decimales = localStorage.separador_decimalesBC
+		
+		if(typeof(localStorage.cuentas_cierre))
+			if(localStorage.cuentas_cierre != "")
+				cuentas_cierre = localStorage.cuentas_cierre
 
 		var data = tipo_documento+"=true"
 							+"&nombre_informe=Balance de Comprobacion"
@@ -239,6 +247,8 @@
 							+"&totalizadoBC="+totalizadoBC
 							+"&separador_miles="+separador_miles
 							+"&separador_decimales="+separador_decimales
+							+"&cuentas_cierre="+cuentas_cierre
+
 
 		window.open("../informes/informes/contabilidad/contabilidad_balance_comprobacion_Result.php?" + data);
 	}
