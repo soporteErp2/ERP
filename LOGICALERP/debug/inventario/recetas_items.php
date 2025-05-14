@@ -20,22 +20,33 @@ $gruposItems = array();
 
 if ($resultSqlGrupos) {
     while ($row = mysql_fetch_assoc($resultSqlGrupos)) {
+        // Reemplazar espacios por guiones bajos en el nombre
+        $row['nombre'] = preg_replace('/\s+/', '_', $row['nombre']);
         $gruposItems[] = $row;
     }
 } else {
     // Manejo de error         
     echo "Error en la consulta de grupos: " . mysql_error($link);
-
 }
 
-
 foreach ($gruposItems as $grupo) {
+    $sqlCount = "SELECT COUNT(*) AS count FROM items_recetas AS IR INNER JOIN items AS I ON I.id = IR.id_item AND I.id_grupo = ".$grupo['id']."
+                         WHERE
+                            I.activo = 1 
+                            AND IR.activo = 1";
+    $resultCount = mysql_query($sqlCount, $link);
+    $count = mysql_result($resultCount, 0, 'count');
+
+    if($count == 0){
+        continue;
+    }
     // Crear una nueva hoja en el libro de Excel
     $objPHPExcel->createSheet($sheetIndex);
     $objPHPExcel->setActiveSheetIndex($sheetIndex);
-    $title = ($grupo['nombre']);
+    $title = (strlen($grupo['nombre'])>=28)? 
+        substr($grupo['nombre'],0,27)."..." :
+        $grupo['nombre'];
     $objPHPExcel->getActiveSheet()->setTitle(utf8_encode($title));
-
     // Escribir encabezados
     $objPHPExcel->getActiveSheet()->setCellValue('A1', 'CODIGO');
     $objPHPExcel->getActiveSheet()->setCellValue('B1', 'NOMBRE');
@@ -68,7 +79,7 @@ foreach ($gruposItems as $grupo) {
         $objPHPExcel->getActiveSheet()->setCellValue('B' . $rowNumber, utf8_encode($row['nombre_item']));
         $objPHPExcel->getActiveSheet()->setCellValue('C' . $rowNumber, utf8_encode($row['codigo_item_materia_prima']));
         $objPHPExcel->getActiveSheet()->setCellValue('D' . $rowNumber, utf8_encode($row['nombre_item_materia_prima']));
-        $objPHPExcel->getActiveSheet()->setCellValue('E' . $rowNumber, utf8_encode($row['cantida_item_materia_prima']));
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $rowNumber, utf8_encode($row['cantidad_item_materia_prima']));
         $rowNumber++;
     }
 
