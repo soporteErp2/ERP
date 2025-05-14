@@ -53,7 +53,6 @@
 	 	}
 	 }else{
 		$tablaBuscar = 'compras_facturas';
-
 	 }
 
 
@@ -86,13 +85,24 @@
 	 	if ($tipo_documento_cruce == 'CE') {
 	 		$grilla->CamposBusqueda		= 'nit_tercero,tercero,consecutivo,fecha_comprobante';
 
-	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center><div id="id_tercero_[id]" style="display:none;">[id_tercero]</div><div id="cuenta_pago_[id]" style="display:none;" >[cuenta_pago]</div><div id="total_factura_sin_abono_[id]" style="display:none;" >[total_factura_sin_abono]</div>','40');
+	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center><div id="id_tercero_[id]" style="display:none;">[id_tercero]</div><div id="cuenta_pago_[id]" style="display:none;" >[cuenta_pago]</div><div id="total_factura_sin_abono_[id]" style="display:none;" >[total_factura_sin_abono]</div>','50');
 			$grilla->AddRow('Consecutivo','consecutivo',80);
 			$grilla->AddRow('Nit','nit_tercero',100);
 			$grilla->AddRow('Tercero','tercero',200);
 			// $grilla->AddRow('Saldo','total_factura_sin_abono',120);
 			$grilla->AddRow('Fecha','fecha_comprobante',120);
 
+		}else{
+			$grilla->CamposBusqueda		= 'nit,proveedor,consecutivo';
+
+	 		$grilla->AddRowImage('Estado','<center><img src="img/estado_doc/[estado].png" style="cursor:pointer" width="16" height="16" id="imgEstadoFacturaCompra_[id]" /></center><div id="id_tercero_[id]" style="display:none;">[id_tercero]</div><div id="cuenta_pago_[id]" style="display:none;" >[cuenta_pago]</div><div id="total_factura_sin_abono_[id]" style="display:none;" >[total_factura_sin_abono]</div>','50');
+			$grilla->AddRow('Consecutivo','consecutivo',80);
+			$grilla->AddRow('prefijo','prefijo_factura',80);
+			$grilla->AddRow('numero','numero_factura',80);
+			$grilla->AddRow('Nit','nit',100);
+			$grilla->AddRow('Tercero','proveedor',200);
+			// $grilla->AddRow('Saldo','total_factura_sin_abono',120);
+			$grilla->AddRow('Fecha','fecha_inicio',120);
 		}
 
 		//CONFIGURACION FORMULARIO
