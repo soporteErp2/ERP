@@ -7,24 +7,24 @@ include('../../../misc/excel/Classes/PHPExcel.php');
 // Crear el objeto de Excel
 $objPHPExcel = new PHPExcel();
 header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
-header('Content-Disposition: attachment;filename="Informe_de_autorizadores.xls"');
+header('Content-Disposition: attachment;filename="items_recetas.xls"');
 header('Cache-Control: max-age=0');
 
 $sheetIndex = 0;
 
 // Obtener la información de las familias 
 $sqlGrupos = "SELECT id, nombre FROM items_familia_grupo WHERE activo = 1";
-$resultSqlGrupos = $mysql->query($sqlGrupos, $mysql->link);
+$resultSqlGrupos = mysql_query($sqlGrupos, $link);
 
 $gruposItems = array();
 
 if ($resultSqlGrupos) {
-    while ($row = $mysql->fetch_assoc($resultSqlGrupos)) {
+    while ($row = mysql_fetch_assoc($resultSqlGrupos)) {
         $gruposItems[] = $row;
     }
 } else {
-    // Manejo de error (opcional)        
-    echo "Error en la consulta: " . $mysql->error();
+    // Manejo de error         
+    echo "Error en la consulta de grupos: " . mysql_error($link);
 
 }
 
@@ -55,15 +55,15 @@ foreach ($gruposItems as $grupo) {
                             I.activo = 1 
                             AND IR.activo = 1";
 
-    $resultRecetas = $mysql->query($consultaRecetas, $mysql->link);
+    $resultRecetas = mysql_query($consultaRecetas, $link);
 
     if (!$resultRecetas) {
-        echo "Error en la consulta: " . mysql_error($newLink);
+        echo "Error en la consulta de recetas: " . mysql_error($link);
         continue;
     }
 
     $rowNumber = 2; // Empezar desde la fila 2
-    while ($row = mysql_fetch_array($consul)) {
+    while ($row = mysql_fetch_array($resultRecetas)) {
         $objPHPExcel->getActiveSheet()->setCellValue('A' . $rowNumber, utf8_encode($row['codigo_item']));
         $objPHPExcel->getActiveSheet()->setCellValue('B' . $rowNumber, utf8_encode($row['nombre_item']));
         $objPHPExcel->getActiveSheet()->setCellValue('C' . $rowNumber, utf8_encode($row['codigo_item_materia_prima']));
