@@ -48,7 +48,7 @@ foreach ($gruposItems as $grupo) {
                             IR.nombre_item,
                             IR.codigo_item_materia_prima,
                             IR.nombre_item_materia_prima,
-                            IR.cantida_item_materia_prima
+                            IR.cantidad_item_materia_prima
                          FROM
                             items_recetas AS IR INNER JOIN items AS I ON I.id = IR.id_item AND I.id_grupo = ".$grupo['id']."
                          WHERE
