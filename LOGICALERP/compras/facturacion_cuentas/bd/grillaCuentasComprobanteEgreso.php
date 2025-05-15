@@ -112,11 +112,18 @@ if(!isset($opcion)){  ?>
 			cont = <?php echo $cont; ?>;
 		}
 
-		function Editar_comprobante_egreso_cuentas(id){
+		function Editar_<?php echo $tabla_buscar; ?>(id){
+			let tablaBuscar = '<?php echo $tabla_buscar; ?>';
 			(cuenta_pago = document.getElementById('cuenta_pago_<?php echo $id_documento; ?>').innerHTML) * 1;
-			debito  = document.getElementById('div_comprobante_egreso_cuentas_debito_'+id).innerHTML;
-			credito = document.getElementById('div_comprobante_egreso_cuentas_credito_'+id).innerHTML;
+			debito  = document.getElementById('div_'+tablaBuscar+'_<?php echo $debe_campo; ?>_'+id).innerHTML;
+			credito = document.getElementById('div_'+tablaBuscar+'_<?php echo $haber_campo; ?>_'+id).innerHTML;
+			
+			if('<?php echo $tipo_documento_cruce; ?>' == 'CE'){
 			saldo_pendiente = document.getElementById('div_comprobante_egreso_cuentas_saldo_pendiente_'+id).innerHTML;
+			}else{
+			saldo_pendiente = credito-debito;
+			}
+
 			total_factura_sin_abono = saldo_pendiente;
 			arrayCuentaPago[<?php echo $cont; ?>] = cuenta_pago;
 			arrayTemp = new Array();
@@ -142,7 +149,7 @@ if(!isset($opcion)){  ?>
 
     		// DATOS DE LA CUENTA PARA INSERTAR
 			var id_cuenta          = document.getElementById('id_cuenta_'+id).value;
-			var cuenta             = document.getElementById('div_comprobante_egreso_cuentas_cuenta_'+id).innerHTML;
+			var cuenta             = document.getElementById('div_'+tablaBuscar+'__'+id).innerHTML;
 			var descripcion_cuenta = document.getElementById('nombre_cuenta_'+id).value;
 
 			var tercero    = (document.getElementById('tercero_'+id).value==0)? '<?php echo $tercero ?>' : document.getElementById('tercero_'+id).value ;
