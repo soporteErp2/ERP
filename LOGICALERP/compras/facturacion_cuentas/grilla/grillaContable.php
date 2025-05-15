@@ -1714,8 +1714,8 @@
         //CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN DOCUMENTO CRUCE
         document.getElementById('imgBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('src','img/buscar20.png');
         document.getElementById('imgBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('title','Buscar Documento Cruce');
-        document.getElementById('imgBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('onclick',"ventanaBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>("+cont+")");
-
+        typeDoc = document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).value
+        document.getElementById('imgBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('onclick',"ventanaBuscarDocumentoCruce<?php echo $opcGrillaContable; ?>("+cont+",'"+typeDoc+"')");
         var idInsert=document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_'+cont).value;
 
         if (idInsert>0) {
