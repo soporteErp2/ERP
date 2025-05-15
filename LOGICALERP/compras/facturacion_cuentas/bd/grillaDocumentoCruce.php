@@ -148,10 +148,10 @@ if(!isset($opcion)){  ?>
 	<script>
 
 		function Editar_<?php echo $opcGrillaContable; ?>(id){
-
-
+			let tipo_documento_cruce = '<?php echo $tipo_documento_cruce; ?>'
+			let terceroElement = (tipo_documento_cruce == 'FC')? "_proveedor_" : "_tercero_"
 			var consecutivo = document.getElementById('div_<?php echo $opcGrillaContable; ?>_consecutivo_'+id).innerHTML;
-			var tercero     = document.getElementById('div_<?php echo $opcGrillaContable; ?>_tercero_'+id).innerHTML;
+			var tercero     = document.getElementById('div_<?php echo $opcGrillaContable; ?>'+terceroElement+id).innerHTML;
 			var id_tercero  = document.getElementById('id_tercero_'+id).innerHTML;
 
 			var myalto  = Ext.getBody().getHeight();
