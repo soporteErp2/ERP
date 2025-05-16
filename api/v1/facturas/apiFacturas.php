@@ -1947,7 +1947,7 @@
 							VF.codigo_centro_costos,
 							VF.centro_costos,
 							I.cuenta_venta AS cuenta_iva,
-							I.valor as tipo_impuesto
+							I.codigo_impuesto_dian as tipo_impuesto
 						FROM ventas_facturas_inventario AS VF LEFT JOIN impuestos AS I ON(
 								I.activo=1
 								AND I.id=VF.id_impuesto
