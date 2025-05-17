@@ -53,7 +53,7 @@
 	 		$grilla->AddFilter('Estado de la Factura','estado','estado');
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 			if($tipo_documento_cruce == 'FC'){
-	 		$grilla->AddRowImage('Tercero','[tercero]<input type="hidden" id="id_tercero_[id]" value="[id_tercero]"><input type="hidden" id="tercero_[id]" value="[tercero]"><input type="hidden" id="id_cuenta_[id]" value="[id_puc]"> <input type="hidden" id="nombre_cuenta_[id]" value="[cuenta]"> ','250');
+	 		$grilla->AddRowImage('Tercero','[tercero]<input type="hidden" id="id_tercero_[id]" value="[id_tercero]"><input type="hidden" id="tercero_[id]" value="[tercero]"><input type="hidden" id="id_cuenta_[id]" value="[id_cuenta]"> <input type="hidden" id="nombre_cuenta_[id]" value="[cuenta]"> ','250');
 			$grilla->AddRow('Cuenta','codigo_cuenta',100);
 			$grilla->AddRow('Descripcion','cuenta',200);
 			$grilla->AddRow('Debito','debe',80);
@@ -114,14 +114,17 @@ if(!isset($opcion)){  ?>
 
 		function Editar_<?php echo $tabla_buscar; ?>(id){
 			let tablaBuscar = '<?php echo $tabla_buscar; ?>';
+			let cuenta_campo = "";
 			(cuenta_pago = document.getElementById('cuenta_pago_<?php echo $id_documento; ?>').innerHTML) * 1;
 			debito  = document.getElementById('div_'+tablaBuscar+'_<?php echo $debe_campo; ?>_'+id).innerHTML;
 			credito = document.getElementById('div_'+tablaBuscar+'_<?php echo $haber_campo; ?>_'+id).innerHTML;
 			
 			if('<?php echo $tipo_documento_cruce; ?>' == 'CE'){
 			saldo_pendiente = document.getElementById('div_comprobante_egreso_cuentas_saldo_pendiente_'+id).innerHTML;
+			cuenta_campo = "cuenta"
 			}else{
 			saldo_pendiente = credito-debito;
+			cuenta_campo = "codigo_cuenta"
 			}
 
 			total_factura_sin_abono = saldo_pendiente;
@@ -149,7 +152,7 @@ if(!isset($opcion)){  ?>
 
     		// DATOS DE LA CUENTA PARA INSERTAR
 			var id_cuenta          = document.getElementById('id_cuenta_'+id).value;
-			var cuenta             = document.getElementById('div_'+tablaBuscar+'__'+id).innerHTML;
+			var cuenta             = document.getElementById('div_'+tablaBuscar+'_'+cuenta_campo+'_'+id).innerHTML;
 			var descripcion_cuenta = document.getElementById('nombre_cuenta_'+id).value;
 
 			var tercero    = (document.getElementById('tercero_'+id).value==0)? '<?php echo $tercero ?>' : document.getElementById('tercero_'+id).value ;
