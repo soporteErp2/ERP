@@ -179,6 +179,9 @@ if(!isset($opcion)){  ?>
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('title','Eliminar Tercero');
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
 
+			
+  		    document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly = true;
+	        document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly  = true;
 			Win_Ventana_cuentas_documento_cruce.close();
     		Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
 
