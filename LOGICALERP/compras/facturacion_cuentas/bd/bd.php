@@ -1004,22 +1004,37 @@
 			}
 
 			// ACTUALIZAR EL VALOR DE LA CUENTA POR PAGAR
-			if ($forma_pago!='Contado') {
-				$sql="UPDATE compras_facturas SET total_factura=$saldoCuentaPorPagar,total_factura_sin_abono=$saldoCuentaPorPagar WHERE activo=1 AND id_empresa='$idEmpresa' AND id='$idDocumento' ";
-				$query=mysql_query($sql,$link);
-				if (!$query) {
-					$sqlDelete   = "DELETE FROM asientos_colgaap WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='FC'";
-					$queryDelete = mysql_query($sqlDelete,$link);
-					$sqlDelete   = "DELETE FROM asientos_niif WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='FC'";
-					$queryDelete = mysql_query($sqlDelete,$link);
-
-					echo '<script>
-							alert("Error!\nNo se actualizo el valor para el campo total factura\nIntentelo de nuevo si el problema continua comuniquese con el administrador del sistema");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
-					exit;
-				}
+			$totalSinAbono = ($forma_pago != 'Contado') ? $saldoCuentaPorPagar : 0;
+					
+			$sql = "UPDATE compras_facturas 
+			        SET total_factura = $saldoCuentaPorPagar, 
+			            total_factura_sin_abono = $totalSinAbono 
+			        WHERE activo = 1 
+			          AND id_empresa = '$idEmpresa' 
+			          AND id = '$idDocumento'";
+			
+			$query = mysql_query($sql, $link);
+					
+			if (!$query) {
+			    $sqlDelete = "DELETE FROM asientos_colgaap 
+			                  WHERE id_documento = '$idDocumento' 
+			                    AND id_empresa = '$idEmpresa' 
+			                    AND tipo_documento = 'FC'";
+			    mysql_query($sqlDelete, $link);
+			
+			    $sqlDelete = "DELETE FROM asientos_niif 
+			                  WHERE id_documento = '$idDocumento' 
+			                    AND id_empresa = '$idEmpresa' 
+			                    AND tipo_documento = 'FC'";
+			    mysql_query($sqlDelete, $link);
+			
+			    echo '<script>
+			            alert("Error!\nNo se actualizó el valor para el campo total factura.\nInténtelo de nuevo. Si el problema continúa, comuníquese con el administrador del sistema.");
+			            document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+			          </script>';
+			    exit;
 			}
+
 		}
 
 		else if ($accion=='eliminar') {
