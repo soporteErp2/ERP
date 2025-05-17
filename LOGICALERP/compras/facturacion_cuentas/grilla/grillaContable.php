@@ -1749,9 +1749,9 @@
 
     //============================= FUNCION QUE SE LLAMA CUANDO SE CANBIA EL SELECT DEL DOCUMENTO CRUCE ===================================//
     function cambiaDocumentoCruce(typeDoc,cont,opc) {
-
-        document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly = true;
-        document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly  = true;
+        document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly = false;
+        document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly  = false;
+        
         if (typeDoc=='') {
             document.getElementById('iconBuscarArticulo_'+cont).style.display = 'none';
             document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+cont).setAttribute('style','width:100%;border:none;');
