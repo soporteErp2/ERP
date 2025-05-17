@@ -790,7 +790,7 @@
 
 				$id_tercero_nota = ($row['id_tercero']=='0' || $row['id_tercero']=='')? $id_tercero : $row['id_tercero'];
 
-				if ($row['tipo_documento_cruce']=='' || $row['tipo_documento_cruce'] == 'FC') {
+				if ($row['tipo_documento_cruce']=='' || $row['id_documento_cruce'] == 0) {
 					$row['tipo_documento_cruce'] = 'FC';
 					$row['id_documento_cruce']   = $idDocumento;
 					$documento_cruce = ($prefijo_factura != '')? $prefijo_factura.' '.$numero_factura: $numero_factura;
