@@ -73,6 +73,10 @@
 			return mysql_fetch_object($query);
 		}
 
+		public function real_escape_string($value){
+			return mysql_real_escape_string($value);
+		}
+
 		public function fetch_row($query){
 			return mysql_fetch_row($query);
 		}
