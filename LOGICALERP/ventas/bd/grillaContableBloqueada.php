@@ -1007,4 +1007,48 @@
       });
     }
   }
+
+    function ventanaConfigurarInformeRemisionVenta(){
+
+		Win_Ventana_configurar_separador_remision_venta = new Ext.Window({
+		    width       : 500,
+		    height      : 250,
+		    id          : 'Win_Ventana_configurar_separador_remision_venta',
+		    title       : 'Aplicar separador',
+		    modal       : true,
+		    autoScroll  : false,
+		    closable    : true,
+		    autoDestroy : true,
+		    autoLoad    :
+		    {
+		        url     : '../ventas/bd/wizard_remision_venta_xls.php',
+		        scripts : true,
+		        nocache : true,
+		        params  :
+		        {
+		            opc : 'cuerpoVentanaConfiguracionRemisionVenta',
+		        }
+		    }
+		}).show();
+	}
+
+    function imprimirRVXls (){
+        const selectDecimales	  = document.getElementById('separadorDecimalesRV').value,
+			  selectMiles 		  = document.getElementById('separadorMilesRV').value
+        window.open("../ventas/bd/imprimirRemisionVentaXls.php?id=<?php echo $id_factura_venta; ?>&separador_decimales="+selectDecimales+
+                                                                        "&separador_miles="+selectMiles);
+    }
+    
+	function validarSelectRV(separadorId){
+		const selectDecimales	  = document.getElementById('separadorDecimalesRV'),
+			  selectMiles 		  = document.getElementById('separadorMilesRV')
+        
+		if(selectDecimales.value === selectMiles.value && separadorId === 'decimales'){
+			selectMiles.value = (selectMiles.value === ',')? "." : ",";
+		}
+		else if(selectDecimales.value === selectMiles.value){
+			selectDecimales.value = (selectDecimales.value === ',')? "." : ",";
+		}
+	}
+
 </script>
