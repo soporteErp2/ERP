@@ -33,6 +33,7 @@ if(!$_GET['autorizado']){
   <script src="../../misc/jquery-editable-select/jquery.js" type="text/javascript"></script>
   <script src="../../misc/jquery-editable-select/jquery.editable-select.js" type="text/javascript"></script>
   <link rel="stylesheet" href="../../misc/jquery-editable-select/jquery.editable-select.css" type="text/css" />-->
+  <link rel="stylesheet" href="../../assets/css/tailwind.css">
 
   <!-- // <script type="text/javascript" src="cssrefresh/cssrefresh.js"></script> -->
 
