@@ -205,7 +205,7 @@
 		var MyParent = 'bodyTablaBoletas';
 		var valor    = document.getElementById('inputBuscarGrillaManual').value;
 		var filtro   = (valor!='')?'AND ('+nit+' LIKE "%'+valor+'%" OR <?php echo $tercero; ?> LIKE "%'+valor+'%")' : '';
-		if('<?php echo $server_name;?>'=='localhost'){var url  = '/logicalerp/LOGICALERP/informes/informes/contabilidad/bd.php'; }
+		if('<?php echo $server_name;?>'=='localhost'){var url  = '/ERP/LOGICALERP/informes/informes/contabilidad/bd.php'; }
 		else{var url  = '/LOGICALERP/informes/informes/contabilidad/bd.php';}
 		if(accion=='first'){
 			var pagina = 1;
@@ -338,7 +338,7 @@
 		var MyParent = 'bodyTablaBoletas';
 		var valor    = document.getElementById('inputBuscarGrillaManual').value;
 		var filtro   = (valor!='')?'AND ('+nit+' LIKE "%'+valor+'%" OR <?php echo $tercero; ?> LIKE "%'+valor+'%")' : '';
-		if('<?php echo $server_name;?>'=='localhost'){var url  = '/logicalerp/LOGICALERP/informes/informes/contabilidad/bd.php'; }
+		if('<?php echo $server_name;?>'=='localhost'){var url  = '/ERP/LOGICALERP/informes/informes/contabilidad/bd.php'; }
 		else{var url  = '/LOGICALERP/informes/informes/contabilidad/bd.php';}
 		if ('<?php echo $opcGrillaContable; ?>'=='nomina') {
 			url = '/LOGICALERP/informes/informes/informes_ventas/bd.php';
@@ -390,7 +390,7 @@
 		var MyParent     = 'bodyTablaBoletas';
 		var limit        = (typeof(arrayLimitGrilla<?php echo $opcGrillaContable; ?>[PaginaActual<?php echo $opcGrillaContable; ?>])!="undefined")? arrayLimitGrilla<?php echo $opcGrillaContable; ?>[PaginaActual<?php echo $opcGrillaContable; ?>] : '0,<?php echo $limit ?>';
 		var PaginaActual = (typeof(arrayLimitGrilla<?php echo $opcGrillaContable; ?>[PaginaActual<?php echo $opcGrillaContable; ?>])!="undefined")?PaginaActual<?php echo $opcGrillaContable; ?> : '1' ;
-		if('<?php echo $server_name;?>'=='localhost'){var url  = '/logicalerp/LOGICALERP/informes/informes/contabilidad/bd.php'; }
+		if('<?php echo $server_name;?>'=='localhost'){var url  = '/ERP/LOGICALERP/informes/informes/contabilidad/bd.php'; }
 		else{var url  = '/LOGICALERP/informes/informes/contabilidad/bd.php';}
 		Ext.get(MyParent).load({
 			url		: url,
