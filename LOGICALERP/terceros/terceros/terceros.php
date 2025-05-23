@@ -147,6 +147,9 @@
 			$grilla->AddTextField('Identificacion','numero_identificacion',150,'true','false','false','true');
 
 			$grilla->AddValidation('numero_identificacion','unico_global','id_empresa="'.$id_empresa.'"');
+			$grilla->AddValidation("numero_identificacion", "trim");
+			$grilla->AddValidation("numero_identificacion", "blankspaces");
+
 			// $grilla->AddValidation('numero_identificacion','numero');
 
 			$grilla->AddTextField('Ciudad de Identificacion','ciudad_identificacion',200,'false','false');
