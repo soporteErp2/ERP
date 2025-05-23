@@ -169,13 +169,13 @@
                                 >
                             </div>
                         </div>
-                            <a
+                            <!--  <a
                                 class="text-body-20-semibold text-brand-blue100 underline mt-[-10px] w-fit place-self-end"
                                 href="#">Forgot your Password?</a>
                             <label class="text-body-20-regular text-neutral-darkGray flex items-center gap-3 w-fit">
                                 <input type="checkbox" name="stayLogged" class="my-5" value="false">
                                 Recordar datos
-                            </label>
+                            </label>  -->
                             <!-- <button class="max-w-[367px] px-[16px] py-2 h-[48px] text-subtitle-10 rounded-[12px] grid place-content-center bg-brand-orange600 transition-all text-white bg-neutral-lightGray pointer-events-none" type="submit"> -->
                            <button id="btn_submit" class=" cursor-pointer p-2 rounded-lg flex items-center gap-5 place-content-center text-subtitle-10 bg-orange-dark hover:bg-orange-light text-white text-xl">
                                 Continue 
