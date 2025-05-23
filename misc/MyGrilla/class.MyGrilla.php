@@ -267,29 +267,26 @@ class MyGrilla {
 	//minuscula
 	//mayuscula
 
-	public function AddValidation($campo,$validate,$sql=''){
-		//if(is_array($validate)){
-
-		//}else{
-			$this->Validaciones[$this->CuantosValidations]           = $validate;
-			$this->ValidacionesCampos[$this->CuantosValidations]     = $campo;
-			//$this->TextValidacionesCampos[$this->CuantosValidations] = $textValidate;
-			$this->CuantosValidations++;
-
-            if($validate == 'unico_global'){
-				$this->ValidacionGlobal      = 'true';
-				$this->ValidacionGlobalField = $campo;
-
-				if($sql!=''){ $sql = ' AND '.$sql; }
-				$this->ValidacionGlobalSql   = $sql;
-            }
-            elseif($validate == 'email'){
-				$this->ValidacionEmail      = 'true';
-				$this->ValidacionEmailField = $campo;
-            }
-
-		//}
+	public function AddValidation($campo, $validate, $sql = '')
+	{
+	    $this->Validaciones[$this->CuantosValidations] = $validate;
+	    $this->ValidacionesCampos[$this->CuantosValidations] = $campo;
+	    $this->CuantosValidations++;
+	
+	    if ($validate == 'unico_global') {
+	        $this->ValidacionGlobal = 'true';
+	        $this->ValidacionGlobalField = $campo;
+	        $this->ValidacionGlobalSql = ($sql != '') ? ' AND ' . $sql : '';
+	    } elseif ($validate == 'email') {
+	        $this->ValidacionEmail = 'true';
+	        $this->ValidacionEmailField = $campo;
+	    } elseif ($validate == 'blankspaces') {
+	        $this->ValidacionBlankspaces[$campo] = true;
+	    } elseif ($validate == 'trim') {
+	        $this->ValidacionTrim[$campo] = true;
+	    }
 	}
+
 
 	/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	/*Function 	AddBotton(
@@ -735,7 +732,7 @@ class MyGrilla {
 			}
 		}
 
-		////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if($this->LaOpcion == 'false'){
 
 				$consulT = mysql_query($this->MySql);
