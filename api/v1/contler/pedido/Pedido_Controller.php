@@ -280,7 +280,7 @@ class Pedido_Controller extends ApiFunctions
             return ["status" => false, "detalle" => "respuesta no valida"];
         }
 
-        if ($huesped->error || $huesped->response[0]->guest_id) {
+        if ($huesped->error || empty($huesped->response[0])) {
             return ["status"=>false,"detalle"=>"no se encontro el huesped"];
         }
         
