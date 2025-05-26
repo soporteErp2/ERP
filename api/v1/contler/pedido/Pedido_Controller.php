@@ -276,7 +276,11 @@ class Pedido_Controller extends ApiFunctions
         $hotels_data['request_method'] = "GET";
         $huesped = json_decode($this->curlApi($hotels_data));
         
-        if ($huesped->error) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return ["status" => false, "detalle" => "respuesta no valida"];
+        }
+
+        if ($huesped->error || $huesped->response[0]->guest_id) {
             return ["status"=>false,"detalle"=>"no se encontro el huesped"];
         }
         
