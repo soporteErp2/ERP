@@ -281,8 +281,13 @@ class Pedido_Controller extends ApiFunctions
         }
 
         if ($huesped->error || empty($huesped->response[0])) {
-            return ["status"=>false,"detalle"=>"no se encontro el huesped"];
+            $detalle = $data['debug']
+                ? "no se encontró el huésped: " . json_encode($huesped)
+                : "no se encontro el huesped";
+        
+            return ["status" => false, "detalle" => $detalle];
         }
+
         
 
         // consultar si ya se agrego el huesped entonces solo agregar el item a la cuenta y generar la comanda
