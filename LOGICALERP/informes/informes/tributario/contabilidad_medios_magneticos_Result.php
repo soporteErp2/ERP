@@ -4,19 +4,23 @@
     include_once('../../../../configuracion/define_variables.php');
     header('Content-Type: text/html; charset=UTF-8');
 
+
+    $id_empresa = $_SESSION['EMPRESA'];
+    $object = new mediosMagneticos($id_formato,$fecha,$id_empresa,$mysql);
+
     if($IMPRIME_XLS=='true'){
         // header('Content-Encoding: UTF-8');
         header('Content-type: application/vnd.ms-excel;');
         header("Content-Disposition: attachment; filename=Medios_magneticos_".date("Y-m-d").".xls");
         header("Pragma: no-cache");
         header("Expires: 0");
+        $object->createFormat();
+
+    }else{
+        header('Content-Type: application/json; charset=utf-8');
+        $object->debug();
+
     }
-
-
-
-    $id_empresa = $_SESSION['EMPRESA'];
-    $object = new mediosMagneticos($id_formato,$fecha,$id_empresa,$mysql);
-    $object->createFormat();
 
 
     /**
@@ -36,7 +40,8 @@
         private $arrayColumnasFormato         = '';
         private $arrayTerceros                = '';
         private $arrayJoined                  = '';
-
+        private $sqldebug1 ="";
+        private $sqldebug2 = "";
         /**
         * @method construct
         * @param int id del formato
@@ -141,12 +146,12 @@
             $this->arrayColumnasFormato = $arrayTemp;
         }
 
-        /**
-        * @method setAsientos consultar los asientos contables
-        */
         private function setAsientos()
         {
-            $sql="SELECT
+            $arrayTemp = [];
+        
+            // Primera consulta (debe, haber por año actual)
+            $sql1 = "SELECT
                         codigo_cuenta,
                         cuenta,
                         id_tercero,
@@ -159,53 +164,23 @@
                     WHERE
                         activo=1
                         AND id_empresa=$this->id_empresa
-                        -- AND tipo_documento<>'NCC'
                         AND fecha BETWEEN '$this->fecha-01-01' AND '$this->fecha-12-31'
-                        -- AND nit_tercero = '1124484270'
                         $this->whereAsientos
-                        GROUP BY id_tercero,codigo_cuenta";
-            $query=$this->mysql->query($sql,$this->mysql->link);
-            while ($row=$this->mysql->fetch_array($query)) {
-                $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']] = array(
-                                                                                'cuenta'      => $row['cuenta'],
-                                                                                'id_tercero'  => $row['id_tercero'],
-                                                                                'nit_tercero' => $row['nit_tercero'],
-                                                                                'tercero'     => $row['tercero'],
-                                                                                'debito'      => $row['debito'],
-                                                                                'credito'     => $row['credito'],
-                                                                            );
-                $whereTemp .=($whereTemp=='')? 'id='.$row['id_tercero'] : ' OR id='.$row['id_tercero'] ;
+                    GROUP BY id_tercero, codigo_cuenta";
 
-                // RECORRER LA CONFIGURACION DE CUENTAS CONCEPTOS PARA ASIGNARLO AL ARRAY
-
-                foreach ($this->arrayConceptosCuentasFormato as $id_row => $arrayResul){
-
-                    $search_ini = strpos($row['codigo_cuenta'],$arrayResul['cuenta_inicial']);
-                    $search_end = strpos($row['codigo_cuenta'],$arrayResul['cuenta_final']);
-
-                    // echo '<br>cuenta :<b>'.$row['codigo_cuenta'].'</b>';
-                    // echo '<br>cuenta_inicial :'.$arrayResul['cuenta_inicial'].' - cuenta_final '.$arrayResul['cuenta_final']." - search_ini ".var_dump($search_ini)." - search_end ".var_dump($search_end);
-
-                    // if ($search_ini===0 || $search_end===0) {
-                    //     $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['concepto'][$id_row] = $this->arrayConceptosCuentasFormato[$id_row];
-                    // }
-
-                    if ($row['codigo_cuenta']>=$arrayResul['cuenta_inicial'] && $row['codigo_cuenta']<=$arrayResul['cuenta_final']) {
-                        $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['concepto'][$id_row] = $this->arrayConceptosCuentasFormato[$id_row];
-                    }
-
-                }
+            $this->sqldebug1 = $sql1;
+            $query1 = $this->mysql->query($sql1, $this->mysql->link);
+            while ($row = $this->mysql->fetch_array($query1)) {
+                $this->procesarFilaAsiento($row, $arrayTemp, false);
             }
-
-            // $proof = strpos('52050301','52050302');
-            // var_dump($proof);
-            $sql="SELECT
+        
+            // Segunda consulta (saldo anterior, fecha menor al año actual)
+            $sql2 = "SELECT
                         codigo_cuenta,
                         cuenta,
                         id_tercero,
                         nit_tercero,
                         tercero,
-                        SUM(debe-haber) AS saldo,
                         SUM(debe) as debito,
                         SUM(haber) as credito
                     FROM
@@ -215,44 +190,89 @@
                         AND id_empresa=$this->id_empresa
                         AND fecha < '$this->fecha-01-01'
                         $this->whereAsientos
-                        GROUP BY id_tercero,codigo_cuenta";
-            $query=$this->mysql->query($sql,$this->mysql->link);
-            while ($row=$this->mysql->fetch_array($query)) {                
-                if(is_null($arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['cuenta'])){
-                    $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']] = array(
-                                                                                 'cuenta'      => $row['cuenta'],
-                                                                                 'id_tercero'  => $row['id_tercero'],
-                                                                                 'nit_tercero' => $row['nit_tercero'],
-                                                                                 'tercero'     => $row['tercero'],
-                                                                                 'debito'      => 0,
-                                                                                 'credito'     => 0,
-                                                                                );
-                $whereTemp .=($whereTemp=='')? 'id='.$row['id_tercero'] : ' OR id='.$row['id_tercero'] ;
-                }
-                $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['saldo_anterior'] = $row['saldo'];
+                    GROUP BY id_tercero, codigo_cuenta";
+            $this->sqldebug2 = $sql2;
 
-                foreach ($this->arrayConceptosCuentasFormato as $id_row => $arrayResul){
+            $query2 = $this->mysql->query($sql2, $this->mysql->link);
+            while ($row = $this->mysql->fetch_array($query2)) {
+                $this->procesarFilaAsiento($row, $arrayTemp, true);
+            }
+        
+            $this->whereIdTerceros = $this->construirWhereIdTerceros();
+        
+            $this->arrayAsientos = $arrayTemp;
+        }
 
-                    $search_ini = strpos($row['codigo_cuenta'],$arrayResul['cuenta_inicial']);
-                    $search_end = strpos($row['codigo_cuenta'],$arrayResul['cuenta_final']);
-
-                    // echo '<br>cuenta :<b>'.$row['codigo_cuenta'].'</b>';
-                    // echo '<br>cuenta_inicial :'.$arrayResul['cuenta_inicial'].' - cuenta_final '.$arrayResul['cuenta_final']." - search_ini ".var_dump($search_ini)." - search_end ".var_dump($search_end);
-
-                    // if ($search_ini===0 || $search_end===0) {
-                    //     $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['concepto'][$id_row] = $this->arrayConceptosCuentasFormato[$id_row];
-                    // }
-
-                    if ($row['codigo_cuenta']>=$arrayResul['cuenta_inicial'] && $row['codigo_cuenta']<=$arrayResul['cuenta_final']) {
-                        $arrayTemp[$row['id_tercero']][$row['codigo_cuenta']]['concepto'][$id_row] = $this->arrayConceptosCuentasFormato[$id_row];
-                    }
-
+        /**
+         * Procesa una fila del asiento y actualiza el array temporal y lista de terceros.
+         * 
+         * @param array $row Fila de resultados SQL
+         * @param array &$arrayTemp Array temporal con la info de asientos
+         * @param bool $esSaldoAnterior Indica si la fila corresponde a saldo anterior
+         */
+        private function procesarFilaAsiento($row, &$arrayTemp, $esSaldoAnterior = false)
+        {
+            $idTercero = $row['id_tercero'];
+            $codigoCuenta = $row['codigo_cuenta'];
+        
+            // Si la cuenta no existe aún, inicializarla
+            if (!isset($arrayTemp[$idTercero][$codigoCuenta]['cuenta'])) {
+                $arrayTemp[$idTercero][$codigoCuenta] = [
+                    'cuenta'      => $row['cuenta'],
+                    'id_tercero'  => $idTercero,
+                    'nit_tercero' => $row['nit_tercero'],
+                    'tercero'     => $row['tercero'],
+                    'debito'      => $esSaldoAnterior ? 0 : $row['debito'],
+                    'credito'     => $esSaldoAnterior ? 0 : $row['credito'],
+                ];
+            } else {
+                // Si no es saldo anterior, sumamos débitos y créditos existentes (por si acaso)
+                if (!$esSaldoAnterior) {
+                    $arrayTemp[$idTercero][$codigoCuenta]['debito'] = $row['debito'];
+                    $arrayTemp[$idTercero][$codigoCuenta]['credito'] = $row['credito'];
                 }
             }
+        
+            // Si es saldo anterior, agregamos el saldo al array
+            if ($esSaldoAnterior) {
+                $arrayTemp[$idTercero][$codigoCuenta]['saldo_anterior'] = $row['debito'] - $row['credito'];
+            }
+        
+            // Asignar conceptos segun cuentas
+            $this->asignarConceptos($arrayTemp, $row);
+        }
 
-            $this->whereIdTerceros = " AND ($whereTemp)";
-            $this->arrayAsientos   = $arrayTemp;
-            //echo json_encode($this->arrayAsientos);
+        /**
+         * Asigna conceptos al array temporal según el rango de cuentas definido
+         * 
+         * @param array &$arrayTemp
+         * @param array $row
+         */
+        private function asignarConceptos(&$arrayTemp, $row)
+        {
+            $idTercero = $row['id_tercero'];
+            $codigoCuenta = $row['codigo_cuenta'];
+        
+            foreach ($this->arrayConceptosCuentasFormato as $id_row => $arrayResul) {
+                if ($codigoCuenta >= $arrayResul['cuenta_inicial'] && $codigoCuenta <= $arrayResul['cuenta_final']) {
+                    $arrayTemp[$idTercero][$codigoCuenta]['concepto'][$id_row] = $arrayResul;
+                }
+            }
+        }
+
+        private function construirWhereIdTerceros()
+        {
+            // Construye la subconsulta para filtrar terceros con movimientos en asientos_colgaap
+            $subconsulta = "
+                SELECT DISTINCT id_tercero
+                FROM asientos_colgaap
+                WHERE activo = 1
+                  AND id_empresa = $this->id_empresa
+                  AND fecha BETWEEN '$this->fecha-01-01' AND '$this->fecha-12-31'
+                  $this->whereAsientos
+            ";
+        
+            return " AND id IN ($subconsulta)";
         }
 
         /**
@@ -379,9 +399,6 @@
         */
         private function joinArrayConceptosCuentas()
         {
-            // echo print_r($this->arrayAsientos);
-            // echo html_entity_decode(json_encode($this->arrayAsientos));
-            // var_dump(json_encode($this->arrayAsientos));
             foreach ($this->arrayAsientos as $id_tercero => $arrayAsientosResul) {
                 foreach ($arrayAsientosResul as $codigo_cuenta => $arrayResul){
                     $saldo_actual = abs( (($arrayResul['saldo_anterior']+$arrayResul['debito'])-$arrayResul['credito']) );
@@ -407,29 +424,6 @@
                             $saldo = $arrayResul['saldo_anterior'];
                         }
 
-                    // echo "$codigo_cuenta = $arrayResul[debito] - $arrayResul[credito] = $saldo <br>";
-
-                        // echo $this->arrayTerceros[$arrayResul['id_tercero']]['numero_identificacion'].' - '.$this->arrayTerceros[$arrayResul['id_tercero']]['razon_social'].' saldo: '.$saldo_actual.'<br>';
-                        // if ( isset($arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']]) ) {
-                        //     $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['saldo_anterior'] += $arrayResul['saldo_anterior'];
-                        //     $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['debito']         += $arrayResul['debito'];
-                        //     $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['credito']        += $arrayResul['credito'];
-                        //     $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['saldo_actual']   += $saldo_actual;
-                        //     $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['saldo']          += $saldo;
-                        // }
-                        // else{
-                        //     $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']] = array(
-                        //                                                                                                                                 'saldo_anterior'         => $arrayResul['saldo_anterior'],
-                        //                                                                                                                                 'debito'                 => $arrayResul['debito'],
-                        //                                                                                                                                 'credito'                => $arrayResul['credito'],
-                        //                                                                                                                                 'forma_calculo'          => $arrayResulC['forma_calculo'],
-                        //                                                                                                                                 'saldo_actual'           => $saldo_actual,
-                        //                                                                                                                                 'saldo'                  => $saldo,
-                        //                                                                                                                                 'id_columna_formato'     => $arrayResulC['id_columna_formato'],
-                        //                                                                                                                                 'nombre_columna_formato' => $arrayResulC['nombre_columna_formato'],
-                        //                                                                                                                                 );
-                        // }
-
                         // 222222222
                         // CUANTIAS MENORES
 
@@ -444,7 +438,7 @@
                             }
                             else{
                                $arrayTemp[$arrayResulC['id_concepto']][444444000][$arrayResulC['id_columna_formato']]+=$saldo;
-                               echo '<script>console.log("'.$arrayResul['id_tercero'].' - '.$saldo.' cuantias menores ");</script>';
+                               //echo '<script>console.log("'.$arrayResul['id_tercero'].' - '.$saldo.' cuantias menores ");</script>';
                             }
 
                         }
@@ -472,136 +466,6 @@
             $this->setTerceros();
             $this->joinArrayConceptosCuentas();
 
-            // foreach ($this->arrayAsientos as $id_tercero => $arrayAsientosResul) {
-            //     foreach ($arrayAsientosResul as $codigo_cuenta => $arrayResul) {
-
-            //         $saldo_actual = (($arrayResul['saldo_anterior']+$arrayResul['debito'])-$arrayResul['credito']);
-
-            //         foreach ($arrayResul['concepto'] as $default_id => $arrayResulC) {
-            //             // $bodyConfig.='
-            //             //                 <tr>
-            //             //                     <td style="background-color:#c0ddf0;color:#444;font-weight:bold;">Codigo Formato</td>
-            //             //                     <td>'.$arrayResulC['codigo_formato'].'</td>
-            //             //                     <td style="background-color:#c0ddf0;color:#444;font-weight:bold;">Formato</td>
-            //             //                     <td>'.$arrayResulC['nombre_formato'].'</td>
-            //             //                     <td style="background-color:#c0ddf0;color:#444;font-weight:bold;">Concepto</td>
-            //             //                     <td>'.$arrayResulC['concepto'].'</td>
-            //             //                     <td style="background-color:#c0ddf0;color:#444;font-weight:bold;">Descripcion</td>
-            //             //                     <td>'.$arrayResulC['descripcion_concepto'].'</td>
-            //             //                     <td style="background-color:#c0ddf0;color:#444;font-weight:bold;">forma_calculo</td>
-            //             //                     <td>'.$arrayResulC['forma_calculo'].'</td>
-
-            //             //                 </tr>
-            //             //             ';
-
-            //             if ($arrayResulC['forma_calculo']=='suma_debitos') {
-            //                 $saldo = $arrayResul['debito'];
-            //             }
-            //             else if ($arrayResulC['forma_calculo']=='suma_creditos') {
-            //                 $saldo = $arrayResul['credito'];
-            //             }
-            //             else if ($arrayResulC['forma_calculo']=='debito_menos_credito') {
-            //                 $saldo = $arrayResul['debito']-$arrayResul['credito'];
-            //             }
-            //             else if ($arrayResulC['forma_calculo']=='saldo_actual') {
-            //                 $saldo = $saldo_actual;
-            //             }
-            //             else if ($arrayResulC['forma_calculo']=='saldo_inicial') {
-            //                 $saldo = $arrayResul['saldo_anterior'];
-            //             }
-
-            //             if ( isset($arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']]) ) {
-            //                 $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['saldo_anterior'] += $arrayResul['saldo_anterior'];
-            //                 $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['debito']         += $arrayResul['debito'];
-            //                 $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['credito']        += $arrayResul['credito'];
-            //                 $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['saldo_actual']   += $saldo_actual;
-            //                 $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]['saldo']          += $saldo;
-            //             }
-            //             else{
-            //                 $arrayJoined[$default_id][$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']] = array(
-            //                                                                                                                                             'saldo_anterior'         => $arrayResul['saldo_anterior'],
-            //                                                                                                                                             'debito'                 => $arrayResul['debito'],
-            //                                                                                                                                             'credito'                => $arrayResul['credito'],
-            //                                                                                                                                             'forma_calculo'          => $arrayResulC['forma_calculo'],
-            //                                                                                                                                             'saldo_actual'           => $saldo_actual,
-            //                                                                                                                                             'saldo'                  => $saldo,
-            //                                                                                                                                             'id_columna_formato'     => $arrayResulC['id_columna_formato'],
-            //                                                                                                                                             'nombre_columna_formato' => $arrayResulC['nombre_columna_formato'],
-            //                                                                                                                                             );
-            //             }
-
-            //             $arrayJoinedTerceros[$arrayResulC['id_concepto']][$arrayResulC['id_tercero']] = $arrayResulC['id_tercero'];
-            //             $arrayJoinedResul[$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]+=$saldo;
-
-            //         }
-
-            //         // $body.='<tr style="background-color:#2A80B9;color:#FFF;font-weight:bold;">
-            //         //             <td>'.$codigo_cuenta.'</td>
-            //         //             <td>'.$arrayResul['cuenta'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['tipo_identificacion'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['numero_identificacion'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['dv'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['apellido1'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['apellido2'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['nombre1'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['nombre2'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['razon_social'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['direccion'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['codigo_pais'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['codigo_departamento'].'</td>
-            //         //             <td>'.$this->arrayTerceros[$arrayResul['id_tercero']]['codigo_ciudad'].'</td>
-            //         //             <!-- <td>'.$arrayResul['nit_tercero'].'</td>
-            //         //             <td>'.$arrayResul['tercero'].'</td> -->
-            //         //             <td>'.$arrayResul['saldo_anterior'].'</td>
-            //         //             <td>'.$arrayResul['debito'].'</td>
-            //         //             <td>'.$arrayResul['credito'].'</td>
-            //         //             <td>'.$saldo_actual.'</td>
-            //         //         </tr>
-            //         //         '.$bodyConfig;
-            //         // $bodyConfig='';
-            //     }
-            // }
-
-            // // print_r($arrayJoined);
-            // foreach ($arrayJoined as $id_row => $arrayJoined1){
-            //     foreach ($arrayJoined1 as $id_concepto => $arrayJoined2) {
-            //         foreach ($arrayJoined2 as $id_tercero => $arrayJoined3) {
-            //             foreach ($arrayJoined3 as $id_columna_formato => $arrayResul) {
-            //                 $body.='<tr style="/*background-color:#2A80B9;*/color:#999;font-weight:bold;">
-            //                             <td>'.$this->arrayConceptosFormato[$id_concepto]['concepto'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['tipo_identificacion'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['numero_identificacion'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['dv'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['apellido1'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['apellido2'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['nombre1'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['nombre2'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['razon_social'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['direccion'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['codigo_pais'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['codigo_departamento'].'</td>
-            //                             <td>'.$this->arrayTerceros[$id_tercero]['codigo_ciudad'].'</td>
-            //                             <td>'.$arrayResul['saldo'].'</td>
-            //                             <td>'.$arrayResul['saldo_anterior'].'</td>
-            //                             <td>'.$arrayResul['debito'].'</td>
-            //                             <td>'.$arrayResul['credito'].'</td>
-            //                             <td>'.$arrayResul['saldo_actual'].'</td>
-            //                             <td>'.$arrayResul['forma_calculo'].'</td>
-            //                         </tr>
-            //                         ';
-
-
-            //                 // foreach ($this->arrayColumnasFormato as $id_col => $arrayResul) {
-            //                 //     $body.= '';
-            //                 // }
-
-            //                 // $body.= '';
-
-            //             }
-            //         }
-            //     }
-            // }
-            // print_r($this->arrayJoined);
             $bodyResul.='<tr style="background-color:#008080;color:#FFF;font-weight:bold;">
                             <td>Concepto</td>
                             <td>Tipo de documento</td>
@@ -674,6 +538,43 @@
             echo utf8_decode($formato);
 
         }
+
+        public function debug()
+        {
+            $tiempos = [];
+        
+            $inicio = microtime(true);
+            $this->setConceptosFormato();
+            $tiempos['setConceptosFormato'] = microtime(true) - $inicio;
+        
+            $inicio = microtime(true);
+            $this->setConceptosCuentasFormato();
+            $tiempos['setConceptosCuentasFormato'] = microtime(true) - $inicio;
+        
+            $inicio = microtime(true);
+            $this->setColumnasFormato();
+            $tiempos['setColumnasFormato'] = microtime(true) - $inicio;
+        
+            $inicio = microtime(true);
+            $this->setAsientos();
+            $tiempos['setAsientos'] = microtime(true) - $inicio;
+        
+            $inicio = microtime(true);
+            $this->setTerceros();
+            $tiempos['setTerceros'] = microtime(true) - $inicio;
+        
+            $inicio = microtime(true);
+            $this->joinArrayConceptosCuentas();
+            $tiempos['joinArrayConceptosCuentas'] = microtime(true) - $inicio;
+        
+        
+        
+            echo '<h3>Array final codificado en JSON:</h3>';
+            echo '<pre style="background:#f4f4f4; padding:10px; border:1px solid #ccc; max-height:300px; overflow:auto;">' .
+                 json_encode(array("sql1"=>$this->sqldebug1,"sql2"=>$this->sqldebug2)) .
+                 '</pre>';
+        }
+
     }
 
 ?>
