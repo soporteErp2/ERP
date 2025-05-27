@@ -401,6 +401,10 @@ class Pedido_Controller extends ApiFunctions
 
     public function add_client_items($huesped,$items,$id_cuenta){
         $id_items = array_column($items, 'id_item');
+        if (empty($id_items)) {
+            return ["status" => false, "detalle" => "No se proporcionaron ítems"];
+        }
+        
         $sql = "SELECT id,codigo, nombre_equipo as nombre,id_impuesto,impuesto FROM items WHERE id IN (".implode(",",$id_items).")";
         $query=$this->mysql->query($sql);
 
