@@ -212,7 +212,7 @@
          */
         private function procesarFilaAsiento($row, &$arrayTemp, $esSaldoAnterior = false)
         {
-            $idTercero = $row['id_tercero'];
+            $idTercero = $row['nit_tercero'];
             $codigoCuenta = $row['codigo_cuenta'];
         
             // Si la cuenta no existe aún, inicializarla
@@ -250,7 +250,7 @@
          */
         private function asignarConceptos(&$arrayTemp, $row)
         {
-            $idTercero = $row['id_tercero'];
+            $idTercero = $row['nit_tercero'];
             $codigoCuenta = $row['codigo_cuenta'];
         
             foreach ($this->arrayConceptosCuentasFormato as $id_row => $arrayResul) {
@@ -264,7 +264,7 @@
         {
             // Construye la subconsulta para filtrar terceros con movimientos en asientos_colgaap
             $subconsulta = "
-                SELECT DISTINCT id_tercero
+                SELECT DISTINCT nit_tercero
                 FROM asientos_colgaap
                 WHERE activo = 1
                   AND id_empresa = $this->id_empresa
@@ -272,7 +272,7 @@
                   $this->whereAsientos
             ";
         
-            return " AND id IN ($subconsulta)";
+            return " AND numero_identificacion IN ($subconsulta)";
         }
 
         /**
@@ -303,7 +303,7 @@
                         $this->whereIdTerceros";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
-                $arrayTemp[$row['id']] = array(
+                $arrayTemp[$row['numero_identificacion']] = array(
                                                 'tipo_identificacion'   => $row['tipo_identificacion'],
                                                 'numero_identificacion' => $row['numero_identificacion'],
                                                 'dv'                    => $row['dv'],
@@ -324,7 +324,7 @@
             }
 
             $arrayTemp[222222222]  = array('tipo_identificacion'=>43,'numero_identificacion' => '222222222','razon_social' => 'CUANTIAS MENORES' );
-            $arrayTemp[444444000]  = array('numero_identificacion' => '444444000','razon_social' => 'OPERACIONES DEL EXTERIOR' );
+            $arrayTemp[444444000]  = array('tipo_identificacion'=>43,'numero_identificacion' => '444444000','razon_social' => 'OPERACIONES DEL EXTERIOR' );
 
             $this->arrayTerceros = $arrayTemp;
             $this->setCodigosDane($whereIdPais,$whereIdDepartamento,$whereIdCiudad);
@@ -399,68 +399,77 @@
         */
         private function joinArrayConceptosCuentas()
         {
+            // 1. Acumular por concepto-tercero-columna
+            $tmpConceptos = []; // acumulador
+
             foreach ($this->arrayAsientos as $id_tercero => $arrayAsientosResul) {
-                foreach ($arrayAsientosResul as $codigo_cuenta => $arrayResul){
-                    $saldo_actual = abs( (($arrayResul['saldo_anterior']+$arrayResul['debito'])-$arrayResul['credito']) );
-
+                foreach ($arrayAsientosResul as $codigo_cuenta => $arrayResul) {
+                    $saldo_actual = abs($arrayResul['saldo_anterior'] + $arrayResul['debito'] - $arrayResul['credito']);
+                
                     foreach ($arrayResul['concepto'] as $default_id => $arrayResulC) {
-
                         $codigo_cuenta = str_pad($codigo_cuenta, 8, '0', STR_PAD_RIGHT);
                         $cuenta_ini    = str_pad($arrayResulC['cuenta_inicial'], 8, '0', STR_PAD_RIGHT);
                         $cuenta_fin    = str_pad($arrayResulC['cuenta_final'], 8, '0', STR_PAD_RIGHT);
-
+                    
                         if ($codigo_cuenta < $cuenta_ini || $codigo_cuenta > $cuenta_fin) {
                             continue;
                         }
+                    
+                        switch ($arrayResulC['forma_calculo']) {
+                            case 'suma_debitos':
+                                $saldo = $arrayResul['debito'];
+                                break;
+                            case 'suma_creditos':
+                                $saldo = $arrayResul['credito'];
+                                break;
+                            case 'debito_menos_credito':
+                                $saldo = $arrayResul['debito'] - $arrayResul['credito'];
+                                break;
+                            case 'credito_menos_debito':
+                                $saldo = $arrayResul['credito'] - $arrayResul['debito'];
+                                break;
+                            case 'saldo_actual':
+                                $saldo = $saldo_actual;
+                                break;
+                            case 'saldo_inicial':
+                                $saldo = $arrayResul['saldo_anterior'];
+                                break;
+                            default:
+                                $saldo = 0;
+                        }
+                    
+                        $id_concepto = $arrayResulC['id_concepto'];
+                        $id_columna = $arrayResulC['id_columna_formato'];
+                        $tope = $arrayResulC['tope'];
+                    
+                        $tmpConceptos[$id_concepto][$id_tercero][$id_columna]['saldo'] += $saldo;
+                        $tmpConceptos[$id_concepto][$id_tercero][$id_columna]['tope'] = $tope;
+                    }
+                }
+            }
 
-                        if ($arrayResulC['forma_calculo'] == 'suma_debitos') {
-                            $saldo = $arrayResul['debito'];
-                        }
-                        else if ($arrayResulC['forma_calculo'] == 'suma_creditos') {
-                            $saldo = $arrayResul['credito'];
-                        }
-                        else if ($arrayResulC['forma_calculo'] == 'debito_menos_credito') {
-                            $saldo = $arrayResul['debito']-$arrayResul['credito'];
-                        }
-                        else if ($arrayResulC['forma_calculo'] == 'credito_menos_debito') {
-                            $saldo = $arrayResul['credito']-$arrayResul['debito'];
-                        }
-                        else if ($arrayResulC['forma_calculo'] == 'saldo_actual') {
-                            $saldo = $saldo_actual;
-                        }
-                        else if ($arrayResulC['forma_calculo'] == 'saldo_inicial') {
-                            $saldo = $arrayResul['saldo_anterior'];
-                        }
+            // 2. Clasificar por cuantías menores o normales
+            $arrayTemp = [];
 
-                        // 222222222
-                        // CUANTIAS MENORES
-
-                        // 444444000
-                        // OPERACIONES DEL EXTERIOR
-
-                        if (abs($saldo)<$arrayResulC['tope']) {
-                            // echo '->'.$this->arrayTerceros[$arrayResul['id_tercero']]['numero_identificacion'].' - '.$this->arrayTerceros[$arrayResul['id_tercero']]['razon_social'].' saldo: '.$saldo_actual.'<br>';
-
-                            if ($this->arrayTerceros[$arrayResul['id_tercero']]['id_pais']==49) {
-                                $arrayTemp[$arrayResulC['id_concepto']][222222222][$arrayResulC['id_columna_formato']]+=$saldo;
-                            }
-                            else{
-                               $arrayTemp[$arrayResulC['id_concepto']][444444000][$arrayResulC['id_columna_formato']]+=$saldo;
-                               //echo '<script>console.log("'.$arrayResul['id_tercero'].' - '.$saldo.' cuantias menores ");</script>';
-                            }
-
+            foreach ($tmpConceptos as $id_concepto => $terceros) {
+                foreach ($terceros as $id_tercero => $columnas) {
+                    foreach ($columnas as $id_columna => $datos) {
+                        $saldo = $datos['saldo'];
+                        $tope = $datos['tope'];
+                    
+                        if (abs($saldo) < $tope) {
+                            $key = ($this->arrayTerceros[$id_tercero]['id_pais'] == 49) ? 222222222 : 444444000;
+                            $arrayTemp[$id_concepto][$key][$id_columna] += $saldo;
+                        } else {
+                            $arrayTemp[$id_concepto][$id_tercero][$id_columna] += $saldo;
                         }
-                        else{
-                            // echo '-]'.$this->arrayTerceros[$arrayResul['id_tercero']]['numero_identificacion'].' - '.$this->arrayTerceros[$arrayResul['id_tercero']]['razon_social'].' saldo: '.$saldo_actual.'<br>';
-                            $arrayTemp[$arrayResulC['id_concepto']][$arrayResul['id_tercero']][$arrayResulC['id_columna_formato']]+=$saldo;
-                        }
-
                     }
                 }
             }
 
             $this->arrayJoined = $arrayTemp;
         }
+
 
         /**
         * @method createFormat Crear el formato solicitado por el usuario
@@ -500,6 +509,10 @@
             foreach ($this->arrayConceptosFormato as $id_concepto => $arrayResulCon) {
                 // $bodyResul.='<tr><td>'.$arrayResulCon['concepto'].'</td>';
                 foreach ($this->arrayJoined[$id_concepto] as $id_tercero => $arrayResulJoin) {
+                    if($this->arrayTerceros[$id_tercero]['tipo_identificacion'] == ""){
+                        $this->arrayTerceros[$id_tercero]['tipo_identificacion'] = "NN";
+                        $this->arrayTerceros[$id_tercero]['numero_identificacion'] = $id_tercero;
+                    }
                     $bodyResul.='<tr>
                                     <td>'.$arrayResulCon['concepto'].'</td>
                                     <td>'.$this->arrayTerceros[$id_tercero]['tipo_identificacion'].'</td>
@@ -581,10 +594,11 @@
                                 "consultas" => array(
                                     "sql1" => $this->sqldebug1,
                                     "sql2" => $this->sqldebug2
-                                )
+                                ),
+                                "arrayAsientos"=>$this->utf8ize($this->arrayAsientos['15367'])
                             ));
 
-            //echo json_encode($this->utf8ize($this->arrayAsientos['13043']));
+            //echo json_encode($this->utf8ize($this->arrayAsientos['15367']));
 
             //$csv = '';
             //$array = $this->arrayTerceros;
