@@ -268,7 +268,7 @@
                 FROM asientos_colgaap
                 WHERE activo = 1
                   AND id_empresa = $this->id_empresa
-                  AND fecha BETWEEN '$this->fecha-01-01' AND '$this->fecha-12-31'
+                  AND fecha < '$this->fecha-12-31'
                   $this->whereAsientos
             ";
         
