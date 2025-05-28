@@ -226,7 +226,7 @@
                     'credito'     => $esSaldoAnterior ? 0 : $row['credito'],
                 ];
             } else {
-                // Si no es saldo anterior, sumamos débitos y créditos existentes (por si acaso)
+                // Si no es saldo anterior
                 if (!$esSaldoAnterior) {
                     $arrayTemp[$idTercero][$codigoCuenta]['debito'] = $row['debito'];
                     $arrayTemp[$idTercero][$codigoCuenta]['credito'] = $row['credito'];
