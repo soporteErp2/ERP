@@ -405,6 +405,14 @@
 
                     foreach ($arrayResul['concepto'] as $default_id => $arrayResulC) {
 
+                        $codigo_cuenta = str_pad($codigo_cuenta, 8, '0', STR_PAD_RIGHT);
+                        $cuenta_ini    = str_pad($arrayResulC['cuenta_inicial'], 8, '0', STR_PAD_RIGHT);
+                        $cuenta_fin    = str_pad($arrayResulC['cuenta_final'], 8, '0', STR_PAD_RIGHT);
+
+                        if ($codigo_cuenta < $cuenta_ini || $codigo_cuenta > $cuenta_fin) {
+                            continue;
+                        }
+
                         if ($arrayResulC['forma_calculo'] == 'suma_debitos') {
                             $saldo = $arrayResul['debito'];
                         }
