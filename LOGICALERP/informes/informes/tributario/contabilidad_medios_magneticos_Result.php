@@ -576,13 +576,51 @@
             $tiempos['joinArrayConceptosCuentas'] = microtime(true) - $inicio;
         
         
-        
-            echo '<h3>Array final codificado en JSON:</h3>';
-            echo '<pre style="background:#f4f4f4; padding:10px; border:1px solid #ccc; max-height:300px; overflow:auto;">' .
-                 json_encode(array("sql1"=>$this->sqldebug1,"sql2"=>$this->sqldebug2)) .
-                 '</pre>';
+            echo json_encode(array(
+                                "tiempos" => $tiempos,
+                                "consultas" => array(
+                                    "sql1" => $this->sqldebug1,
+                                    "sql2" => $this->sqldebug2
+                                )
+                            ));
+
+            //echo json_encode($this->utf8ize($this->arrayAsientos['13043']));
+
+            //$csv = '';
+            //$array = $this->arrayTerceros;
+            //if (!empty($array)) {
+            //    // Encabezados
+            //    $csv .= implode(',', array_keys($array[0])) . "\n";
+            //
+            //    // Filas
+            //    foreach ($array as $fila) {
+            //        // Escapar comillas dobles y encerrar cada campo en comillas
+            //        $escaped = array_map(function($valor) {
+            //            $valor = str_replace('"', '""', $valor);
+            //            return '"' . $valor . '"';
+            //        }, $fila);
+            //    
+            //        $csv .= implode(',', $escaped) . "\n";
+            //    }
+            //}
+            //
+            //echo $csv;
+
         }
 
+        public function utf8ize($mixed) {
+            if (is_array($mixed)) {
+                $result = array();
+                foreach ($mixed as $key => $value) {
+                    $key = is_string($key) && !mb_detect_encoding($key, 'UTF-8', true) ? utf8_encode($key) : $key;
+                    $result[$key] = $this->utf8ize($value); // llamada con $this
+                }
+                return $result;
+            } elseif (is_string($mixed)) {
+                return !mb_detect_encoding($mixed, 'UTF-8', true) ? utf8_encode($mixed) : $mixed;
+            }
+            return $mixed;
+        }
     }
 
 ?>
