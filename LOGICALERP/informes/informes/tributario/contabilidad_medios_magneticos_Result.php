@@ -40,8 +40,12 @@
         private $arrayColumnasFormato         = '';
         private $arrayTerceros                = '';
         private $arrayJoined                  = '';
-        private $sqldebug1 ="";
-        private $sqldebug2 = "";
+        private $sqldebug1                    = '';
+        private $sqldebug2                    = '';
+        private $codigo_formato               = '';
+        private $camposComoTexto              = [];
+        private $headers                      = [];
+
         /**
         * @method construct
         * @param int id del formato
@@ -50,10 +54,18 @@
         */
         function __construct($id_formato,$fecha,$id_empresa,$mysql)
         {
-            $this->id_formato = $id_formato;
-            $this->fecha      = split('-', $fecha)[0];
-            $this->id_empresa = $id_empresa;
-            $this->mysql      = $mysql;
+            $this->id_formato       = $id_formato;
+            $this->fecha            = split('-', $fecha)[0];
+            $this->id_empresa       = $id_empresa;
+            $this->mysql            = $mysql;
+            $this->camposComoTexto  = ['Número identificación del informado','Código dpto', 'Código mcp', 'País'];
+            $this->headers = [
+                'Concepto', 'Tipo de documento', 'Número identificación del informado', 'DV',
+                'Primer apellido del informado', 'Segundo apellido del informado',
+                'Primer nombre del informado', 'Otros nombres del informado',
+                'Razón social informado', 'Dirección', 'Código dpto', 'Código mcp', 'País'
+            ];
+
         }
 
         /**
@@ -125,9 +137,9 @@
                                                 );
 
                 $whereTemp.=($whereTemp=='')? "CAST(codigo_cuenta AS CHAR) >='$row[cuenta_inicial]' AND CAST(codigo_cuenta AS CHAR) <= '$row[cuenta_final]' " : " OR CAST(codigo_cuenta AS CHAR) >='$row[cuenta_inicial]' AND CAST(codigo_cuenta AS CHAR) <= '$row[cuenta_final]'" ;
-
+                $codigoFormato = $row['codigo_formato'];
             }
-
+            $this->codigo_formato = $codigoFormato;
             $this->arrayConceptosCuentasFormato = $arrayTemp;
             $this->whereAsientos = " AND ($whereTemp)";
         }
@@ -272,7 +284,7 @@
                   $this->whereAsientos
             ";
         
-            return " AND numero_identificacion IN ($subconsulta)";
+            return " AND T.numero_identificacion IN ($subconsulta)";
         }
 
         /**
@@ -281,30 +293,31 @@
         private function setTerceros()
         {
             $sql="SELECT
-                        id,
-                        tipo_identificacion,
-                        numero_identificacion,
-                        dv,
-                        apellido1,
-                        apellido2,
-                        nombre1,
-                        nombre2,
-                        nombre AS razon_social,
-                        direccion,
-                        id_pais,
-                        id_departamento,
-                        id_ciudad
+                        T.id,
+                        T.numero_identificacion,
+                        T.dv,
+                        T.apellido1,
+                        T.apellido2,
+                        T.nombre1,
+                        T.nombre2,
+                        T.nombre AS razon_social,
+                        T.direccion,
+                        T.id_pais,
+                        T.id_departamento,
+                        T.id_ciudad,
+                        TD.codigo_tipo_documento_dian
                     FROM
-                        terceros
+                        terceros AS T
+                        LEFT JOIN tipo_documento AS TD ON T.id_tipo_identificacion = TD.id
                     WHERE
                         /*activo=1  */
-                        tercero = 1 AND
-                        id_empresa=$this->id_empresa
+                        T.tercero = 1 AND
+                        T.id_empresa=$this->id_empresa
                         $this->whereIdTerceros";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
                 $arrayTemp[$row['numero_identificacion']] = array(
-                                                'tipo_identificacion'   => $row['tipo_identificacion'],
+                                                'tipo_identificacion'   => $row['codigo_tipo_documento_dian'],
                                                 'numero_identificacion' => $row['numero_identificacion'],
                                                 'dv'                    => $row['dv'],
                                                 'apellido1'             => $row['apellido1'],
@@ -347,7 +360,7 @@
                         ";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
-                $arrayCodPais[$row['id']] = $row['codigo'];
+                $arrayCodPais[$row['id']] = str_pad($row['codigo'], 3, '0', STR_PAD_LEFT);
             }
 
             $sql="SELECT
@@ -361,12 +374,14 @@
                         ";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
-                $arrayCodDepartamento[$row['id']] = $row['codigo_departamento'];
+                $arrayCodDepartamento[$row['id']] = str_pad($row['codigo_departamento'], 2, '0', STR_PAD_LEFT);
+                
             }
 
             $sql="SELECT
                         id,
-                        codigo_ciudad
+                        codigo_ciudad,
+                        id_departamento
                     FROM
                         ubicacion_ciudad
                     WHERE
@@ -375,7 +390,7 @@
                         ";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
-                $arrayCodCiudad[$row['id']] = $row['codigo_ciudad'];
+                $arrayCodCiudad[$row['id']] = $arrayCodDepartamento[$row['id_departamento']].str_pad($row['codigo_ciudad'], 3, '0', STR_PAD_LEFT);
             }
 
             $this->joinArrayTercero($arrayCodPais,$arrayCodDepartamento,$arrayCodCiudad);
@@ -474,91 +489,76 @@
         /**
         * @method createFormat Crear el formato solicitado por el usuario
         */
-        public function createFormat()
-        {
+        public function createFormat() {
+            include_once('../../../../misc/excel/Classes/PHPExcel.php');
+        
             $this->setConceptosFormato();
             $this->setConceptosCuentasFormato();
             $this->setColumnasFormato();
             $this->setAsientos();
             $this->setTerceros();
             $this->joinArrayConceptosCuentas();
-
-            $bodyResul.='<tr style="background-color:#008080;color:#FFF;font-weight:bold;">
-                            <td>Concepto</td>
-                            <td>Tipo de documento</td>
-                            <td>Número identificación del informado</td>
-                            <td>DV</td>
-                            <td>Primer apellido del informado</td>
-                            <td>Segundo apellido del informado</td>
-                            <td>Primer nombre del informado</td>
-                            <td>Otros nombres del informado</td>
-                            <td>Razón social informado</td>
-                            <td>Dirección</td>
-                            <td>Código dpto</td>
-                            <td>Código mcp</td>
-                            <td>País de Residencia o domicilio</td>
-                            <!--<td>SALDO</td>-->
-                        ';
-
-            foreach ($this->arrayColumnasFormato as $id_columna => $columna) {
-                $bodyResul.='<td >'.$columna.'</td>';
+        
+            $objPHPExcel = new PHPExcel();
+            $sheet = $objPHPExcel->setActiveSheetIndex(0);
+        
+            // Títulos
+            $this->headers = array_merge($this->headers, $this->arrayColumnasFormato);
+        
+            $col = 0;
+            foreach ($this->headers as $header) {
+                $headerUtf8 = mb_convert_encoding($header, 'UTF-8', 'auto');
+                $sheet->setCellValueExplicitByColumnAndRow($col++, 1, $headerUtf8, PHPExcel_Cell_DataType::TYPE_STRING);
             }
-
-            $bodyResul.='</tr>';
-
+        
+            // Cuerpo
+            $row = 2;
             foreach ($this->arrayConceptosFormato as $id_concepto => $arrayResulCon) {
-                // $bodyResul.='<tr><td>'.$arrayResulCon['concepto'].'</td>';
                 foreach ($this->arrayJoined[$id_concepto] as $id_tercero => $arrayResulJoin) {
-                    if($this->arrayTerceros[$id_tercero]['tipo_identificacion'] == ""){
-                        $this->arrayTerceros[$id_tercero]['tipo_identificacion'] = "NN";
-                        $this->arrayTerceros[$id_tercero]['numero_identificacion'] = $id_tercero;
-                    }
-                    $bodyResul.='<tr>
-                                    <td>'.$arrayResulCon['concepto'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['tipo_identificacion'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['numero_identificacion'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['dv'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['apellido1'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['apellido2'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['nombre1'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['nombre2'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['razon_social'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['direccion'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['codigo_departamento'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['codigo_ciudad'].'</td>
-                                    <td>'.$this->arrayTerceros[$id_tercero]['codigo_pais'].'</td>
-                                    <!--<td>'.$saldo.'</td>-->
-
-                                ';
+                
+                    $dataRow = [
+                        $arrayResulCon['concepto'],
+                        $this->arrayTerceros[$id_tercero]['tipo_identificacion'],
+                        $this->arrayTerceros[$id_tercero]['numero_identificacion'],
+                        $this->arrayTerceros[$id_tercero]['dv'],
+                        $this->arrayTerceros[$id_tercero]['apellido1'],
+                        $this->arrayTerceros[$id_tercero]['apellido2'],
+                        $this->arrayTerceros[$id_tercero]['nombre1'],
+                        $this->arrayTerceros[$id_tercero]['nombre2'],
+                        $this->arrayTerceros[$id_tercero]['razon_social'],
+                        $this->arrayTerceros[$id_tercero]['direccion'],
+                        $this->arrayTerceros[$id_tercero]['codigo_departamento'],
+                        $this->arrayTerceros[$id_tercero]['codigo_ciudad'],
+                        $this->arrayTerceros[$id_tercero]['codigo_pais']
+                    ];
+                
                     foreach ($this->arrayColumnasFormato as $id_columna => $columna) {
-                        $saldo_col = ($arrayResulJoin[$id_columna]>0)? $arrayResulJoin[$id_columna] : 0 ;
-                        $bodyResul.='<td >'.$saldo_col.'</td>';
+                        $saldo_col = ($arrayResulJoin[$id_columna] > 0) ? $arrayResulJoin[$id_columna] : 0;
+                        $dataRow[] = $saldo_col;
                     }
-
+                
+                    $col = 0;
+                    foreach ($dataRow as $key => $value) {
+                        if (in_array($this->headers[$key], $this->camposComoTexto)) {
+                            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $value, PHPExcel_Cell_DataType::TYPE_STRING);
+                        } else {
+                            $sheet->setCellValueByColumnAndRow($col++, $row, $value);
+                        }
+                    }
+                    $row++;
                 }
-
-
-
-                $bodyResul.='</tr>';
             }
-
-
-            $formato="
-                <style>
-
-                   .tabla td {solid;font-size:12px;padding:5px;}
-
-                    table {border-collapse: collapse;}
-
-                </style>
-                <table class='tabla' border=0>
-                $bodyResul
-                </table>
-                ";
-
-            echo utf8_decode($formato);
-
+        
+            // Descargar el archivo
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="formato '. $this->codigo_formato . " " . date("Y-m-d") . '.xlsx"');
+            header('Cache-Control: max-age=0');
+        
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+            exit;
         }
+
 
         public function debug()
         {
