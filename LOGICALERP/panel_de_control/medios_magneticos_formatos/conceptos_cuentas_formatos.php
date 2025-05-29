@@ -34,7 +34,7 @@
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
 			$grilla->AddRow('Cuenta Inicial','cuenta_inicial',80);
 			$grilla->AddRow('Cuenta Final','cuenta_final',80);
-			$grilla->AddRow('Clasificacion','nombre_columna_formato',200);
+			$grilla->AddRow('Columna','nombre_columna_formato',200);
 			$grilla->AddRow('Tope','tope',80);
 
 		//CONFIGURACION FORMULARIO
