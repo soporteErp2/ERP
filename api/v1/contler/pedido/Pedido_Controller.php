@@ -404,7 +404,6 @@ class Pedido_Controller extends ApiFunctions
         if (empty($id_items)) {
             return ["status" => false, "detalle" => "No se proporcionaron ítems"];
         }
-        
         $sql = "SELECT id,codigo, nombre_equipo as nombre,id_impuesto,impuesto FROM items WHERE id IN (".implode(",",$id_items).")";
         $query=$this->mysql->query($sql);
 
