@@ -155,7 +155,8 @@
                 CO.observacion,
                 CO.estado,
                 CF.consecutivo AS consecutivo_cruce,
-	              CF.fecha_inicio AS fecha 
+	              CF.fecha_inicio AS fecha, 
+                CO.autorizado
               FROM
               compras_ordenes AS CO 
               LEFT JOIN compras_facturas_inventario AS CFI ON CFI.id_consecutivo_referencia = CO.id 
@@ -192,7 +193,8 @@
                                                                         $row['consecutivo_cruce'],
                                           'fecha_factura'           => ($this->arrayDoc[$id_doc]['fecha'])?
                                                                         $this->arrayDoc[$id_doc]['fecha']." - ".$row['fecha'] :
-                                                                        $row['fecha']
+                                                                        $row['fecha'],
+                                          'autorizacion'            =>  ($row['autorizado'] == "true")? "Autorizada" : "No autorizada" 
                                         );
       }
 
@@ -293,27 +295,6 @@
         }
       }
 
-      // CONSULTAR LAS AUTORIZACIONES DEL DOCUMENTO
-      $sql = "SELECT
-                COI.id_orden_compra,
-                COI.tipo_autorizacion
-              FROM
-                autorizacion_ordenes_compra_area AS COI
-              WHERE
-                COI.activo = 1
-              AND
-                COI.id_empresa = $this->id_empresa
-                $whereFinal";
-
-      $query = $this->mysql->query($sql,$this->mysql->link);
-
-      while($row = $this->mysql->fetch_array($query)){
-        $id_orden_compra   = $row['id_orden_compra'];
-        $tipo_autorizacion = ($row['tipo_autorizacion'] != "")? $row['tipo_autorizacion'] : "Por Autorizar";
-
-        $this->arrayDoc[$id_orden_compra]['autorizacion'] = $tipo_autorizacion;
-      }
-
       //SI EXISTE FILTRO POR AUTORIZACIONES ELIMINAMOS ORDENES QUE NO CUMPLAN CON LA CONDICION
       if($this->autorizado != 'todo'){
         foreach($this->arrayDoc as $id_documento => $arrayResult){
@@ -321,15 +302,7 @@
             unset($this->arrayDoc[$id_documento]);
             unset($this->arrayDocItems[$id_documento]);
           }
-          else if($this->autorizado == 'aplazadas' && $arrayResult['autorizacion'] != 'Aplazada'){
-            unset($this->arrayDoc[$id_documento]);
-            unset($this->arrayDocItems[$id_documento]);
-          }
-          else if($this->autorizado == 'rechazadas' && $arrayResult['autorizacion'] != 'Rechazada'){
-            unset($this->arrayDoc[$id_documento]);
-            unset($this->arrayDocItems[$id_documento]);
-          }
-          else if($this->autorizado == 'porautorizar' && $arrayResult['autorizacion'] != 'Por Autorizar'){
+          else if($this->autorizado == 'noautorizada' && $arrayResult['autorizacion'] != 'No autorizada'){
             unset($this->arrayDoc[$id_documento]);
             unset($this->arrayDocItems[$id_documento]);
           }
