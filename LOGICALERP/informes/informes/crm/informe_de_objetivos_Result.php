@@ -17,20 +17,18 @@
            $MyInformeFiltro_2 = '';
     }    
 
-    $MyInformeFiltroEmpresa  = $_SESSION['EMPRESA'];
-    $MyInformeFiltroSucursal = $_SESSION['SUCURSAL'];
+    $id_empresa = $_SESSION['EMPRESA'];
+    $id_sucursal = $_SESSION['SUCURSAL'];
 
-    $nombre_empresa = $mysql->result($mysql->query("SELECT * FROM empresas WHERE id = $MyInformeFiltroEmpresa",$link),0,"nombre");
-    $WhereEmpresa   = 'AND CO.id_empresa = '.$MyInformeFiltroEmpresa;
+    $nombre_empresa = $mysql->result($mysql->query("SELECT * FROM empresas WHERE id = $id_empresa",$link),0,"nombre");
 
-    $nombre_sucursal = $mysql->result($mysql->query("SELECT * FROM empresas_sucursales WHERE id = $MyInformeFiltroSucursal",$link),0,"nombre");
-    $WhereSucursal   = 'AND CO.id_sucursal = '.$MyInformeFiltroSucursal;
+    $nombre_sucursal = $mysql->result($mysql->query("SELECT * FROM empresas_sucursales WHERE id = $id_sucursal",$link),0,"nombre");
 
     $EstadoAct           = $MyInformeFiltro_2;
     $EstadoActividadName = array("SIN FINALIZAR","FINALIZADOS");
     if($EstadoAct == ''){
         $EstadoActividad = 'TODOS';
-        $whereEstado     = "LIKE '%'";
+        $whereEstado     = "LIKE '%%'";
     }else{
         $EstadoActividad = $EstadoActividadName[$EstadoAct];
         $whereEstado     = '= '.$EstadoAct;
@@ -44,7 +42,7 @@
 
     if($cliente == ''){
         $nombreCliente = 'TODOS';
-        $whereCliente  = "LIKE '%'";
+        $whereCliente  = "";
     }else{
         $nombreCliente = $mysql->result($mysql->query("SELECT nombre FROM terceros WHERE id = $cliente"),0,"nombre");
         if($nombreCliente == ''){
@@ -191,8 +189,8 @@
                              AND CO.id_usuario $whereFuncionario
                              AND CO.activo = 1                             
                              AND CO.estado $whereEstado
-                             $WhereEmpresa
-                             $WhereSucursal
+                             AND CO.id_empresa = $id_empresa
+                             AND CO.id_sucursal = $id_sucursal
                              ORDER BY CO.id";
 
     $consul = $mysql->query($sqlCRM,$link);
