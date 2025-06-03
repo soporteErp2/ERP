@@ -127,7 +127,6 @@
  			$grilla->MenuContext		= 'true';
 	 		$grilla->MenuContextEliminar= 'true';
 		//OPCIONES ADICIONALES EN EL MENU CONTEXTUAL
- 			$grilla->AddMenuContext('CRM - Gestion de la Relacion con el Cliente','crm16','CRMobjetivos([id])');
  			$grilla->AddMenuContext('Enviar Email','enviaremail16','VentanaEnviarEmail([id])');
 
 		//CAMPOS OCULTOS
