@@ -21,7 +21,7 @@
 			$informe->InformeExportarXLS	= 	"false";	//SI EXPORTA A XLS
 			//$informe->AddFiltroEmpresa('true','true','true','false','true');
 
-			$informe->FiltroClientesProspectos = 'true';
+			$informe->FiltroClientesProspectos = 'false';
 			$informe->FiltroFuncionarios       = 'true';
 
 			//$informe->AreaInformeAncho		= 500;
