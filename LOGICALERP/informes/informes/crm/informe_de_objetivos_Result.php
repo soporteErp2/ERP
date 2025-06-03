@@ -169,7 +169,7 @@
 <?php
     
     /*--------------------------------------------------CUERPO DEL INFORME---------------------------------------------------*/
-    $consul = $mysql->query("SELECT 
+    $sqlCRM = "SELECT 
                                 CO.id,
                                 CO.estado,
                                 CO.prioridad,
@@ -193,7 +193,9 @@
                              AND CO.estado $whereEstado
                              $WhereEmpresa
                              $WhereSucursal
-                             ORDER BY CO.id",$link);
+                             ORDER BY CO.id";
+
+    $consul = $mysql->query($sqlCRM,$link);
 
     while($row = $mysql->fetch_array($consul)){
 
