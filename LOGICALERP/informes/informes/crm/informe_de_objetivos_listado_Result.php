@@ -10,6 +10,7 @@
     }
 
     $id_empresa = $_SESSION['EMPRESA'];
+    $id_sucursal = $_SESSION['SUCURSAL'];
 
     ob_start();
 
@@ -33,7 +34,7 @@
         $whereFuncionario  = "";
     }else{
         $nombreFuncionario = $mysql->result($mysql->query("SELECT nombre FROM empleados WHERE id = $funcionario"),0,"nombre");
-        $whereFuncionario  = 'AND TA.id_asignado = '.$funcionario;
+        $whereFuncionario  = ' = '.$funcionario;
     }
 
     //FILTRO DE CLIENTES
@@ -214,11 +215,11 @@
                         <td style="width:125px;padding-bottom:5px;padding-left:5px;font-weight:bold;">CLIENTE</td>
                         <td style="width:115px;padding-bottom:5px;padding-left:5px;font-weight:bold;">LINEA NEGOCIO</td>
                         <td style="width:115px;padding-bottom:5px;padding-left:5px;font-weight:bold;">PROYECTO</td>
+                        <td style="width:95px;padding-bottom:5px;padding-left:5px;font-weight:bold;">N. PROYECTO</td>
                         <td style="width:105px;padding-bottom:5px;padding-left:5px;font-weight:bold;">COTIZACION</td>
                         <td style="width:95px;padding-bottom:5px;padding-left:5px;font-weight:bold;">VALOR</td>
                         <td style="width:105px;padding-bottom:5px;padding-left:5px;font-weight:bold;">PROBABILIDAD</td>
                         <td style="width:105px;padding-bottom:5px;padding-left:5px;font-weight:bold;">ESTADO</td>
-                        <td style="width:105px;padding-bottom:5px;padding-left:5px;font-weight:bold;">ESTADO ANTERIOR</td>
                         <td style="width:78px;padding-bottom:5px;padding-left:5px;font-weight:bold;">F. CREACION</td>
                         <td style="width:85px;padding-bottom:5px;padding-left:5px;font-weight:bold;">F. ACTUALIZA</td>
                         <td style="width:67px;padding-bottom:5px;padding-left:5px;font-weight:bold;">F. VENCE</td>
@@ -226,36 +227,31 @@
                     </tr>
                  </table>';
 
-            $SQL = "SELECT
-                        TA.asignado,
-                        CO.cliente,
-                        CO.objetivo,
-                        CO.valor,
-                        CO.probabilidad_exito,
-                        CO.linea_negocio,
-                        LEFT(CO.fecha_actualizacion,10) AS fecha_actualizacion,
-                        CO.estado_proyecto,
-                        (SELECT estado FROM crm_objetivos_log WHERE id_objetivo = CO.id ORDER BY id DESC LIMIT 1,1) AS estado_anterior,  
-                        LEFT(CO.fecha_creacion,10) AS fecha_creacion,
-                        LEFT(CO.vencimiento,10) AS vencimiento,
-                        TC.nombre
-                    FROM
-                        crm_objetivos CO
-                    INNER JOIN terceros AS T ON (T.id = CO.id_cliente  AND T.activo = 1 AND T.id $whereCliente)
-                    LEFT JOIN terceros_asignados TA ON (TA.id_tercero = CO.id_cliente $whereFuncionario)
-                    LEFT JOIN terceros_contactos TC ON (TC.id_tercero = CO.id_cliente AND TC.activo = 1)
-                    WHERE
-                        CO.activo = 1
-                        AND CO.vencimiento BETWEEN '$MyInformeFiltroFechaInicio 00:00:00' AND '$MyInformeFiltroFechaFinal 23:59:59'                        
-                        AND CO.id_empresa='$id_empresa'
-                        $andProbabilidad
-                        $andEstado   
-                        $andLinea                   
-                        $whereFuncionario
-                    GROUP BY
-                        CO.id
-                    ORDER BY 
-                        CO.id ASC";//LOGICA DE LOS PEDIDOS ADICIONALES
+            $SQL = "SELECT 
+                                CO.id,
+                                CO.estado,
+                                CO.prioridad,
+                                CO.objetivo,
+                                CO.cliente,
+                                CO.linea_negocio,
+                                CO.probabilidad_exito,
+                                CO.estado_proyecto,
+                                CO.fecha_creacion,
+                                CO.usuario,
+                                CO.fecha_actualizacion,
+                                CO.valor,
+                                CO.vencimiento,
+                                CO.observacion                                
+                             FROM crm_objetivos AS CO
+                             INNER JOIN terceros AS T ON (T.id = CO.id_cliente AND T.activo = 1 AND T.id $whereCliente)
+                             WHERE
+                             CO.vencimiento BETWEEN '$MyInformeFiltroFechaInicio 00:00:00' AND '$MyInformeFiltroFechaFinal 23:59:59'
+                             AND CO.id_usuario $whereFuncionario
+                             AND CO.activo = 1
+                             $andEstado         
+                             AND CO.id_empresa = $id_empresa
+                             AND CO.id_sucursal = $id_sucursal
+                             ORDER BY CO.id";//LOGICA DE LOS PEDIDOS ADICIONALES
                     //AND tipo_evento = 0
             //echo $SQL;
             $consul = $mysql->query($SQL,$link);
@@ -268,15 +264,15 @@
 
                 echo'<table style="width:1200px; float:left;border-spacing:0px;font-size:12px; ">
                         <tr style="font-size:12px; overflow: hidden; margin-bottom:0px; font-weight:normal; border-spacing:0px">
-                            <td style="width:125px;">'.$row['asignado'].'<span style="font-size:9px; font-weight:bold">'.$TipEve.'</span></td>
+                            <td style="width:125px;">'.$row['usuario'].'<span style="font-size:9px; font-weight:bold">'.$TipEve.'</span></td>
                             <td style="width:125px;padding-left:5px">'.$row['cliente'].'</td>
                             <td style="width:125px;padding-left:5px">'.$row['linea_negocio'].'</td>                           
                             <td style="width:115px;padding-left:5px">'.$row['objetivo'].'</td>
+                            <td style="width:95px;padding-bottom:5px;padding-left:5px;">'.$row['id'].'</td>
                             <td style="width:105px;padding-left:5px">&nbsp;</td>
                             <td style="width:95px;padding-bottom:5px;padding-left:5px;">'.$row['valor'].'</td>
                             <td style="width:105px;padding-bottom:5px;padding-left:5px;">'.$row['probabilidad_exito'].'</td>
                             <td style="width:105px;">'.$row['estado_proyecto'].'</td>
-                            <td style="width:105px;">'.$row['estado_anterior'].'</td>
                             <td style="width:78px;padding-left:5px">'.str_replace(' ',' - ',$row['fecha_creacion']).'</td>
                             <td style="width:85px;padding-left:5px">'.str_replace(' ',' - ',$row['fecha_actualizacion']).'</td>
                             <td style="width:67px;padding-bottom:5px;padding-left:5px;">'.$row['vencimiento'].'</td>
