@@ -448,37 +448,6 @@
 
 		}
 
-		// $sqlConsulDoc = "SELECT numero_factura AS valor, prefijo,documento_cruce
-		// 						FROM ventas_facturas
-		// 						WHERE activo=1  AND id_empresa='$id_empresa' AND id='$id'
-		// 						LIMIT 0,1";
-		// $queryConsulDoc=mysql_query($sqlConsulDoc,$link);
-		// $id_documento_cruce = mysql_result($queryConsulDoc,0,'documento_cruce');
-
-		// if ($id_documento_cruce>0) {
-		// 	// UPDATE CONSECUTIVO FACTURA ==>
-		// 	$updateEstadoFactura = "UPDATE ventas_facturas SET estado = 1, fecha_contabilizado=NOW() WHERE id='$id'";
-		// 	$queryEstadoFactura  = mysql_query($updateEstadoFactura,$link);
-		// 	echo'<script>
-		// 		//PONER EL NUMERO DE LA FACTURA EN EL TITULO DEL DOCUMENTO
-		// 		// document.getElementById("titleDocumentoFacturaVenta").innerHTML="Factura de Venta<br>N. '.$consecutivoFactura.'";
-
-		// 		Ext.get("contenedor_'.$opcGrillaContable.'").load({
-		// 			url     : "bd/grillaContableBloqueada.php",
-		// 			scripts : true,
-		// 			nocache : true,
-		// 			params  :
-		// 			{
-		// 				id_factura_venta  : "'.$id.'",
-		// 				opcGrillaContable : "'.$opcGrillaContable.'",
-		// 				filtro_bodega     : "'.$idBodega.'"
-		// 			}
-		// 		});
-		// 		document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-		// 	</script>';
-		// 	exit;
-		// }
-
 		//=================================== UPDATE ======================================//
 		/***********************************************************************************/
 
@@ -559,17 +528,10 @@
 								numero_factura_completo ='$consecutivoFactura',
 								plantillas_id = '$idPlantilla',
 								total_factura = '$saldoGlobalfactura',
-								total_factura_sin_abono = '$saldoGlobalFacturaSinAbono'
+								total_factura_sin_abono = '$saldoGlobalFacturaSinAbono',
+								valor_anticipo = " .$arrayAnticipo['total']. "
 							WHERE id = '$id' AND id_empresa = '$id_empresa'";
 		$queryGeneraFact = mysql_query($sqlGeneraFact,$link);
-		// if ($queryGeneraFact) { actualizaCantidadArticulos($id,$id_sucursal,$idBodega,$tablaInventario,$idTablaPrincipal,'eliminar',$id_empresa,$link); }
-		// else{
-		// 	echo '<script>
-		// 			alert("Error!,\nNo se finalizo la factura\nSi el problema continua comuniquese con el administrador del sistema");
-		// 			document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-		// 		</script>';
-		// 		return;
-		// }
 		
 		actualizaCantidadArticulos($id,"salida","Generar");
 
