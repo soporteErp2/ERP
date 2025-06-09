@@ -228,7 +228,7 @@
             <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Usuario: <b><span style="color:#333"><?php echo $row['usuario'] ?></span></b></div>    
             <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Ultim. Actualizaci&oacute;n: <b><span style="color:#333"><?php echo $fecha_actualizacion; ?></span></b></div>    
 
-            <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Valor: <b><span style="color:#333"><?php echo $row['valor'] ?></span></b></div>        
+            <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Valor: <b><span style="color:#333"><?php echo number_format($row['valor'], 0, ',', '.') ?></span></b></div>        
             <div class="RedondeadoSombra" style="float:right; width:300; margin: 2px 2px 0 0; padding: 0 3px 0 0; text-align:right;"><span style="color:#777">Vencimiento.</span> <b><?php echo fecha_larga_hora_m($row['vencimiento']) ?></b></div>
             <div style="float:left; width:740px; margin: 2px 0 0 0px"><?php echo $row['observacion'] ?></div>
         </div>
