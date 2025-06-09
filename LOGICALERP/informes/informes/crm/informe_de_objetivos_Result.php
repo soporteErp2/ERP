@@ -24,7 +24,7 @@
 
     $nombre_sucursal = $mysql->result($mysql->query("SELECT * FROM empresas_sucursales WHERE id = $id_sucursal",$link),0,"nombre");
 
-    $EstadoAct           = $MyInformeFiltro_2;
+    $EstadoAct           = $MyInformeFiltro_1;
     $EstadoActividadName = array("SIN FINALIZAR","FINALIZADOS");
     if($EstadoAct == ''){
         $EstadoActividad = 'TODOS';
