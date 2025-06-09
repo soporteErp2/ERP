@@ -51,7 +51,7 @@
  			$grilla->AddRowImage('Actividades','<center>[acciones]</center>','75','');
 			$grilla->AddRowImage('Acciones','<center>[acciones]</center>','55','');
 			$grilla->AddRow('Proyecto','objetivo','300','');
-			$grilla->AddRow('Valor','valor','90','');
+			$grilla->AddRow('Valor','valor','90','moneda');
 			$grilla->AddRow('Creado por','usuario','200','');
 			$grilla->AddRow('Fecha Creacion','fecha_creacion','110','');
 			$grilla->AddRow('Actualizacion','fecha_actualizacion','110','');
