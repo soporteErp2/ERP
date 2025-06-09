@@ -116,6 +116,9 @@
 
             $query = $this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
+                $cuentaini =str_pad($row['cuenta_inicial'], 8, '0', STR_PAD_RIGHT);
+                $cuentafin =str_pad($row['cuenta_final'], 8, '0', STR_PAD_RIGHT);
+
                 $arrayTemp[$row['id']] = array(
                                                 'id_formato'                 => $row['id_formato'],
                                                 'codigo_formato'             => $row['codigo_formato'],
@@ -124,10 +127,10 @@
                                                 'concepto'                   => $row['concepto'],
                                                 'descripcion_concepto'       => $row['descripcion_concepto'],
                                                 'id_cuenta_inicial'          => $row['id_cuenta_inicial'],
-                                                'cuenta_inicial'             => $row['cuenta_inicial'],
+                                                'cuenta_inicial'             => $cuentaini,
                                                 'descripcion_cuenta_inicial' => $row['descripcion_cuenta_inicial'],
                                                 'id_cuenta_final'            => $row['id_cuenta_final'],
-                                                'cuenta_final'               => $row['cuenta_final'],
+                                                'cuenta_final'               => $cuentafin,
                                                 'descripcion_cuenta_final'   => $row['descripcion_cuenta_final'],
                                                 'forma_calculo'              => $row['forma_calculo'],
                                                 'id_columna_formato'         => $row['id_columna_formato'],
@@ -135,7 +138,11 @@
                                                 'tope'                       => $row['tope'],
                                                 );
 
-                $whereTemp.=($whereTemp=='')? "CAST(codigo_cuenta AS CHAR) >='$row[cuenta_inicial]' AND CAST(codigo_cuenta AS CHAR) <= '$row[cuenta_final]' " : " OR CAST(codigo_cuenta AS CHAR) >='$row[cuenta_inicial]' AND CAST(codigo_cuenta AS CHAR) <= '$row[cuenta_final]'" ;
+                $whereTemp  .=  ($whereTemp=='')? 
+                                "codigo_cuenta >= ". $cuentaini ." AND codigo_cuenta  <= ". $cuentafin : 
+
+                                " OR codigo_cuenta >= ". $cuentaini ." AND codigo_cuenta  <= ". $cuentafin;
+
                 $codigoFormato = $row['codigo_formato'];
             }
             $this->codigo_formato = $codigoFormato;
