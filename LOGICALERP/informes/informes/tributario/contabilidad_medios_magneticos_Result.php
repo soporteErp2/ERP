@@ -390,7 +390,7 @@
                         ";
             $query=$this->mysql->query($sql,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
-                $arrayCodCiudad[$row['id']] = $arrayCodDepartamento[$row['id_departamento']].str_pad($row['codigo_ciudad'], 3, '0', STR_PAD_LEFT);
+                $arrayCodCiudad[$row['id']] = str_pad($row['codigo_ciudad'], 3, '0', STR_PAD_LEFT);
             }
 
             $this->joinArrayTercero($arrayCodPais,$arrayCodDepartamento,$arrayCodCiudad);
