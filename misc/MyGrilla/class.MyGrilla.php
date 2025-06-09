@@ -490,7 +490,7 @@ class MyGrilla {
 		$sql   = "SELECT simbolo,decimales FROM configuracion_moneda WHERE predeterminado = 'true'";
 		$query = mysql_query($sql,$this->Link);
 		$row   = mysql_fetch_array($query);
-		return $row['simbolo'].' '.number_format($cadena,$row['decimales']);
+		return $row['simbolo'].' '.number_format($cadena,$row['decimales'],',','.');
 	}
 
 	/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
