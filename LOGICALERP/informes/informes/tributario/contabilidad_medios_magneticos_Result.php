@@ -40,8 +40,7 @@
         private $arrayColumnasFormato         = '';
         private $arrayTerceros                = '';
         private $arrayJoined                  = '';
-        private $sqldebug1                    = '';
-        private $sqldebug2                    = '';
+        private $sqldebug                     = [];
         private $codigo_formato               = '';
         private $camposComoTexto              = [];
         private $headers                      = [];
@@ -180,7 +179,7 @@
                         $this->whereAsientos
                     GROUP BY id_tercero, codigo_cuenta";
 
-            $this->sqldebug1 = $sql1;
+            $this->sqldebug[] = $sql1;
             $query1 = $this->mysql->query($sql1, $this->mysql->link);
             while ($row = $this->mysql->fetch_array($query1)) {
                 $this->procesarFilaAsiento($row, $arrayTemp, false);
@@ -203,7 +202,7 @@
                         AND fecha < '$this->fecha-01-01'
                         $this->whereAsientos
                     GROUP BY id_tercero, codigo_cuenta";
-            $this->sqldebug2 = $sql2;
+            $this->sqldebug[] = $sql2;
 
             $query2 = $this->mysql->query($sql2, $this->mysql->link);
             while ($row = $this->mysql->fetch_array($query2)) {
@@ -292,7 +291,7 @@
         */
         private function setTerceros()
         {
-            $sql="SELECT
+            $sqlTerceros="SELECT
                         T.id,
                         T.numero_identificacion,
                         T.dv,
@@ -314,7 +313,8 @@
                         T.tercero = 1 AND
                         T.id_empresa=$this->id_empresa
                         $this->whereIdTerceros";
-            $query=$this->mysql->query($sql,$this->mysql->link);
+            $this->sqldebug[] = $sqlTerceros;
+            $query=$this->mysql->query($sqlTerceros,$this->mysql->link);
             while ($row=$this->mysql->fetch_array($query)) {
                 $arrayTemp[$row['numero_identificacion']] = array(
                                                 'tipo_identificacion'   => $row['codigo_tipo_documento_dian'],
