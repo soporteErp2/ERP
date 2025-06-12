@@ -72,8 +72,8 @@
 		 * validateResolucion Validar un numero valido para la resolucion de facturas POS
 		 * @return Array Array con los valores de la consulta y validacion
 		 */
-		public function validateResolucion(){
-            $sql = "SELECT id_resolucion,numero_resolucion
+		public function validateResolucion($id_doc){
+            $sqlres = "SELECT id_resolucion,numero_resolucion
             			FROM ventas_pos_configuracion_sucursales
             			WHERE activo=1 AND id_empresa=$this->id_empresa
             			ORDER BY predeterminada DESC LIMIT 1";

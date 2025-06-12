@@ -240,7 +240,7 @@
 
 		public function generateTiquet($params){
 
-			$arrayResolucion = $this->validateResolucion();
+			$arrayResolucion = $this->validateResolucion($params['id']);
 			if ($arrayResolucion['status']==false) {
 				$arrayResult = array('status' => 'failed', 'message'=>$arrayResolucion['message'], "debug" =>$arrayResolucion['debug'] );
 				echo json_encode($arrayResult);
