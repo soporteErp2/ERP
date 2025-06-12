@@ -75,12 +75,21 @@
 		public function validateResolucion($id_doc){
             $sqlres = "SELECT id_resolucion,numero_resolucion
             			FROM ventas_pos_configuracion_sucursales
-            			WHERE activo=1 AND id_empresa=$this->id_empresa
-            			ORDER BY predeterminada DESC LIMIT 1";
-            $query=$this->mysql->query($sql);
-            $id_resolucion =  $this->mysql->result($query,0,'id_resolucion');
-
-			$sql   = "SELECT
+            			WHERE activo=1 
+						AND id_empresa=$this->id_empresa
+						AND predeterminada = 'Si'
+            			ORDER BY id DESC LIMIT 1";
+            $queryres=$this->mysql->query($sqlres);
+            $id_resolucion =  $this->mysql->result($queryres,0,'id_resolucion');
+    		if (!$id_resolucion) {
+				$this->rollbackdoc($id_doc);
+    		    return [
+    		        'status' => false,
+    		        'message' => "No hay ninguna resolucion configurada para generar tiquet POS",
+    		        'debug' => $sqlres
+    		    ];
+    		}
+			$sqlResInfo   = "SELECT
 							prefijo,
 							consecutivo_inicial,
 							consecutivo_final,
@@ -90,32 +99,35 @@
 							tercero
 						FROM ventas_pos_configuracion
 						WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$id_resolucion";
-			$queryRes = $this->mysql->query($sql);
-			$prefijo             = $this->mysql->result($queryRes,0,'prefijo');
-			$consecutivo_inicial = $this->mysql->result($queryRes,0,'consecutivo_inicial');
-			$consecutivo_final   = $this->mysql->result($queryRes,0,'consecutivo_final');
-			$consecutivo_pos     = $this->mysql->result($queryRes,0,'consecutivo_pos');
-			$id_tercero          = $this->mysql->result($queryRes,0,'id_tercero');
-			$documento_tercero   = $this->mysql->result($queryRes,0,'documento_tercero');
-			$tercero             = $this->mysql->result($queryRes,0,'tercero');
-
-			// $arrayResult = array('status' => 'failed', 'message'=>$sqlRes, "debug" =>$sql);
-			// echo json_encode($arrayResult);
-			// exit;
-            if ($id_resolucion=='') {
-            	return array('status' => false, 'message'=> "No hay ninguna resolucion configurada para generar tiquet POS","debug"=>$sqlRes);
-            }
-    		else{
-    			return array(
-								'status'            => true,
-								'id_resolucion'     => $id_resolucion,
-								'prefijo'           => $prefijo,
-								'consecutivo_pos'   => $consecutivo_pos,
-								'id_tercero'        => $id_tercero,
-								'documento_tercero' => $documento_tercero,
-								'tercero'           => $tercero,
-    						);
+			$queryResInfo = $this->mysql->query($sqlResInfo);
+			if ($this->mysql->num_rows($queryResInfo) == 0) {
+				$this->rollbackdoc($id_doc);
+    		    return [
+    		        'status' => false,
+    		        'message' => "No se encontro informacion de la resolucion POS",
+    		        'debug' => $sqlResInfo
+    		    ];
     		}
+
+			$consecutivo_pos = trim($this->mysql->result($queryResInfo, 0, 'consecutivo_pos'));
+    		
+			if ($consecutivo_pos === '' || !is_numeric($consecutivo_pos)) {
+    		    return [
+    		        'status' => false,
+    		        'message' => "El consecutivo POS no es valido o esta vacio",
+    		        'debug' => $sqlResInfo
+    		    ];
+    		}
+    		
+			return [
+    		    'status'            => true,
+    		    'id_resolucion'     => $id_resolucion,
+    		    'prefijo'           => $this->mysql->result($queryResInfo, 0, 'prefijo'),
+    		    'consecutivo_pos'   => $consecutivo_pos,
+    		    'id_tercero'        => $this->mysql->result($queryResInfo, 0, 'id_tercero'),
+    		    'documento_tercero' => $this->mysql->result($queryResInfo, 0, 'documento_tercero'),
+    		    'tercero'           => $this->mysql->result($queryResInfo, 0, 'tercero')
+    		];
 		} // END FUNCTION
 
 		/**
