@@ -131,6 +131,31 @@
 		} // END FUNCTION
 
 		/**
+		 * Rollback del documento S
+		 * @return void
+		 */
+		public function rollbackdoc($id_doc){
+			if (!is_numeric($id_doc) || $id_doc <= 0) {
+        		// ID no válido, no ejecutar
+        		return;
+    		}
+			//Quitar la factura de ventas_pos
+			$sqlVentasPos = "UPDATE ventas_pos SET activo = 0 WHERE id =$id_doc";
+			$queryVentasPos = $this->mysql->query($sqlVentasPos);
+
+			//Quitar la factura de formas pago
+			$sqlFormasPago = "UPDATE ventas_pos_formas_pago SET activo = 0 WHERE id_pos =$id_doc";
+			$queryFormasPago = $this->mysql->query($sqlFormasPago);
+
+			//Quitar el inventario y las recetas
+			$sqlInv	   = "UPDATE ventas_pos_inventario SET activo = 0 WHERE id_pos =$id_doc";
+			$queryInv = $this->mysql->query($sqlInv);
+
+			$sqlInvRec = "UPDATE ventas_pos_inventario_recetas SET activo = 0 WHERE id_pos =$id_doc";
+			$queryInvRec = $this->mysql->query($sqlInvRec);
+		}
+
+		/**
 		 * documentInfo Consultar la informacion del tiquet para el proceso de facturacion y demas
 		 * @param Int $id_documento Id del tiquet POS
 		 * @param Array $arrayResolucion Lista con la informacion de resolucion de facturacion y el tercero por defecto
