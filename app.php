@@ -3,6 +3,14 @@
     if (!isset($_SESSION['IDUSUARIO'])) {
         header('location: login.php');
     }
+	$fileRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? $_SERVER['DOCUMENT_ROOT']."/ERP":$_SERVER['DOCUMENT_ROOT'];
+    $fileRoute = $fileRoot."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/assets/logo.png";
+	$serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":$_SERVER['SERVER_NAME'];
+    $imgRoute = '"'.$serverRoot.'/ARCHIVOS_PROPIOS/empresa_'.$_SESSION['ID_HOST'].'/assets/logo.png"';
+
+    $logo_or_name = (file_exists($fileRoute))? "<img src=$imgRoute alt='Logo Empresa' class='h-12 ml-2 w-auto' />" : 
+    "<span class='font-montserrat font-bold text-gray-700'>".$_SESSION['NOMBREEMPRESA']."</span>";
+
     // var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
@@ -28,10 +36,13 @@
     </div> -->
 
     <div id="main" class="font-montserrat h-screen flex flex-col">
-        <div id="header" class="bg-white border-b border-gray-dark w-full h-12 flex justify-between items-center content-center p-2">
-            <svg id="nav-btn" class="fill-gray-icon h-8 w-8 cursor-pointer" fill="none" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" fill="text-gray-icon" d="M6.28571 20C6.28571 12.4258 12.4258 6.28571 20 6.28571C27.5742 6.28571 33.7143 12.4258 33.7143 20C33.7143 27.5742 27.5742 33.7143 20 33.7143C12.4258 33.7143 6.28571 27.5742 6.28571 20ZM20 4C11.1634 4 4 11.1634 4 20C4 28.8366 11.1634 36 20 36C28.8366 36 36 28.8366 36 20C36 11.1634 28.8366 4 20 4ZM14.2857 13.1429C13.6545 13.1429 13.1429 13.6545 13.1429 14.2857C13.1429 14.9169 13.6545 15.4286 14.2857 15.4286H25.7143C26.3455 15.4286 26.8571 14.9169 26.8571 14.2857C26.8571 13.6545 26.3455 13.1429 25.7143 13.1429H14.2857ZM13.1429 20C13.1429 19.3688 13.6545 18.8571 14.2857 18.8571H25.7143C26.3455 18.8571 26.8571 19.3688 26.8571 20C26.8571 20.6312 26.3455 21.1429 25.7143 21.1429H14.2857C13.6545 21.1429 13.1429 20.6312 13.1429 20ZM14.2857 24.5714C13.6545 24.5714 13.1429 25.0831 13.1429 25.7143C13.1429 26.3455 13.6545 26.8571 14.2857 26.8571H25.7143C26.3455 26.8571 26.8571 26.3455 26.8571 25.7143C26.8571 25.0831 26.3455 24.5714 25.7143 24.5714H14.2857Z" />
-            </svg>
+        <div id="header" class="bg-white border-b border-gray-dark w-full h-15 flex justify-between items-center content-center p-2">
+            <div class="flex items-center gap-2">
+                <svg id="nav-btn" class="fill-gray-icon h-8 w-8 cursor-pointer" fill="none" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" fill="text-gray-icon" d="M6.28571 20C6.28571 12.4258 12.4258 6.28571 20 6.28571C27.5742 6.28571 33.7143 12.4258 33.7143 20C33.7143 27.5742 27.5742 33.7143 20 33.7143C12.4258 33.7143 6.28571 27.5742 6.28571 20ZM20 4C11.1634 4 4 11.1634 4 20C4 28.8366 11.1634 36 20 36C28.8366 36 36 28.8366 36 20C36 11.1634 28.8366 4 20 4ZM14.2857 13.1429C13.6545 13.1429 13.1429 13.6545 13.1429 14.2857C13.1429 14.9169 13.6545 15.4286 14.2857 15.4286H25.7143C26.3455 15.4286 26.8571 14.9169 26.8571 14.2857C26.8571 13.6545 26.3455 13.1429 25.7143 13.1429H14.2857ZM13.1429 20C13.1429 19.3688 13.6545 18.8571 14.2857 18.8571H25.7143C26.3455 18.8571 26.8571 19.3688 26.8571 20C26.8571 20.6312 26.3455 21.1429 25.7143 21.1429H14.2857C13.6545 21.1429 13.1429 20.6312 13.1429 20ZM14.2857 24.5714C13.6545 24.5714 13.1429 25.0831 13.1429 25.7143C13.1429 26.3455 13.6545 26.8571 14.2857 26.8571H25.7143C26.3455 26.8571 26.8571 26.3455 26.8571 25.7143C26.8571 25.0831 26.3455 24.5714 25.7143 24.5714H14.2857Z" />
+                </svg>
+              <?= $logo_or_name ?>
+            </div>
             <div>
                 <div id="profile-btn" class="bg-gray-dropdown w-28 p-1 h-8 rounded-full text-gray-text flex justify-around content-center font-medium cursor-pointer">
                     <svg class="h-6 w-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
