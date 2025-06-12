@@ -845,9 +845,18 @@
 				$sql = "SELECT id, nombre, email FROM terceros  WHERE numero_identificacion = '$documento_cliente';";
 				$queryT=$this->mysql->query($sql);
 				$id_cliente = $this->mysql->result($queryT,0,'id');
+				
+				//Si No es cliente POS (es un huesped) y no existe el tercero en el ERP deben sincronizarlo primero desde hotels
+				if (!$params['huespedesSelect'][0]['clientePos'] && $this->mysql->num_rows($queryT) == 0) {
+						$arrayResult = array('status'=>'failed','message'=>"No existe el huesped en ERP - debe sincronizarlo desde HOTELS");
+						echo json_encode($arrayResult);
+						return;
+				}
+
+				// Si es un cliente POS (escribireorn los datos en la interfaz)
 				if($params['huespedesSelect'][0]['clientePos']){
 					$datosEmpresa = $this->getInfoEmpresa();
-					//Si el tercero existe
+					//Si el tercero existe actualizar la info si es necesario
 					if($this->mysql->num_rows($queryT) > 0){
 						
 						$cliente = $this->mysql->result($queryT,0,'nombre');
@@ -929,7 +938,7 @@
 								return;
 							}
 						}
-					}else{
+					}else{//Si el tercero no existe, crearlo con el API
 							$query_auth = base64_encode(
 								$params['user']['username'].":"
 								.$params['user']['token'].":"
@@ -977,13 +986,18 @@
 								return;
 							}
 					}
-					
 				}
 			}
+			//Si es un cliente ERP
 			else if(count($params['clienteErp'])>0){
 				$id_cliente 		= $params['clienteErp'];
 				$documento_cliente  = $params['documento_cliente_erp'];
 				$cliente			= $params['nombre_cliente_erp'];
+			}
+			else{
+				$arrayResult = array('status'=>'failed','message'=>"No hay datos del huesped o cliente ERP");
+				echo json_encode($arrayResult);
+				return;
 			}
 
 			$randomico = $this->randomico();
