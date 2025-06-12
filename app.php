@@ -5,7 +5,7 @@
     }
 	$fileRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? $_SERVER['DOCUMENT_ROOT']."/ERP":$_SERVER['DOCUMENT_ROOT'];
     $fileRoute = $fileRoot."/ARCHIVOS_PROPIOS/empresa_".$_SESSION['ID_HOST']."/assets/logo.png";
-	$serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":$_SERVER['SERVER_NAME'];
+	$serverRoot = ($_SERVER['SERVER_NAME'] == 'localhost')? "http://localhost/ERP":"https://".$_SERVER['SERVER_NAME'];
     $imgRoute = '"'.$serverRoot.'/ARCHIVOS_PROPIOS/empresa_'.$_SESSION['ID_HOST'].'/assets/logo.png"';
 
     $logo_or_name = (file_exists($fileRoute))? "<img src=$imgRoute alt='Logo Empresa' class='h-12 ml-2 w-auto' />" : 
