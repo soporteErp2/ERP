@@ -22,21 +22,21 @@
 			$tabla_documento      = 'compras_facturas';
 			$CamposBusquedaGrilla = 'fecha_inicio,fecha_final,prefijo_factura,numero_factura,consecutivo,nit,proveedor';
 			$whereConsecutivos    = 'numero_factura>0 OR consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_inicio DESC';
 			break;
 
 		case 'CE':
 			$tabla_documento      = 'comprobante_egreso';
 			$CamposBusquedaGrilla = 'fecha_comprobante,consecutivo,nit_tercero,tercero';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_inicial DESC';
 			break;
 
 		case 'RV':
 			$tabla_documento      = 'ventas_remisiones';
 			$CamposBusquedaGrilla = 'fecha_inicio,fecha_finalizacion,consecutivo,nit,cliente,bodega';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_inicio DESC';
 			break;
 
 		case 'FV':
@@ -50,35 +50,35 @@
 			$tabla_documento      = 'recibo_caja';
 			$CamposBusquedaGrilla = 'fecha_recibo,consecutivo,nit_tercero,tercero';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_inicial DESC';
 			break;
 
 		case 'LN':
 			$tabla_documento      = 'nomina_planillas';
 			$CamposBusquedaGrilla = 'fecha_documento,consecutivo,usuario';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_documento DESC';
 			break;
 
 		case 'LE':
 			$tabla_documento      = 'nomina_planillas_liquidacion';
 			$CamposBusquedaGrilla = 'fecha_documento,consecutivo,usuario';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_documento DESC';
 			break;
 
 		case 'PA':
 			$tabla_documento      = 'nomina_planillas_ajuste';
 			$CamposBusquedaGrilla = 'fecha_documento,consecutivo,usuario';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_documento DESC';
 			break;
 
 		case 'NCG':
 			$tabla_documento      = 'nota_contable_general';
 			$CamposBusquedaGrilla = 'fecha_nota,consecutivo,consecutivo_niif,sucursal,tipo_nota,numero_identificacion_tercero,tercero,tipo_nota';
 			$whereConsecutivos    = 'consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_nota DESC';
 			break;
 
 
@@ -87,7 +87,7 @@
 			$tabla_documento      = 'compras_facturas';
 			$CamposBusquedaGrilla = 'fecha_inicio,fecha_final,prefijo_factura,numero_factura,consecutivo,nit,proveedor';
 			$whereConsecutivos    = 'numero_factura>0 OR consecutivo>0';
-			$orderBy = 'consecutivo DESC';
+			$orderBy = 'fecha_inicio DESC';
 			break;
 	}
 
