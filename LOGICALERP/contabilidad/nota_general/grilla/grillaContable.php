@@ -669,7 +669,7 @@
         return true;
     }
 
-    function ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(valor,input){
+    function ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(valor,input,id=''){
         if (valor=='') { document.getElementById(input).focus(); return; }
 
         var arrayIdInput = input.split('_');
@@ -685,7 +685,8 @@
                 cuenta            : valor,
                 contFila          : arrayIdInput[1],
                 idProveedor       : id_cliente_<?php echo $opcGrillaContable;?>,
-                id                : '<?php echo $id_nota; ?>'
+                id_nota           : '<?php echo $id_nota; ?>',
+                id_fila_grilla    : id
             }
         });
     }
