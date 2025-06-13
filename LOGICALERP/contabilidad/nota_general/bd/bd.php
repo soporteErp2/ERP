@@ -104,7 +104,7 @@
 			break;
 
 		case 'ventana_buscar_documento_cruce':
-			ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$link);
+			ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$id_cliente,$link);
 			break;
 
 		case 'cargaConfiguracionCuenta':
@@ -1768,7 +1768,7 @@
  	}
 
  	//REDERIZA FILTRO TIPO DE DOCUMENTO
- 	function ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$link){
+ 	function ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$id_cliente,$link){
  		echo'<select class="myfield" name="filtro_tipo_documento" id="filtro_tipo_documento" style="width:100px; margin: 2px 0px 0px 4px;" onChange="carga_filtro_tipo_documento(this.value)">
         		<option value="FC">FC</option>
         		<option value="FV">FV</option>
@@ -1794,7 +1794,36 @@
 						}
 					});
 				}
-				// carga_filtro_tipo_documento();
+				    		    setTimeout(function(){ carga_filtro_tercero() },200);
+				function carga_filtro_tercero(){
+					var filtroTercero         = document.getElementById("filtro_terceros_nota").value
+					,   tipo_documento_cruce  = document.getElementById("filtro_tipo_documento").value;
+
+					whereTercero = "";
+
+					if(filtroTercero == "principal"){
+						cliente_or_proveedor = (tipo_documento_cruce == "FC")? "proveedor" : "cliente";
+						whereTercero = "AND id_"+cliente_or_proveedor+" = "+'.$id_cliente.';
+					}
+					Ext.get("contenedor_buscar_documento_cruce_'.$opcGrillaContable.'").load({
+					 	url     : "'.$carpeta.'bd/grillaDocumentoCruce.php",
+					 	scripts : true,
+					 	nocache : true,
+						params  :
+						{
+							opc                  : "'.$opc.'",
+							filtro_sucursal      : '.$id_sucursal.',
+							tipo_documento_cruce : tipo_documento_cruce,
+							cont                 : "'.$cont.'",
+							opcGrillaContable    : "'.$opcGrillaContable.'",
+							carpeta              : "'.$carpeta.'",
+							tablaPrincipal       : "nota_contable_general",
+							idTablaPrincipal     : "id_nota_general",
+							tablaCuentasNota     : "nota_contable_general_cuentas",
+							whereTercero     	 : whereTercero,
+						}
+					});
+				}
 			</script>';
  	}
 
