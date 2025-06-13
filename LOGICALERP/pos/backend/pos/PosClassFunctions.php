@@ -258,11 +258,17 @@
 						AND VPS.id_empresa=$this->id_empresa 
 						AND VPS.id=$this->id_seccion";
 			$query=$this->mysql->query($sql);
+			if(!$query){
+				$this->rollbackdoc($this->id_documento);
+				$arrayReturn = array('status' => false, "message"=>"No se pudo consultar la configuracion de la seccion");
+				echo json_encode($arrayReturn);
+				exit;
+			}
 			$this->id_bodega_ambiente      = $this->mysql->result($query,0,'id_bodega');
 			$this->idCcos                  = $this->mysql->result($query,0,'id_centro_costos');
 			$this->codigoCcos              = $this->mysql->result($query,0,'codigo_centro_costos');
 			$this->nombreCcos              = $this->mysql->result($query,0,'centro_costos');
-			$this->cuenta_ingreso_colgaap  = $this->mysql->result($query,0,'cuenta_ingreso_niif');
+			$this->cuenta_ingreso_colgaap  = $this->mysql->result($query,0,'cuenta_ingreso_colgaap');
 			$this->cuenta_ingreso_niif     = $this->mysql->result($query,0,'cuenta_ingreso_niif');
 			$this->codigo_transaccion      = $this->mysql->result($query,0,'codigo_transaccion');
 			$this->id_cuenta_pago     	   = $this->mysql->result($query,0,'cuenta_pago');
@@ -299,7 +305,16 @@
 				// exit;
 				// SI ES UNA CORTESIA O UN CHEQUE CUENTA, NO SE ASIGNA UN CONSECUTIVO DEL POS PUES NO SERA VALIDA COMO FACTURA
 				if ($this->causaIngreso == false) {
-					
+					if ($arrayResolucion['consecutivo_pos'] === '' || !is_numeric($arrayResolucion['consecutivo_pos'])) {
+						$this->rollbackdoc($this->id_documento);
+						$arrayReturn = array(
+    				        'status' => false,
+    				        'message' => "El consecutivo POS no es valido o esta vacio",
+    				        'debug' => $sqlResInfo
+						);
+						echo json_encode($arrayReturn);
+						exit;
+    				}
 					$consecutivoCompleto = ($arrayResolucion["prefijo"]<>'')? "$arrayResolucion[prefijo] $arrayResolucion[consecutivo_pos]" : $arrayResolucion['consecutivo_pos'];
 					$sql="UPDATE ventas_pos
 							SET prefijo='$arrayResolucion[prefijo]',consecutivo='$arrayResolucion[consecutivo_pos]',id_configuracion_resolucion='$arrayResolucion[id_resolucion]'
