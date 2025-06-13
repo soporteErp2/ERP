@@ -1774,8 +1774,8 @@
         		<option value="FV">FV</option>
     		</select>
 			<select name="filtro_terceros_nota" id="filtro_terceros_nota" style="width:100px; margin: 7px 0px 0px 5px;height:25px" onChange="carga_filtro_tercero()">
-        		<option value="principal" selected>Principal</option>
-        		<option value="todos">Todos</option>
+        		<option value="principal">Principal</option>
+        		<option value="todos" selected>Todos</option>
     		</select>
     		<script>
 				function carga_filtro_tipo_documento(tipo_documento_cruce){
