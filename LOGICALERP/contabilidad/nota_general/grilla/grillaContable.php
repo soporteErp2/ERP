@@ -802,6 +802,42 @@
             ]
         }).show();
     }
+    		//========== ACTUALIZAR LA FILA DE LA VENTANA DEL DOCUMENTO CRUCE ==========//
+	function actualiza_fila_ventana_busqueda_doc_cruce_nota(id,evento){
+		console.log("div_NotaGeneral_numero_factura_"+id);
+	    var div    = '';
+	    var divImg = '';
+	    var divEvt = '';
+
+	    // MOSTRAR LA FILA DE LA VENTANA DEL DOCUMENTO CRUCE COMO ELIMINADO
+	    if (document.getElementById("div_NotaGeneral_numero_factura_"+id)) {
+				div    = document.getElementById('item_NotaGeneral_'+id);
+				divImg = document.getElementById('MuestraToltip_NotaGeneral_'+id);
+				divEvt = document.getElementById('MuestraToltip_General_NotaGeneral_'+id);
+	    }
+
+		if (evento=='fail'){
+	    	if (div) {
+	    		div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#FDDADA !important;');
+	      }
+	      if (divEvt) {
+	      	divEvt.setAttribute('ondblclick','');
+	      }
+	    	if (divImg) {
+	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../../../nomina/img/false.png);background-repeat: no-repeat;background-position-x: 15px;');
+	    	}
+	    } else{
+	    	if (div) {
+	    		div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#e5ffe5 !important;');
+	      }
+	      if (divEvt) {
+	      	divEvt.setAttribute('ondblclick','');
+	      }
+	    	if (divImg) {
+	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../../../nomina/img/true.png);background-repeat: no-repeat;background-position-x: 15px;');
+	    	}
+	    }
+	}
 
     function responseVentanaBuscarCuenta<?php echo $opcGrillaContable; ?>(id,cont){
 
