@@ -173,8 +173,10 @@ if(!isset($opcion)){  ?>
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('src','img/eliminar.png');
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('title','Eliminar Tercero');
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
-    		ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(cuenta, 'cuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>');
-			Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
+    		ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(cuenta, 'cuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>',id);
+			cont=<?php echo $cont; ?>;
+			
+			//Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
 		}
 
 	</script>
