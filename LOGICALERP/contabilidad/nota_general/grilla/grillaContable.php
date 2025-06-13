@@ -836,6 +836,7 @@
 	    	if (divImg) {
 	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../../../nomina/img/true.png);background-repeat: no-repeat;background-position-x: 15px;');
 	    	}
+            guardarNewCuenta<?php echo $opcGrillaContable; ?>(contArticulos<?php echo $opcGrillaContable; ?>);
 	    }
 	}
 
