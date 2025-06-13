@@ -27,7 +27,7 @@
 		//QUERY
 			$grilla->TableName			= $tablaBuscar;			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
 
-			$grilla->MyWhere			= "activo = 1 AND estado=1 AND id_empresa='$filtro_empresa' AND id_sucursal= '$filtro_sucursal' ";
+			$grilla->MyWhere			= "activo = 1 AND estado=1 AND id_empresa='$filtro_empresa' AND id_sucursal= '$filtro_sucursal' $whereTercero";
 
 			$grilla->OrderBy			= 'id DESC';			//LIMITE DE LA CONSULTA
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
@@ -114,21 +114,27 @@ if(!isset($opcion)){  ?>
 	<script>
 
 		function Editar_<?php echo $opcGrillaContable; ?>(id){
+        	var contArticulosNota = 0;
 
 			(cuenta_pago=document.getElementById('cuenta_pago_'+id).innerHTML)*1;
 			var total_factura_sin_abono = document.getElementById('total_factura_sin_abono_'+id).innerHTML;
 			var id_tercero              = document.getElementById('id_tercero_'+id).innerHTML;
 
 			// arrayCuentaPago[<?php echo $cont; ?>]=cuenta_pago;
+        	arrayIdsArticulosNota = document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>').querySelectorAll('.bodyDivArticulos<?php echo $opcGrillaContable; ?>');
+			console.log({array:arrayIdsArticulosNota,cont:contArticulosNota});
+			for (const div of arrayIdsArticulosNota) {
+			    if (div.innerHTML.trim() !== '') {
+			        contArticulosNota++;
+			    }
+			}
+			console.log({array:arrayIdsArticulosNota,cont:contArticulosNota});
 
 			var arrayTemp= new Array();
 
 			arrayTemp[cuenta_pago]=total_factura_sin_abono;
-
-			arraySaldoCuentaPago[<?php echo $cont; ?>]=arrayTemp[cuenta_pago];
-
-			if(document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value > 0){
-        	    document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').style.display = 'block';
+			if(document.getElementById('idInsertCuenta<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value > 0){
+        	    document.getElementById('divImageDeshacer<?php echo $opcGrillaContable; ?>_'+contArticulosNota).style.display = 'block';
         	    document.getElementById("divImageSave<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>").style.display     = 'inline';
         	}
 
@@ -139,42 +145,43 @@ if(!isset($opcion)){  ?>
         	if ('<?php echo $tipo_documento_cruce; ?>'=='FC') {
 				prefijo_factura = document.getElementById('div_<?php echo $opcGrillaContable; ?>_prefijo_factura_'+id).innerHTML
 				tercero         = document.getElementById('div_<?php echo $opcGrillaContable; ?>_proveedor_'+id).innerHTML
-				document.getElementById('debito<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value    = total_factura_sin_abono;
+				document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value    = total_factura_sin_abono;
         	}
         	else if ('<?php echo $tipo_documento_cruce; ?>'=='FV') {
         		prefijo_factura = document.getElementById('div_<?php echo $opcGrillaContable; ?>_prefijo_'+id).innerHTML
 				tercero         = document.getElementById('div_<?php echo $opcGrillaContable; ?>_cliente_'+id).innerHTML
-				document.getElementById('credito<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value    = total_factura_sin_abono;
+				document.getElementById('credito<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value    = total_factura_sin_abono;
         	}
 
 			var id_cuenta       = document.getElementById('id_cuenta_pago_'+id).innerHTML
 			,	cuenta          = document.getElementById('cuenta_pago_'+id).innerHTML
 			,	nit_tercero = document.getElementById('div_<?php echo $opcGrillaContable; ?>_nit_'+id).innerHTML
 
-			document.getElementById('idDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value=id;
-			document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value='<?php echo $tipo_documento_cruce; ?>';
-			document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value = prefijo_factura;
-			document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value  = document.getElementById('div_<?php echo $opcGrillaContable; ?>_numero_factura_'+id).innerHTML;
-			document.getElementById('debito<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').focus();
+			document.getElementById('idDocumentoCruce<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value=id;
+			document.getElementById('documentoCruce<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value='<?php echo $tipo_documento_cruce; ?>';
+			document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value = prefijo_factura;
+			document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value  = document.getElementById('div_<?php echo $opcGrillaContable; ?>_numero_factura_'+id).innerHTML;
+			document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+contArticulosNota).focus();
 
-			if (document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value != '' ) {
+			if (document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value != '' ) {
 				//CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN TERCERO
-        		document.getElementById('imgBuscarDocumentoCruce_<?php echo $cont; ?>').setAttribute('src','img/eliminar.png');
-        		document.getElementById('imgBuscarDocumentoCruce_<?php echo $cont; ?>').setAttribute('title','Eliminar Documento Cruce');
-        		document.getElementById('imgBuscarDocumentoCruce_<?php echo $cont; ?>').setAttribute('onclick'," eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>('<?php echo $cont; ?>')");
+        		document.getElementById('imgBuscarDocumentoCruce_'+contArticulosNota).setAttribute('src','img/eliminar.png');
+        		document.getElementById('imgBuscarDocumentoCruce_'+contArticulosNota).setAttribute('title','Eliminar Documento Cruce');
+        		document.getElementById('imgBuscarDocumentoCruce_'+contArticulosNota).setAttribute('onclick'," eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>(''+contArticulosNota)");
 			}
 
-			document.getElementById('idCuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value  = id_cuenta;
-			document.getElementById('cuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value    = cuenta;
-			document.getElementById('nit<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value       = nit_tercero;
-			document.getElementById('tercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value   = tercero;
-			document.getElementById('idTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').value = id_tercero;
+			document.getElementById('idCuenta<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value  = id_cuenta;
+			document.getElementById('cuenta<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value    = cuenta;
+			document.getElementById('nit<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value       = nit_tercero;
+			document.getElementById('tercero<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value   = tercero;
+			document.getElementById('idTercero<?php echo $opcGrillaContable; ?>_'+contArticulosNota).value = id_tercero;
 			//CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN TERCERO
-    		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('src','img/eliminar.png');
-    		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('title','Eliminar Tercero');
-    		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
-    		ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(cuenta, 'cuenta<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>');
-			Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
+    		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_'+contArticulosNota).setAttribute('src','img/eliminar.png');
+    		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_'+contArticulosNota).setAttribute('title','Eliminar Tercero');
+    		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_'+contArticulosNota).setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
+    		ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(cuenta, 'cuenta<?php echo $opcGrillaContable; ?>_'+contArticulosNota,id);
+			
+			//Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
 		}
 
 	</script>
