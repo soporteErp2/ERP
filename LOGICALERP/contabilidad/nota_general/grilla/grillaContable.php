@@ -805,7 +805,6 @@
     }
     		//========== ACTUALIZAR LA FILA DE LA VENTANA DEL DOCUMENTO CRUCE ==========//
 	function actualiza_fila_ventana_busqueda_doc_cruce_nota(id,evento){
-		console.log("div_NotaGeneral_numero_factura_"+id);
 	    var div    = '';
 	    var divImg = '';
 	    var divEvt = '';
