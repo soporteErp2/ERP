@@ -262,7 +262,7 @@
 			$this->idCcos                  = $this->mysql->result($query,0,'id_centro_costos');
 			$this->codigoCcos              = $this->mysql->result($query,0,'codigo_centro_costos');
 			$this->nombreCcos              = $this->mysql->result($query,0,'centro_costos');
-			$this->cuenta_ingreso_colgaap  = $this->mysql->result($query,0,'cuenta_ingreso_niif');
+			$this->cuenta_ingreso_colgaap  = $this->mysql->result($query,0,'cuenta_ingreso_colgaap');
 			$this->cuenta_ingreso_niif     = $this->mysql->result($query,0,'cuenta_ingreso_niif');
 			$this->codigo_transaccion      = $this->mysql->result($query,0,'codigo_transaccion');
 			$this->id_cuenta_pago     	   = $this->mysql->result($query,0,'cuenta_pago');
