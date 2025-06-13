@@ -258,6 +258,12 @@
 						AND VPS.id_empresa=$this->id_empresa 
 						AND VPS.id=$this->id_seccion";
 			$query=$this->mysql->query($sql);
+			if(!$query){
+				$this->rollbackdoc($this->id_documento);
+				$arrayReturn = array('status' => false, "message"=>"No se pudo consultar la configuracion de la seccion");
+				echo json_encode($arrayReturn);
+				exit;
+			}
 			$this->id_bodega_ambiente      = $this->mysql->result($query,0,'id_bodega');
 			$this->idCcos                  = $this->mysql->result($query,0,'id_centro_costos');
 			$this->codigoCcos              = $this->mysql->result($query,0,'codigo_centro_costos');
