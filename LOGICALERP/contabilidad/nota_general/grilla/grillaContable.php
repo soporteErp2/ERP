@@ -1477,14 +1477,14 @@
                 {
                     xtype   : 'buttongroup',
                     columns : 3,
-                    title   : 'Filtro Documento',
+                    title   : 'Filtros Documento',
                     items   :
                     [
                         {
                             xtype       : 'panel',
                             border      : false,
-                            width       : 120,
-                            height      : 26,
+                            width       : 220,
+                            height      : 46,
                             bodyStyle   : 'background-color:rgba(255,255,0,0);',
                             autoLoad    :
                             {
@@ -1496,7 +1496,8 @@
                                     cont              : cont,
                                     opc               : 'ventana_buscar_documento_cruce',
                                     carpeta           : '<?php echo $carpeta;?>',
-                                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+                                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
+                                    id_cliente        : id_cliente_<?php echo $opcGrillaContable;?>
                                 }
                             }
                         }
