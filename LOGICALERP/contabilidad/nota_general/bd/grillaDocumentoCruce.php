@@ -27,7 +27,7 @@
 		//QUERY
 			$grilla->TableName			= $tablaBuscar;			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
 
-			$grilla->MyWhere			= "activo = 1 AND estado=1 AND id_empresa='$filtro_empresa' AND id_sucursal= '$filtro_sucursal' ";
+			$grilla->MyWhere			= "activo = 1 AND estado=1 AND id_empresa='$filtro_empresa' AND id_sucursal= '$filtro_sucursal' $whereTercero";
 
 			$grilla->OrderBy			= 'id DESC';			//LIMITE DE LA CONSULTA
 			$grilla->MySqlLimit			= '0,100';			//LIMITE DE LA CONSULTA
