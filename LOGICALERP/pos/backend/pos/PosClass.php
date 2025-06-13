@@ -994,11 +994,6 @@
 				$documento_cliente  = $params['documento_cliente_erp'];
 				$cliente			= $params['nombre_cliente_erp'];
 			}
-			else{
-				$arrayResult = array('status'=>'failed','message'=>"No hay datos del huesped o cliente ERP");
-				echo json_encode($arrayResult);
-				return;
-			}
 
 			$randomico = $this->randomico();
 
