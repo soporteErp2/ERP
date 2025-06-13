@@ -44,7 +44,7 @@
 			break;
 
 		case 'buscarCuenta':
-			buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$link);
+			buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$id_fila_grilla,$link);
 			break;
 
 		case 'buscarTerceroCuenta':
@@ -486,7 +486,7 @@
 	}
 
 	//=========================== FUNCION PARA BUSCAR UN ARTICULO ===============================================================================//
-	function buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$link){
+	function buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$id_fila_grilla,$link){
 		/* VALIDACION:
 			- SI SE INSERTO UN ASIENTO CON UNA CUENTA CON MENOR CANTIDAD DE DIGITOS A LA QUE SE VA A BUSCAR,
 			ES DECIR, SI BUSCAMOS LA CUENTA 110505 (UN NIVEL INFERIOR) PERO YA SE INSERTARON DATOS EN LA 110505 EN ADELANTE
@@ -566,6 +566,7 @@
 
 					document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").blur();
 					setTimeout(function(){ document.getElementById("nit'.$opcGrillaContable.'_'.$contFila.'").focus(); }, 100);
+					actualiza_fila_ventana_busqueda_doc_cruce_nota('.$id_fila_grilla.',"true");
 			  	</script>';
 		}
 		//SI LA CUENTA NO EXISTE ENTONCES SE VA A VALIDAR ANTES DE CONTINUAR
