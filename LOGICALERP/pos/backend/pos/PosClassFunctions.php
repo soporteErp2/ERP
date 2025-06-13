@@ -299,7 +299,16 @@
 				// exit;
 				// SI ES UNA CORTESIA O UN CHEQUE CUENTA, NO SE ASIGNA UN CONSECUTIVO DEL POS PUES NO SERA VALIDA COMO FACTURA
 				if ($this->causaIngreso == false) {
-					
+					if ($arrayResolucion['consecutivo_pos'] === '' || !is_numeric($arrayResolucion['consecutivo_pos'])) {
+						$this->rollbackdoc($this->id_documento);
+						$arrayReturn = array(
+    				        'status' => false,
+    				        'message' => "El consecutivo POS no es valido o esta vacio",
+    				        'debug' => $sqlResInfo
+						);
+						echo json_encode($arrayReturn);
+						exit;
+    				}
 					$consecutivoCompleto = ($arrayResolucion["prefijo"]<>'')? "$arrayResolucion[prefijo] $arrayResolucion[consecutivo_pos]" : $arrayResolucion['consecutivo_pos'];
 					$sql="UPDATE ventas_pos
 							SET prefijo='$arrayResolucion[prefijo]',consecutivo='$arrayResolucion[consecutivo_pos]',id_configuracion_resolucion='$arrayResolucion[id_resolucion]'
