@@ -122,14 +122,13 @@ if(!isset($opcion)){  ?>
 
 			// arrayCuentaPago[<?php echo $cont; ?>]=cuenta_pago;
         	arrayIdsArticulosNota = document.getElementById('DivArticulos<?php echo $opcGrillaContable; ?>').querySelectorAll('.bodyDivArticulos<?php echo $opcGrillaContable; ?>');
-			console.log({array:arrayIdsArticulosNota,cont:contArticulosNota});
+			
 			for (const div of arrayIdsArticulosNota) {
 			    if (div.innerHTML.trim() !== '') {
 			        contArticulosNota++;
 			    }
 			}
-			console.log({array:arrayIdsArticulosNota,cont:contArticulosNota});
-
+			
 			var arrayTemp= new Array();
 
 			arrayTemp[cuenta_pago]=total_factura_sin_abono;

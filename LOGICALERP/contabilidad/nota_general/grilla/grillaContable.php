@@ -913,9 +913,23 @@
         //VALIDAR QUE LA FILA TENGA UNA CUENTA
         if (idPuc == 0){ alert('El campo cuenta es Obligatorio'); setTimeout(function(){ document.getElementById('cuenta<?php echo $opcGrillaContable; ?>_'+cont).focus(); },100); return; }
         //VALIDAR QUE TENGA ALMENOS UN VALOR EN EL DEBITO O CREDITO
-        else if (debito>0 && credito>0) { alert('La cuenta no puede tener valores debito y credito\nSolo puede tener uno'); setTimeout(function(){ document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+cont).focus(); },100); return; }
-        else if (debito==0 && credito==0){ alert('La cuenta debe tener un valor para debito o credito'); setTimeout(function(){ document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+cont).focus(); },100); return; }
-
+        else if (debito > 0 && credito > 0) { 
+            alert('La cuenta no puede tener valores debito y credito\nSolo puede tener uno'); 
+            setTimeout(function() { 
+                document.getElementById('debito<?php echo $opcGrillaContable; ?>_' + cont).focus();    
+            }, 100); 
+            return; 
+        } 
+        else if (debito == 0 && credito == 0) { 
+            alert('La cuenta debe tener un valor para debito o credito'); 
+            if(Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>){
+                Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
+            }
+            setTimeout(function() { 
+                document.getElementById('debito<?php echo $opcGrillaContable; ?>_' + cont).focus(); 
+            }, 100); 
+            return; 
+        }
         if(tipo_nota == 0
             && ( tipoDocumentoCruce != ''
                 && (numeroDocumentoCruce==0 || isNaN(numeroDocumentoCruce) || id_tercero==0)
