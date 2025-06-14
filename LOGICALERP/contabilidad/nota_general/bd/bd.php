@@ -556,7 +556,6 @@
 
 		$id_cuenta          = mysql_result($queryCuentaAsiento,0, 'id_cuenta');
 		$descripcion_cuenta = mysql_result($queryCuentaAsiento,0, 'cuenta');
-
 		if ($descripcion_cuenta!='') {
 			echo'<script>
 					arrayCuentaPago['.$contFila.']='.$cuenta.';
@@ -566,7 +565,8 @@
 
 					document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").blur();
 					setTimeout(function(){ document.getElementById("nit'.$opcGrillaContable.'_'.$contFila.'").focus(); }, 100);
-					actualiza_fila_ventana_busqueda_doc_cruce_nota('.$id_fila_grilla.',"true");
+					var id_fila = "'.$id_fila_grilla.'"; 
+					if(id_fila!==""){actualiza_fila_ventana_busqueda_doc_cruce_nota(id_fila,"true");}
 			  	</script>';
 		}
 		//SI LA CUENTA NO EXISTE ENTONCES SE VA A VALIDAR ANTES DE CONTINUAR
