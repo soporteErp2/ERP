@@ -672,52 +672,54 @@
 	}
 
 	//============================= FUNCION PARA MOVER LOS SALDOS (ABONOS) DE LOS DOCUMENTOS RELACIONADOS EN FC Y FV ================================//
-	function moverDocumentosSaldos($id_empresa,$id_nota,$accion,$link){
+	function moverDocumentosSaldos($id_empresa, $id_nota, $accion, $link) {
+	    // Mapeo de tipos de documento y su configuración
+	    $documentos = [
+	        'CE' => [
+	            'tabla' => 'comprobante_egreso_cuentas',
+	            'campoSaldo' => 'saldo_pendiente',
+				'innerJoin'  => 'TR.id = CFC.id_tabla_referencia',
+	            'condicionExtra' => "TR.activo = 1 AND  TR.cuenta = CFC.cuenta_puc"
+	        ],
+	        'FC' => [
+	            'tabla' => 'compras_facturas',
+	            'campoSaldo' => 'total_factura_sin_abono',
+				'innerJoin'  => 'TR.id = CFC.id_documento_cruce',
+				'condicionExtra' => "TR.activo = 1"
+	        ]
+	    ];
 
-		if ($accion=='agregar') {
-			// ACTUALIZAR EL SALDO DE LOS COMPROBANTES DE EGRESO RELACIONADO EN LA FACTURA POR CUENTAS
-			$sql="UPDATE comprobante_egreso_cuentas AS CEC,
-						 (
-							SELECT
-								CFC.*
-							FROM
-								compras_facturas_cuentas AS CFC
-							WHERE
-								CFC.id_factura_compra = $id_nota
-							AND CFC.tipo_documento_cruce = 'CE'
-							AND CFC.id_tabla_referencia >0
-						) AS CFC
-						SET CEC.saldo_pendiente = CEC.saldo_pendiente + (CFC.debe + CFC.haber)
-						WHERE
-						CEC.activo=1
-						AND	CEC.id = CFC.id_tabla_referencia
-						AND CEC.cuenta = CFC.cuenta_puc";
+	    foreach ($documentos as $tipo => $config) {
+	        $tabla = $config['tabla'];
+	        $campoSaldo = $config['campoSaldo'];TR.
+	        $condicionExtra = $config['condicionExtra'];
+	        $innerJoin = $config['innerJoin'];
+	        $operador = ($accion == 'agregar') ? '+' : '-';
 
-		}
-		else if ($accion=='eliminar') {
-			// ACTUALIZAR EL SALDO DE LAS CUENTAS DEL COMPROBANTE DE EGRESO
-			$sql="UPDATE comprobante_egreso_cuentas AS CEC,
-						 (
-							SELECT
-								CFC.*
-							FROM
-								compras_facturas_cuentas AS CFC
-							WHERE
-								CFC.id_factura_compra = $id_nota
-							AND CFC.tipo_documento_cruce = 'CE'
-							AND CFC.id_tabla_referencia >0
-						) AS CFC
-						SET CEC.saldo_pendiente = CEC.saldo_pendiente - (CFC.debe + CFC.haber)
-						WHERE
-						CEC.activo=1
-						AND	CEC.id = CFC.id_tabla_referencia
-						AND CEC.cuenta = CFC.cuenta_puc";
-		}
+	       echo $sql = "
+	            UPDATE $tabla AS TR
+	            INNER JOIN (
+	                SELECT *
+	                FROM compras_facturas_cuentas
+	                WHERE id_factura_compra = $id_nota
+	                  AND tipo_documento_cruce = '$tipo'
+	                  AND id_tabla_referencia > 0
+	            ) AS CFC
+	            ON $innerJoin 
+	            SET TR.$campoSaldo = TR.$campoSaldo $operador (CFC.debe + CFC.haber)
+	            WHERE $condicionExtra
+	        ";
 
-		// //EJECUTAR LOS QUERY
-		$query = mysql_query($sql,$link);
-		if (!$query) { echo '<script>alert("Error!\nNo se actualizo el saldo de los documentos CE");</script>'; }
+	        $query = mysql_query($sql, $link);
+	        if (!$query) {
+	            echo "<script>alert('Error!\\nNo se actualizó el saldo de los documentos');
+					document.getElementById('modal').parentNode.parentNode.removeChild(document.getElementById('modal').parentNode);
+				</script>";
+				exit;
+	        }
+	    }
 	}
+
 
 	//=========================== FUNCION MOVER LAS CUENTAS CUANDO SE VAN A GENERER UNA FACTURA O REMISON =============================================================//
 	//ESTA FUNCION MUEVE LAS CUENTAS DE LOS DOCUMENTO, SI LA VARIABLE ACCION = AGREGAR ENTONCES SE VA A CONTABILIZAR UN DOCUMENTO, SI ES = A ELIMINAR, ENTONCES SE VA A
