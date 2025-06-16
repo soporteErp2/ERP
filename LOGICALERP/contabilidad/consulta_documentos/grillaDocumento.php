@@ -63,7 +63,7 @@
     ///////////////////////////////////////////////////////////////
     // CONSULTAR DONDE SE CRUZA EL DOCUMENTO, DESDE LOS ASIENTOS //
     ///////////////////////////////////////////////////////////////
-   echo $sql="SELECT id_documento,consecutivo_documento,tipo_documento
+    $sql="SELECT id_documento,consecutivo_documento,tipo_documento
             FROM asientos_colgaap
             WHERE
                 activo=1 AND
