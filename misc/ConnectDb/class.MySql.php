@@ -124,6 +124,11 @@
 		public function getQuerys(){
 			return $this->totalQuery;
 		}
+
+		public function mysql_affected_rows($query){
+			return mysql_affected_rows($query);
+		}
+		
 	}
 
 ?>
