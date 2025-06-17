@@ -305,7 +305,7 @@
 				// exit;
 				// SI ES UNA CORTESIA O UN CHEQUE CUENTA, NO SE ASIGNA UN CONSECUTIVO DEL POS PUES NO SERA VALIDA COMO FACTURA
 				if ($this->causaIngreso == false) {
-					if ($arrayResolucion['consecutivo_pos'] === '' || !is_numeric($arrayResolucion['consecutivo_pos'])) {
+					if ($arrayResolucion['consecutivo_pos'] === '' || !is_numeric($arrayResolucion['consecutivo_pos']) || $arrayResolucion['id_resolucion'] === '' || !is_numeric($arrayResolucion['id_resolucion'])) {
 						$this->rollbackdoc($this->id_documento);
 						$arrayReturn = array(
     				        'status' => false,
@@ -323,10 +323,10 @@
 					// echo json_encode($arrayReturn);
 					// exit;
 					$query=$this->mysql->query($sql);
-					if ($query) {
-						$sql="UPDATE ventas_pos_configuracion SET consecutivo_pos=consecutivo_pos+1 WHERE id='$arrayResolucion[id_resolucion]' ";
-						$query=$this->mysql->query($sql);
-						if ($query) {
+					if ($query && $this->mysql->affected_rows > 0 ) {
+						$sqlUpdateConfig="UPDATE ventas_pos_configuracion SET consecutivo_pos=consecutivo_pos+1 WHERE id='$arrayResolucion[id_resolucion]' ";
+						$queryUpdateConfig=$this->mysql->query($sqlUpdateConfig);
+						if ($queryUpdateConfig) {
 							$this->consecutivo = $consecutivoCompleto;
 						}
 						else{
@@ -336,6 +336,7 @@
 						}
 					}
 					else{
+						$this->rollbackdoc($this->id_documento);
 						$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta");
 						echo json_encode($arrayReturn);
 						exit;
