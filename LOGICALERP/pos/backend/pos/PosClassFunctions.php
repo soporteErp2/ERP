@@ -102,10 +102,10 @@
 			$queryResInfo = $this->mysql->query($sqlResInfo);
 			
 
-    		$prefijo           = $this->mysql->result($queryResInfo, 0, 'prefijo'),
-    		$id_tercero        = $this->mysql->result($queryResInfo, 0, 'id_tercero'),
-    		$documento_tercero = $this->mysql->result($queryResInfo, 0, 'documento_tercero'),
-    		$tercero           = $this->mysql->result($queryResInfo, 0, 'tercero')
+    		$prefijo           = $this->mysql->result($queryResInfo, 0, 'prefijo');
+    		$id_tercero        = $this->mysql->result($queryResInfo, 0, 'id_tercero');
+    		$documento_tercero = $this->mysql->result($queryResInfo, 0, 'documento_tercero');
+    		$tercero           = $this->mysql->result($queryResInfo, 0, 'tercero');
 			$consecutivo_pos   = trim($this->mysql->result($queryResInfo, 0, 'consecutivo_pos'));
 
 			if ($this->mysql->num_rows($queryResInfo) == 0) {
