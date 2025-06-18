@@ -100,6 +100,14 @@
 						FROM ventas_pos_configuracion
 						WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$id_resolucion";
 			$queryResInfo = $this->mysql->query($sqlResInfo);
+			
+
+    		$prefijo           = $this->mysql->result($queryResInfo, 0, 'prefijo'),
+    		$id_tercero        = $this->mysql->result($queryResInfo, 0, 'id_tercero'),
+    		$documento_tercero = $this->mysql->result($queryResInfo, 0, 'documento_tercero'),
+    		$tercero           = $this->mysql->result($queryResInfo, 0, 'tercero')
+			$consecutivo_pos   = trim($this->mysql->result($queryResInfo, 0, 'consecutivo_pos'));
+
 			if ($this->mysql->num_rows($queryResInfo) == 0) {
 				$this->rollbackdoc($id_doc);
     		    return [
@@ -109,7 +117,6 @@
     		    ];
     		}
 
-			$consecutivo_pos = trim($this->mysql->result($queryResInfo, 0, 'consecutivo_pos'));
     		
 			if ($consecutivo_pos === '' || !is_numeric($consecutivo_pos)) {
     		    return [
@@ -122,11 +129,11 @@
 			return [
     		    'status'            => true,
     		    'id_resolucion'     => $id_resolucion,
-    		    'prefijo'           => $this->mysql->result($queryResInfo, 0, 'prefijo'),
     		    'consecutivo_pos'   => $consecutivo_pos,
-    		    'id_tercero'        => $this->mysql->result($queryResInfo, 0, 'id_tercero'),
-    		    'documento_tercero' => $this->mysql->result($queryResInfo, 0, 'documento_tercero'),
-    		    'tercero'           => $this->mysql->result($queryResInfo, 0, 'tercero')
+    		    'prefijo'           => $prefijo,
+    		    'id_tercero'        => $id_tercero,
+    		    'documento_tercero' => $documento_tercero,
+    		    'tercero'           => $tercero
     		];
 		} // END FUNCTION
 
