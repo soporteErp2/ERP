@@ -244,7 +244,7 @@
 			if ($arrayResolucion['status']==false) {
 				$arrayResult = array('status' => 'failed', 'message'=>$arrayResolucion['message'], "debug" =>$arrayResolucion['debug'] );
 				echo json_encode($arrayResult);
-				return;
+				exit;
 		 	}
 
 			$this->documentInfo($params['id'],$arrayResolucion);
