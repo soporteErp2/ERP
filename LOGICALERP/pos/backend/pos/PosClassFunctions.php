@@ -323,14 +323,14 @@
 						exit;
     				}
 					$consecutivoCompleto = ($arrayResolucion["prefijo"]<>'')? "$arrayResolucion[prefijo] $arrayResolucion[consecutivo_pos]" : $arrayResolucion['consecutivo_pos'];
-					$sql="UPDATE ventas_pos
+					$sqlUpdateVentasPos="UPDATE ventas_pos
 							SET prefijo='$arrayResolucion[prefijo]',consecutivo='$arrayResolucion[consecutivo_pos]',id_configuracion_resolucion='$arrayResolucion[id_resolucion]'
 							WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$this->id_documento ";
 					// $arrayReturn = array('status' => false, "debug"=>"prefijo: |$this->prefijo| consecutivo : |$this->consecutivo|");
 					// echo json_encode($arrayReturn);
 					// exit;
-					$query=$this->mysql->query($sql);
-					if ($query && $this->mysql->affected_rows > 0 ) {
+					$queryUpdateVentasPos=$this->mysql->query($sqlUpdateVentasPos);
+					if ($queryUpdateVentasPos && $this->mysql->mysql_affected_rows($queryUpdateVentasPos) > 0 ) {
 						$sqlUpdateConfig="UPDATE ventas_pos_configuracion SET consecutivo_pos=consecutivo_pos+1 WHERE id='$arrayResolucion[id_resolucion]' ";
 						$queryUpdateConfig=$this->mysql->query($sqlUpdateConfig);
 						if ($queryUpdateConfig) {
