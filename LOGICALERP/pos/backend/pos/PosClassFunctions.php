@@ -330,7 +330,8 @@
 					// echo json_encode($arrayReturn);
 					// exit;
 					$queryUpdateVentasPos=$this->mysql->query($sqlUpdateVentasPos);
-					if ($queryUpdateVentasPos && $this->mysql->mysql_affected_rows($queryUpdateVentasPos) > 0 ) {
+					$affected_rows = $this->mysql->mysql_affected_rows();
+					if ($queryUpdateVentasPos &&  $affected_rows > 0 ) {
 						$sqlUpdateConfig="UPDATE ventas_pos_configuracion SET consecutivo_pos=consecutivo_pos+1 WHERE id='$arrayResolucion[id_resolucion]' ";
 						$queryUpdateConfig=$this->mysql->query($sqlUpdateConfig);
 						if ($queryUpdateConfig) {
@@ -344,7 +345,7 @@
 					}
 					else{
 						$this->rollbackdoc($this->id_documento);
-						$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta");
+						$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta","sql"=>$sqlUpdateVentasPos,"affected_rows"=>$affected_rows);
 						echo json_encode($arrayReturn);
 						exit;
 					}
@@ -352,11 +353,11 @@
 				else{
 					// consecutivo
 					foreach ($arrayCuentasPago['consecutivo'] as $tipo => $arrayResult) {
-						$sql="UPDATE ventas_pos
+						$sqlUpdateVentasPos="UPDATE ventas_pos
 							SET consecutivo='$arrayResult[consecutivo]',id_configuracion_resolucion=0
 							WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$this->id_documento ";
-						$query=$this->mysql->query($sql);
-						if ($query) {
+						$queryUpdateVentasPos=$this->mysql->query($sqlUpdateVentasPos);
+						if ($queryUpdateVentasPos) {
 							$sql="UPDATE configuracion_cuentas_pago_pos SET consecutivo=consecutivo+1 WHERE id='$arrayResult[id]' ";
 							$query=$this->mysql->query($sql);
 							if ($query) {
@@ -369,7 +370,7 @@
 							}
 						}
 						else{
-							$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta");
+							$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta",'sql'=>$sqlUpdateVentasPos);
 							echo json_encode($arrayReturn);
 							exit;
 						}

@@ -125,8 +125,9 @@
 			return $this->totalQuery;
 		}
 
-		public function mysql_affected_rows($query){
-			return mysql_affected_rows($query);
+		public function mysql_affected_rows($link=null){
+			$link = $link==null? $this->link: $link;
+			return mysql_affected_rows($link);
 		}
 		
 	}
