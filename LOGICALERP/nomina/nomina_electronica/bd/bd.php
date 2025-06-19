@@ -2074,7 +2074,7 @@
 						response_NE       = '$response'
 					WHERE id_planilla=$this->id_planilla AND id_empleado=$id_empleado";
 			$query=mysql_query($sql,$this->mysql);
-			if((strpos($response, 'Comprobante fue generado') !== FALSE) || (strpos($response, 'procesado anteriormente') !== FALSE)){
+			if((strpos($response, 'Comprobante fue generado') !== FALSE) || (strpos($response, 'Documento no enviado, Ya cuenta con') !== FALSE)){
 					?>
 					<script>
 						alert("Planilla electronica enviada correctamente");
