@@ -18,7 +18,9 @@
 
 		// CONEXION PRODUCCION
 		// private $ServidorDb = 'localhost';
-		private $NameDb     = 'erp_acceso';
+		private $NameDb     		= 'erp_acceso';
+		private $whitelistUsers     = ['usuario.soporte'];
+
 
 		public $apiHotels = array( 'url' => "https://logicalhotels.com/api/" );
 
@@ -66,7 +68,9 @@
 				$this->nombre_empresa   = $this->mysql->result($query,0,'nombre');
 				$this->decimales_moneda = $this->mysql->result($query,0,'decimales_moneda');
 
-				$sql="SELECT id,tipo_documento_nombre,documento,nombre,token,id_rol FROM empleados WHERE activo=1 AND id_empresa=$this->id_empresa AND username='$_SERVER[PHP_AUTH_USER]'";
+				$whereEmpresa = (!in_array($_SERVER['PHP_AUTH_USER'],$this->whitelistUsers))? "AND id_empresa=$this->id_empresa" : "";
+
+				$sql="SELECT id,tipo_documento_nombre,documento,nombre,token,id_rol FROM empleados WHERE activo=1 $whereEmpresa AND username='$_SERVER[PHP_AUTH_USER]'";
 				$query=$this->mysql->query($sql,$this->mysql->link);
 				$rows  = $this->mysql->num_rows($query);
 				if ($rows==0) {
