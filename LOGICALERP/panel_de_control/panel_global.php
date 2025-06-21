@@ -221,6 +221,11 @@
                 <div class="IconoPanelControltxt">Configuracion Cuentas Predefinidas</div>
             </div>
 
+            <div class="IconoPanelControl" onClick="AbreVentanaPanelGlobal('items/categorias_items','Categorias de items',450,400,0);">
+                <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/sucursales44.png" width="44" height="44"></div>
+                <div class="IconoPanelControltxt">Categoria de items</div>
+            </div>
+
              <div class="IconoPanelControl" onClick="AbreVentanaPanelGlobal('items/panel_item','Items',0,0,0);">
                 <div class="IconoPanelControlimg"><img src="../../temas/clasico/images/PanelControl/cubos44.png" width="44" height="44"></div>
                 <div class="IconoPanelControltxt">Items</div>
