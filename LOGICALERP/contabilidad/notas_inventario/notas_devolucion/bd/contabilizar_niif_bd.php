@@ -395,13 +395,6 @@
 						$acumEstadoCuentaClientes	 = $estado;
 					}
 				}
-				else if($valArrayInventario['inventariable'] == 'false'){
-					echo '<script>
-							alert("Aviso.\nEl item Codigo '.$valArrayInventario['codigo'].' No se ha configurado en la contabilizacion");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
-					exit;
-				}
 
 				if($arrayItemEstado['debito'] != $arrayItemEstado['credito']){
 					echo '<script>
@@ -482,13 +475,6 @@
 						$acumCuentaClientes       = $contraPrecio;
 						$acumEstadoCuentaClientes = $estado;
 					}
-				}
-				else if($valArrayInventario['inventariable'] == 'false'){
-					echo '<script>
-    							alert("Aviso.\nEl item Codigo '.$valArrayInventario['codigo'].' No se ha configurado en la contabilizacion");
-    							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-    						</script>';
-					exit;
 				}
 
 				if($arrayItemEstado['debito'] != $arrayItemEstado['credito']){
@@ -1106,13 +1092,6 @@
 					$acumCuentaClientes 		 = $arrayCuentasItems[$idItemArray]['contraPartida_precio']['cuenta'];
 					$acumEstadoCuentaClientes	 = $estado;
 				}
-			}
-			else if($valArrayInventario['inventariable'] == 'false'){
-				echo '<script>
-						alert("Aviso.\nEl item Codigo '.$valArrayInventario['codigo'].' No se ha configurado en la contabilizacion");
-						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-					</script>';
-				exit;
 			}
 
 			//======================================= CALC COSTO ===========================================//
