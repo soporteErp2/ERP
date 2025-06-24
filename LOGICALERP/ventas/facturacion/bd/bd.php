@@ -654,7 +654,7 @@
 				</script>';
 				exit;
 		}
-		else if ($codigo <> "" && user_permisos(181)=='false'){
+		else if (trim($codigo) !== '' && trim($codigo) !== '0' && user_permisos(181)==='false'){
 			echo'<script>
 					alert("Aviso.\nHay '.round($sumaCantidad).' unidades del inventario codigo '.$codigo.', lo maximo permitido en ventas de este inventario es '.$cantidadPermitida.' unidades.");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
