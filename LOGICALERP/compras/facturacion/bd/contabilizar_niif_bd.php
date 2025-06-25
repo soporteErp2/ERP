@@ -1228,7 +1228,7 @@
 		$valueInsertAsientos        = substr($valueInsertAsientos, 0, -1);
 		$valueInsertContabilizacion = substr($valueInsertContabilizacion, 0, -1);
 
-		$sqlContabilizar   = "INSERT INTO contabilizacion_compra_venta (
+		$sqlContabilizar   = "INSERT INTO contabilizacion_compra_venta_niif (
 								id_item,
 								codigo_puc,
 								caracter,
