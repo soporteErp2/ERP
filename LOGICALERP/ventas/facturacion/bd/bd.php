@@ -1951,7 +1951,83 @@
 			</script>";
 
 	}
+	function agregarTodosItemsGrupo($id_documento,$id_impuesto,$id_grupo,$id_empresa,$mysql){
+		$sqlItemsFactura = "SELECT id,codigo,nombre,cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
+							FROM ventas_facturas_inventario 
+							WHERE activo = 1 
+							AND id_factura_venta='$id_documento' 
+							AND id_impuesto=$id_impuesto 
+							AND id NOT IN(
+											SELECT id_inventario_factura_venta 
+											FROM ventas_facturas_inventario_grupos 
+											WHERE id_factura_venta = $id_documento)";
+		$queryItemsFactura=$mysql->query($sqlItemsFactura,$mysql->link);
+		
+		$itemsInfo = [];
+		while ($row = $mysql->fetch_assoc($queryItemsFactura)) {
+			$subtotal = $row['cantidad'] * $row['costo_unitario'];
+			$descuento = ($row['descuento'] > 0 && $row['tipo_descuento'] == 'porcentaje')?
+				round(($subtotal * $row['descuento'] / 100),$_SESSION['DECIMALESMONEDA']):
+				$row['descuento'];
 
+			$subtotalNeto = round(($subtotal - $descuento),$_SESSION['DECIMALESMONEDA']);
+
+			$impuesto = round((($subtotalNeto * $row['valor_impuesto']) / 100),$_SESSION['DECIMALESMONEDA']);
+			$total = $subtotalNeto + $impuesto;
+
+			$itemsInfo[$row['id']] = array(
+										"codigo"	=>	$row['codigo'],
+										"nombre"	=>	$row['nombre'],
+										"cantidad"	=>	$row['cantidad'],
+										"descuento"	=>	$descuento,
+										"subtotal"	=>	$subtotal,
+										"total"		=>	$total
+			);
+		}
+		
+		$itemsId = array_keys($itemsInfo);
+		$values = [];
+		foreach ($itemsId as $id) {
+		    $values[] = "($id_documento, $id_grupo, $id)";
+		}
+
+		$sql = "INSERT INTO ventas_facturas_inventario_grupos (id_factura_venta, id_grupo_factura_venta, id_inventario_factura_venta) VALUES " . implode(',', $values);
+		$query=$mysql->query($sql,$mysql->link);
+		if ($query) {
+			actualizaCamposGrupo('sumar',$id_documento,'',$id_empresa,$mysql,$id_grupo,$itemsId);
+			echo "<script>
+				MyLoading2('off',{duracion:300});
+				MyBusquedabuscarItemsGruposFacturaVenta();
+   				var itemsId = " . json_encode(utf8_encode_recursive($itemsInfo)) . ";
+
+   				for (var id in itemsId) {
+   				     var item = itemsId[id];
+
+   				     var addTd = `<tr id=\"tr_items_\${id}\">
+   				                     <td>\${item.codigo}</td>
+   				                     <td>\${item.nombre}</td>
+   				                     <td>\${item.cantidad}</td>
+   				                     <td>\${item.descuento}</td>
+   				                     <td>\${item.subtotal}</td>
+   				                     <td>\${item.total}</td>
+   				                     <td>
+   				                         <img src=\"img/delete.png\" title=\"Eliminar Item\" onclick=\"eliminarItemGrupo(\${id});\">
+   				                     </td>
+   				                  </tr>`;
+
+   				     $(\"#items_grupos\").append(addTd);
+
+				if ($('#bodyDivArticulosFacturaVenta_' + $(\"[value='\" + id + \"']\")[0])) {
+				    $('#bodyDivArticulosFacturaVenta_' + $(\"[value='\" + id + \"']\")[0].id.split('_')[1])
+				        .appendTo('#content-group-$id_grupo');
+				}
+			}
+			</script>";
+
+		}else{
+			echo "<script>MyLoading2('off',{texto:'Error al agregar todos los items',icono:'fail'})</script>";
+		}
+	}
 	//========================= AGREGAR ITEMS AL GRUPO =========================//
 	function agregarItemsGrupo($id,$codigo,$nombre,$id_documento,$id_grupo,$id_empresa,$mysql){
 
