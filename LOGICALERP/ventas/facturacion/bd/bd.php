@@ -1867,11 +1867,11 @@
 	function actualizaCamposGrupo($accion,$id_documento,$id_inventario='',$id_empresa,$mysql,$id_grupo='',$itemsId){
 		// CONSULTAR LA INFORMACION DE GRUPO
 		if($id_grupo===''){
-		$sql="SELECT id_grupo_factura_venta FROM ventas_facturas_inventario_grupos
-				WHERE activo=1 AND id_factura_venta=$id_documento AND id_inventario_factura_venta=$id_inventario";
-		$query=$mysql->query($sql,$mysql->link);
-		$id_grupo = $mysql->result($query,0,'id_grupo_factura_venta');
-		if ($id_grupo=='' || $id_grupo==0) { echo "<script>console.log('Item Sin grupo!');</script>"; return; }
+			$sql="SELECT id_grupo_factura_venta FROM ventas_facturas_inventario_grupos
+					WHERE activo=1 AND id_factura_venta=$id_documento AND id_inventario_factura_venta=$id_inventario";
+			$query=$mysql->query($sql,$mysql->link);
+			$id_grupo = $mysql->result($query,0,'id_grupo_factura_venta');
+			if ($id_grupo=='' || $id_grupo==0) { echo "<script>console.log('Item Sin grupo!');</script>"; return; }
 		}
 
 		// CONSULTAR LA INFORMACION DEL INVENTARIO
