@@ -1864,45 +1864,44 @@
 	}
 
 	//========== ACTUALIZAR EL COSTO,IMPUESTO Y DESCUENTO DE UN GRUPO ==========//
-	function actualizaCamposGrupo($accion,$id_documento,$id_inventario,$id_empresa,$mysql){
+	function actualizaCamposGrupo($accion,$id_documento,$id_inventario='',$id_empresa,$mysql,$id_grupo='',$itemsId){
 		// CONSULTAR LA INFORMACION DE GRUPO
+		if($id_grupo===''){
 		$sql="SELECT id_grupo_factura_venta FROM ventas_facturas_inventario_grupos
 				WHERE activo=1 AND id_factura_venta=$id_documento AND id_inventario_factura_venta=$id_inventario";
 		$query=$mysql->query($sql,$mysql->link);
 		$id_grupo = $mysql->result($query,0,'id_grupo_factura_venta');
 		if ($id_grupo=='' || $id_grupo==0) { echo "<script>console.log('Item Sin grupo!');</script>"; return; }
-
-		//echo "<script>
-		//		if ( $('#costo_grupo').length > 0 ) $('#costo_grupo').val('$costo_unitario') ;
-		//		if ( $('#descuento_grupo').length > 0 ) $('#descuento_grupo').val('$descuento') ;
-		//		if ( $('#impuesto_grupo').length > 0 ) $('#impuesto_grupo').val('$valor_impuesto') ;
-		//		if ( $('#descuentoArticuloFacturaVenta_$id_grupo').length > 0 ) $('#descuentoArticuloFacturaVenta_$id_grupo').val('$descuento') ;
-		//		if ( $('#costoGrupoFacturaVenta_$id_grupo').length > 0 ) $('#costoGrupoFacturaVenta_$id_grupo').val('$costo_unitario') ;
-		//		if ( $('#costoTotalGrupoFacturaVenta_$id_grupo').length > 0 ) $('#costoTotalGrupoFacturaVenta_$id_grupo').val('$total_grupo') ;
-		//	</script>";
-		//return; // SE DESHABILITA ESTA FUNCION POR ERRORES
-
-		// CONSULTAR LA INFORMACION DEL INVENTARIO
-		$sql="SELECT codigo,nombre,cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
-				FROM ventas_facturas_inventario WHERE activo=1 AND id_factura_venta = $id_documento AND id=$id_inventario";
-		$query=$mysql->query($sql,$mysql->link);
-		$codigo         = $mysql->result($query,0,'codigo');
-		$nombre         = $mysql->result($query,0,'nombre');
-		$cantidad       = $mysql->result($query,0,'cantidad');
-		$costo_unitario = $mysql->result($query,0,'costo_unitario');
-		$tipo_descuento = $mysql->result($query,0,'tipo_descuento');
-		$descuento      = $mysql->result($query,0,'descuento');
-		$valor_impuesto = $mysql->result($query,0,'valor_impuesto');
-
-		$subtotal = $cantidad * $costo_unitario;
-
-		if($descuento > 0 && $tipo_descuento == 'porcentaje'){
-			$descuento = round(($subtotal * $descuento / 100),$_SESSION['DECIMALESMONEDA']);
 		}
 
-		$subtotalNeto = round(($subtotal - $descuento),$_SESSION['DECIMALESMONEDA']);
+		// CONSULTAR LA INFORMACION DEL INVENTARIO
+		$descuento = 0;
+		$subtotal = 0;
+		$sqlwhere = ($id_inventario !== '')? "AND id=$id_inventario" : "AND id  IN(".implode(',', $itemsId).")";
 
-		$impuesto = round((($subtotalNeto * $valor_impuesto) / 100),$_SESSION['DECIMALESMONEDA']);
+		$sqlFacturasInventario="SELECT cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
+					FROM ventas_facturas_inventario WHERE activo=1 AND id_factura_venta = $id_documento $sqlwhere";
+		$queryFacturasInventario=$mysql->query($sqlFacturasInventario,$mysql->link);
+		while ($row = $mysql->fetch_assoc($queryFacturasInventario)) {
+			$cantidad       = $row['cantidad'];
+			$costo_unitario = $row['costo_unitario'];
+			$tipo_descuento = $row['tipo_descuento'];
+			$descuentofila  = $row['descuento'];
+			$valor_impuesto = $row['valor_impuesto'];
+
+			$subtotal += $cantidad * $costo_unitario;
+			if($descuentofila > 0 && $tipo_descuento == 'porcentaje'){
+				$descuento += round(($subtotal * $descuentofila / 100),$_SESSION['DECIMALESMONEDA']);
+			}else{
+				$descuento +=  round($descuentofila,$_SESSION['DECIMALESMONEDA']);
+			}
+			$subtotalNeto += round(($subtotal - $descuento),$_SESSION['DECIMALESMONEDA']);
+
+			$impuesto += round((($subtotalNeto * $valor_impuesto) / 100),$_SESSION['DECIMALESMONEDA']);
+		
+		}
+
+
 		$total = $subtotalNeto + $impuesto;
 
 		// AGREGAR VALORES A LOS CAMPOS
