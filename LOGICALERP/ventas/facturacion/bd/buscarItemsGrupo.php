@@ -89,10 +89,10 @@
 		//CONFIGURACION DE LA VENTANA DE INSERT, UPDATE Y DELETE
 			$grilla->VentanaAuto		= 'false';			//SI LA VENTANA DE INSERT, UPDATE Y DELETE ES AUTOMATICA O MANUAL
 			$grilla->TituloVentana		= ''; //NOMBRE DE LA VENTANA DE INSER, UPDATE Y DELETE
-			$grilla->VBarraBotones		= 'false';			//SI HAY O NO BARRA DE BOTONES
-			$grilla->VBotonNuevo		= 'true';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
-			$grilla->VBotonNText		= 'Nuevo Centro De Costos'; //TEXTO DEL BOTON DE NUEVO REGISTRO
-			$grilla->VBotonNImage		= 'addcontactos';			//IMAGEN CSS DEL BOTON
+			$grilla->VBarraBotones		= 'true';			//SI HAY O NO BARRA DE BOTONES
+			$grilla->VBotonNuevo		= 'false';			//SI LLEVA EL BOTON DE AGREGAR REGISTRO
+			$grilla->VBotonNText		= ''; //TEXTO DEL BOTON DE NUEVO REGISTRO
+			$grilla->VBotonNImage		= '';			//IMAGEN CSS DEL BOTON
 			$grilla->VAutoResize		= 'true';			//SI LA VENTANA ES AUTORESIZABLE (LIQUIDA) -> "true" SI NO -> "false"
 			$grilla->VAncho		 		= 340;				//ANCHO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
 			$grilla->VAlto		 		= 190;				//ALTO DE LA VENTANA -- SOLO FUNCIONA CUANDO VAutoResize = 'false'
@@ -103,11 +103,7 @@
 			$grilla->VComporEliminar	= 'true';			//COMPORTAMIENTO DEL BOTON DE ELIMINAR ("true" ES CAMPO ACTIVO DE 1 A 0) ("false" -> ELIMINA EL REGISTRO DE LA BASE DE DATOS)
 
 		//CONFIGURACION DE LOS FORMULARIOS DE CAPTURA Y EDICION
-			$grilla->AddSeparator('Datos Centro De Costos');
-			$grilla->AddTextField('Codigo:','codigo_centro_costos',200,'true','false');
-			$grilla->AddValidation('codigo_centro_costos','numero');
-			$grilla->AddTextField('Nombre:','nombre_centro_costos',200,'true','false');
-			$grilla->AddTextField('','id_empresa',200,'true','true',$id_empresa);
+ 			$grilla->AddBotton('Agregar Todos','add_new','addAllItems()');
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +120,23 @@
 
 if(!isset($opcion)){  ?>
 	<script>
+		function addAllItems(){
 
+			MyLoading2('on');
+
+			Ext.get('loadForm').load({
+				url     : 'facturacion/bd/bd.php',
+				scripts : true,
+				nocache : true,
+				params  :
+				{
+					opc          : 'agregarTodosItemsGrupo',
+					id_impuesto  : '<?php echo $id_impuesto; ?>',
+					id_documento : '<?php echo $id_documento; ?>',
+					id_grupo     : '<?php echo $id_grupo; ?>'
+				}
+			});
+		}
 		function Agregar_buscarItemsGrupos<?php echo $opcGrillaContable; ?>(){ }
 		function Editar_buscarItemsGrupos<?php echo $opcGrillaContable; ?>(id){
 
