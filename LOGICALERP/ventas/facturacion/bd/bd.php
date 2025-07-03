@@ -2204,4 +2204,15 @@
 			exit;
 		}
 	}
+
+	function utf8_encode_recursive($mixed) {
+	if (is_array($mixed)) {
+		foreach ($mixed as &$valor) {
+			$valor = utf8_encode_recursive($valor);
+		}
+	} elseif (is_string($mixed)) {
+		$mixed = utf8_encode($mixed);
+	}
+	return $mixed;
+	}
 ?>
