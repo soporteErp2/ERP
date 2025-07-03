@@ -129,6 +129,9 @@
 		case 'deleteGrupo':
 			deleteGrupo($id_row,$opcGrillaContable,$id_documento,$id_empresa,$mysql);
 			break;
+		case 'agregarTodosItemsGrupo':
+			agregarTodosItemsGrupo($id_documento,$id_impuesto,$id_grupo,$id_empresa,$mysql);
+			break;
 		case 'agregarItemsGrupo':
 			agregarItemsGrupo($id,$codigo,$nombre,$id_documento,$id_grupo,$id_empresa,$mysql);
 			break;
