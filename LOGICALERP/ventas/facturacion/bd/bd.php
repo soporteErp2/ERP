@@ -1047,7 +1047,46 @@
 		if($docReferencia=='P'){ $campoDocReferencia = 'Pedido'; }
 		else if($docReferencia=='C'){ $campoDocReferencia = 'Cotizacion'; }
 		else if($docReferencia=='R'){ $campoDocReferencia = 'Remision'; }
+		//Sumatoria de los productos a eliminar
+		if($tablaInventario == "ventas_facturas_inventario"){
+			//Hay grupos asociados al documento referencia?
+			$subtotalGrupos = array();
+			$sqlGrupos = "SELECT VFG.id AS id_grupo,
+								 VFI.costo_unitario,
+								 VFI.cantidad  
+						FROM ventas_facturas_grupos AS VFG 
+						INNER JOIN ventas_facturas_inventario_grupos AS VFIG ON VFG.id = VFIG.id_grupo_factura_venta 
+						INNER JOIN ventas_facturas_inventario AS VFI ON VFI.id=VFIG.id_inventario_factura_venta
+								WHERE VFG.id_factura_venta = $id_factura
+								AND VFG.activo  = 1
+								AND VFIG.activo = 1 
+								AND VFI.activo  = 1
+								AND VFI.id_consecutivo_referencia=$id_doc_referencia
+								AND VFI.nombre_consecutivo_referencia='$campoDocReferencia'";
+			$queryGrupos = mysql_query($sqlGrupos, $link);
 
+			if ($queryGrupos) {
+			    while ($row = mysql_fetch_assoc($queryGrupos)) {
+            		$idGrupo = $row['id_grupo'];
+            		$subtotal = $row['costo_unitario'] * $row['cantidad'];
+							
+            		if (!isset($subtotalGrupos[$idGrupo])) {
+            		    $subtotalGrupos[$idGrupo] = 0;
+            		}
+            		$subtotalGrupos[$idGrupo] += $subtotal;
+				    
+			    }
+			}
+
+			if(!empty($subtotalGrupos)){
+				//Si hay grupos calcular el subtotal restado para cada grupo en el que este la remision 
+				foreach($subtotalGrupos as $idGrupo => $subtotalGrupo){
+					$sqlUpdateGrupos = "UPDATE ventas_facturas_grupos SET costo_unitario = costo_unitario - $subtotalGrupo WHERE id = $idGrupo";
+					$queryUpdateGrupos = mysql_query($sqlUpdateGrupos, $link);
+				}
+			}
+
+		}
 		$sql   ="DELETE FROM ventas_facturas_inventario WHERE id_factura_venta=$id_factura AND id_consecutivo_referencia=$id_doc_referencia AND id_empresa='$id_empresa' AND id_bodega='$filtro_bodega' AND nombre_consecutivo_referencia='$campoDocReferencia'";
 		$query = mysql_query($sql,$link);
 
