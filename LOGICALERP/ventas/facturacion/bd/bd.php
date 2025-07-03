@@ -1988,7 +1988,7 @@
 
 
 			echo "<script>
-					MyLoading2('off',{duracion:1500});
+					MyLoading2('off',{duracion:300});
 					MyBusquedabuscarItemsGruposFacturaVenta();
 					//Elimina_Div_buscarItemsGruposFacturaVenta($id);
 					var addTd = `<tr id='tr_items_$id'>
@@ -2021,7 +2021,7 @@
 		$query=$mysql->query($sql,$mysql->link);
 		if ($query) {
 			echo "<script>
-					MyLoading2('off',{duracion:1500});
+					MyLoading2('off',{duracion:300});
 					// MOVER EL DIV DEL ITEM FUER DEL DIV DEL GRUPO
 					$('#bodyDivArticulosFacturaVenta_'+contArticulosFacturaVenta).before($('#bodyDivArticulosFacturaVenta_'+$(\"[value='$id_inventario']\")[0].id.split('_')[1]));
 					$('#tr_items_$id_inventario').remove();
