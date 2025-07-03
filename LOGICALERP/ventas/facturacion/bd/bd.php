@@ -1864,7 +1864,7 @@
 	}
 
 	//========== ACTUALIZAR EL COSTO,IMPUESTO Y DESCUENTO DE UN GRUPO ==========//
-	function actualizaCamposGrupo($accion,$id_documento,$id_inventario='',$id_empresa,$mysql,$id_grupo='',$itemsId){
+	function actualizaCamposGrupo($accion, $id_documento, $id_empresa, $mysql, $id_inventario = '', $id_grupo = '', $itemsId = array()){
 		// CONSULTAR LA INFORMACION DE GRUPO
 		if($id_grupo===''){
 			$sql="SELECT id_grupo_factura_venta FROM ventas_facturas_inventario_grupos
@@ -1994,7 +1994,7 @@
 		$sql = "INSERT INTO ventas_facturas_inventario_grupos (id_factura_venta, id_grupo_factura_venta, id_inventario_factura_venta) VALUES " . implode(',', $values);
 		$query=$mysql->query($sql,$mysql->link);
 		if ($query) {
-			actualizaCamposGrupo('sumar',$id_documento,'',$id_empresa,$mysql,$id_grupo,$itemsId);
+			actualizaCamposGrupo('sumar',$id_documento,$id_empresa,$mysql,'',$id_grupo,$itemsId);
 			echo "<script>
 				MyLoading2('off',{duracion:300});
 				MyBusquedabuscarItemsGruposFacturaVenta();
@@ -2038,7 +2038,7 @@
 			$id_row = $mysql->insert_id();
 
 			// ACTUALIZAR LOS TOTALES DEL GRUPO
-			actualizaCamposGrupo('sumar',$id_documento,$id,$id_empresa,$mysql);
+			actualizaCamposGrupo('sumar',$id_documento,$id_empresa,$mysql,$id);
 
 			// CONSULTAR LA INFORMACION DEL INVENTARIO
 			$sql="SELECT codigo,nombre,cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
@@ -2091,7 +2091,7 @@
 	//======================= ELIMINAR ITEMS DE UN GRUPO =======================//
 	function eliminarItemGrupo($id_documento,$opcGrillaContable,$id_grupo,$id_inventario,$id_empresa,$mysql){
 		// ACTUALIZAR LOS TOTALES DEL GRUPO
-		actualizaCamposGrupo('restar',$id_documento,$id_inventario,$id_empresa,$mysql);
+		actualizaCamposGrupo('restar',$id_documento,$id_empresa,$mysql,$id_inventario);
 
 		$sql="DELETE FROM ventas_facturas_inventario_grupos WHERE activo=1 AND id_factura_venta=$id_documento AND id_grupo_factura_venta=$id_grupo AND id_inventario_factura_venta=$id_inventario";
 		$query=$mysql->query($sql,$mysql->link);
