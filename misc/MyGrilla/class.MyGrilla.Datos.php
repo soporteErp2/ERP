@@ -19,10 +19,18 @@ if ($this->LaOpcion == 'GuardaBD') {
         for ($v = 0; $v < $this->CuantosValidations; $v++) {
             if ($this->ValidacionesCampos[$v] == $campo) {
                 $tipo = $this->Validaciones[$v];
-                if ($tipo == 'trim') {
-                    $valor = trim($valor);
-                } elseif ($tipo == 'blankspaces') {
-                    $valor = str_replace(' ', '', $valor);
+                switch ($tipo) {
+                    case 'trim':
+                        $valor = trim($valor);
+                        break;
+                    
+                    case 'blankspaces':
+                        $valor = str_replace(' ', '', $valor);
+                        break;
+                    
+                    case 'nombres':
+                        $valor = limpiarTexto($valor);
+                        break;
                 }
             }
         }
@@ -75,10 +83,18 @@ if ($this->LaOpcion == 'ActualizaBD') {
         for ($v = 0; $v < $this->CuantosValidations; $v++) {
             if ($this->ValidacionesCampos[$v] == $campo) {
                 $tipo = $this->Validaciones[$v];
-                if ($tipo == 'trim') {
-                    $valor = trim($valor);
-                } elseif ($tipo == 'blankspaces') {
-                    $valor = str_replace(' ', '', $valor);
+                switch ($tipo) {
+                    case 'trim':
+                        $valor = trim($valor);
+                        break;
+                    
+                    case 'blankspaces':
+                        $valor = str_replace(' ', '', $valor);
+                        break;
+                    
+                    case 'nombres':
+                        $valor = limpiarTexto($valor);
+                        break;
                 }
             }
         }
@@ -139,4 +155,57 @@ if ($this->LaOpcion == 'EliminaBD') {
         echo $SQL;
     }
 }
+
+/**
+ * Limpia un texto eliminando acentos, ñ, signos, números, saltos de línea
+ * y lo convierte todo a mayúsculas planas sin símbolos ni tildes.
+ *
+ * @param string $valor Texto a limpiar
+ * @return string Texto limpio y en mayúsculas
+ */
+function limpiarTexto($valor) {
+    // Asegurar que el texto esté en UTF-8 antes de manipularlo
+    $valor = mb_convert_encoding(
+        $valor,
+        'UTF-8',
+        mb_detect_encoding($valor, 'UTF-8, ISO-8859-1, ISO-8859-15', true)
+    );
+
+    // Reemplazar vocales acentuadas y ñ por su versión sin tilde ni diacríticos
+    $buscar  = array(
+        'á','é','í','ó','ú','ä','ë','ï','ö','ü','à','è','ì','ò','ù','ñ',
+        'Á','É','Í','Ó','Ú','Ä','Ë','Ï','Ö','Ü','À','È','Ì','Ò','Ù','Ñ'
+    );
+    $reempl = array(
+        'a','e','i','o','u','a','e','i','o','u','a','e','i','o','u','n',
+        'A','E','I','O','U','A','E','I','O','U','A','E','I','O','U','N'
+    );
+    $valor = str_replace($buscar, $reempl, $valor);
+
+    // Eliminar signos de puntuación y caracteres especiales
+    $valor = str_replace(
+        array(
+            ',', ';', ':', '!', '?', '¿', '¡', '"', "'", '“', '”',
+            '(', ')', '[', ']', '{', '}', '/', '\\', '-', '_', '°', '@', '#', '$',
+            '%', '*', '+', '=', '<', '>', 'º'
+        ),
+        '',
+        $valor
+    );
+
+    // Reemplazar saltos de línea, retorno de carro y tabulaciones por espacio
+    $valor = str_replace(array("\r", "\n", "\t"), ' ', $valor);
+
+    // Convertir todo el texto a mayúsculas 
+    $valor = strtoupper($valor);
+
+    // Unificar múltiples espacios consecutivos en uno solo
+    $valor = preg_replace('/\s+/', ' ', $valor);
+
+    // Eliminar espacios al principio y al final
+    $valor = trim($valor);
+
+    return $valor;
+}
+
 ?>
