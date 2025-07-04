@@ -273,18 +273,31 @@ class MyGrilla {
 	    $this->ValidacionesCampos[$this->CuantosValidations] = $campo;
 	    $this->CuantosValidations++;
 	
-	    if ($validate == 'unico_global') {
-	        $this->ValidacionGlobal = 'true';
-	        $this->ValidacionGlobalField = $campo;
-	        $this->ValidacionGlobalSql = ($sql != '') ? ' AND ' . $sql : '';
-	    } elseif ($validate == 'email') {
-	        $this->ValidacionEmail = 'true';
-	        $this->ValidacionEmailField = $campo;
-	    } elseif ($validate == 'blankspaces') {
-	        $this->ValidacionBlankspaces[$campo] = true;
-	    } elseif ($validate == 'trim') {
-	        $this->ValidacionTrim[$campo] = true;
-	    }
+		switch ($validate) {
+		    case 'unico_global':
+		        $this->ValidacionGlobal = 'true';
+		        $this->ValidacionGlobalField = $campo;
+		        $this->ValidacionGlobalSql = ($sql != '') ? ' AND ' . $sql : '';
+		        break;
+			
+		    case 'email':
+		        $this->ValidacionEmail = 'true';
+		        $this->ValidacionEmailField = $campo;
+		        break;
+			
+		    case 'blankspaces':
+		        $this->ValidacionBlankspaces[$campo] = true;
+		        break;
+			
+		    case 'trim':
+		        $this->ValidacionTrim[$campo] = true;
+		        break;
+		
+			case 'nombres':
+		        $this->Validacionnombres[$campo] = true;
+		        break;
+		}
+
 	}
 
 
