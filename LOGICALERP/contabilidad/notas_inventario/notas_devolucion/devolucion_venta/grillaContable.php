@@ -75,7 +75,8 @@
                   id_documento_venta,
                   documento_venta,
                   numero_documento_venta,
-                  metodo_pago
+                  metodo_pago,
+                  response_DE
                 FROM
                   $tablaPrincipal
                 WHERE
@@ -95,6 +96,8 @@
         $documento_cruce          = mysql_result($query,0,'documento_venta');
         $numero_documento_cruce   = mysql_result($query,0,'numero_documento_venta');
         $metodo_pago              = mysql_result($query,0,'metodo_pago');
+        $response_DE              = mysql_result($query,0,'response_DE');
+
 
         if ($documento_cruce=='Remision') {
             $tablaCarga    = 'ventas_remisiones';
@@ -127,18 +130,31 @@
 
         $arrayReplaceString = array("\n", "\r","<br>");
         $observacion = str_replace($arrayReplaceString, "\\n", mysql_result($query,0,'observacion'));
+        $puedeEditarEnviadas = user_permisos(253,'false') == 'true';
+		$documentoEnviado = ($response_DE == "Ejemplar recibido exitosamente pasara a verificacion");
 
-        $acumScript.='new Ext.form.DateField({
-                        format     : "Y-m-d",
-                        width      : 130,
-                        allowBlank : false,
-                        showToday  : false,
-                        value      : "'.$fecha.'",
-                        applyTo    : "fecha'.$opcGrillaContable.'",
-                        editable   : false,
-                        listeners  : { select: function() { updateFechaNota'.$opcGrillaContable.'(this.value); } }
-                      });
+        $acumScriptfecha.='new Ext.form.DateField({
+                format     : "Y-m-d",
+                width      : 130,
+                allowBlank : false,
+                showToday  : false,
+                value      : "'.$fecha.'",
+                applyTo    : "fecha'.$opcGrillaContable.'",
+                editable   : false,
+                listeners  : { select: function() { updateFechaNota'.$opcGrillaContable.'(this.value); } }
+              });';
 
+        if ( $documentoEnviado && $puedeEditarEnviadas) {
+            $acumScript .= "
+                // Deshabilitar input
+                document.getElementById('fechaDevolucionVenta').disabled = true;
+                    
+                // Deshabilitar el select
+                document.getElementById('idMotivoDianDevolucionVenta').disabled = true;  
+            ";
+            $acumScriptfecha = '';
+        }
+        $acumScript.= $acumScriptfecha.'
                       document.getElementById("codCliente'.$opcGrillaContable.'").value         = "'.$cod_tercero.'";
                       document.getElementById("nitCliente'.$opcGrillaContable.'").value         = "'.$nit.'";
                       document.getElementById("nombreCliente'.$opcGrillaContable.'").value      = "'.$tercero.'";
@@ -151,7 +167,7 @@
                       nombreCliente'.$opcGrillaContable.'       = "'.$tercero.'";
                       metodoPagoCliente'.$opcGrillaContable.'   = "'.$metodo_pago.'";';
 
-        $bodyArticle = cargaArticulosSave($id_nota,$observacion,$estado,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$tablaCarga,$idTablaCargar,$link);
+        $bodyArticle = cargaArticulosSave($id_nota,$observacion,$estado,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$tablaCarga,$idTablaCargar,$link,$documentoEnviado);
         if($documento_cruce == 'Factura'){
           $acumScript.=cargaDivsGruposItems($id_nota,$id_documento_cruce,'devoluciones_venta_grupos',$opcGrillaContable,$estado,$id_empresa,$link);
         }

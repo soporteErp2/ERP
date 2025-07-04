@@ -1498,8 +1498,10 @@
 				$sqlEstadoDevolucionVenta 	= "SELECT response_DE FROM devoluciones_venta WHERE id = $idDocumento AND id_empresa = $id_empresa";
 				$queryEstadoDevolucionVenta = mysql_query($sqlEstadoDevolucionVenta,$link);
 				$response_DE 								= mysql_result($queryEstadoDevolucionVenta,0,'response_DE');
+				$puedeEditarEnviadas = user_permisos(253,'false') == 'true';
+				$documentoEnviado = ($response_DE == "Ejemplar recibido exitosamente pasara a verificacion");
 
-				if($response_DE != "Ejemplar recibido exitosamente pasara a verificacion"){
+				if(!$documentoEnviado || ($documentoEnviado && $puedeEditarEnviadas)){
 					$res = actualizaCantidadArticulos($idDocumento,$id_sucursal,$id_bodega,$tablaInventario,$idTablaPrincipal,'eliminar',$link);
 					if($res > 0) {
 						echo '<script>
@@ -1569,7 +1571,7 @@
 						return;
 					}
 				}
-				else if($response_DE == "Ejemplar recibido exitosamente pasara a verificacion"){
+				else if($documentoEnviado && !$puedeEditarEnviadas){
 					echo "<script>
 							alert('No se puede editar el documento porque ya se ha enviado a la DIAN');
 							document.getElementById('modal').parentNode.parentNode.removeChild(document.getElementById('modal').parentNode);
