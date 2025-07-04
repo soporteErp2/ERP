@@ -623,7 +623,6 @@
 			$queryVerificacionConsecutivo = $this->mysql->query($sqlVerificacionConsecutivo,$this->mysql->link);
 			$verificacionConsecutivo = $this->mysql->result($queryVerificacionConsecutivo,0,'numero_factura');
 			if($verificacionConsecutivo != ""){
-				$this->setNumeroResolucion($id_configuracion_resolucion);
 				$arrayError[] = "El consecutivo ya existe en el ERP intentelo nuevamente, si el problema persiste revise la configuracion de la resolucion.";
 			}
 
