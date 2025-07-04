@@ -155,7 +155,15 @@
 			$grilla->AddTextField('Nombre o Razon Social','nombre',200,'true','false');
 			$grilla->AddTextField('Nombre Comercial','nombre_comercial',200,'true','false');
             $grilla->AddValidation('nombre','mayuscula');
-            $grilla->AddValidation('nombre_comercial','mayuscula');
+
+			// Eliminar ñ y Ñ
+            $grilla->AddValidation('nombre_comercial','nombres');
+            $grilla->AddValidation('nombre','nombres');
+            $grilla->AddValidation('nombre1','nombres');
+            $grilla->AddValidation('nombre2','nombres');
+            $grilla->AddValidation('apellido1','nombres');
+            $grilla->AddValidation('apellido2','nombres');
+
 
 		///DIRECCION PRINCIPAL
 			$grilla->AddSeparator('Direccion Principal');
