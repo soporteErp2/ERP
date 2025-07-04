@@ -792,7 +792,7 @@
 				WHERE activo=1 AND ($whereItems) AND id_sucursal=$id_sucursal_validar AND id_ubicacion=$id_bodega_validar ";
 		$query=$mysql->query($sql,$mysql->link);
 		while ($row=$mysql->fetch_assoc($query)) {
-			if ($arrayInventario[$row['id_item']]>$row['cantidad']) {
+			if ($arrayInventario[$row['id_item']]>$row['cantidad'] && $accion !== "reversar") {
 				echo "<script>
 						alert('El item $row[nombre_equipo] supera la cantidad a trasladar');
 						document.getElementById('modal').parentNode.parentNode.removeChild(document.getElementById('modal').parentNode);
