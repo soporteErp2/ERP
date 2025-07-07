@@ -880,9 +880,9 @@
                     <div class="labelTop" style="float:left; width:100%;">Factura #</div>
                     <div id="renderNumeroFactura" style="float:left; margin-left:-20px; width:20px; height:19px; overflow:hidden;"></div>
                     <div class="campoTop">
-                        <input type="text" id="prefijoFactura" style="width:30% !important; float:left;" onKeyup="convertirMayusculas(this);" onchange="validarNumeroFactura();">
+                        <input type="text" id="prefijoFactura" style="width:30% !important; float:left;" onchange="validarNumeroFactura(this);">
                         <div style="width:10% !important; float:left;background-color:#F3F3F3; height:100%; text-align:center;">-</div>
-                        <input type="text" id="numeroFactura" style="width:60% !important; float:left;" onchange="validarNumeroFactura();">
+                        <input type="text" id="numeroFactura" style="width:60% !important; float:left;" onchange="validarNumeroFactura(this);">
                     </div>
                 </div>
                 <div class="renglonTop">
