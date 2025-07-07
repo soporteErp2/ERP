@@ -1026,13 +1026,14 @@
     function convertirMayusculas(input){ input.value=input.value.toUpperCase(); }
 
     function validarNumeroFactura(input){
+      input.value=input.value.toUpperCase();
       if(document.getElementById('nombreProveedorFactura').value == ""){
         alert("Por favor añadir primero un proveedor a la factura.");
         return;
       }
 
       nitProveedor = document.getElementById('nitProveedorFactura').value;
-      prefijo      = document.getElementById('prefijoFactura').value;
+      prefijo      = document.getElementById('prefijoFactura').value.toUpperCase();
       numero       = document.getElementById('numeroFactura').value;
 
       if(numero == "" || numero == null || numero == "undefined"){
