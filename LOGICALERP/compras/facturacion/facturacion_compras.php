@@ -963,8 +963,6 @@
             // document.getElementById('content_support_document_pay_type').style.display   ='none';
             document.getElementById('content_support_document_pay_method').style.display ='none';         
             document.getElementById('prefijoFactura').disabled=false;
-            document.getElementById('prefijoFactura').title="";
-            document.getElementById('prefijoFactura').value="";
         }
         else{
             document.getElementById('content_support_document').style.display            ='';
