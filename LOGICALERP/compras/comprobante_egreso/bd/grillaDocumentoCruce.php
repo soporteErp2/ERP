@@ -195,7 +195,7 @@ if(!isset($opcion)){  ?>
 				//CAMBIAR LOS ATRIBUTOS DE LA IMAGEN PARA QUE ELIMINE UN TERCERO
         		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('src','img/eliminar.png');
         		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('title','Eliminar Documento Cruce');
-        		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('onclick'," eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>(''+cont)");
+        		document.getElementById('imgBuscarDocumentoCruce_'+cont).setAttribute('onclick'," eliminaDocumentoCruce<?php echo $opcGrillaContable; ?>("+cont+")");
 			}
 
 			if (id_cliente_<?php echo $opcGrillaContable; ?>!=id_tercero) {
