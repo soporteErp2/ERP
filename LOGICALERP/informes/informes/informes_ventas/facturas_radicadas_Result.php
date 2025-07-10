@@ -103,7 +103,7 @@
               WHERE
                 VF.activo = 1
               AND
-                (VF.estado = 1 OR VF.estado = 2 OR VF.estado = 3)
+                (VF.estado = 1 OR VF.estado = 2)
               AND
                 VF.id_empresa = $this->id_empresa
                 $this->customWhere
@@ -151,16 +151,14 @@
                       </tr>';
 
           foreach($result1 as $id_fc => $result2){
-            $styleCancel = ($result2['estado'] == 3)? "color:red;" : "";
-
             //CUERPO DEL INFORME
             $table .=  '<tr class="detail" style="color: #0a0318">
-                          <td style="border-left:1px solid #999;text-align:center; ' . $styleCancel . '">' . $result2['numero_factura_completo'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['codigo_centro_costo'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['nit'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['cliente'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['fecha_creacion'] . '</td>
-                          <td style="border-right:1px solid #999;text-align:right; ' . $styleCancel . '">' . number_format($result2['total_factura'], 0, "", ",") . '</td>
+                          <td style="border-left:1px solid #999;text-align:center; ">' . $result2['numero_factura_completo'] . '</td>
+                          <td style="text-align:center; ">' . $result2['codigo_centro_costo'] . '</td>
+                          <td style="text-align:center; ">' . $result2['nit'] . '</td>
+                          <td style="text-align:center; ">' . $result2['cliente'] . '</td>
+                          <td style="text-align:center; ">' . $result2['fecha_creacion'] . '</td>
+                          <td style="border-right:1px solid #999;text-align:right; ">' . number_format($result2['total_factura'], 0, "", ",") . '</td>
                         </tr>';
           }
 
