@@ -48,19 +48,20 @@
 	//============================ GENERAR INFORME =============================//
 	function generarHtml(){
 
-		var MyInformeFiltroFechaFinal = document.getElementById('MyInformeFiltroFechaFinal').value
+		var MyInformeFiltroFechaFinal   = document.getElementById('MyInformeFiltroFechaFinal').value
 		,	MyInformeFiltroFechaInicio 	= document.getElementById('MyInformeFiltroFechaInicio').value
+		,	MyInformeIncluirAnuladasNC 	= document.getElementById('MyInformeIncluirAnuladasNC').value
 		,	sucursal                   	= document.getElementById('filtro_sucursal_facturas').value
-		, cliente											= document.getElementById('id_cliente').value
-		, documento_cliente						= document.getElementById('documento_cliente').innerHTML
-		, nombre_cliente							= document.getElementById('nombre_cliente').innerHTML
-		, arrayccosJSON								= Array()
-		, i													  = 0;
+		, 	cliente						= document.getElementById('id_cliente').value
+		, 	documento_cliente			= document.getElementById('documento_cliente').innerHTML
+		, 	nombre_cliente				= document.getElementById('nombre_cliente').innerHTML
+		, 	arrayccosJSON				= Array()
+		, 	i							= 0;
 
 		arrayCentroCostosFR.forEach(function(id_centro_costo) { arrayccosJSON[i] = id_centro_costo; i++; });
 		arrayccosJSON = JSON.stringify(arrayccosJSON);
 
-		if(MyInformeFiltroFechaFinal == "" || MyInformeFiltroFechaInicio == "" || cliente == ""){
+		if(MyInformeFiltroFechaFinal == "" || MyInformeFiltroFechaInicio == "" || cliente == "" || MyInformeIncluirAnuladasNC == ""){
 			alert("Faltan filtros por completar");
 			return;
 		}
@@ -71,12 +72,13 @@
 			scripts : true,
 			nocache : true,
 			params  : {
-									IMPRIME_HTML								: 'true',
+									IMPRIME_HTML				: 'true',
 									MyInformeFiltroFechaInicio 	: MyInformeFiltroFechaInicio,
 									MyInformeFiltroFechaFinal  	: MyInformeFiltroFechaFinal,
 									sucursal                   	: sucursal,
-									cliente          						: cliente,
-									arrayccosJSON								: arrayccosJSON
+									cliente          			: cliente,
+									arrayccosJSON				: arrayccosJSON,
+									MyInformeIncluirAnuladasNC  : MyInformeIncluirAnuladasNC
 								}
 		});
 
@@ -85,9 +87,11 @@
 		localStorage.MyInformeFiltroFechaFinalFacturas  = MyInformeFiltroFechaFinal;
 		localStorage.MyInformeFiltroFechaInicioFacturas	= MyInformeFiltroFechaInicio;
 		localStorage.sucursal_facturas                  = sucursal;
-		localStorage.cliente     						           	= cliente;
-		localStorage.documento_cliente     						  = documento_cliente;
-		localStorage.nombre_cliente     						    = nombre_cliente;
+		localStorage.cliente     						= cliente;
+		localStorage.documento_cliente     				= documento_cliente;
+		localStorage.nombre_cliente     				= nombre_cliente;
+		localStorage.MyInformeIncluirAnuladasNC         = MyInformeIncluirAnuladasNC;
+
 	}
 
 	//==================== GENERAR ARCHIVO DESDE EL WIZARD =====================//
@@ -95,6 +99,7 @@
 
 		var MyInformeFiltroFechaFinal = document.getElementById('MyInformeFiltroFechaFinal').value
 		,	MyInformeFiltroFechaInicio 	= document.getElementById('MyInformeFiltroFechaInicio').value
+		,	MyInformeIncluirAnuladasNC 	= document.getElementById('MyInformeIncluirAnuladasNC').value
 		,	sucursal                   	= document.getElementById('filtro_sucursal_facturas').value
 		, cliente											= document.getElementById('id_cliente').value
 		, documento_cliente						= document.getElementById('documento_cliente').innerHTML
@@ -105,7 +110,7 @@
 		arrayCentroCostosFR.forEach(function(id_centro_costo) { arrayccosJSON[i] = id_centro_costo; i++; });
 		arrayccosJSON = JSON.stringify(arrayccosJSON);
 
-		if(MyInformeFiltroFechaFinal == "" || MyInformeFiltroFechaInicio == "" || cliente == ""){
+		if(MyInformeFiltroFechaFinal == "" || MyInformeFiltroFechaInicio == "" || cliente == "" || MyInformeIncluirAnuladasNC == ""){
 			alert("Faltan filtros por completar");
 			return;
 		}
@@ -117,7 +122,8 @@
 								&cliente=${cliente}
 								&documento_cliente=${documento_cliente}
 								&nombre_cliente=${nombre_cliente}
-								&arrayccosJSON=${arrayccosJSON}`
+								&arrayccosJSON=${arrayccosJSON}
+								&MyInformeIncluirAnuladasNC=${MyInformeIncluirAnuladasNC}`
 
 		window.open("../informes/informes/informes_ventas/facturas_radicadas_Result.php?"+data);
 	}
@@ -128,6 +134,7 @@
 		,	MyInformeFiltroFechaInicio 	= localStorage.MyInformeFiltroFechaInicioFacturas
 		,	sucursal                   	= localStorage.sucursal_facturas
 		, cliente											= localStorage.cliente
+		, MyInformeIncluirAnuladasNC											= localStorage.MyInformeIncluirAnuladasNC
 		, documento_cliente						= localStorage.documento_cliente
 		, nombre_cliente							= localStorage.nombre_cliente
 		, arrayccosJSON								= Array()
@@ -148,7 +155,8 @@
 								&cliente=${cliente}
 								&documento_cliente=${documento_cliente}
 								&nombre_cliente=${nombre_cliente}
-								&arrayccosJSON=${arrayccosJSON}`
+								&arrayccosJSON=${arrayccosJSON}
+								&MyInformeIncluirAnuladasNC=${MyInformeIncluirAnuladasNC}`
 
 		window.open("../informes/informes/informes_ventas/facturas_radicadas_Result.php?"+data);
 	}
@@ -346,6 +354,7 @@
                             'IMPRIME_PDF'                 : 'true',
                             'MyInformeFiltroFechaFinal'   : localStorage.MyInformeFiltroFechaFinalFacturas,
                             'MyInformeFiltroFechaInicio'  : localStorage.MyInformeFiltroFechaInicioFacturas,
+                            'MyInformeIncluirAnuladasNC'  : localStorage.MyInformeIncluirAnuladasNC,
                             'sucursal'                    : localStorage.sucursal_facturas,
                             'cliente'                     : localStorage.cliente,
                             'documento_cliente'           : localStorage.documento_cliente,
