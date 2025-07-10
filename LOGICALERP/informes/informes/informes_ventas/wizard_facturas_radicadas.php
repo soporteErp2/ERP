@@ -109,6 +109,12 @@
     }
   }
 
+  if(typeof(localStorage.MyInformeIncluirAnuladasNC) != "undefined"){
+    if(localStorage.MyInformeIncluirAnuladasNC != ""){
+      document.getElementById("MyInformeIncluirAnuladasNC").value = localStorage.MyInformeIncluirAnuladasNC;
+    }
+  }
+
   if(typeof(localStorage.cliente) != "undefined"){
     if(localStorage.cliente != ""){
       var divTercero 	=  `<div class="row">
