@@ -11,6 +11,7 @@
     public $IMPRIME_PDF                 = '';
     public $MyInformeFiltroFechaInicio  = '';
     public $MyInformeFiltroFechaFinal   = '';
+    public $MyInformeIncluirAnuladasNC  = '';
     public $sucursal                    = '';
     public $cliente                     = '';
     public $arrayccosJSON               = '';
@@ -18,6 +19,7 @@
     public $mysql                       = '';
     public $id_empresa                  = '';
     public $customWhere                 = '';
+    public $leftJoinAnuladasNC          = '';
     public $arrayDoc                    = array();
 
     /**
@@ -79,7 +81,12 @@
         $this->whereCcos .= " AND ($ccos)";
       }
 
-      $this->customWhere = $whereFechas.$whereTercero.$whereSucursal.$this->whereCcos;
+      if($this->MyInformeIncluirAnuladasNC == "No"){
+        $this->leftJoinAnuladasNC = " LEFT JOIN devoluciones_venta AS DFV ON VF.id = DFV.id_documento_venta AND DFV.documento_venta = 'Factura'";
+        $whereAnuladasNC = "AND DFV.id_documento_venta IS NULL";
+      }
+
+      $this->customWhere = $whereFechas.$whereTercero.$whereSucursal.$this->whereCcos.$whereAnuladasNC;
     }
 
     /**
@@ -100,6 +107,7 @@
                 VF.codigo_centro_costo
               FROM
                 ventas_facturas AS VF
+                $this->leftJoinAnuladasNC
               WHERE
                 VF.activo = 1
               AND
@@ -110,7 +118,7 @@
               GROUP BY
                 VF.id
               ORDER BY
-                VF.centro_costo ASC";
+                VF.id ASC";
 
       $this->query_facturas_radicadas = $this->mysql->query($sql_facturas_radicadas,$this->mysql->link);
       while($row = $this->mysql->fetch_array($this->query_facturas_radicadas)){
@@ -336,6 +344,6 @@
     }
   }
 
-  $objectInform = new InformeFacturaRadicada($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$GUARDAR_PDF,$mysql);
+  $objectInform = new InformeFacturaRadicada($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$MyInformeIncluirAnuladasNC,$GUARDAR_PDF,$mysql);
   $objectInform->generate();
 ?>
