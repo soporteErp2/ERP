@@ -38,7 +38,7 @@
   </div>
 
   <div class="sub-content" data-position="left">
-    <div class="title">FECHAS DEL INFORME</div>
+    <div class="title">FILTROS</div>
     <p>
       <table>
         <tr>
@@ -48,6 +48,14 @@
         <tr>
           <td>Fecha Final</td>
           <td><input type="text" id="MyInformeFiltroFechaFinal"/></td>
+        </tr>
+          <tr>
+          <td>Incluir anuladas</td>
+          <td><select id="MyInformeIncluirAnuladasNC">
+					      <option value="No" selected>No</option>
+					      <option value="Si">Si</option>
+				      </select>
+          </td>
         </tr>
       </table>
     </p>
