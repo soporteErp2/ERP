@@ -30,18 +30,19 @@
      * @param int $cliente                      Filtro por cliente
      * @param obj $mysql                        Objeto de conexion a la base de datos
      */
-    function __construct($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$GUARDAR_PDF,$mysql){
-      $this->IMPRIME_HTML               = $IMPRIME_HTML;
-      $this->IMPRIME_PDF                = $IMPRIME_PDF;
-      $this->MyInformeFiltroFechaInicio = $MyInformeFiltroFechaInicio;
-      $this->MyInformeFiltroFechaFinal  = $MyInformeFiltroFechaFinal;
-      $this->sucursal                   = $sucursal;
-      $this->cliente                    = $cliente;
-      $this->arrayccosJSON              = json_decode($arrayccosJSON);
-      $this->mysql                      = $mysql;
-      $this->GUARDAR_PDF                = $GUARDAR_PDF;
-      $this->id_empresa                 = $_SESSION['EMPRESA'];
-      $this->id_sucursal                = $_SESSION['SUCURSAL'];
+    function __construct($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$MyInformeIncluirAnuladasNC,$GUARDAR_PDF,$mysql){
+      $this->IMPRIME_HTML                 = $IMPRIME_HTML;
+      $this->IMPRIME_PDF                  = $IMPRIME_PDF;
+      $this->MyInformeFiltroFechaInicio   = $MyInformeFiltroFechaInicio;
+      $this->MyInformeFiltroFechaFinal    = $MyInformeFiltroFechaFinal;
+      $this->MyInformeIncluirAnuladasNC   = $MyInformeIncluirAnuladasNC;
+      $this->sucursal                     = $sucursal;
+      $this->cliente                      = $cliente;
+      $this->arrayccosJSON                = json_decode($arrayccosJSON);
+      $this->mysql                        = $mysql;
+      $this->GUARDAR_PDF                  = $GUARDAR_PDF;
+      $this->id_empresa                   = $_SESSION['EMPRESA'];
+      $this->id_sucursal                  = $_SESSION['SUCURSAL'];
     }
 
     /**
