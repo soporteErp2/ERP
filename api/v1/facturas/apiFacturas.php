@@ -619,11 +619,11 @@
 
 			//VERIFICAMOS QUE EL CONSECUTIVO NO EXISTA EN EL ERP
 			$sqlVerificacionConsecutivo =  "SELECT numero_factura FROM ventas_facturas 
-											WHERE numero_factura = '$numero_factura' AND id_empresa = $this->id_empresa AND id_configuracion_resolucion = $id_configuracion_resolucion  LIMIT 0,1";
+											WHERE numero_factura = '$numero_factura' AND id_empresa = $this->id_empresa AND id_configuracion_resolucion = $id_configuracion_resolucion AND estado != 3 LIMIT 0,1";
 			$queryVerificacionConsecutivo = $this->mysql->query($sqlVerificacionConsecutivo,$this->mysql->link);
 			$verificacionConsecutivo = $this->mysql->result($queryVerificacionConsecutivo,0,'numero_factura');
 			if($verificacionConsecutivo != ""){
-				$arrayError[] = "El consecutivo ya existe en el ERP intentelo nuevamente, si el problema persiste revise la configuracion de la resolucion.";
+				$arrayError[] = "El consecutivo $numero_factura ya existe en el ERP intentelo nuevamente, si el problema persiste revise la configuracion de la resolucion.";
 			}
 
 			$numero_factura_completo = (!empty($prefijo) && $prefijo<>' ')? "$prefijo $numero_factura" : $numero_factura ;
