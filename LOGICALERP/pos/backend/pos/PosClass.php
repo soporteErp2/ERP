@@ -400,7 +400,7 @@
 						WHERE id = ".$this->id_documento;
 				$query=$this->mysql->query($sql);
 				$this->set_accounts();
-				$this->generate_remission();
+				$this->generate_remission($respuesta["id"]);
 			}
 			else{
 				$params["nivel"]          = 1;
@@ -411,7 +411,7 @@
 
 		}
 
-		public function generate_remission()
+		public function generate_remission($id_FV = '')
 		{
 			global $SERVER; // from configuracion/configuration
 			$query_auth = base64_encode($this->username.":".$this->token.":".$this->datosEmpresa['documento'] );
@@ -443,7 +443,7 @@
 						WHERE id = ".$this->id_documento;
 				$query=$this->mysql->query($sql);
 
-				echo json_encode(array('status' => true,"consecutivo"=>$this->consecutivo,"cuentas"=>$this->arrayCuentas) );
+				echo json_encode(array('status' => true,"consecutivo"=>$this->consecutivo,"cuentas"=>$this->arrayCuentas,"id_remision"=>$respuesta["id"],"id_FV"=>$id_FV));
 			}
 			else{
 				$error = json_encode($respuesta['detalle']);
