@@ -139,6 +139,12 @@
 			if ($params==''){ return; }
 			$objectPos->savePayPos($params);
 			break;
+		case 'rollbackDoc':
+			$json   = file_get_contents('php://input');
+			$params = json_decode($json,true);
+			if ($params==''){ return; }
+			$objectPos->rollbackDoc($params['id'],$params);
+			break;
 		case 'logOutToken':
 			$json   = file_get_contents('php://input');
 			$params = json_decode($json,true);
