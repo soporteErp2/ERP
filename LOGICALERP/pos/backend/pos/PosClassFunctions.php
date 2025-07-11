@@ -141,25 +141,119 @@
 		 * Rollback del documento S
 		 * @return void
 		 */
-		public function rollbackdoc($id_doc){
+		public function rollbackdoc($id_doc, $params = '') {
 			if (!is_numeric($id_doc) || $id_doc <= 0) {
-        		// ID no válido, no ejecutar
-        		return;
-    		}
-			//Quitar la factura de ventas_pos
-			$sqlVentasPos = "UPDATE ventas_pos SET activo = 0 WHERE id =$id_doc";
-			$queryVentasPos = $this->mysql->query($sqlVentasPos);
+				return;
+			}
 
-			//Quitar la factura de formas pago
-			$sqlFormasPago = "UPDATE ventas_pos_formas_pago SET activo = 0 WHERE id_pos =$id_doc";
-			$queryFormasPago = $this->mysql->query($sqlFormasPago);
+			try {
+				$this->verificar("START TRANSACTION");
+				$this->verificar("UPDATE ventas_pos SET activo = 0 WHERE id = $id_doc");
+				$this->verificar("UPDATE ventas_pos_formas_pago SET activo = 0 WHERE id_pos = $id_doc");
+				$this->verificar("UPDATE ventas_pos_inventario SET activo = 0 WHERE id_pos = $id_doc");
+				$this->verificar("UPDATE ventas_pos_inventario_receta SET activo = 0 WHERE id_pos = $id_doc");
+			
+				if ($params != '') {
+					$id_cuenta = $params["mesa"]["id_cuenta"];
+					$id_comensal = $params['huespedesSelect'][0]['id_comensal'];
+				
+					$this->verificar("
+						UPDATE ventas_pos_mesas_cuenta_items
+						SET activo = 1 
+						WHERE id_cuenta = '$id_cuenta' 
+							AND id_comensal = '$id_comensal' 
+							AND id_comensal IS NOT NULL
+					");
+				
+					// Consultar comandas para reactivar
+					$sql = "
+						SELECT
+							ci.id,
+							SUM(ci.cantidad) as cantidad,
+							SUM(ci.cantidad_pendiente) as cantidad_pendiente,
+							ci.id_comanda
+						FROM ventas_pos_mesas_cuenta_items ci
+						WHERE ci.id_cuenta = $id_cuenta
+						GROUP BY ci.id_comanda
+						HAVING cantidad <= cantidad_pendiente
+					";
+					$query = $this->verificar($sql, true); // modo SELECT
+				
+					while ($row = $this->mysql->fetch_array($query)) {
+						$id_comanda = $row['id_comanda'];
+						$this->verificar("
+							UPDATE ventas_pos_comanda
+							SET estado = 1
+							WHERE id = $id_comanda
+						");
+					}
+				
+					$this->verificar("
+						UPDATE ventas_pos_mesas_cuenta
+						SET estado = 'Abierta'
+						WHERE id = $id_cuenta
+					");
+				
+					// Cargar cantidades pendientes
+					$sql = "
+						SELECT
+							ci.id,
+							ci.cantidad_pendiente
+						FROM ventas_pos_mesas_cuenta_items ci
+						WHERE
+							ci.id_cuenta = $id_cuenta
+							AND ci.cantidad > 0
+							AND (ci.cantidad > ci.cantidad_pendiente OR ci.cantidad_pendiente IS NULL)
+					";
+					$query = $this->verificar($sql, true);
+				
+					$arrayCuentasItems = array();
+					while ($row = $this->mysql->fetch_array($query)) {
+						$arrayCuentasItems[$row['id']] = $row['cantidad_pendiente'];
+					}
+				
+					foreach ($params["itemsSelect"] as $item) {
+						$id_cuenta_item = $item["id"];
+					
+						if (!isset($arrayCuentasItems[$id_cuenta_item])) {
+							continue;
+						}
+						$arrayCuentasItems[$id_cuenta_item] -= 1;
+						$this->verificar("
+							UPDATE ventas_pos_mesas_cuenta_items
+							SET cantidad_pendiente = '".$arrayCuentasItems[$id_cuenta_item]."'
+							WHERE id = $id_cuenta_item
+						");
+					}
+				}else{
+					$this->verificar("COMMIT");
+					return;
+				}
+			
+				
+				$this->verificar("COMMIT");
+				echo json_encode(array('status' => true));
+			
+			} catch (Exception $e) {
+				$this->mysql->query("ROLLBACK");
+				echo json_encode(array(
+					'status' => false,
+					'error' => $e->getMessage()
+				));
+			}
+		}
 
-			//Quitar el inventario y las recetas
-			$sqlInv	   = "UPDATE ventas_pos_inventario SET activo = 0 WHERE id_pos =$id_doc";
-			$queryInv = $this->mysql->query($sqlInv);
-
-			$sqlInvRec = "UPDATE ventas_pos_inventario_recetas SET activo = 0 WHERE id_pos =$id_doc";
-			$queryInvRec = $this->mysql->query($sqlInvRec);
+		/**
+		 * Ejecuta una consulta y lanza una excepción si falla.
+		 * Si $isSelect es true, devuelve el resultado para SELECTs.
+		 */
+		private function verificar($sql, $isSelect = false) {
+			$resultado = $this->mysql->query($sql);
+			if (!$resultado) {
+				$error = method_exists($this->mysql, 'error') ? $this->mysql->error() : mysql_error();
+				throw new Exception("Error SQL: $error\nConsulta: $sql");
+			}
+			return $isSelect ? $resultado : true;
 		}
 
 		/**
