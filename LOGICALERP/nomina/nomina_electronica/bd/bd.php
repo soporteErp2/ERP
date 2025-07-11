@@ -2059,11 +2059,18 @@
 				exit;
 			}
 
-			// $send = $this->sendJson($json);
 			$response = $this->sendJson($json);
-			// $response = json_decode($send,true);
-			// var_dump($response);
-			/* according the response, save it on bd */
+					
+			// Si falla (no contiene los textos esperados), reintenta una vez
+			if (
+				strpos($response, 'Comprobante fue generado') === false &&
+				strpos($response, 'Documento no enviado, Ya cuenta con') === false
+			) {
+				// Reintento 1
+				$response = $this->sendJson($json);
+			}
+			
+			// Guardar en la base de datos
 			$sql = "UPDATE nomina_planillas_electronica_empleados 
 					SET 
 						id_usuario_NE     = '$_SESSION[IDUSUARIO]',
@@ -2073,24 +2080,27 @@
 						hora_NE           = '".date("H:i:s")."',
 						response_NE       = '$response'
 					WHERE id_planilla=$this->id_planilla AND id_empleado=$id_empleado";
-			$query=mysql_query($sql,$this->mysql);
-			if((strpos($response, 'Comprobante fue generado') !== FALSE) || (strpos($response, 'Documento no enviado, Ya cuenta con') !== FALSE)){
-					?>
-					<script>
-						alert("Planilla electronica enviada correctamente");
-					</script>
-					<?php
-			}
-			else{
+			
+			$query = mysql_query($sql, $this->mysql);
+			
+			// Mostrar mensaje según el resultado
+			if (
+				strpos($response, 'Comprobante fue generado') !== false ||
+				strpos($response, 'Documento no enviado, Ya cuenta con') !== false
+			) {
 				?>
-					<script>
-						alert("Error\n<?=$response?>");
-						console.log("<?=$response?>");
-					</script>
-					
+				<script>
+					alert("Planilla electrónica enviada correctamente");
+				</script>
+				<?php
+			} else {
+				?>
+				<script>
+					alert("Error\n<?= addslashes($response) ?>");
+					console.log("<?= addslashes($response) ?>");
+				</script>
 				<?php
 			}
-
 		}
 
 		public function sendJson($json){
