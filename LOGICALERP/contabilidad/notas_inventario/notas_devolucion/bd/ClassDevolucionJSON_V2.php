@@ -1025,6 +1025,7 @@
                             "Descuentos"                  => "0",
                             "SubTotalSinCargosDescuentos" => (string) round($subTotal,$_SESSION['DECIMALESMONEDA']),
                             "IVA"					                => ($totalIVA != null)? (string) round($totalIVA,$_SESSION['DECIMALESMONEDA']) : "0",
+                            "TotalConRetencion"           => $subTotal + round($totalIVA,$_SESSION['DECIMALESMONEDA']) + $totalRetencionesDV,
                           ),
         "TotalImpuestos" => $arrayImpuesto,
         "DetallesComprobante" => $arrayDetallesComprobante,
