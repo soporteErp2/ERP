@@ -599,7 +599,7 @@
 					$arrayError[] = "La sucursal del cliente no existe en el sistema";
 				}
 			}
-			$arrayResoluciones = $this->getResoluciones();
+			$arrayResoluciones = $this->getResoluciones();$data['configuracion'][$row['id_sucursal']][$row['numero_resolucion']]
 			if ($data['numero_resolucion']<>'' && !array_key_exists("$data[numero_resolucion]",$arrayResoluciones['resoluciones']) ) { $arrayError[] = "La resolucion Numero $data[numero_resolucion] no existe en el sistema"; }
 			//else if(!array_key_exists("$data[id_sucursal]",$arrayResoluciones['configuracion'][$data['numero_resolucion']]) ){ $arrayError[] = "La resolucion Numero $data[numero_resolucion] no esta configurada para esa sucursal"; }
 			else if(empty($arrayResoluciones['resoluciones'])){ $arrayError[] = "No existe ninguna resolucion configurada en el sistema"; }
@@ -1627,7 +1627,11 @@
 					tipo,
 					consecutivo_factura,
 					digitos
-					FROM ventas_facturas_configuracion WHERE activo=1 AND id_empresa=$this->id_empresa AND consecutivo_factura<=numero_final_resolucion";
+					FROM ventas_facturas_configuracion 
+					WHERE activo=1 
+					AND id_empresa=$this->id_empresa 
+					AND consecutivo_factura<=numero_final_resolucion 
+					AND fecha_final_resolucion >= '".date("Y-m-d")."'";
 			$query=$this->mysql->query($sql,$this->mysql->link);
 			$whereIdResolucion = '';
 			while($row=$this->mysql->fetch_assoc($query)){
