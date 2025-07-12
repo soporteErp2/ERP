@@ -599,7 +599,7 @@
 					$arrayError[] = "La sucursal del cliente no existe en el sistema";
 				}
 			}
-			$arrayResoluciones = $this->getResoluciones();$data['configuracion'][$row['id_sucursal']][$row['numero_resolucion']]
+			$arrayResoluciones = $this->getResoluciones();
 			if ($data['numero_resolucion']<>'' && !array_key_exists("$data[numero_resolucion]",$arrayResoluciones['resoluciones']) ) { $arrayError[] = "La resolucion Numero $data[numero_resolucion] no existe en el sistema"; }
 			//else if(!array_key_exists("$data[id_sucursal]",$arrayResoluciones['configuracion'][$data['numero_resolucion']]) ){ $arrayError[] = "La resolucion Numero $data[numero_resolucion] no esta configurada para esa sucursal"; }
 			else if(empty($arrayResoluciones['resoluciones'])){ $arrayError[] = "No existe ninguna resolucion configurada en el sistema"; }
