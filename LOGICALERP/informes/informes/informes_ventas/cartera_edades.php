@@ -87,7 +87,7 @@
 					+"&MyInformeFiltroFechaFinal="+MyInformeFiltroFechaFinal
 					+"&MyInformeFiltroFechaInicio="+MyInformeFiltroFechaInicio
 					+"&idClientes="+idClientes
-					+"&sqlCheckbox="+sqlCheckbox
+					+"&sqlFechas="+sqlCheckbox
 					+"&sucursal="+sucursal
 					+"&tipo_informe="+tipo_informe
 					+"&cuenta=";
@@ -219,7 +219,6 @@
 
 	function generarHtml(){
 		idClientes  = '';
-		sqlCheckbox = '';
 
 		//RECORREMOS LOS CHECKBOX PARA SABER CUALES FUERON SELECCIONADOS Y ENVIARLOS A LA CONSULTA
 		var	plazo_por_vencer           = document.getElementById('plazo_por_vencer')
@@ -250,26 +249,28 @@
     	arraycuentasPagoVenta.forEach(function(id_cliente) {  arrayCuentasPagoJSON[i] = id_cliente; i++;  });
     	arrayCuentasPagoJSON=JSON.stringify(arrayCuentasPagoJSON);
 
-		//SI TODO ESTA CHECKED, NO ENVIAMOS NINGUN PARAMETRO
-		if (plazo_por_vencer.checked &&
-			vencido_1_30.checked	 &&
-			vencido_31_60.checked	 &&
-			vencido_61_90.checked	 &&
-			vencido_mas_90.checked	) {
 
-			localStorage.plazo_por_vencer='true';
-			localStorage.vencido_1_30='true';
-			localStorage.vencido_31_60='true';
-			localStorage.vencido_61_90='true';
-			localStorage.vencido_mas_90='true';
-
-		}else{
-			//SINO SE HAN SELECIONADO UNOS Y OTROS NO, EN ESE CASO HACEMOS
-			if (plazo_por_vencer.checked) { sqlCheckbox =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<=0)' : '' ; localStorage.plazo_por_vencer='true'; }else{ localStorage.plazo_por_vencer='false'; }
-			if (vencido_1_30.checked) { sqlCheckbox     =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>0 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<= 30)' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>0 AND  DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento) <= 30)' ; localStorage.vencido_1_30='true';}else{ localStorage.vencido_1_30='false'; }
-			if (vencido_31_60.checked) { sqlCheckbox    =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>30 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<=60)' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>30 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento) <=60)' ; localStorage.vencido_31_60='true';}else{ localStorage.vencido_31_60='false'; }
-			if (vencido_61_90.checked) { sqlCheckbox    =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>60 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<=90)' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>60 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento) <=90)' ; localStorage.vencido_61_90='true';}else{ localStorage.vencido_61_90='false'; }
-			if (vencido_mas_90.checked) { sqlCheckbox   =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>90 )' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>90)' ; localStorage.vencido_mas_90='true';}else{ localStorage.vencido_mas_90='false';}
+		const hoy = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+		let condiciones = [];
+		
+		if (plazo_por_vencer.checked) {
+		    condiciones.push("VF.dias < 0");
+		}
+		if (vencido_1_30.checked) {
+		    condiciones.push("VF.dias BETWEEN 1 AND  30");
+		}
+		if (vencido_31_60.checked) {
+		    condiciones.push("VF.dias BETWEEN 31 AND  60");
+		}
+		if (vencido_61_90.checked) {
+		    condiciones.push("VF.dias BETWEEN 61 AND  90");
+		}
+		if (vencido_mas_90.checked) {
+		    condiciones.push("VF.dias > 90");
+		}
+		let sqlCheckbox = '';
+		if (condiciones.length > 0) {
+		    sqlCheckbox = ` (${condiciones.join(' OR ')}) `;
 		}
 
 		// if (sqlCheckbox=='') { alert("Debe seleccionar la o las edades a consultar"); return; }
@@ -291,7 +292,7 @@
 				agrupacion                 : agrupacion,
 				tipo_fecha_informe         : tipo_fecha_informe,
 				tipo_informe               : tipo_informe,
-				sqlCheckbox                : sqlCheckbox,
+				sqlFechas                : sqlCheckbox,
 				sucursal                   : sucursal,
 				order_by                   : order+" "+by,
 				separador_miles 		   : separador_miles,
@@ -317,7 +318,6 @@
 	function generarPDF_Excel(tipo_documento){
 
 		idClientes  = '';
-		sqlCheckbox = '';
 
 		//RECORREMOS LOS CHECKBOX PARA SABER CUALES FUERON SELECCIONADOS Y ENVIARLOS A LA CONSULTA
 		var	plazo_por_vencer           = document.getElementById('plazo_por_vencer')
@@ -348,26 +348,28 @@
     	arraycuentasPagoVenta.forEach(function(id_cliente) {  arrayCuentasPagoJSON[i] = id_cliente; i++;  });
     	arrayCuentasPagoJSON=JSON.stringify(arrayCuentasPagoJSON);
 
-		//SI TODO ESTA CHECKED, NO ENVIAMOS NINGUN PARAMETRO
-		if (plazo_por_vencer.checked &&
-			vencido_1_30.checked	 &&
-			vencido_31_60.checked	 &&
-			vencido_61_90.checked	 &&
-			vencido_mas_90.checked	) {
 
-			localStorage.plazo_por_vencer='true';
-			localStorage.vencido_1_30='true';
-			localStorage.vencido_31_60='true';
-			localStorage.vencido_61_90='true';
-			localStorage.vencido_mas_90='true';
-
-		}else{
-			//SINO SE HAN SELECIONADO UNOS Y OTROS NO, EN ESE CASO HACEMOS
-			if (plazo_por_vencer.checked) { sqlCheckbox =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<=0)' : '' ; localStorage.plazo_por_vencer='true'; }else{ localStorage.plazo_por_vencer='false'; }
-			if (vencido_1_30.checked) { sqlCheckbox     =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>0 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<= 30)' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>0 AND  DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento) <= 30)' ; localStorage.vencido_1_30='true';}else{ localStorage.vencido_1_30='false'; }
-			if (vencido_31_60.checked) { sqlCheckbox    =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>30 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<=60)' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>30 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento) <=60)' ; localStorage.vencido_31_60='true';}else{ localStorage.vencido_31_60='false'; }
-			if (vencido_61_90.checked) { sqlCheckbox    =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>60 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)<=90)' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>60 AND DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento) <=90)' ; localStorage.vencido_61_90='true';}else{ localStorage.vencido_61_90='false'; }
-			if (vencido_mas_90.checked) { sqlCheckbox   =(sqlCheckbox=='')? '(DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>90 )' : sqlCheckbox+' OR (DATEDIFF("<?php echo date("Y-m-d") ?>",VF.fecha_vencimiento)>90)' ; localStorage.vencido_mas_90='true';}else{ localStorage.vencido_mas_90='false';}
+		const hoy = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+		let condiciones = [];
+		
+		if (plazo_por_vencer.checked) {
+		    condiciones.push("VF.dias < 0");
+		}
+		if (vencido_1_30.checked) {
+		    condiciones.push("VF.dias BETWEEN 1 AND  30");
+		}
+		if (vencido_31_60.checked) {
+		    condiciones.push("VF.dias BETWEEN 31 AND  60");
+		}
+		if (vencido_61_90.checked) {
+		    condiciones.push("VF.dias BETWEEN 61 AND  90");
+		}
+		if (vencido_mas_90.checked) {
+		    condiciones.push("VF.dias > 90");
+		}
+		let sqlCheckbox = '';
+		if (condiciones.length > 0) {
+		    sqlCheckbox = ` (${condiciones.join(' OR ')}) `;
 		}
 
 		// if (sqlCheckbox=='') { alert("Debe seleccionar la o las edades a consultar"); return; }
@@ -409,7 +411,7 @@
 		// localStorage.separador_miles_cartera_cliente     = separador_miles;
 		// localStorage.separador_decimales_cartera_cliente = separador_decimales;
 
-		var data   = tipo_documento+`=true&MyInformeFiltroFechaFinal=${MyInformeFiltroFechaFinal}&MyInformeFiltroFechaInicio=${MyInformeFiltroFechaInicio}&arrayClientesJSON=${arrayClientesJSON}&arrayCuentasPagoJSON=${arrayCuentasPagoJSON}&agrupacion=${agrupacion}&tipo_fecha_informe=${tipo_fecha_informe}&tipo_informe=${tipo_informe}&sqlCheckbox=${sqlCheckbox}&sucursal=${sucursal}&order_by=${order} ${by}&separador_miles=${separador_miles}&separador_decimales=${separador_decimales}`
+		var data   = tipo_documento+`=true&MyInformeFiltroFechaFinal=${MyInformeFiltroFechaFinal}&MyInformeFiltroFechaInicio=${MyInformeFiltroFechaInicio}&arrayClientesJSON=${arrayClientesJSON}&arrayCuentasPagoJSON=${arrayCuentasPagoJSON}&agrupacion=${agrupacion}&tipo_fecha_informe=${tipo_fecha_informe}&tipo_informe=${tipo_informe}&sqlFechas=${sqlCheckbox}&sucursal=${sucursal}&order_by=${order} ${by}&separador_miles=${separador_miles}&separador_decimales=${separador_decimales}`
 
 		window.open("../informes/informes/informes_ventas/cartera_edades_Result.php?"+data);
 	}
