@@ -43,6 +43,7 @@
 							VP.id,
 							VP.consecutivo,
 							VP.fecha_documento,
+							VP.hora_documento,
 							VP.seccion,
 							VP.mesa,
 							VP.documento_cliente,
@@ -83,6 +84,7 @@
 				}
 				$arrayPos[$row['id']] = array(
 											'fecha_documento'   => $row['fecha_documento'],
+											'hora_documento'   => $row['hora_documento'],
 											'tipo'              => $row['tipo'],
 											'consecutivo'       => $row['consecutivo'],
 											'documento_cliente' => $row['documento_cliente'],
@@ -158,6 +160,7 @@
 				// echo "acumNeto $acumNeto <br>";
 				$bodyReturn .= "<tr>
 									<td>$arrayResult[fecha_documento]</td>
+									<td>$arrayResult[hora_documento]</td>
 									<td>$arrayResult[tipo]</td>
 									<td>$arrayResult[consecutivo] </td>
 									<td>
@@ -185,6 +188,7 @@
 								<td></td>
 								<td></td>
 								<td></td>
+								<td></td>
 								<td><b>".number_format($totalNeto,0,",",".")." </td>
 								<td><b>".number_format($acumPropina,0,",",".")." </td>
 								<td><b>".number_format($totalImpuesto,0,",",".")."</td>
@@ -204,6 +208,7 @@
 				<thead>
 					<tr>
 						<td>Fecha</td>
+						<td>Hora</td>
 						<td>Tipo</td>
 						<td>Numero</td>
 						<td></td>
