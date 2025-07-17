@@ -51,6 +51,7 @@
 				$grilla->DivActualiBusqueda = '' ;				//VARIABLE QUE DEFINE LA CAPA DONDE SE ACTUALIZA LA GRILLA DESPUES DE UNA BUSQUEDA
 	 			$grilla->AddRow('Prefijo','prefijo',60);
 	 			$grilla->AddRow('N. Factura','numero_factura',80);
+				$grilla->AddRowImage('Enviado','<center><img src="img/estado_doc/[response_FE].png" style="cursor:pointer" width="16" height="16" id="imgEnvioFacturaCompra_[id]" /></center>','60','EnvioDian','response_FE');
 	 		}
 	 		else if ($opcGrillaContable=='CotizacionVenta'){
 	 			$grilla->CamposBusqueda		= 'fecha_inicio,consecutivo,nit,cliente';		//VARIABLE QUE DEFINE LOS CAMPOS DE LA BD DONDE SE BUSCARA
