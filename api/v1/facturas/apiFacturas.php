@@ -981,14 +981,13 @@
 
 		public function sendInvoice($idFactura){
 			include("../../../LOGICALERP/ventas/facturacion/bd/ClassFacturaJSON_V2.php");
-
+			$found = array();
 			$facturaJSON = new ClassFacturaJSON_V2($this->mysql); //Objeto classFacturaJson
 			$facturaJSON->obtenerDatos($idFactura,$this->id_empresa); //Obtener todos los datos de la factura
 		  	$facturaJSON->construirJSON(); //Armar JSON de envio
 			$result = $facturaJSON->enviarJSON(); //Enviar a la DIAN
 			
-			$result['validar'] = "Procesado Correctamente"; //Quitar backslashes de la respuesta de FACSE
-			
+			$result['validar'] = trim(str_replace("\\", "", $result['validar']));
 			/*
 			Para comprobar si la factura fue enviada
 			Filtramos $invoiceValidationStrings que contiene
@@ -1012,7 +1011,6 @@
 			}
 			else{//Si $found no está vacío, la factura fue enviada con éxito
 				$response_FE = "Ejemplar recibido exitosamente pasara a verificacion";
-				$result['validar'] = str_replace("'", "-", $result['validar']);
 
 				//Si no tenemos el UUID ($result["id_factura"]) hay un error en el PDF pero la factura fue enviada
 				$detalleEnvio = ($result["id_factura"] == "" || $result["id_factura"] == null)? 
