@@ -52,6 +52,7 @@ if(isset($MyInformeFiltroFechaFinal) && $MyInformeFiltroFechaFinal != ''){
   $whereFechas = " AND VF.fecha_inicio BETWEEN '".$MyInformeFiltroFechaInicio."' AND '".$MyInformeFiltroFechaFinal."'";
 } else{
   $MyInformeFiltroFechaFinal = date("Y-m-d");
+  $whereFechas = " AND VF.fecha_inicio = '".$MyInformeFiltroFechaInicio."'";
 }
 
 //--------------------------FILTRO POR VENDEDORES-----------------------------//
