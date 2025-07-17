@@ -266,7 +266,8 @@
 							centro_costos_contrapartida,
 							naturaleza,
 							imprimir_volante,
-							resta_dias
+							resta_dias,
+							clasificacion
 					FROM nomina_conceptos
 					WHERE activo=1
 						AND id_empresa=$id_empresa
@@ -274,11 +275,42 @@
 					ORDER BY nivel_formula ASC";
 			$query = mysql_query($sql,$link);
 
+			//Si es colombia validar Salario minimo
+			$salario_minimo = 0;
+			if ($_SESSION['PAIS'] == 49) {
+			    $sqlSalarioMinimo = "SELECT data FROM configuracion_general WHERE descripcion = 'salario_minimo' AND activo = 1";
+			    $querySalarioMinimo = mysql_query($sqlSalarioMinimo, $link);
+			
+			    if ($querySalarioMinimo && mysql_num_rows($querySalarioMinimo) > 0) {
+			        $dataString = mysql_result($querySalarioMinimo, 0, 'data');
+			        $dataArray = json_decode($dataString, true);
+				
+			        if (
+			            is_array($dataArray) &&
+			            isset($dataArray[0]['salario_minimo']) &&
+			            is_numeric($dataArray[0]['salario_minimo'])
+			        ) {
+			            $salario_minimo = (float) $dataArray[0]['salario_minimo'];
+			        }
+			    }
+			}
+
 			while ($row=mysql_fetch_array($query)){
 				$id             = $row['id'];
 				$tipo_concepto  = $row['tipo_concepto'];
 				$nivel_formula  = $row['nivel_formula'];
 				$row['formula'] = str_replace(" ","",$row['formula']);
+
+				//Validacion para el AT
+				if (
+				    $row['clasificacion'] === 'auxilio_transporte' &&
+				    $_SESSION['PAIS'] == 49 &&
+				    $salario_minimo != 0 &&
+				    $salario_minimo != '' &&
+				    $salario_basico >= 2 * $salario_minimo
+				) {
+				    continue;
+				}
 
 				$arrayConceptos[$nivel_formula][$id] = array('codigo'           					   => $row['codigo'],
 															'concepto'                                 => $row['descripcion'],
