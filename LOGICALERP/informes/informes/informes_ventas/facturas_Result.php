@@ -267,6 +267,7 @@ if($detallado_documentos == 'devolucion'){
             tipo_descuento,
             descuento,
             valor_impuesto,
+            impuesto,
             observaciones
           FROM
             devoluciones_venta_inventario
@@ -275,6 +276,9 @@ if($detallado_documentos == 'devolucion'){
           AND ($whereIdDev)";
 
   $query = $mysql->query($sql,$mysql->link);
+  
+  $acumuladoIvaDV = 0;
+  $acumuladoOtrosImpuestosDV = 0;
 
   while($row = $mysql->fetch_array($query)){
     // SI ESTADO ES 3 DEJAR VACIOS LOS CAMPOS ACUMULADOS
@@ -308,12 +312,19 @@ if($detallado_documentos == 'devolucion'){
     }
     $acumuladoSubtotalDV  += $subtotal;
     $acumuladoDescuentoDV += $descuento;
-    $acumuladoIvaDV       += $iva;
+    
+    if(strpos(strtoupper($row['impuesto']), "IVA")===false){//Si no es IVA
+      $arrayDevoluciones[$row['id_devolucion_venta']]['otros_impuestos']   += $iva;
+      $acumuladoOtrosImpuestosDV += $iva;
+
+    }else{
+      $arrayDevoluciones[$row['id_devolucion_venta']]['iva']   += $iva;
+      $acumuladoIvaDV       += $iva;
+    }
 
     $arrayDevoluciones[$row['id_devolucion_venta']]['costo']     += ($row['cantidad'] * $row['costo_unitario']);
     $arrayDevoluciones[$row['id_devolucion_venta']]['subtotal']  += $subtotal;
     $arrayDevoluciones[$row['id_devolucion_venta']]['descuento'] += $descuento;
-    $arrayDevoluciones[$row['id_devolucion_venta']]['iva']       += $iva;
     $arrayItemsDevoluciones[$row['id_devolucion_venta']][$row['id']] = array(
                                                                               'id_devolucion_venta'    => $row['id_devolucion_venta'],
                                                                               'codigo'                 => $row['codigo'],
@@ -349,6 +360,7 @@ if($whereId != ''){
               costo_inventario,
               tipo_descuento,
               descuento,
+              impuesto,
               valor_impuesto,
               observaciones
             FROM
@@ -398,7 +410,13 @@ if($whereId != ''){
         $arrayFacturas[$row['id_factura_venta']]['costo']     += ($row['cantidad'] * $row['costo_inventario']);
         $arrayFacturas[$row['id_factura_venta']]['subtotal']  += $subtotal;
         $arrayFacturas[$row['id_factura_venta']]['descuento'] += $descuento;
-        $arrayFacturas[$row['id_factura_venta']]['iva']       += $iva;
+
+        if(strpos(strtoupper($row['impuesto']), "IVA")===false){//Si no es IVA
+          $arrayFacturas[$row['id_factura_venta']]['otros_impuestos']   += $iva;
+        }else{
+          $arrayFacturas[$row['id_factura_venta']]['iva']   += $iva;
+        }
+
 
         $tipoDoc = ($row['nombre_consecutivo_referencia']=="Remision")? "RV" : "CT";
         $arrayItemsFactura[$row['id_factura_venta']][$row['id']] = array(
@@ -510,12 +528,13 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
     }
 
     $ivaTotal = $arrayResul['iva'] - $ReteIva;
-    $total    = (($arrayResul['subtotal']-$arrayResul['descuento'])+$ivaTotal)-$ReteFuente-$ReteIca;
+    $total    = (($arrayResul['subtotal']-$arrayResul['descuento'])+$ivaTotal+$arrayResul['otros_impuestos'])-$ReteFuente-$ReteIca;
     $utilidad = $arrayResul['subtotal']-$arrayResul['descuento']-$arrayResul['costo'];
 
     $acumuladoReteFuente    += $ReteFuente;
     $acumuladoReteIva       += $ReteIva;
     $acumuladoIva += $arrayResul['iva'];
+    $acumuladoOtrosImpuestos += $arrayResul['otros_impuestos'];
     $acumuladoReteIca       += $ReteIca;
     $acumuladoTotalUtilidad += $utilidad;
     $acumuladoTotal         += $total;
@@ -543,7 +562,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                 $simbolo_descuento = ($arrayResul2['tipo_descuento'] == 'porcentaje')? ' %' : ' $' ;
                 $descuento         = 0;
                 $subtotalArticulo  = 0;
-                $ivaArticulo       = 0;
+                $ImpuestoArticulo       = 0;
                 $totalArticulo     = 0;
                 $totalSinIva       = 0;
                 $costoArticulo     = 0;
@@ -558,8 +577,8 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                 }
 
                 $subtotalArticulo = ($arrayResul2['cantidad'] * $arrayResul2['costo_unitario']) - $descuento;
-                $ivaArticulo      = ($arrayResul2['valor_impuesto'] > 0)? ($subtotalArticulo*$arrayResul2['valor_impuesto']) / 100 : 0 ;
-                $totalArticulo    = $subtotalArticulo + $ivaArticulo;
+                $ImpuestoArticulo      = ($arrayResul2['valor_impuesto'] > 0)? ($subtotalArticulo*$arrayResul2['valor_impuesto']) / 100 : 0 ;
+                $totalArticulo    = $subtotalArticulo + $ImpuestoArticulo;
                 $totalSinIva      = $totalArticulo;
                 $costoArticulo    = $arrayResul2['cantidad'] * $arrayResul2['costo_inventario'];
 
@@ -577,6 +596,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                                 <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['subtotal'],$IMPRIME_XLS).'</td>
                                 <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['descuento'],$IMPRIME_XLS).'</td>
                                 <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['iva'],$IMPRIME_XLS).'</td>
+                                <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['otros_impuestos'],$IMPRIME_XLS).'</td>
                                 <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteFuente,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteFuente,$IMPRIME_XLS)).'</td>
                                 <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteIca,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteIca,$IMPRIME_XLS)).'</td>
                                 <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteIva,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteIva,$IMPRIME_XLS)).'</td>
@@ -591,7 +611,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                                 <td style="width: 120px;text-align:right;">'.validar_numero_formato($arrayResul2['costo_unitario'],$IMPRIME_XLS).'</td>
                                 <td style="width: 70px;text-align:right;">'.validar_numero_formato($descuento,$IMPRIME_XLS).' </td>
                                 <td style="width: 120px;text-align:right;">'.validar_numero_formato($subtotalArticulo,$IMPRIME_XLS).'</td>
-                                <td style="width: 90px;text-align:right;">'.validar_numero_formato($ivaArticulo,$IMPRIME_XLS).' ('.validar_numero_formato($arrayResul2['valor_impuesto'],$IMPRIME_XLS).'%)</td>
+                                <td style="width: 90px;text-align:right;">'.validar_numero_formato($ImpuestoArticulo,$IMPRIME_XLS).' ('.validar_numero_formato($arrayResul2['valor_impuesto'],$IMPRIME_XLS).'%)</td>
                                 '.(($detalla_utilidad=='Si')? '<td style="width: 90px;text-align:right;">'.validar_numero_formato(($subtotalArticulo-$costoArticulo),$IMPRIME_XLS).'</td>' : '' ).'
                                 <td style="width: 120px;text-align:right;">'.validar_numero_formato($totalArticulo,$IMPRIME_XLS).'&nbsp;&nbsp;</td>
                                 <td style="width: 80px;">'.$arrayResul2['observaciones'].'</td>
@@ -603,7 +623,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                 $acumuladoPendiente  += $arrayResul2['saldo_cantidad'];
                 $acumuladoCosto      += $arrayResul2['costo_unitario'];
                 $acumuladoDescuento  += $arrayResul2['descuento'];
-                $acumuladoIva        += $ivaArticulo;
+                $acumuladoIva        += $ImpuestoArticulo;
                 $acumuladoUtilidad   += $totalSinIva-$costoArticulo;
                 $acumuladoTotalItems += $totalArticulo;
 
@@ -621,7 +641,8 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                               <td style="width:80px; text-align:center"><b>CENTRO COSTOS</b></td>
                               <td style="width:80px; text-align:center;"><b>SUBTOTAL</b></td>
                               <td style="width:80px; text-align:center;"><b>DESCUENTO</b></td>
-                              <td style="width:80px; text-align:center;"><b>IMPUESTO</b></td>
+                              <td style="width:80px; text-align:center;"><b>IVA</b></td>
+                              <td style="width:80px; text-align:center;"><b>OTROS IMPUESTOS</b></td>
                               <td style="width:80px; text-align:center;"><b>RETE. FUENTE</b></td>
                               <td style="width:80px; text-align:center;"><b>RETE. ICA</b></td>
                               <td style="width:80px; text-align:center;"><b>RETE. IVA</b></td>
@@ -652,6 +673,8 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                             <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['subtotal'],$IMPRIME_XLS).'</td>
                             <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['descuento'],$IMPRIME_XLS).'</td>
                             <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['iva'],$IMPRIME_XLS).'</td>
+                            <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['otros_impuestos'],$IMPRIME_XLS).'</td>
+
 
                             <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteFuente,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteFuente,$IMPRIME_XLS)).'</td>
                             <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteIca,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteIca,$IMPRIME_XLS)).'</td>
@@ -671,7 +694,7 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                               <td style="text-align:right;width:70px;"><b>Cantidad</b></td>
                               <td style="text-align:right;width:120px;"><b>Precio</b></td>
                               <td style="text-align:right;width:70px;"><b>Descuento</b></td>
-                              <td style="text-align:right;width:90px;"><b>Iva</b></td>
+                              <td style="text-align:right;width:90px;"><b>Impuestos</b></td>
                               '.(($detalla_utilidad == 'Si')? '<td style="text-align:right;width:90px;"><b>utilidad</b></td>' : '' ).'
                               <td style="text-align:right;width:120px;"><b>Total&nbsp;&nbsp;</b></td>
                             </tr>
@@ -779,7 +802,8 @@ foreach($arrayFacturas as $id_factura_venta => $arrayResul){
                       <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['subtotal'],$IMPRIME_XLS).'</td>
                       <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['descuento'],$IMPRIME_XLS).'</td>
                       <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['iva'],$IMPRIME_XLS).'</td>
-
+                      <td style="text-align:right;'.$styleDocCancelado.'">'.validar_numero_formato($arrayResul['otros_impuestos'],$IMPRIME_XLS).'</td>
+                    
                       <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteFuente,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteFuente,$IMPRIME_XLS)).'</td>
                       <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteIca,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteIca,$IMPRIME_XLS)).'</td>
                       <td style="text-align:right;'.$styleDocCancelado.'">'.(($IMPRIME_XLS=='true')? round(validar_numero_formato($ReteIva,$IMPRIME_XLS),$_SESSION['DECIMALESMONEDA']) : validar_numero_formato($ReteIva,$IMPRIME_XLS)).'</td>
@@ -810,7 +834,8 @@ if ($detallado_items == 'no') {
                 <td style="width:70px; text-align:center;"><b>CENTRO COSTOS</b></td>
                 <td style="width:80px; text-align:center;"><b>SUBTOTAL</b></td>
                 <td style="width:80px; text-align:center;"><b>DESCUENTO</b></td>
-                <td style="width:80px; text-align:center;"><b>IMPUESTO</b></td>
+                <td style="width:80px; text-align:center;"><b>IVA</b></td>
+                <td style="width:80px; text-align:center;"><b>OTROS IMPUESTOS</b></td>
                 <td style="width:80px; text-align:center;"><b>RETE. FUENTE</b></td>
                 <td style="width:80px; text-align:center;"><b>RETE. ICA</b></td>
                 <td style="width:80px; text-align:center;"><b>RETE. IVA</b></td>
@@ -825,6 +850,7 @@ if ($detallado_items == 'no') {
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoSubtotal,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoDescuento,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoIva,$IMPRIME_XLS).'</td>
+                <td style="text-align:right;">'.validar_numero_formato($acumuladoOtrosImpuestos,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoReteFuente,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoReteIca,$IMPRIME_XLS).'</td>
                 <td style="text-align:right;">'.validar_numero_formato($acumuladoReteIva,$IMPRIME_XLS).'</td>
@@ -851,24 +877,25 @@ else{
                   <td style="width:100px; padding-left: 10px;"><b>SUCURSAL CLIENTE</b></td>
                   <td><b>CODIGO CENTRO COSTO</b></td>
                   <td><b>CENTRO COSTO</b></td>
-                  <td style="width:80px; text-align:center;"><b>SUBTOTAL</b></td>
-                  <td style="width:80px; text-align:center;"><b>DESCUENTO</b></td>
-                  <td style="width:80px; text-align:center;"><b>IMPUESTO</b></td>
-                  <td style="width:80px; text-align:center;"><b>RETE. FUENTE</b></td>
-                  <td style="width:80px; text-align:center;"><b>RETE. ICA</b></td>
-                  <td style="width:80px; text-align:center;"><b>RETE. IVA</b></td>
+                  <td style="width:80px; text-align:center;"><b>SUBTOTAL FACTURA</b></td>
+                  <td style="width:80px; text-align:center;"><b>DESCUENTO FACTURA</b></td>
+                  <td style="width:80px; text-align:center;"><b>IVA FACTURA</b></td>
+                  <td style="width:80px; text-align:center;"><b>OTROS IMPUESTOS</b></td>
+                  <td style="width:80px; text-align:center;"><b>RETE. FUENTE FACTURA</b></td>
+                  <td style="width:80px; text-align:center;"><b>RETE. ICA FACTURA</b></td>
+                  <td style="width:80px; text-align:center;"><b>RETE. IVA FACTURA</b></td>
                   '.(($detalla_utilidad=='Si')? '<td style="width:80px; text-align:center;"><b>UTILIDAD</b></td>' : '' ).'
                   <td style="width:80px; text-align:right;"><b>TOTAL</b></td>
-                  <td style="width:80px; text-align:center;"><b>OBSERVACIONES GENERALaES</b></td>
+                  <td style="width:80px; text-align:center;"><b>OBSERVACIONES GENERALES</b></td>
                   <td style="width:95px;">&nbsp;&nbsp;<b>CODIGO</b></td>
                   <td style="width:340px;"><b>NOMBRE</b></td>
                   <td style="width:80px;"><b>DOC. CRUCE</b></td>
                   <td style="width:80px;"><b>UNIDAD</b></td>
-                  <td style="text-align:center;width:70px;"><b>CANTIDAD</b></td>
-                  <td style="text-align:center;width:120px;"><b>COSTO UNITARIO</b></td>
-                  <td style="text-align:center;width:70px;"><b>DESCUENTO</b></td>
-                  <td style="text-align:center;width:90px;"><b>SUBTOTAL</b></td>
-                  <td style="text-align:center;width:90px;"><b>IVA</b></td>
+                  <td style="text-align:center;width:70px;"><b>CANTIDAD ITEM</b></td>
+                  <td style="text-align:center;width:120px;"><b>COSTO ITEM</b></td>
+                  <td style="text-align:center;width:70px;"><b>DESCUENTO ITEM</b></td>
+                  <td style="text-align:center;width:90px;"><b>SUBTOTAL ITEM</b></td>
+                  <td style="text-align:center;width:90px;"><b>IMPUESTO ITEM</b></td>
                   '.(($detalla_utilidad=='Si')? '<td style="text-align:right;width:90px;"><b>UTILIDAD</b></td>' : '' ).'
                   <td style="text-align:right;width:120px;"><b>TOTAL&nbsp;&nbsp;</b></td>
                   <td style="width:80px; text-align:center;"><b>OBSERVACIONES ITEM</b></td>
@@ -964,6 +991,7 @@ if ($detallado_documentos == 'devolucion') {
                                     <td style='padding-right:10px;text-align:right;width:80px;'>SUBTOTAL</td>
                                     <td style='padding-right:10px;text-align:right;width:80px;'>DESCUENTO</td>
                                     <td style='padding-right:10px;text-align:right;width:80px;'>IVA</td>
+                                    <td style='padding-right:10px;text-align:right;width:80px;'>OTROS IMPUESTOS</td>
                                     <td style='padding-right:10px;text-align:right;width:80px;'>TOTAL</td>
                                 </tr>
                                 <tr>
@@ -979,6 +1007,7 @@ if ($detallado_documentos == 'devolucion') {
                                     <td style='text-align:right;'>".validar_numero_formato($arrayResul['subtotal'],$IMPRIME_XLS)."</td>
                                     <td style='text-align:right;'>".validar_numero_formato($arrayResul['descuento'],$IMPRIME_XLS)."</td>
                                     <td style='text-align:right;'>".validar_numero_formato($arrayResul['iva'],$IMPRIME_XLS)."</td>
+                                    <td style='text-align:right;'>".validar_numero_formato($arrayResul['otros_impuestos'],$IMPRIME_XLS)."</td>
                                     <td style='text-align:right;'>".validar_numero_formato(-$totalDev,$IMPRIME_XLS)."</td>
                                 </tr>
                                 </table>
@@ -991,7 +1020,7 @@ if ($detallado_documentos == 'devolucion') {
                                         <td style='padding:5px;text-align:right;' ><b>COSTO UNITARIO</b></td>
                                         <td style='padding:5px;text-align:right;' ><b>SUBTOTAL </b></td>
                                         <td style='padding:5px;text-align:right;' ><b>DESCUENTO</b></td>
-                                        <td style='padding:5px;text-align:right;' ><b>IVA</b></td>
+                                        <td style='padding:5px;text-align:right;' ><b>IMPUESTO</b></td>
                                         <td style='padding:5px;text-align:right;' ><b>TOTAL</b></td>
                                     </tr>
                                 ";
@@ -1030,7 +1059,7 @@ if ($detallado_documentos == 'devolucion') {
                                     <td style='text-align:left;'>$arrayResul[centro_costo]</td>
                                     <td style='text-align:right;'>".validar_numero_formato(-$arrayResul['subtotal'],$IMPRIME_XLS)."</td>
                                     <td style='text-align:right;'>".validar_numero_formato(-$arrayResul['descuento'],$IMPRIME_XLS)."</td>
-                                    <td style='text-align:right;'>".validar_numero_formato(-$arrayResul['iva'],$IMPRIME_XLS)."</td>
+                                    <td style='text-align:right;'>".validar_numero_formato(-$arrayResul['iva']+$arrayResul['otros_impuestos'],$IMPRIME_XLS)."</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -1043,7 +1072,8 @@ if ($detallado_documentos == 'devolucion') {
                                     <td>".validar_numero_formato(-$arrayResulItems['costo_unitario'])."</td>
                                     <td>".validar_numero_formato(-$subtotalArticulo,$IMPRIME_XLS)."</td>
                                     <td>".validar_numero_formato(-$descuentoArticulo,$IMPRIME_XLS)."</td>
-                                    <td>".validar_numero_formato(-$ivaArticulo,$IMPRIME_XLS)."</td>
+                                    <td>".validar_numero_formato(-$ivaArticulo,$IMPRIME_XLS)." (".validar_numero_formato($arrayResulItems['valor_impuesto'],$IMPRIME_XLS)."%)</td>
+                                    
                                     <td>".validar_numero_formato(-$totalArticulo,$IMPRIME_XLS)."</td>
                                     <td style='text-align:left;'>$arrayResulItems[observaciones]</td>
                                     <td style='text-align:left;'>$arrayResul[nombre_usuario_DE]</td>
@@ -1062,7 +1092,7 @@ if ($detallado_documentos == 'devolucion') {
                                     <td>$arrayResulItems[costo_unitario]</td>
                                     <td style='padding-right:10px;text-align:right;'>".validar_numero_formato($subtotalArticulo,$IMPRIME_XLS)."</td>
                                     <td style='padding-right:10px;text-align:right;'>".validar_numero_formato($descuentoArticulo,$IMPRIME_XLS)."</td>
-                                    <td style='padding-right:10px;text-align:right;'>".validar_numero_formato($ivaArticulo,$IMPRIME_XLS)."</td>
+                                    <td style='padding-right:10px;text-align:right;'>".validar_numero_formato($ivaArticulo,$IMPRIME_XLS)." (".validar_numero_formato($arrayResulItems['valor_impuesto'],$IMPRIME_XLS)."%)</td>
                                     <td style='padding-right:10px;text-align:right;'>".validar_numero_formato($totalArticulo,$IMPRIME_XLS)."</td>
                                   </tr>";
                 }
