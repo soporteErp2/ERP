@@ -69,8 +69,8 @@
                 activo=1 AND
                 id_empresa=$id_empresa AND
                 id_documento_cruce=$id_documento AND
-                tipo_documento_cruce='$documento' AND
-                tipo_documento<>'$documento' ";
+                tipo_documento_cruce='$documento' AND NOT
+                (id_documento = $id_documento AND tipo_documento = '$documento')";
     $query=mysql_query($sql,$link);
     while ($row=mysql_fetch_array($query)) {
         if ($row['tipo_documento'] =='FC') {$where_id_fc_cruce  .= ($where_id_fc_cruce=='')? ' id='.$row['id_documento'] : ' OR id='.$row['id_documento'] ;}

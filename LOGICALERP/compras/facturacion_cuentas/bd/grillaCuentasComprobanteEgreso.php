@@ -11,13 +11,34 @@
 	/**//////////////////////////////////////////////**/
 
 	$filtro_empresa  = $_SESSION['EMPRESA'];
+	if($tipo_documento_cruce == 'FC'){
 
+		$tabla_buscar = "asientos_colgaap";
+		$sqlCuentasPago = "SELECT id_cuenta FROM configuracion_cuentas_pago WHERE activo = 1 AND tipo ='compra'";
+		$queryCuentasPago = mysql_query($sqlCuentasPago,$link);
+	 	while ($row=mysql_fetch_array($queryCuentasPago)) {
+	 		$cuentasPagoId[] = $row['id_cuenta'] ;
+	 	}
+		$idsString = implode(',', $cuentasPagoId);
+		$where = "activo = 1 AND id_documento = $id_documento AND id_sucursal = $filtro_sucursal AND tipo_documento = 'FC' AND id_cuenta IN($idsString)";
+
+		$debe_campo = 'debe';
+		$haber_campo = 'haber';
+
+	}
+	else{
+		$tabla_buscar = "comprobante_egreso_cuentas";
+		$where = "activo = 1 AND saldo_pendiente > 0 AND id_comprobante_egreso = $id_documento AND id_documento_cruce = 0";
+		$debe_campo = 'debito';
+		$haber_campo = 'credito';
+
+	}
 	//CONFIGURACION//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//NOMBRE DE LA GRILLA
-			$grilla->GrillaName	 		= 'comprobante_egreso_cuentas';  		//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
+			$grilla->GrillaName	 		= $tabla_buscar;  		//NOMBRE DE LA GRILLA (DEBE SER UNICO POR CADA GRILLA DE LA APLICACION)
 		//QUERY
-			$grilla->TableName			= 'comprobante_egreso_cuentas';			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
-			$grilla->MyWhere			= "activo = 1 AND saldo_pendiente > 0 AND id_comprobante_egreso = $id_documento AND id_documento_cruce = 0 $whereCuentas";
+			$grilla->TableName			= $tabla_buscar;			//NOMBRE DE LA TABLA EN LA BASE DE DATOS
+			$grilla->MyWhere			= $where;
 			$grilla->OrderBy			= 'id DESC';							//LIMITE DE LA CONSULTA
 			$grilla->MySqlLimit			= '0,100';								//LIMITE DE LA CONSULTA
 		//TAMANO DE LA GRILLA
@@ -31,14 +52,23 @@
 			$grilla->GfiltersAutoOpen	= 'false';
 	 		$grilla->AddFilter('Estado de la Factura','estado','estado');
 		//CONFIGURACION DE CAMPOS EN LA GRILLA
+			if($tipo_documento_cruce == 'FC'){
+	 		$grilla->AddRowImage('Tercero','[tercero]<input type="hidden" id="id_tercero_[id]" value="[id_tercero]"><input type="hidden" id="tercero_[id]" value="[tercero]"><input type="hidden" id="id_cuenta_[id]" value="[id_cuenta]"> <input type="hidden" id="nombre_cuenta_[id]" value="[cuenta]"> ','250');
+			$grilla->AddRow('Cuenta','codigo_cuenta',100);
+			$grilla->AddRow('Descripcion','cuenta',200);
+			$grilla->AddRow('Debito','debe',80);
+			$grilla->AddRow('Credito','haber',80);
+			}
+			else{
 			$grilla->CamposBusqueda = 'cuenta_colgaap,cuenta_niif,tercero,empleado_cruce,debito,credito,total_sin_abono_provision,documento_tercero,documento_empleado_cruce';
-	 		$grilla->AddRowImage('Tercero','[tercero]<input type="hidden" id="id_tercero_[id]" value="[id_tercero]"><input type="hidden" id="tercero_[id]" value="[tercero]"><input type="hidden" id="id_cuenta_[id]" value="[id_puc]"> <input type="hidden" id="nombre_cuenta_[id]" value="[descripcion]"> ','100');
+	 		$grilla->AddRowImage('Tercero','[tercero]<input type="hidden" id="id_tercero_[id]" value="[id_tercero]"><input type="hidden" id="tercero_[id]" value="[tercero]"><input type="hidden" id="id_cuenta_[id]" value="[id_puc]"> <input type="hidden" id="nombre_cuenta_[id]" value="[descripcion]"> ','250');
 			$grilla->AddRow('Cuenta','cuenta',80);
-			$grilla->AddRow('Descripcion','descripcion',100);
+			$grilla->AddRow('Descripcion','descripcion',200);
 			$grilla->AddRow('Cuenta Niif','cuenta_niif',80);
 			$grilla->AddRow('Debito','debito',80);
 			$grilla->AddRow('Credito','credito',80);
 			$grilla->AddRow('Saldo Pendiente','saldo_pendiente',100);
+			}
 		//CONFIGURACION FORMULARIO
 			$grilla->FContenedorAncho		= 760;
 			$grilla->FColumnaGeneralAncho	= 380;
@@ -82,11 +112,21 @@ if(!isset($opcion)){  ?>
 			cont = <?php echo $cont; ?>;
 		}
 
-		function Editar_comprobante_egreso_cuentas(id){
+		function Editar_<?php echo $tabla_buscar; ?>(id){
+			let tablaBuscar = '<?php echo $tabla_buscar; ?>';
+			let cuenta_campo = "";
 			(cuenta_pago = document.getElementById('cuenta_pago_<?php echo $id_documento; ?>').innerHTML) * 1;
-			debito  = document.getElementById('div_comprobante_egreso_cuentas_debito_'+id).innerHTML;
-			credito = document.getElementById('div_comprobante_egreso_cuentas_credito_'+id).innerHTML;
+			debito  = document.getElementById('div_'+tablaBuscar+'_<?php echo $debe_campo; ?>_'+id).innerHTML;
+			credito = document.getElementById('div_'+tablaBuscar+'_<?php echo $haber_campo; ?>_'+id).innerHTML;
+			
+			if('<?php echo $tipo_documento_cruce; ?>' == 'CE'){
 			saldo_pendiente = document.getElementById('div_comprobante_egreso_cuentas_saldo_pendiente_'+id).innerHTML;
+			cuenta_campo = "cuenta"
+			}else{
+			saldo_pendiente = credito-debito;
+			cuenta_campo = "codigo_cuenta"
+			}
+
 			total_factura_sin_abono = saldo_pendiente;
 			arrayCuentaPago[<?php echo $cont; ?>] = cuenta_pago;
 			arrayTemp = new Array();
@@ -112,7 +152,7 @@ if(!isset($opcion)){  ?>
 
     		// DATOS DE LA CUENTA PARA INSERTAR
 			var id_cuenta          = document.getElementById('id_cuenta_'+id).value;
-			var cuenta             = document.getElementById('div_comprobante_egreso_cuentas_cuenta_'+id).innerHTML;
+			var cuenta             = document.getElementById('div_'+tablaBuscar+'_'+cuenta_campo+'_'+id).innerHTML;
 			var descripcion_cuenta = document.getElementById('nombre_cuenta_'+id).value;
 
 			var tercero    = (document.getElementById('tercero_'+id).value==0)? '<?php echo $tercero ?>' : document.getElementById('tercero_'+id).value ;
@@ -139,6 +179,9 @@ if(!isset($opcion)){  ?>
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('title','Eliminar Tercero');
     		document.getElementById('imgBuscarTercero<?php echo $opcGrillaContable; ?>_<?php echo $cont; ?>').setAttribute('onclick'," eliminaTercero<?php echo $opcGrillaContable; ?>(<?php echo $cont; ?>)");
 
+			
+  		    document.getElementById('prefijoDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly = true;
+	        document.getElementById('numeroDocumentoCruce<?php echo $opcGrillaContable; ?>_'+cont).readOnly  = true;
 			Win_Ventana_cuentas_documento_cruce.close();
     		Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
 
