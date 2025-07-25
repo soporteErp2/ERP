@@ -38,7 +38,7 @@ $server = (object) [
 "server_name" => "nombre del servidor de bd",
 "user" => "usuario de bd",
 "password" => "contraseña de bd",
-"database" => "base de datos principal donde estan todas las bd (usualmente erp_acceso o  erp_bd)",
+"database" => "base de datos principal donde estan todas las bd (usualmente erp_acceso o erp_bd)",
 ];
 ?>
 ```
