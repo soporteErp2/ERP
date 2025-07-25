@@ -619,7 +619,7 @@
 		// SI NO TIENE UN NUMERO DE FACTURA ENTONCES SE BORRA EL PREFIJO
 		$prefijo_factura = ($numero_factura=='')? '' : $prefijo_factura;
 	 	//MOVEMOS LAS CUENTAS
-		moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'agregar',$id_tercero,$link);
+		moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'agregar',$id_tercero,$prefijo_factura,$numero_factura,$link);
 
 		//MOVER LOS SALDOS DE LOS DOCUMENTOS RELACIONADOS
 		moverDocumentosSaldos($id_empresa,$id,'eliminar',$link);
@@ -633,7 +633,7 @@
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 				</script>';
 			moverDocumentosSaldos($id_empresa,$id,'agregar',$link);
-			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',$id_tercero,$link);
+			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',$id_tercero,'','',$link);
 		}
 		else{
 			$sqlConsecutivo = "SELECT consecutivo FROM $tablaPrincipal WHERE activo=1 AND id='$id' AND id_empresa='$id_empresa'";
@@ -725,18 +725,16 @@
 	//ESTA FUNCION MUEVE LAS CUENTAS DE LOS DOCUMENTO, SI LA VARIABLE ACCION = AGREGAR ENTONCES SE VA A CONTABILIZAR UN DOCUMENTO, SI ES = A ELIMINAR, ENTONCES SE VA A
 
 	//DESCONTABILIZAR UN DOCUMENTO.
-	function moverCuentasDocumento($idDocumento,$idEmpresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,$accion,$id_tercero,$link){
+	function moverCuentasDocumento($idDocumento,$idEmpresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,$accion,$id_tercero,$prefijo_factura,$numero_factura,$link){
 
 		if ($accion=='agregar') {
-			$sqlNotaGeneral   = "SELECT consecutivo,proveedor,fecha_inicio,id_configuracion_cuenta_pago,cuenta_pago,cuenta_pago_niif,prefijo_factura,numero_factura
+			$sqlNotaGeneral   = "SELECT consecutivo,proveedor,fecha_inicio,id_configuracion_cuenta_pago,cuenta_pago,cuenta_pago_niif
 								FROM compras_facturas
 								WHERE activo=1
 									AND id='$idDocumento'
 									AND id_empresa='$idEmpresa'";
 			$queryNotaGeneral = mysql_query($sqlNotaGeneral,$link);
 
-			$prefijo_factura              = mysql_result($queryNotaGeneral,0,'prefijo_factura');
-			$numero_factura               = mysql_result($queryNotaGeneral,0,'numero_factura');
 			$consecutivo                  = mysql_result($queryNotaGeneral,0,'consecutivo');
 			$proveedor                    = mysql_result($queryNotaGeneral,0,'proveedor');
 			$fecha_inicio                 = mysql_result($queryNotaGeneral,0,'fecha_inicio');
@@ -1007,22 +1005,37 @@
 			}
 
 			// ACTUALIZAR EL VALOR DE LA CUENTA POR PAGAR
-			if ($forma_pago!='Contado') {
-				$sql="UPDATE compras_facturas SET total_factura=$saldoCuentaPorPagar,total_factura_sin_abono=$saldoCuentaPorPagar WHERE activo=1 AND id_empresa='$idEmpresa' AND id='$idDocumento' ";
-				$query=mysql_query($sql,$link);
-				if (!$query) {
-					$sqlDelete   = "DELETE FROM asientos_colgaap WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='FC'";
-					$queryDelete = mysql_query($sqlDelete,$link);
-					$sqlDelete   = "DELETE FROM asientos_niif WHERE id_documento='$idDocumento' AND id_empresa='$idEmpresa' AND tipo_documento='FC'";
-					$queryDelete = mysql_query($sqlDelete,$link);
-
-					echo '<script>
-							alert("Error!\nNo se actualizo el valor para el campo total factura\nIntentelo de nuevo si el problema continua comuniquese con el administrador del sistema");
-							document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-						</script>';
-					exit;
-				}
+			$totalSinAbono = ($forma_pago != 'Contado') ? $saldoCuentaPorPagar : 0;
+					
+			$sql = "UPDATE compras_facturas 
+			        SET total_factura = $saldoCuentaPorPagar, 
+			            total_factura_sin_abono = $totalSinAbono 
+			        WHERE activo = 1 
+			          AND id_empresa = '$idEmpresa' 
+			          AND id = '$idDocumento'";
+			
+			$query = mysql_query($sql, $link);
+					
+			if (!$query) {
+			    $sqlDelete = "DELETE FROM asientos_colgaap 
+			                  WHERE id_documento = '$idDocumento' 
+			                    AND id_empresa = '$idEmpresa' 
+			                    AND tipo_documento = 'FC'";
+			    mysql_query($sqlDelete, $link);
+			
+			    $sqlDelete = "DELETE FROM asientos_niif 
+			                  WHERE id_documento = '$idDocumento' 
+			                    AND id_empresa = '$idEmpresa' 
+			                    AND tipo_documento = 'FC'";
+			    mysql_query($sqlDelete, $link);
+			
+			    echo '<script>
+			            alert("Error!\nNo se actualizó el valor para el campo total factura.\nInténtelo de nuevo. Si el problema continúa, comuníquese con el administrador del sistema.");
+			            document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
+			          </script>';
+			    exit;
 			}
+
 		}
 
 		else if ($accion=='eliminar') {
@@ -1081,7 +1094,7 @@
 		// }
 
 		//PARA MODIFICAR EL DOCUMENTO PRIMERO DEBEMOS DESCONTABILIZARLO Y LUEGO REGRESARLO A ESTADO=0
-		moverCuentasDocumento($idDocumento,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',0,$link);
+		moverCuentasDocumento($idDocumento,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',0,'','',$link);
 		//YA QUE SE DIERON DE BAJA LOS ASIENTOS GENERADOS POR LA NOTA, PROCEDEMOS A ACTUALIZAR SU ESTADO A CERO
 		$sql   = "UPDATE $tablaPrincipal SET estado=0 WHERE id='$idDocumento' AND activo=1 AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa'";
 		$query = mysql_query($sql,$link);
@@ -1403,7 +1416,7 @@
 			//MOVER LOS SALDOS DE LOS DOCUMENTOS RELACIONADOS
 			moverDocumentosSaldos($id_empresa,$id,'agregar',$link);
 
-			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',0,$link);
+			moverCuentasDocumento($id,$id_empresa,$id_sucursal,$tablaCuentasNota,$idTablaPrincipal,'eliminar',0,'','',$link);
 			//CADENA PARA ACTUALIZAR LA NOTA
 			$sqlUpdate="UPDATE $tablaPrincipal SET estado=3 WHERE id='$id' AND activo=1 AND id_sucursal='$id_sucursal' AND id_empresa='$id_empresa' ";
 

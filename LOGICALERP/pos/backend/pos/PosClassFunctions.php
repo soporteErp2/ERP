@@ -72,15 +72,24 @@
 		 * validateResolucion Validar un numero valido para la resolucion de facturas POS
 		 * @return Array Array con los valores de la consulta y validacion
 		 */
-		public function validateResolucion(){
-            $sql = "SELECT id_resolucion,numero_resolucion
+		public function validateResolucion($id_doc){
+            $sqlres = "SELECT id_resolucion,numero_resolucion
             			FROM ventas_pos_configuracion_sucursales
-            			WHERE activo=1 AND id_empresa=$this->id_empresa
-            			ORDER BY predeterminada DESC LIMIT 1";
-            $query=$this->mysql->query($sql);
-            $id_resolucion =  $this->mysql->result($query,0,'id_resolucion');
-
-			$sql   = "SELECT
+            			WHERE activo=1 
+						AND id_empresa=$this->id_empresa
+						AND predeterminada = 'Si'
+            			ORDER BY id DESC LIMIT 1";
+            $queryres=$this->mysql->query($sqlres);
+            $id_resolucion =  $this->mysql->result($queryres,0,'id_resolucion');
+    		if (!$id_resolucion) {
+				$this->rollbackdoc($id_doc);
+    		    return [
+    		        'status' => false,
+    		        'message' => "No hay ninguna resolucion configurada para generar tiquet POS",
+    		        'debug' => $sqlres
+    		    ];
+    		}
+			$sqlResInfo   = "SELECT
 							prefijo,
 							consecutivo_inicial,
 							consecutivo_final,
@@ -90,33 +99,162 @@
 							tercero
 						FROM ventas_pos_configuracion
 						WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$id_resolucion";
-			$queryRes = $this->mysql->query($sql);
-			$prefijo             = $this->mysql->result($queryRes,0,'prefijo');
-			$consecutivo_inicial = $this->mysql->result($queryRes,0,'consecutivo_inicial');
-			$consecutivo_final   = $this->mysql->result($queryRes,0,'consecutivo_final');
-			$consecutivo_pos     = $this->mysql->result($queryRes,0,'consecutivo_pos');
-			$id_tercero          = $this->mysql->result($queryRes,0,'id_tercero');
-			$documento_tercero   = $this->mysql->result($queryRes,0,'documento_tercero');
-			$tercero             = $this->mysql->result($queryRes,0,'tercero');
+			$queryResInfo = $this->mysql->query($sqlResInfo);
+			
 
-			// $arrayResult = array('status' => 'failed', 'message'=>$sqlRes, "debug" =>$sql);
-			// echo json_encode($arrayResult);
-			// exit;
-            if ($id_resolucion=='') {
-            	return array('status' => false, 'message'=> "No hay ninguna resolucion configurada para generar tiquet POS","debug"=>$sqlRes);
-            }
-    		else{
-    			return array(
-								'status'            => true,
-								'id_resolucion'     => $id_resolucion,
-								'prefijo'           => $prefijo,
-								'consecutivo_pos'   => $consecutivo_pos,
-								'id_tercero'        => $id_tercero,
-								'documento_tercero' => $documento_tercero,
-								'tercero'           => $tercero,
-    						);
+    		$prefijo           = $this->mysql->result($queryResInfo, 0, 'prefijo');
+    		$id_tercero        = $this->mysql->result($queryResInfo, 0, 'id_tercero');
+    		$documento_tercero = $this->mysql->result($queryResInfo, 0, 'documento_tercero');
+    		$tercero           = $this->mysql->result($queryResInfo, 0, 'tercero');
+			$consecutivo_pos   = trim($this->mysql->result($queryResInfo, 0, 'consecutivo_pos'));
+
+			if ($this->mysql->num_rows($queryResInfo) == 0) {
+				$this->rollbackdoc($id_doc);
+    		    return [
+    		        'status' => false,
+    		        'message' => "No se encontro informacion de la resolucion POS",
+    		        'debug' => $sqlResInfo
+    		    ];
     		}
+
+    		
+			if ($consecutivo_pos === '' || !is_numeric($consecutivo_pos)) {
+    		    return [
+    		        'status' => false,
+    		        'message' => "El consecutivo POS no es valido o esta vacio",
+    		        'debug' => $sqlResInfo
+    		    ];
+    		}
+    		
+			return [
+    		    'status'            => true,
+    		    'id_resolucion'     => $id_resolucion,
+    		    'consecutivo_pos'   => $consecutivo_pos,
+    		    'prefijo'           => $prefijo,
+    		    'id_tercero'        => $id_tercero,
+    		    'documento_tercero' => $documento_tercero,
+    		    'tercero'           => $tercero
+    		];
 		} // END FUNCTION
+
+		/**
+		 * Rollback del documento S
+		 * @return void
+		 */
+		public function rollbackdoc($id_doc, $params = '') {
+			if (!is_numeric($id_doc) || $id_doc <= 0) {
+				return;
+			}
+
+			try {
+				$this->verificar("START TRANSACTION");
+				$this->verificar("UPDATE ventas_pos SET activo = 0 WHERE id = $id_doc");
+				$this->verificar("UPDATE ventas_pos_formas_pago SET activo = 0 WHERE id_pos = $id_doc");
+				$this->verificar("UPDATE ventas_pos_inventario SET activo = 0 WHERE id_pos = $id_doc");
+				$this->verificar("UPDATE ventas_pos_inventario_receta SET activo = 0 WHERE id_pos = $id_doc");
+			
+				if ($params != '') {
+					$id_cuenta = $params["mesa"]["id_cuenta"];
+					$id_comensal = $params['huespedesSelect'][0]['id_comensal'];
+				
+					$this->verificar("
+						UPDATE ventas_pos_mesas_cuenta_items
+						SET activo = 1 
+						WHERE id_cuenta = '$id_cuenta' 
+							AND id_comensal = '$id_comensal' 
+							AND id_comensal IS NOT NULL
+					");
+				
+					// Consultar comandas para reactivar
+					$sql = "
+						SELECT
+							ci.id,
+							SUM(ci.cantidad) as cantidad,
+							SUM(ci.cantidad_pendiente) as cantidad_pendiente,
+							ci.id_comanda
+						FROM ventas_pos_mesas_cuenta_items ci
+						WHERE ci.id_cuenta = $id_cuenta
+						GROUP BY ci.id_comanda
+						HAVING cantidad <= cantidad_pendiente
+					";
+					$query = $this->verificar($sql, true); // modo SELECT
+				
+					while ($row = $this->mysql->fetch_array($query)) {
+						$id_comanda = $row['id_comanda'];
+						$this->verificar("
+							UPDATE ventas_pos_comanda
+							SET estado = 1
+							WHERE id = $id_comanda
+						");
+					}
+				
+					$this->verificar("
+						UPDATE ventas_pos_mesas_cuenta
+						SET estado = 'Abierta'
+						WHERE id = $id_cuenta
+					");
+				
+					// Cargar cantidades pendientes
+					$sql = "
+						SELECT
+							ci.id,
+							ci.cantidad_pendiente
+						FROM ventas_pos_mesas_cuenta_items ci
+						WHERE
+							ci.id_cuenta = $id_cuenta
+							AND ci.cantidad > 0
+							AND (ci.cantidad > ci.cantidad_pendiente OR ci.cantidad_pendiente IS NULL)
+					";
+					$query = $this->verificar($sql, true);
+				
+					$arrayCuentasItems = array();
+					while ($row = $this->mysql->fetch_array($query)) {
+						$arrayCuentasItems[$row['id']] = $row['cantidad_pendiente'];
+					}
+				
+					foreach ($params["itemsSelect"] as $item) {
+						$id_cuenta_item = $item["id"];
+					
+						if (!isset($arrayCuentasItems[$id_cuenta_item])) {
+							continue;
+						}
+						$arrayCuentasItems[$id_cuenta_item] -= 1;
+						$this->verificar("
+							UPDATE ventas_pos_mesas_cuenta_items
+							SET cantidad_pendiente = '".$arrayCuentasItems[$id_cuenta_item]."'
+							WHERE id = $id_cuenta_item
+						");
+					}
+				}else{
+					$this->verificar("COMMIT");
+					return;
+				}
+			
+				
+				$this->verificar("COMMIT");
+				echo json_encode(array('status' => true));
+			
+			} catch (Exception $e) {
+				$this->mysql->query("ROLLBACK");
+				echo json_encode(array(
+					'status' => false,
+					'error' => $e->getMessage()
+				));
+			}
+		}
+
+		/**
+		 * Ejecuta una consulta y lanza una excepción si falla.
+		 * Si $isSelect es true, devuelve el resultado para SELECTs.
+		 */
+		private function verificar($sql, $isSelect = false) {
+			$resultado = $this->mysql->query($sql);
+			if (!$resultado) {
+				$error = method_exists($this->mysql, 'error') ? $this->mysql->error() : mysql_error();
+				throw new Exception("Error SQL: $error\nConsulta: $sql");
+			}
+			return $isSelect ? $resultado : true;
+		}
 
 		/**
 		 * documentInfo Consultar la informacion del tiquet para el proceso de facturacion y demas
@@ -221,11 +359,17 @@
 						AND VPS.id_empresa=$this->id_empresa 
 						AND VPS.id=$this->id_seccion";
 			$query=$this->mysql->query($sql);
+			if(!$query){
+				$this->rollbackdoc($this->id_documento);
+				$arrayReturn = array('status' => false, "message"=>"No se pudo consultar la configuracion de la seccion");
+				echo json_encode($arrayReturn);
+				exit;
+			}
 			$this->id_bodega_ambiente      = $this->mysql->result($query,0,'id_bodega');
 			$this->idCcos                  = $this->mysql->result($query,0,'id_centro_costos');
 			$this->codigoCcos              = $this->mysql->result($query,0,'codigo_centro_costos');
 			$this->nombreCcos              = $this->mysql->result($query,0,'centro_costos');
-			$this->cuenta_ingreso_colgaap  = $this->mysql->result($query,0,'cuenta_ingreso_niif');
+			$this->cuenta_ingreso_colgaap  = $this->mysql->result($query,0,'cuenta_ingreso_colgaap');
 			$this->cuenta_ingreso_niif     = $this->mysql->result($query,0,'cuenta_ingreso_niif');
 			$this->codigo_transaccion      = $this->mysql->result($query,0,'codigo_transaccion');
 			$this->id_cuenta_pago     	   = $this->mysql->result($query,0,'cuenta_pago');
@@ -262,19 +406,29 @@
 				// exit;
 				// SI ES UNA CORTESIA O UN CHEQUE CUENTA, NO SE ASIGNA UN CONSECUTIVO DEL POS PUES NO SERA VALIDA COMO FACTURA
 				if ($this->causaIngreso == false) {
-					
+					if ($arrayResolucion['consecutivo_pos'] === '' || !is_numeric($arrayResolucion['consecutivo_pos']) || $arrayResolucion['id_resolucion'] === '' || !is_numeric($arrayResolucion['id_resolucion'])) {
+						$this->rollbackdoc($this->id_documento);
+						$arrayReturn = array(
+    				        'status' => false,
+    				        'message' => "El consecutivo POS no es valido o esta vacio",
+    				        'debug' => $sqlResInfo
+						);
+						echo json_encode($arrayReturn);
+						exit;
+    				}
 					$consecutivoCompleto = ($arrayResolucion["prefijo"]<>'')? "$arrayResolucion[prefijo] $arrayResolucion[consecutivo_pos]" : $arrayResolucion['consecutivo_pos'];
-					$sql="UPDATE ventas_pos
+					$sqlUpdateVentasPos="UPDATE ventas_pos
 							SET prefijo='$arrayResolucion[prefijo]',consecutivo='$arrayResolucion[consecutivo_pos]',id_configuracion_resolucion='$arrayResolucion[id_resolucion]'
 							WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$this->id_documento ";
 					// $arrayReturn = array('status' => false, "debug"=>"prefijo: |$this->prefijo| consecutivo : |$this->consecutivo|");
 					// echo json_encode($arrayReturn);
 					// exit;
-					$query=$this->mysql->query($sql);
-					if ($query) {
-						$sql="UPDATE ventas_pos_configuracion SET consecutivo_pos=consecutivo_pos+1 WHERE id='$arrayResolucion[id_resolucion]' ";
-						$query=$this->mysql->query($sql);
-						if ($query) {
+					$queryUpdateVentasPos=$this->mysql->query($sqlUpdateVentasPos);
+					$affected_rows = $this->mysql->mysql_affected_rows();
+					if ($queryUpdateVentasPos &&  $affected_rows > 0 ) {
+						$sqlUpdateConfig="UPDATE ventas_pos_configuracion SET consecutivo_pos=consecutivo_pos+1 WHERE id='$arrayResolucion[id_resolucion]' ";
+						$queryUpdateConfig=$this->mysql->query($sqlUpdateConfig);
+						if ($queryUpdateConfig) {
 							$this->consecutivo = $consecutivoCompleto;
 						}
 						else{
@@ -284,7 +438,8 @@
 						}
 					}
 					else{
-						$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta");
+						$this->rollbackdoc($this->id_documento);
+						$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta","sql"=>$sqlUpdateVentasPos,"affected_rows"=>$affected_rows);
 						echo json_encode($arrayReturn);
 						exit;
 					}
@@ -292,11 +447,11 @@
 				else{
 					// consecutivo
 					foreach ($arrayCuentasPago['consecutivo'] as $tipo => $arrayResult) {
-						$sql="UPDATE ventas_pos
+						$sqlUpdateVentasPos="UPDATE ventas_pos
 							SET consecutivo='$arrayResult[consecutivo]',id_configuracion_resolucion=0
 							WHERE activo=1 AND id_empresa=$this->id_empresa AND id=$this->id_documento ";
-						$query=$this->mysql->query($sql);
-						if ($query) {
+						$queryUpdateVentasPos=$this->mysql->query($sqlUpdateVentasPos);
+						if ($queryUpdateVentasPos) {
 							$sql="UPDATE configuracion_cuentas_pago_pos SET consecutivo=consecutivo+1 WHERE id='$arrayResult[id]' ";
 							$query=$this->mysql->query($sql);
 							if ($query) {
@@ -309,7 +464,7 @@
 							}
 						}
 						else{
-							$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta");
+							$arrayReturn = array('status' => false, "message"=>"No se pudo asignar el consecutivo a la venta",'sql'=>$sqlUpdateVentasPos);
 							echo json_encode($arrayReturn);
 							exit;
 						}

@@ -43,6 +43,7 @@
  		//COLUMNAS DE LA GRILLA
 			$grilla->AddRowImage('','<center><img src="../crm/images/prioridades/prioridad_[prioridad].png" style="" width="16" height="16" onclick=""></center>','32','');
 			$grilla->AddRowImage('estado','<center><img src="../crm/images/[estado].png" style="cursor:pointer" width="16" height="16" onclick=""></center>','45','');
+			$grilla->AddRow('N. Proyecto','id','70','');
 			$grilla->AddRow('Tipo','tipo_proyecto','150','');
 			$grilla->AddRow('Linea','linea_negocio','150','');	
 			$grilla->AddRow('Fase','estado_proyecto','100','');				
@@ -50,7 +51,7 @@
  			$grilla->AddRowImage('Actividades','<center>[acciones]</center>','75','');
 			$grilla->AddRowImage('Acciones','<center>[acciones]</center>','55','');
 			$grilla->AddRow('Proyecto','objetivo','300','');
-			$grilla->AddRow('Valor','valor','90','');
+			$grilla->AddRow('Valor','valor','90','moneda');
 			$grilla->AddRow('Creado por','usuario','200','');
 			$grilla->AddRow('Fecha Creacion','fecha_creacion','110','');
 			$grilla->AddRow('Actualizacion','fecha_actualizacion','110','');

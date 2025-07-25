@@ -144,30 +144,41 @@
 		}
 	</style>
 
-	<div id="ToolbarTareas">
+	<div id="ToolbarTareas" style="width:100%; height:70px; padding: 15px 10px 0 10px; overflow:hidden; box-sizing:border-box; display: flex; justify-content: space-between; align-items: center;">
+    	<!-- Título de la actividad -->
+    	<div style="font-size:20px; margin:0 0 0 0; color:#003366; font-weight:bold;">
+    	    Programaci&oacute;n de Actividad
+    	    <br>
+    	    <span style="font-size:12px; font-weight:normal;"><?php echo fecha_larga($fecha)?></span>
+    	</div>
 
-    	<div style="float:left; width:350px; font-size:20px; margin:0 0 0 0;">Edici&oacute;n de Actividad<br /><span style="font-size:12px"></span></div>
+    	<!-- Contenedor para los botones -->
+    	<div style="display: flex; align-items: center; gap: 10px;">
+		
+    	    <!-- Botón Cerrar con SVG -->
+    	    <div style="width:48px; height:48px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor:pointer;" onclick="Win_Agrega_Registro.close();">
+    	        <div style="display: flex; justify-content: center; align-items: center; width:36px; height:36px;">
+    	            <!-- Icono Cerrar -->
+    	            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    	                <line x1="18" y1="6" x2="6" y2="18"/>
+    	                <line x1="6" y1="6" x2="18" y2="18"/>
+    	            </svg>
+    	        </div>
+    	        <div style="text-align:center; color:#dc3545; font-weight:bold; font-size:13px;">Cerrar</div>
+    	    </div>
 
-        <div style="width:48px; height:48px; float:right; cursor:pointer;" onclick="Win_Agrega_Registro.close();">
-    		<div class="ic_highlight_remove_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-        	<div style="text-align:center">Cerrar</div>
-        </div>
-        <?php if($estado==0){ ?>
+    	    <!-- Botón Guardar con SVG -->
+    	    <div style="width:48px; height:48px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor:pointer;" onclick="GuardaActividad();">
+    	        <div style="display: flex; justify-content: center; align-items: center; width:36px; height:36px;">
+    	            <!-- Icono Guardar -->
+    	            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    	                <polyline points="20 6 9 17 4 12"/>
+    	            </svg>
+    	        </div>
+    	        <div style="text-align:center; color:#28a745; font-weight:bold; font-size:13px;">Guardar</div>
+    	    </div>
 
-            <div style="width:48px; height:48px; float:right; cursor:pointer;  margin:0 10px 0 0;" onclick="EliminaActividad();">
-                <div class="ic_delete_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-                <div style="text-align:center">Eliminar</div>
-            </div>
-            <div style="width:48px; height:48px; float:right; cursor:pointer;" onclick="GuardaFinalizarActividad();">
-                <div class="ic_check_circle_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-                <div style="text-align:center">Finalizar</div>
-            </div>
-            <div style="width:48px; height:48px; float:right; cursor:pointer;" onclick="GuardaActividad();">
-                <div class="ic_autorenew_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-                <div style="text-align:center">Guardar</div>
-            </div>
-            
-        <?php } ?>
+    	</div>
     </div>
 
     <div id="ContenedorFormuActividad" style="width:100%; height:100%; overflow:hidden; overflow-y:auto">

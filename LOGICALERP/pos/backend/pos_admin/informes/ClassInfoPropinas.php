@@ -53,6 +53,7 @@
 						AND VP.fecha_documento <= '$this->fechaFin'
 						AND VPP.activo = 1
 						AND VP.valor_propina>0
+						AND VP.estado<>3
 						$where
 						GROUP BY VP.id";
 			$query = $this->mysql->query($sql);

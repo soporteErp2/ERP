@@ -38,7 +38,7 @@
   </div>
 
   <div class="sub-content" data-position="left">
-    <div class="title">FECHAS DEL INFORME</div>
+    <div class="title">FILTROS</div>
     <p>
       <table>
         <tr>
@@ -48,6 +48,14 @@
         <tr>
           <td>Fecha Final</td>
           <td><input type="text" id="MyInformeFiltroFechaFinal"/></td>
+        </tr>
+          <tr>
+          <td>Incluir anuladas</td>
+          <td><select id="MyInformeIncluirAnuladasNC">
+					      <option value="No" selected>No</option>
+					      <option value="Si">Si</option>
+				      </select>
+          </td>
         </tr>
       </table>
     </p>
@@ -98,6 +106,12 @@
   if(typeof(localStorage.MyInformeFiltroFechaFinalFacturas) != "undefined"){
     if(localStorage.MyInformeFiltroFechaFinalFacturas != ""){
       document.getElementById("MyInformeFiltroFechaFinal").value = localStorage.MyInformeFiltroFechaFinalFacturas;
+    }
+  }
+
+  if(typeof(localStorage.MyInformeIncluirAnuladasNC) != "undefined"){
+    if(localStorage.MyInformeIncluirAnuladasNC != ""){
+      document.getElementById("MyInformeIncluirAnuladasNC").value = localStorage.MyInformeIncluirAnuladasNC;
     }
   }
 

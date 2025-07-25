@@ -403,7 +403,7 @@
 					<input type="text" id="descuentoArticulo'.$opcGrillaContable.'_'.$cont.'" value="'.$descuento.'" '.$readonly_descuento.' '.$readonly_descuento_remision_adjunta.' '.$deshabiltar.' onKeyup="validarNumberArticulo'.$opcGrillaContable.'(event,this,\'double\',\'\');"/>
 				</div>
 
-				<div class="campo"><input type="text" id="costoArticulo'.$opcGrillaContable.'_'.$cont.'" '.$deshabiltar.' '.$readonly_precio.'  '.$readonly_precio_remision_adjunta.' value="'.$costo_unitario.' '.is_float($costo_unitario+0).' " onKeyup="guardarAuto'.$opcGrillaContable.'(event,this,'.$cont.');" value="0"/></div>
+				<div class="campo"><input type="text" id="costoArticulo'.$opcGrillaContable.'_'.$cont.'" '.$deshabiltar.' '.$readonly_precio.'  '.$readonly_precio_remision_adjunta.' value="'.$costo_unitario.'" onKeyup="guardarAuto'.$opcGrillaContable.'(event,this,'.$cont.');" value="0"/></div>
 
 				<div class="campo"><input type="text" id="costoTotalArticulo'.$opcGrillaContable.'_'.$cont.'" '.$deshabiltar.'   readonly/></div>
 

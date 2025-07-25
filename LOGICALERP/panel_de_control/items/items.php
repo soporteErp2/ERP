@@ -149,7 +149,8 @@
 			$grilla->AddTextField('','id_centro_costos',240,'false','hidden', '');
 			$grilla->AddTextField('Centro de Costos','centro_costos',240,'false','false');
 			// $grilla->AddComboBox ('Centro de Costos','id_centro_costos',240,'false','true','centro_costos,id,nombre,true','activo = 1 AND id_empresa='.$id_empresa);
-
+			$grilla->AddTextField('','id_categoria_item',240,'false','hidden', '');
+			$grilla->AddTextField('Categoria Item','nombre_categoria_item',240,'false','false');
 			//=======================// INFORMACION DE POS //=======================//
 			$grilla->AddSeparator('Configuracion POS');
 			// $grilla->AddTextField('Centro de produccion','id_bodega_produccion',240,'false','false');
@@ -213,6 +214,10 @@ if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 		inputCentroCostos.readOnly = true;
 		inputCentroCostos.setAttribute("onclick","ventanaBuscarCentroCostos()");
 
+		inputCategoriaItems          = document.getElementById('itemsGeneral_nombre_categoria_item');
+		inputCategoriaItems.readOnly = true;
+		inputCategoriaItems.setAttribute("onclick","ventanaBuscarCategoriaItems()");
+
 		inputIva          = document.getElementById('itemsGeneral_impuesto');
 		inputIva.readOnly = true;
 		inputIva.setAttribute("onclick","ventanaBuscarIva()");
@@ -256,6 +261,52 @@ if($opcion == 'Vupdate' || $opcion == 'Vagregar'){ ?>
 			                    iconCls     : 'regresar',
 			                    iconAlign   : 'top',
 			                    handler     : function(){ Win_Ventana_buscar_centro_costos.close(id) }
+			                }
+			            ]
+			        }
+			    ]
+			}).show();
+		}
+
+		function ventanaBuscarCategoriaItems() {
+
+			Win_Ventana_buscar_categoria_items = new Ext.Window({
+			    width       : 540,
+			    height      : 450,
+			    id          : 'Win_Ventana_buscar_categoria_items',
+			    title       : 'Buscar Categoria Items',
+			    modal       : true,
+			    autoScroll  : false,
+			    closable    : false,
+			    autoDestroy : true,
+			    autoLoad    :
+			    {
+			        url     : '../funciones_globales/grillas/grillaBuscarCategoriaItems.php',
+			        scripts : true,
+			        nocache : true,
+			        params  :
+			        {
+			            opc : 'itemsGeneral',
+			            carpeta_img : 'img',
+			        }
+			    },
+			    tbar        :
+			    [
+			        {
+			            xtype   : 'buttongroup',
+			            columns : 3,
+			            title   : 'Opciones',
+			            items   :
+			            [
+			                {
+			                    xtype       : 'button',
+			                    width       : 60,
+			                    height      : 56,
+			                    text        : 'Regresar',
+			                    scale       : 'large',
+			                    iconCls     : 'regresar',
+			                    iconAlign   : 'top',
+			                    handler     : function(){ Win_Ventana_buscar_categoria_items.close(id) }
 			                }
 			            ]
 			        }

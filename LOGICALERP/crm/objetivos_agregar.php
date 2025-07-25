@@ -92,21 +92,36 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
 
-	<div id="ToolbarTareas">
-        <div style="float:left; width:350px; font-size:20px; margin:0 0 0 0;"><?php echo $title; ?><br /><span style="font-size:12px"><?php echo $Cliente ?></span></div>
+<div id="ToolbarTareasAgregarObjetivos" style="width:100%; height:70px; padding: 15px 10px 0 10px; overflow:hidden; box-sizing:border-box;">
 
-        <div style="width:48px; height:48px; float:right; margin:0 0 0 0; cursor:pointer;" onclick="Win_Agrega_Objetivos.close();">
-            <div class="ic_highlight_remove_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-            <div style="text-align:center">Cerrar</div>	
-        </div>  
-        <?php if($estado==0){ ?> 
-			<div style="width:48px; height:48px; float:right; cursor:pointer;" onclick="GuardaProyecto();">        
-       			<div class="ic_check_circle_white_24dp" style="float:left; width:36px; height:36px; margin: 0 0 0 6px;"></div>
-        		<div style="text-align:center">Guardar</div>	
-        	</div> 
-        <?php } ?>
-    
+    <!-- Botón Cerrar con SVG -->
+    <div style="width:60px; height:60px; float:right; margin:0 10px 0 0; cursor:pointer;" onclick="Win_Agrega_Objetivos.close();">
+        <div style="float:center; width:36px; height:36px; margin: 4px 0 0 15px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </div>
+        <div style="text-align:center; color:#dc3545; font-weight:bold; font-size:13px;">Cerrar</div>
     </div>
+
+    <!-- Botón Guardar con SVG -->
+    <div style="width:60px; height:60px; float:right; margin:0 10px 0 0; cursor:pointer;" onclick="GuardaProyecto();">
+        <div style="float:center; width:36px; height:36px; margin: 4px 0 0 15px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+        <div style="text-align:center; color:#28a745; font-weight:bold; font-size:13px;">Guardar</div>
+    </div>
+
+    <!-- Título del formulario -->
+    <div style="float:left; width:calc(100% - 140px); font-size:22px; font-weight:bold; color:#003366; line-height:28px;">
+        <?php echo $title; ?>
+        <br>
+        <span style="font-size:13px; font-weight:normal;"><?php echo $Cliente ?></span>
+    </div>
+</div>
 	
     
     <div class='ActividadesReglon' style="width:500px">

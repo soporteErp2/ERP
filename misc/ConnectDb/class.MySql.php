@@ -73,6 +73,10 @@
 			return mysql_fetch_object($query);
 		}
 
+		public function real_escape_string($value){
+			return mysql_real_escape_string($value);
+		}
+
 		public function fetch_row($query){
 			return mysql_fetch_row($query);
 		}
@@ -120,6 +124,12 @@
 		public function getQuerys(){
 			return $this->totalQuery;
 		}
+
+		public function mysql_affected_rows($link=null){
+			$link = $link==null? $this->link: $link;
+			return mysql_affected_rows($link);
+		}
+		
 	}
 
 ?>

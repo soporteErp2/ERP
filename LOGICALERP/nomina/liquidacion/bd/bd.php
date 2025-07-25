@@ -2015,13 +2015,13 @@
 						<div style="float:left;width:50px;height:100%;border-right:1px solid #d4d4d4;text-align:right;">
 							'.$inputPS.'
 						</div>
-						<input type="text" style="width:calc(100% - 30px - 50px);padding-left: 0px;/*margin-left: -3px;*/" name="valor_concepto_'.$row['id_concepto'].'"  id="valor_concepto_'.$cont.'" value="'.$row['valor_concepto_ajustado'].'" '.$evento_input.' '.$readonly.'>'
+						<input type="text" style="width:calc(100% - 30px - 50px);padding-left: 0px;/*margin-left: -3px;*/" name="valor_concepto_'.$row['id_concepto'].'"  id="valor_concepto_'.$cont.'" value="'.(number_format($row['valor_concepto_ajustado'],$_SESSION['DECIMALESMONEDA'])).'" '.$evento_input.' '.$readonly.'>'
      					:
      					'<div style="float:left;width:25px;height:100%;border-right:1px solid #d4d4d4;text-align:right;padding-right:5px">
 							'.$row['dias_laborados'].'
 						</div>
 						<div style="float:left;width:50px;height:100%;border-right:1px solid #d4d4d4;text-align:right;"></div>
-						<input type="text" style="width:calc(100% - 30px - 50px);padding-left: 0px;/*margin-left: -3px;*/" name="valor_concepto_'.$row['id_concepto'].'"  id="valor_concepto_'.$cont.'" value="'.$row['valor_concepto'].'" '.$evento_input.' '.$readonly.'>';
+						<input type="text" style="width:calc(100% - 30px - 50px);padding-left: 0px;/*margin-left: -3px;*/" name="valor_concepto_'.$row['id_concepto'].'"  id="valor_concepto_'.$cont.'" value="'.(number_format($row['valor_concepto'],$_SESSION['DECIMALESMONEDA'])).'" '.$evento_input.' '.$readonly.'>';
 
 
 			$bodyConceptos.='<div class="bodyDivNominaPlanilla">

@@ -129,6 +129,9 @@
 		case 'deleteGrupo':
 			deleteGrupo($id_row,$opcGrillaContable,$id_documento,$id_empresa,$mysql);
 			break;
+		case 'agregarTodosItemsGrupo':
+			agregarTodosItemsGrupo($id_documento,$id_impuesto,$id_grupo,$id_empresa,$mysql);
+			break;
 		case 'agregarItemsGrupo':
 			agregarItemsGrupo($id,$codigo,$nombre,$id_documento,$id_grupo,$id_empresa,$mysql);
 			break;
@@ -448,37 +451,6 @@
 
 		}
 
-		// $sqlConsulDoc = "SELECT numero_factura AS valor, prefijo,documento_cruce
-		// 						FROM ventas_facturas
-		// 						WHERE activo=1  AND id_empresa='$id_empresa' AND id='$id'
-		// 						LIMIT 0,1";
-		// $queryConsulDoc=mysql_query($sqlConsulDoc,$link);
-		// $id_documento_cruce = mysql_result($queryConsulDoc,0,'documento_cruce');
-
-		// if ($id_documento_cruce>0) {
-		// 	// UPDATE CONSECUTIVO FACTURA ==>
-		// 	$updateEstadoFactura = "UPDATE ventas_facturas SET estado = 1, fecha_contabilizado=NOW() WHERE id='$id'";
-		// 	$queryEstadoFactura  = mysql_query($updateEstadoFactura,$link);
-		// 	echo'<script>
-		// 		//PONER EL NUMERO DE LA FACTURA EN EL TITULO DEL DOCUMENTO
-		// 		// document.getElementById("titleDocumentoFacturaVenta").innerHTML="Factura de Venta<br>N. '.$consecutivoFactura.'";
-
-		// 		Ext.get("contenedor_'.$opcGrillaContable.'").load({
-		// 			url     : "bd/grillaContableBloqueada.php",
-		// 			scripts : true,
-		// 			nocache : true,
-		// 			params  :
-		// 			{
-		// 				id_factura_venta  : "'.$id.'",
-		// 				opcGrillaContable : "'.$opcGrillaContable.'",
-		// 				filtro_bodega     : "'.$idBodega.'"
-		// 			}
-		// 		});
-		// 		document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-		// 	</script>';
-		// 	exit;
-		// }
-
 		//=================================== UPDATE ======================================//
 		/***********************************************************************************/
 
@@ -559,17 +531,10 @@
 								numero_factura_completo ='$consecutivoFactura',
 								plantillas_id = '$idPlantilla',
 								total_factura = '$saldoGlobalfactura',
-								total_factura_sin_abono = '$saldoGlobalFacturaSinAbono'
+								total_factura_sin_abono = '$saldoGlobalFacturaSinAbono',
+								valor_anticipo = " .$arrayAnticipo['total']. "
 							WHERE id = '$id' AND id_empresa = '$id_empresa'";
 		$queryGeneraFact = mysql_query($sqlGeneraFact,$link);
-		// if ($queryGeneraFact) { actualizaCantidadArticulos($id,$id_sucursal,$idBodega,$tablaInventario,$idTablaPrincipal,'eliminar',$id_empresa,$link); }
-		// else{
-		// 	echo '<script>
-		// 			alert("Error!,\nNo se finalizo la factura\nSi el problema continua comuniquese con el administrador del sistema");
-		// 			document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
-		// 		</script>';
-		// 		return;
-		// }
 		
 		actualizaCantidadArticulos($id,"salida","Generar");
 
@@ -692,7 +657,7 @@
 				</script>';
 				exit;
 		}
-		else if ($codigo > 0 && user_permisos(181)=='false'){
+		else if (trim($codigo) !== '' && trim($codigo) !== '0' && user_permisos(181)==='false'){
 			echo'<script>
 					alert("Aviso.\nHay '.round($sumaCantidad).' unidades del inventario codigo '.$codigo.', lo maximo permitido en ventas de este inventario es '.$cantidadPermitida.' unidades.");
 					document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
@@ -1082,7 +1047,46 @@
 		if($docReferencia=='P'){ $campoDocReferencia = 'Pedido'; }
 		else if($docReferencia=='C'){ $campoDocReferencia = 'Cotizacion'; }
 		else if($docReferencia=='R'){ $campoDocReferencia = 'Remision'; }
+		//Sumatoria de los productos a eliminar
+		if($tablaInventario == "ventas_facturas_inventario"){
+			//Hay grupos asociados al documento referencia?
+			$subtotalGrupos = array();
+			$sqlGrupos = "SELECT VFG.id AS id_grupo,
+								 VFI.costo_unitario,
+								 VFI.cantidad  
+						FROM ventas_facturas_grupos AS VFG 
+						INNER JOIN ventas_facturas_inventario_grupos AS VFIG ON VFG.id = VFIG.id_grupo_factura_venta 
+						INNER JOIN ventas_facturas_inventario AS VFI ON VFI.id=VFIG.id_inventario_factura_venta
+								WHERE VFG.id_factura_venta = $id_factura
+								AND VFG.activo  = 1
+								AND VFIG.activo = 1 
+								AND VFI.activo  = 1
+								AND VFI.id_consecutivo_referencia=$id_doc_referencia
+								AND VFI.nombre_consecutivo_referencia='$campoDocReferencia'";
+			$queryGrupos = mysql_query($sqlGrupos, $link);
 
+			if ($queryGrupos) {
+			    while ($row = mysql_fetch_assoc($queryGrupos)) {
+            		$idGrupo = $row['id_grupo'];
+            		$subtotal = $row['costo_unitario'] * $row['cantidad'];
+							
+            		if (!isset($subtotalGrupos[$idGrupo])) {
+            		    $subtotalGrupos[$idGrupo] = 0;
+            		}
+            		$subtotalGrupos[$idGrupo] += $subtotal;
+				    
+			    }
+			}
+
+			if(!empty($subtotalGrupos)){
+				//Si hay grupos calcular el subtotal restado para cada grupo en el que este la remision 
+				foreach($subtotalGrupos as $idGrupo => $subtotalGrupo){
+					$sqlUpdateGrupos = "UPDATE ventas_facturas_grupos SET costo_unitario = costo_unitario - $subtotalGrupo WHERE id = $idGrupo";
+					$queryUpdateGrupos = mysql_query($sqlUpdateGrupos, $link);
+				}
+			}
+
+		}
 		$sql   ="DELETE FROM ventas_facturas_inventario WHERE id_factura_venta=$id_factura AND id_consecutivo_referencia=$id_doc_referencia AND id_empresa='$id_empresa' AND id_bodega='$filtro_bodega' AND nombre_consecutivo_referencia='$campoDocReferencia'";
 		$query = mysql_query($sql,$link);
 
@@ -1860,45 +1864,44 @@
 	}
 
 	//========== ACTUALIZAR EL COSTO,IMPUESTO Y DESCUENTO DE UN GRUPO ==========//
-	function actualizaCamposGrupo($accion,$id_documento,$id_inventario,$id_empresa,$mysql){
+	function actualizaCamposGrupo($accion, $id_documento, $id_empresa, $mysql, $id_inventario = '', $id_grupo = '', $itemsId = array()){
 		// CONSULTAR LA INFORMACION DE GRUPO
-		$sql="SELECT id_grupo_factura_venta FROM ventas_facturas_inventario_grupos
-				WHERE activo=1 AND id_factura_venta=$id_documento AND id_inventario_factura_venta=$id_inventario";
-		$query=$mysql->query($sql,$mysql->link);
-		$id_grupo = $mysql->result($query,0,'id_grupo_factura_venta');
-		if ($id_grupo=='' || $id_grupo==0) { echo "<script>console.log('Item Sin grupo!');</script>"; return; }
-
-		//echo "<script>
-		//		if ( $('#costo_grupo').length > 0 ) $('#costo_grupo').val('$costo_unitario') ;
-		//		if ( $('#descuento_grupo').length > 0 ) $('#descuento_grupo').val('$descuento') ;
-		//		if ( $('#impuesto_grupo').length > 0 ) $('#impuesto_grupo').val('$valor_impuesto') ;
-		//		if ( $('#descuentoArticuloFacturaVenta_$id_grupo').length > 0 ) $('#descuentoArticuloFacturaVenta_$id_grupo').val('$descuento') ;
-		//		if ( $('#costoGrupoFacturaVenta_$id_grupo').length > 0 ) $('#costoGrupoFacturaVenta_$id_grupo').val('$costo_unitario') ;
-		//		if ( $('#costoTotalGrupoFacturaVenta_$id_grupo').length > 0 ) $('#costoTotalGrupoFacturaVenta_$id_grupo').val('$total_grupo') ;
-		//	</script>";
-		//return; // SE DESHABILITA ESTA FUNCION POR ERRORES
-
-		// CONSULTAR LA INFORMACION DEL INVENTARIO
-		$sql="SELECT codigo,nombre,cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
-				FROM ventas_facturas_inventario WHERE activo=1 AND id_factura_venta = $id_documento AND id=$id_inventario";
-		$query=$mysql->query($sql,$mysql->link);
-		$codigo         = $mysql->result($query,0,'codigo');
-		$nombre         = $mysql->result($query,0,'nombre');
-		$cantidad       = $mysql->result($query,0,'cantidad');
-		$costo_unitario = $mysql->result($query,0,'costo_unitario');
-		$tipo_descuento = $mysql->result($query,0,'tipo_descuento');
-		$descuento      = $mysql->result($query,0,'descuento');
-		$valor_impuesto = $mysql->result($query,0,'valor_impuesto');
-
-		$subtotal = $cantidad * $costo_unitario;
-
-		if($descuento > 0 && $tipo_descuento == 'porcentaje'){
-			$descuento = round(($subtotal * $descuento / 100),$_SESSION['DECIMALESMONEDA']);
+		if($id_grupo===''){
+			$sql="SELECT id_grupo_factura_venta FROM ventas_facturas_inventario_grupos
+					WHERE activo=1 AND id_factura_venta=$id_documento AND id_inventario_factura_venta=$id_inventario";
+			$query=$mysql->query($sql,$mysql->link);
+			$id_grupo = $mysql->result($query,0,'id_grupo_factura_venta');
+			if ($id_grupo=='' || $id_grupo==0) { echo "<script>console.log('Item Sin grupo!');</script>"; return; }
 		}
 
-		$subtotalNeto = round(($subtotal - $descuento),$_SESSION['DECIMALESMONEDA']);
+		// CONSULTAR LA INFORMACION DEL INVENTARIO
+		$descuento = 0;
+		$subtotal = 0;
+		$sqlwhere = ($id_inventario !== '')? "AND id=$id_inventario" : "AND id  IN(".implode(',', $itemsId).")";
 
-		$impuesto = round((($subtotalNeto * $valor_impuesto) / 100),$_SESSION['DECIMALESMONEDA']);
+		$sqlFacturasInventario="SELECT cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
+					FROM ventas_facturas_inventario WHERE activo=1 AND id_factura_venta = $id_documento $sqlwhere";
+		$queryFacturasInventario=$mysql->query($sqlFacturasInventario,$mysql->link);
+		while ($row = $mysql->fetch_assoc($queryFacturasInventario)) {
+			$cantidad       = $row['cantidad'];
+			$costo_unitario = $row['costo_unitario'];
+			$tipo_descuento = $row['tipo_descuento'];
+			$descuentofila  = $row['descuento'];
+			$valor_impuesto = $row['valor_impuesto'];
+
+			$subtotal += $cantidad * $costo_unitario;
+			if($descuentofila > 0 && $tipo_descuento == 'porcentaje'){
+				$descuento += round(($subtotal * $descuentofila / 100),$_SESSION['DECIMALESMONEDA']);
+			}else{
+				$descuento +=  round($descuentofila,$_SESSION['DECIMALESMONEDA']);
+			}
+			$subtotalNeto += round(($subtotal - $descuento),$_SESSION['DECIMALESMONEDA']);
+
+			$impuesto += round((($subtotalNeto * $valor_impuesto) / 100),$_SESSION['DECIMALESMONEDA']);
+		
+		}
+
+
 		$total = $subtotalNeto + $impuesto;
 
 		// AGREGAR VALORES A LOS CAMPOS
@@ -1948,7 +1951,83 @@
 			</script>";
 
 	}
+	function agregarTodosItemsGrupo($id_documento,$id_impuesto,$id_grupo,$id_empresa,$mysql){
+		$sqlItemsFactura = "SELECT id,codigo,nombre,cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
+							FROM ventas_facturas_inventario 
+							WHERE activo = 1 
+							AND id_factura_venta='$id_documento' 
+							AND id_impuesto=$id_impuesto 
+							AND id NOT IN(
+											SELECT id_inventario_factura_venta 
+											FROM ventas_facturas_inventario_grupos 
+											WHERE id_factura_venta = $id_documento)";
+		$queryItemsFactura=$mysql->query($sqlItemsFactura,$mysql->link);
+		
+		$itemsInfo = [];
+		while ($row = $mysql->fetch_assoc($queryItemsFactura)) {
+			$subtotal = $row['cantidad'] * $row['costo_unitario'];
+			$descuento = ($row['descuento'] > 0 && $row['tipo_descuento'] == 'porcentaje')?
+				round(($subtotal * $row['descuento'] / 100),$_SESSION['DECIMALESMONEDA']):
+				$row['descuento'];
 
+			$subtotalNeto = round(($subtotal - $descuento),$_SESSION['DECIMALESMONEDA']);
+
+			$impuesto = round((($subtotalNeto * $row['valor_impuesto']) / 100),$_SESSION['DECIMALESMONEDA']);
+			$total = $subtotalNeto + $impuesto;
+
+			$itemsInfo[$row['id']] = array(
+										"codigo"	=>	$row['codigo'],
+										"nombre"	=>	$row['nombre'],
+										"cantidad"	=>	$row['cantidad'],
+										"descuento"	=>	$descuento,
+										"subtotal"	=>	$subtotal,
+										"total"		=>	$total
+			);
+		}
+		
+		$itemsId = array_keys($itemsInfo);
+		$values = [];
+		foreach ($itemsId as $id) {
+		    $values[] = "($id_documento, $id_grupo, $id)";
+		}
+
+		$sql = "INSERT INTO ventas_facturas_inventario_grupos (id_factura_venta, id_grupo_factura_venta, id_inventario_factura_venta) VALUES " . implode(',', $values);
+		$query=$mysql->query($sql,$mysql->link);
+		if ($query) {
+			actualizaCamposGrupo('sumar',$id_documento,$id_empresa,$mysql,'',$id_grupo,$itemsId);
+			echo "<script>
+				MyLoading2('off',{duracion:300});
+				MyBusquedabuscarItemsGruposFacturaVenta();
+   				var itemsId = " . json_encode(utf8_encode_recursive($itemsInfo)) . ";
+
+   				for (var id in itemsId) {
+   				     var item = itemsId[id];
+
+   				     var addTd = `<tr id=\"tr_items_\${id}\">
+   				                     <td>\${item.codigo}</td>
+   				                     <td>\${item.nombre}</td>
+   				                     <td>\${item.cantidad}</td>
+   				                     <td>\${item.descuento}</td>
+   				                     <td>\${item.subtotal}</td>
+   				                     <td>\${item.total}</td>
+   				                     <td>
+   				                         <img src=\"img/delete.png\" title=\"Eliminar Item\" onclick=\"eliminarItemGrupo(\${id});\">
+   				                     </td>
+   				                  </tr>`;
+
+   				     $(\"#items_grupos\").append(addTd);
+
+				if ($('#bodyDivArticulosFacturaVenta_' + $(\"[value='\" + id + \"']\")[0])) {
+				    $('#bodyDivArticulosFacturaVenta_' + $(\"[value='\" + id + \"']\")[0].id.split('_')[1])
+				        .appendTo('#content-group-$id_grupo');
+				}
+			}
+			</script>";
+
+		}else{
+			echo "<script>MyLoading2('off',{texto:'Error al agregar todos los items',icono:'fail'})</script>";
+		}
+	}
 	//========================= AGREGAR ITEMS AL GRUPO =========================//
 	function agregarItemsGrupo($id,$codigo,$nombre,$id_documento,$id_grupo,$id_empresa,$mysql){
 
@@ -1959,7 +2038,7 @@
 			$id_row = $mysql->insert_id();
 
 			// ACTUALIZAR LOS TOTALES DEL GRUPO
-			actualizaCamposGrupo('sumar',$id_documento,$id,$id_empresa,$mysql);
+			actualizaCamposGrupo('sumar',$id_documento,$id_empresa,$mysql,$id);
 
 			// CONSULTAR LA INFORMACION DEL INVENTARIO
 			$sql="SELECT codigo,nombre,cantidad,costo_unitario,tipo_descuento,descuento,valor_impuesto
@@ -1985,7 +2064,7 @@
 
 
 			echo "<script>
-					MyLoading2('off',{duracion:1500});
+					MyLoading2('off',{duracion:300});
 					MyBusquedabuscarItemsGruposFacturaVenta();
 					//Elimina_Div_buscarItemsGruposFacturaVenta($id);
 					var addTd = `<tr id='tr_items_$id'>
@@ -2012,13 +2091,13 @@
 	//======================= ELIMINAR ITEMS DE UN GRUPO =======================//
 	function eliminarItemGrupo($id_documento,$opcGrillaContable,$id_grupo,$id_inventario,$id_empresa,$mysql){
 		// ACTUALIZAR LOS TOTALES DEL GRUPO
-		actualizaCamposGrupo('restar',$id_documento,$id_inventario,$id_empresa,$mysql);
+		actualizaCamposGrupo('restar',$id_documento,$id_empresa,$mysql,$id_inventario);
 
 		$sql="DELETE FROM ventas_facturas_inventario_grupos WHERE activo=1 AND id_factura_venta=$id_documento AND id_grupo_factura_venta=$id_grupo AND id_inventario_factura_venta=$id_inventario";
 		$query=$mysql->query($sql,$mysql->link);
 		if ($query) {
 			echo "<script>
-					MyLoading2('off',{duracion:1500});
+					MyLoading2('off',{duracion:300});
 					// MOVER EL DIV DEL ITEM FUER DEL DIV DEL GRUPO
 					$('#bodyDivArticulosFacturaVenta_'+contArticulosFacturaVenta).before($('#bodyDivArticulosFacturaVenta_'+$(\"[value='$id_inventario']\")[0].id.split('_')[1]));
 					$('#tr_items_$id_inventario').remove();
@@ -2200,5 +2279,16 @@
 						</script>";
 			exit;
 		}
+	}
+
+	function utf8_encode_recursive($mixed) {
+	if (is_array($mixed)) {
+		foreach ($mixed as &$valor) {
+			$valor = utf8_encode_recursive($valor);
+		}
+	} elseif (is_string($mixed)) {
+		$mixed = utf8_encode($mixed);
+	}
+	return $mixed;
 	}
 ?>

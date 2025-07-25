@@ -143,7 +143,7 @@
 									<td>".number_format($acumNeto,0,",",".")."</td>
 									<td>".number_format($arrayResult['valor_propina'],0,",",".")."</td>
 									<td>".number_format($acumImpuesto,0,",",".")."</td>
-									<td>".number_format(($acumNeto+$acumImpuesto),0,",",".")."</td>
+									<td>".number_format(($acumNeto+$acumImpuesto+$arrayResult['valor_propina']),0,",",".")."</td>
 									<td>
 										<i onclick='prinTDoc($id_pos)' class='material-icons' style='cursor:pointer;' title='Imprimir documento' >print</i>
 									</td>
@@ -151,7 +151,7 @@
 				$totalNeto     += $acumNeto;
 				$acumPropina   += $arrayResult['valor_propina'];
 				$totalImpuesto += $acumImpuesto;
-				$total         += $acumNeto+$acumImpuesto;
+				$total         += $acumNeto+$acumImpuesto+$arrayResult['valor_propina'];
 			}
 
 			$bodyReturn .= "<tr>

@@ -44,7 +44,7 @@
 			break;
 
 		case 'buscarCuenta':
-			buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$link);
+			buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$id_fila_grilla,$link);
 			break;
 
 		case 'buscarTerceroCuenta':
@@ -104,7 +104,7 @@
 			break;
 
 		case 'ventana_buscar_documento_cruce':
-			ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$link);
+			ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$id_cliente,$link);
 			break;
 
 		case 'cargaConfiguracionCuenta':
@@ -486,7 +486,7 @@
 	}
 
 	//=========================== FUNCION PARA BUSCAR UN ARTICULO ===============================================================================//
-	function buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$link){
+	function buscarCuenta($campo,$cuenta,$contFila,$id_empresa,$id_sucursal,$idCliente,$opcGrillaContable,$id_fila_grilla,$link){
 		/* VALIDACION:
 			- SI SE INSERTO UN ASIENTO CON UNA CUENTA CON MENOR CANTIDAD DE DIGITOS A LA QUE SE VA A BUSCAR,
 			ES DECIR, SI BUSCAMOS LA CUENTA 110505 (UN NIVEL INFERIOR) PERO YA SE INSERTARON DATOS EN LA 110505 EN ADELANTE
@@ -556,7 +556,6 @@
 
 		$id_cuenta          = mysql_result($queryCuentaAsiento,0, 'id_cuenta');
 		$descripcion_cuenta = mysql_result($queryCuentaAsiento,0, 'cuenta');
-
 		if ($descripcion_cuenta!='') {
 			echo'<script>
 					arrayCuentaPago['.$contFila.']='.$cuenta.';
@@ -566,6 +565,8 @@
 
 					document.getElementById("descripcion'.$opcGrillaContable.'_'.$contFila.'").blur();
 					setTimeout(function(){ document.getElementById("nit'.$opcGrillaContable.'_'.$contFila.'").focus(); }, 100);
+					var id_fila = "'.$id_fila_grilla.'"; 
+					if(id_fila!==""){actualiza_fila_ventana_busqueda_doc_cruce_nota(id_fila,"true");}
 			  	</script>';
 		}
 		//SI LA CUENTA NO EXISTE ENTONCES SE VA A VALIDAR ANTES DE CONTINUAR
@@ -1767,10 +1768,14 @@
  	}
 
  	//REDERIZA FILTRO TIPO DE DOCUMENTO
- 	function ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$link){
+ 	function ventana_buscar_documento_cruce($cont,$opcGrillaContable,$carpeta,$id_empresa,$id_sucursal,$id_cliente,$link){
  		echo'<select class="myfield" name="filtro_tipo_documento" id="filtro_tipo_documento" style="width:100px; margin: 2px 0px 0px 4px;" onChange="carga_filtro_tipo_documento(this.value)">
         		<option value="FC">FC</option>
         		<option value="FV">FV</option>
+    		</select>
+			<select name="filtro_terceros_nota" id="filtro_terceros_nota" style="width:100px; margin: 7px 0px 0px 5px;height:25px" onChange="carga_filtro_tercero()">
+        		<option value="principal">Principal</option>
+        		<option value="todos" selected>Todos</option>
     		</select>
     		<script>
 				function carga_filtro_tipo_documento(tipo_documento_cruce){
@@ -1793,7 +1798,36 @@
 						}
 					});
 				}
-				// carga_filtro_tipo_documento();
+				    		    setTimeout(function(){ carga_filtro_tercero() },200);
+				function carga_filtro_tercero(){
+					var filtroTercero         = document.getElementById("filtro_terceros_nota").value
+					,   tipo_documento_cruce  = document.getElementById("filtro_tipo_documento").value;
+
+					whereTercero = "";
+
+					if(filtroTercero == "principal"){
+						cliente_or_proveedor = (tipo_documento_cruce == "FC")? "proveedor" : "cliente";
+						whereTercero = "AND id_"+cliente_or_proveedor+" = "+'.$id_cliente.';
+					}
+					Ext.get("contenedor_buscar_documento_cruce_'.$opcGrillaContable.'").load({
+					 	url     : "'.$carpeta.'bd/grillaDocumentoCruce.php",
+					 	scripts : true,
+					 	nocache : true,
+						params  :
+						{
+							opc                  : "'.$opc.'",
+							filtro_sucursal      : '.$id_sucursal.',
+							tipo_documento_cruce : tipo_documento_cruce,
+							cont                 : "'.$cont.'",
+							opcGrillaContable    : "'.$opcGrillaContable.'",
+							carpeta              : "'.$carpeta.'",
+							tablaPrincipal       : "nota_contable_general",
+							idTablaPrincipal     : "id_nota_general",
+							tablaCuentasNota     : "nota_contable_general_cuentas",
+							whereTercero     	 : whereTercero,
+						}
+					});
+				}
 			</script>';
  	}
 

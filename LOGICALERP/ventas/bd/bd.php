@@ -1233,7 +1233,7 @@
 						alert("Error!\nEl Articulo '.$arrayRetorno[1].' tiene una cantidad mayor a la del inventario!\nCorrija el problema y intentelo nuevamente");
 						document.getElementById("modal").parentNode.parentNode.removeChild(document.getElementById("modal").parentNode);
 					</script>';
-				return;
+				exit;
 			}
 
 			//===================================== CREACION DE ARRAY DOCUMENTOS DE REFERENCIA =============================================//

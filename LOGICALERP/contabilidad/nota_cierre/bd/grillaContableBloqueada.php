@@ -104,6 +104,7 @@
 ?>
 
 <div class="w-full bg-white p-6 ">
+    <div id="terminar<?php echo $opcGrillaContable; ?>"></div>
     <div class="flex justify-between w-full gap-2">
         <table class="">
             <tr>

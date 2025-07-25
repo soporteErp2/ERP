@@ -46,6 +46,12 @@
 										'primer_apellido'     => 'apellido1',
 										'segundo_apellido'    => 'apellido2',
 									);
+		private $arrayCamposNombres = array('nombre1',
+											'nombre',
+											'nombre_comercial',
+											'nombre2',
+											'apellido1',
+											'apellido2');
 
 		// CONEXION DESARROLLO
 		// private $ServidorDb = '192.168.8.202';
@@ -346,8 +352,8 @@
 								'$data[digito_verificacion]',
 								'$data[documento]',
 								'$data[tipo_persona]',
-								'$data[nombre]',
-								'$data[nombre_comercial]',
+								'".$this->limpiarTexto($data['nombre'])."',
+								'".$this->limpiarTexto($data['nombre_comercial'])."',
 								'$data[direccion]',
 								'$data[telefono1]',
 								'$data[telefono2]',
@@ -365,10 +371,10 @@
 								'$data[cliente]',
 								'$data[proveedor]',
 								'$data[exento_iva]',
-								'$data[primer_nombre]',
-								'$data[segundo_nombre]',
-								'$data[primer_apellido]',
-								'$data[segundo_apellido]'
+								'".$this->limpiarTexto($data['primer_nombre'])."',
+								'".$this->limpiarTexto($data['segundo_nombre'])."',
+								'".$this->limpiarTexto($data['primer_apellido'])."',
+								'".$this->limpiarTexto($data['segundo_apellido'])."'
 							),";
 
 			$valueInsert = substr($valueInsert, 0, -1);
@@ -513,7 +519,11 @@
 
 			foreach ($this->arrayCampos as $campoApi => $campoBd) {
 				if ($data[$campoApi]<>'') {
-					$camposUpdate .= "$campoBd = '".$data[$campoApi]."',";
+					$valorInsert = (in_array($campoBd,$this->arrayCamposNombres))?
+										$this->limpiarTexto($data[$campoApi]):
+										$data[$campoApi];
+
+					$camposUpdate .= "$campoBd = '".$valorInsert."',";
 				}
 			}
 
@@ -701,6 +711,51 @@
 				$arrayTemp['ciudad'][$id_pais][$id_departamento][$id_ciudad] = $ciudad;
 			}
 			return $arrayTemp;
+		}
+
+		public function limpiarTexto($valor) {
+		    // Asegurar que el texto esté en UTF-8 antes de manipularlo
+		    $valor = mb_convert_encoding(
+		        $valor,
+		        'UTF-8',
+		        mb_detect_encoding($valor, 'UTF-8, ISO-8859-1, ISO-8859-15', true)
+		    );
+		
+		    // Reemplazar vocales acentuadas y ñ por su versión sin tilde ni diacríticos
+		    $buscar  = array(
+		        'á','é','í','ó','ú','ä','ë','ï','ö','ü','à','è','ì','ò','ù','ñ',
+		        'Á','É','Í','Ó','Ú','Ä','Ë','Ï','Ö','Ü','À','È','Ì','Ò','Ù','Ñ'
+		    );
+		    $reempl = array(
+		        'a','e','i','o','u','a','e','i','o','u','a','e','i','o','u','n',
+		        'A','E','I','O','U','A','E','I','O','U','A','E','I','O','U','N'
+		    );
+		    $valor = str_replace($buscar, $reempl, $valor);
+		
+		    // Eliminar signos de puntuación y caracteres especiales
+		    $valor = str_replace(
+		        array(
+		            ',', ';', ':', '!', '?', '¿', '¡', '"', "'", '“', '”',
+		            '(', ')', '[', ']', '{', '}', '/', '\\', '-', '_', '°', '@', '#', '$',
+		            '%', '*', '+', '=', '<', '>', 'º'
+		        ),
+		        '',
+		        $valor
+		    );
+		
+		    // Reemplazar saltos de línea, retorno de carro y tabulaciones por espacio
+		    $valor = str_replace(array("\r", "\n", "\t"), ' ', $valor);
+		
+		    // Convertir todo el texto a mayúsculas 
+		    $valor = strtoupper($valor);
+		
+		    // Unificar múltiples espacios consecutivos en uno solo
+		    $valor = preg_replace('/\s+/', ' ', $valor);
+		
+		    // Eliminar espacios al principio y al final
+		    $valor = trim($valor);
+		
+		    return $valor;
 		}
 
 	}

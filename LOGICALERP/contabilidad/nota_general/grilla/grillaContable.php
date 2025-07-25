@@ -669,7 +669,7 @@
         return true;
     }
 
-    function ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(valor,input){
+    function ajaxBuscarCuenta<?php echo $opcGrillaContable; ?>(valor,input,id=''){
         if (valor=='') { document.getElementById(input).focus(); return; }
 
         var arrayIdInput = input.split('_');
@@ -685,7 +685,8 @@
                 cuenta            : valor,
                 contFila          : arrayIdInput[1],
                 idProveedor       : id_cliente_<?php echo $opcGrillaContable;?>,
-                id                : '<?php echo $id_nota; ?>'
+                id_nota           : '<?php echo $id_nota; ?>',
+                id_fila_grilla    : id
             }
         });
     }
@@ -802,6 +803,42 @@
             ]
         }).show();
     }
+    		//========== ACTUALIZAR LA FILA DE LA VENTANA DEL DOCUMENTO CRUCE ==========//
+	function actualiza_fila_ventana_busqueda_doc_cruce_nota(id,evento){
+	    var div    = '';
+	    var divImg = '';
+	    var divEvt = '';
+
+	    // MOSTRAR LA FILA DE LA VENTANA DEL DOCUMENTO CRUCE COMO ELIMINADO
+	    if (document.getElementById("div_NotaGeneral_numero_factura_"+id)) {
+				div    = document.getElementById('item_NotaGeneral_'+id);
+				divImg = document.getElementById('MuestraToltip_NotaGeneral_'+id);
+				divEvt = document.getElementById('MuestraToltip_General_NotaGeneral_'+id);
+	    }
+
+		if (evento=='fail'){
+	    	if (div) {
+	    		div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#FDDADA !important;');
+	      }
+	      if (divEvt) {
+	      	divEvt.setAttribute('ondblclick','');
+	      }
+	    	if (divImg) {
+	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../../../nomina/img/false.png);background-repeat: no-repeat;background-position-x: 15px;');
+	    	}
+	    } else{
+	    	if (div) {
+	    		div.setAttribute('style',div.getAttribute('style')+';color:#999 !important;font-style:italic;background-color:#e5ffe5 !important;');
+	      }
+	      if (divEvt) {
+	      	divEvt.setAttribute('ondblclick','');
+	      }
+	    	if (divImg) {
+	    		divImg.setAttribute('style',divImg.getAttribute('style')+'background-image:url(../../../nomina/img/true.png);background-repeat: no-repeat;background-position-x: 15px;');
+	    	}
+            guardarNewCuenta<?php echo $opcGrillaContable; ?>(contArticulos<?php echo $opcGrillaContable; ?>);
+	    }
+	}
 
     function responseVentanaBuscarCuenta<?php echo $opcGrillaContable; ?>(id,cont){
 
@@ -876,9 +913,23 @@
         //VALIDAR QUE LA FILA TENGA UNA CUENTA
         if (idPuc == 0){ alert('El campo cuenta es Obligatorio'); setTimeout(function(){ document.getElementById('cuenta<?php echo $opcGrillaContable; ?>_'+cont).focus(); },100); return; }
         //VALIDAR QUE TENGA ALMENOS UN VALOR EN EL DEBITO O CREDITO
-        else if (debito>0 && credito>0) { alert('La cuenta no puede tener valores debito y credito\nSolo puede tener uno'); setTimeout(function(){ document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+cont).focus(); },100); return; }
-        else if (debito==0 && credito==0){ alert('La cuenta debe tener un valor para debito o credito'); setTimeout(function(){ document.getElementById('debito<?php echo $opcGrillaContable; ?>_'+cont).focus(); },100); return; }
-
+        else if (debito > 0 && credito > 0) { 
+            alert('La cuenta no puede tener valores debito y credito\nSolo puede tener uno'); 
+            setTimeout(function() { 
+                document.getElementById('debito<?php echo $opcGrillaContable; ?>_' + cont).focus();    
+            }, 100); 
+            return; 
+        } 
+        else if (debito == 0 && credito == 0) { 
+            alert('La cuenta debe tener un valor para debito o credito'); 
+            if(Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>){
+                Win_Ventana_buscar_documento_cruce<?php echo $opcGrillaContable; ?>.close();
+            }
+            setTimeout(function() { 
+                document.getElementById('debito<?php echo $opcGrillaContable; ?>_' + cont).focus(); 
+            }, 100); 
+            return; 
+        }
         if(tipo_nota == 0
             && ( tipoDocumentoCruce != ''
                 && (numeroDocumentoCruce==0 || isNaN(numeroDocumentoCruce) || id_tercero==0)
@@ -1477,14 +1528,14 @@
                 {
                     xtype   : 'buttongroup',
                     columns : 3,
-                    title   : 'Filtro Documento',
+                    title   : 'Filtros Documento',
                     items   :
                     [
                         {
                             xtype       : 'panel',
                             border      : false,
-                            width       : 120,
-                            height      : 26,
+                            width       : 220,
+                            height      : 46,
                             bodyStyle   : 'background-color:rgba(255,255,0,0);',
                             autoLoad    :
                             {
@@ -1496,7 +1547,8 @@
                                     cont              : cont,
                                     opc               : 'ventana_buscar_documento_cruce',
                                     carpeta           : '<?php echo $carpeta;?>',
-                                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>'
+                                    opcGrillaContable : '<?php echo $opcGrillaContable; ?>',
+                                    id_cliente        : id_cliente_<?php echo $opcGrillaContable;?>
                                 }
                             }
                         }

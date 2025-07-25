@@ -74,12 +74,15 @@
 			$estado = $this->mysql->result($query,0,'estado');
 			$idRemision = $this->mysql->result($query,0,'id_entrada_almacen');
 
-			if ($estado=='500') {
-				$sql  = "UPDATE estado=3 FROM ventas_pos WHERE id=$id_documento";
+			if ($estado=='500' || $estado=='0') {
+				$sql  = "UPDATE ventas_pos SET estado='3',detalle_estado='$observacion' WHERE id=$id_documento";
 				$query = $this->mysql->query($sql);
-				if (!$query) { return array('status' => 'failed','message'=>"No se actualizo el documento","debug"=>$sql); }
+				if (!$query) {
+					echo json_encode(array('status' => 'failed','message'=>"No se actualizo el documento","debug"=>$sql));
+					return; }
 				else{
-					return array('status' => 'success','message'=>"se anulo la factura correctamente","debug"=>$sql);
+					echo json_encode(array('status' => 'success','message'=>"se anulo la factura correctamente","debug"=>$sql));
+					return;
 				}
 			}
 

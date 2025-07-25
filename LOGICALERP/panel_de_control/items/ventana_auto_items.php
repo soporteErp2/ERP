@@ -141,7 +141,7 @@
 				/*autoHeight	: true, */
 				height 		: '100',
 				width 		: '100',
-				title		: 'itemsGeneral',
+				title		: 'items General',
 				iconCls 	: 'cliente16',
 				bodyStyle 	: 'width:'+AnchoitemsGeneral+';height: '+AltoitemsGeneral+'; overflow-x: hidden; background-color:<?php echo $_SESSION['COLOR_CONTRASTE'] ?>;',
 				autoLoad    :

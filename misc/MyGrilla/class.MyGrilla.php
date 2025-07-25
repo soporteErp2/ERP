@@ -267,29 +267,39 @@ class MyGrilla {
 	//minuscula
 	//mayuscula
 
-	public function AddValidation($campo,$validate,$sql=''){
-		//if(is_array($validate)){
+	public function AddValidation($campo, $validate, $sql = '')
+	{
+	    $this->Validaciones[$this->CuantosValidations] = $validate;
+	    $this->ValidacionesCampos[$this->CuantosValidations] = $campo;
+	    $this->CuantosValidations++;
+	
+		switch ($validate) {
+		    case 'unico_global':
+		        $this->ValidacionGlobal = 'true';
+		        $this->ValidacionGlobalField = $campo;
+		        $this->ValidacionGlobalSql = ($sql != '') ? ' AND ' . $sql : '';
+		        break;
+			
+		    case 'email':
+		        $this->ValidacionEmail = 'true';
+		        $this->ValidacionEmailField = $campo;
+		        break;
+			
+		    case 'blankspaces':
+		        $this->ValidacionBlankspaces[$campo] = true;
+		        break;
+			
+		    case 'trim':
+		        $this->ValidacionTrim[$campo] = true;
+		        break;
+		
+			case 'nombres':
+		        $this->Validacionnombres[$campo] = true;
+		        break;
+		}
 
-		//}else{
-			$this->Validaciones[$this->CuantosValidations]           = $validate;
-			$this->ValidacionesCampos[$this->CuantosValidations]     = $campo;
-			//$this->TextValidacionesCampos[$this->CuantosValidations] = $textValidate;
-			$this->CuantosValidations++;
-
-            if($validate == 'unico_global'){
-				$this->ValidacionGlobal      = 'true';
-				$this->ValidacionGlobalField = $campo;
-
-				if($sql!=''){ $sql = ' AND '.$sql; }
-				$this->ValidacionGlobalSql   = $sql;
-            }
-            elseif($validate == 'email'){
-				$this->ValidacionEmail      = 'true';
-				$this->ValidacionEmailField = $campo;
-            }
-
-		//}
 	}
+
 
 	/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	/*Function 	AddBotton(
@@ -493,7 +503,7 @@ class MyGrilla {
 		$sql   = "SELECT simbolo,decimales FROM configuracion_moneda WHERE predeterminado = 'true'";
 		$query = mysql_query($sql,$this->Link);
 		$row   = mysql_fetch_array($query);
-		return $row['simbolo'].' '.number_format($cadena,$row['decimales']);
+		return $row['simbolo'].' '.number_format($cadena,$row['decimales'],',','.');
 	}
 
 	/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -735,7 +745,7 @@ class MyGrilla {
 			}
 		}
 
-		////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if($this->LaOpcion == 'false'){
 
 				$consulT = mysql_query($this->MySql);

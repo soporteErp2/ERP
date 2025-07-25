@@ -14,7 +14,7 @@
         private $tipo_fecha_informe;
         private $agrupacion;
         private $tipo_informe;
-        private $sqlCheckbox;
+        private $sqlFechas;
         private $id_empresa;
         private $sucursal;
         private $IMPRIME_PDF;
@@ -34,7 +34,7 @@
          * @param String $tipo_fecha_informe Tipo fecha (corte, rango de fechas)
          * @param String $agrupacion Agrupacion para visualizar el informe (Clientes, Facturas)
          * @param String $tipo_informe Tipo de informe a generar (Detallado,Totalizado por Terceros,Totalizado por Edades)
-         * @param String $sqlCheckbox Condicion con las fechas a filtrar el informe
+         * @param String $sqlFechas Condicion con las fechas a filtrar el informe
          * @param Int $id_empres Id de la empres (Variable de sesion)
          * @param String $sucursal Consultar una sucursal o todas
          * @param String $order_by Sentencia SQL con el orden del reporte
@@ -42,7 +42,7 @@
          * @param String $IMPRIME_XLS Opcion a imprimir EXCEL
          * @param Objeto $mysql Objeto de conexion mysql
          */
-        function __construct($MyInformeFiltroFechaFinal,$MyInformeFiltroFechaInicio,$arrayClientesJSON,$arrayCuentasPagoJSON,$tipo_fecha_informe,$agrupacion,$tipo_informe,$sqlCheckbox,$sucursal,$order_by,$IMPRIME_PDF=null,$IMPRIME_XLS=null,$separador_miles,$separador_decimales,$mysql){
+        function __construct($MyInformeFiltroFechaFinal,$MyInformeFiltroFechaInicio,$arrayClientesJSON,$arrayCuentasPagoJSON,$tipo_fecha_informe,$agrupacion,$tipo_informe,$sqlFechas,$sucursal,$order_by,$IMPRIME_PDF=null,$IMPRIME_XLS=null,$separador_miles,$separador_decimales,$mysql){
             $this->MyInformeFiltroFechaFinal  = $MyInformeFiltroFechaFinal;
             $this->MyInformeFiltroFechaInicio = $MyInformeFiltroFechaInicio;
             $this->arrayClientesJSON          = json_decode($arrayClientesJSON);
@@ -50,7 +50,7 @@
             $this->tipo_fecha_informe         = $tipo_fecha_informe;
             $this->agrupacion                 = $agrupacion;
             $this->tipo_informe               = $tipo_informe;
-            $this->sqlCheckbox                = $sqlCheckbox;
+            $this->sqlFechas                = $sqlFechas;
             $this->id_empresa                 = $_SESSION['EMPRESA'];
             $this->sucursal                   = $sucursal;
             $this->order_by                   = $order_by;
@@ -81,7 +81,6 @@
             }
             else{ $whereCuentas = $this->getCuentasPago(); }
             $this->whereLeftJoin .= $whereCuentas;
-            $this->whereInnerJoin .= ($this->sqlCheckbox<>'')? " AND $this->sqlCheckbox" : "" ;
             $this->whereInnerJoin .= ($this->sucursal!='' && $this->sucursal!='global')? " AND VF.id_sucursal=$this->sucursal " : "" ;
 
         }
@@ -131,7 +130,7 @@
                         T.telefono1,
                         T.celular1,
                         VF.cuenta_pago AS codigo_cuenta,
-                        DATEDIFF('$this->MyInformeFiltroFechaFinal',VF.fecha_vencimiento) AS dias,
+                        DATEDIFF('$this->MyInformeFiltroFechaFinal', VF.fecha_vencimiento) AS dias,
                         VF.id,
                         VF.id_cliente,
                         VF.nit,
@@ -145,20 +144,28 @@
                         A.saldo
                     FROM
                         $nombreTempo AS A
-                    INNER JOIN ventas_facturas AS VF ON(
+                    INNER JOIN (
+                        SELECT VF.*,
+                        DATEDIFF('$this->MyInformeFiltroFechaFinal', VF.fecha_vencimiento) AS dias
+                        FROM ventas_facturas AS VF
+                        WHERE
+                            VF.activo = 1
+                            AND VF.estado = 1
+                            AND VF.id_empresa = '$this->id_empresa'
+                            $this->whereInnerJoin
+                    ) AS VF ON (
                         A.id_documento_cruce = VF.id
                         AND A.codigo_cuenta = VF.cuenta_pago
-                        AND VF.activo = 1
-                        AND VF.estado = 1
-                        AND VF.id_empresa = '$this->id_empresa'
-                        $this->whereInnerJoin
                     )
-                    LEFT JOIN terceros AS T ON(
+                    LEFT JOIN terceros AS T ON (
                         VF.id_cliente = T.id
                         AND T.id_empresa = '$this->id_empresa'
                     )
+                    WHERE
+                        $this->sqlFechas
                     ORDER BY
-                        $this->order_by, fecha_inicio ASC";
+                        $this->order_by,
+                        fecha_inicio ASC;";
             $query=$this->mysql->query($sql,$this->mysql->link);
 
             $sqlTempoTable = "DROP TEMPORARY TABLE $nombreTempo";
@@ -732,7 +739,7 @@
         }
     }
 
-    $informe = new CarteraEdades($MyInformeFiltroFechaFinal,$MyInformeFiltroFechaInicio,$arrayClientesJSON,$arrayCuentasPagoJSON,$tipo_fecha_informe,$agrupacion,$tipo_informe,$sqlCheckbox,$sucursal,$order_by,$IMPRIME_PDF,$IMPRIME_XLS,$separador_miles,$separador_decimales,$mysql);
+    $informe = new CarteraEdades($MyInformeFiltroFechaFinal,$MyInformeFiltroFechaInicio,$arrayClientesJSON,$arrayCuentasPagoJSON,$tipo_fecha_informe,$agrupacion,$tipo_informe,$sqlFechas,$sucursal,$order_by,$IMPRIME_PDF,$IMPRIME_XLS,$separador_miles,$separador_decimales,$mysql);
     $informe->generate();
 
 ?>

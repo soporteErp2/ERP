@@ -17,20 +17,18 @@
            $MyInformeFiltro_2 = '';
     }    
 
-    $MyInformeFiltroEmpresa  = $_SESSION['EMPRESA'];
-    $MyInformeFiltroSucursal = $_SESSION['SUCURSAL'];
+    $id_empresa = $_SESSION['EMPRESA'];
+    $id_sucursal = $_SESSION['SUCURSAL'];
 
-    $nombre_empresa = $mysql->result($mysql->query("SELECT * FROM empresas WHERE id = $MyInformeFiltroEmpresa",$link),0,"nombre");
-    $WhereEmpresa   = 'AND CO.id_empresa = '.$MyInformeFiltroEmpresa;
+    $nombre_empresa = $mysql->result($mysql->query("SELECT * FROM empresas WHERE id = $id_empresa",$link),0,"nombre");
 
-    $nombre_sucursal = $mysql->result($mysql->query("SELECT * FROM empresas_sucursales WHERE id = $MyInformeFiltroSucursal",$link),0,"nombre");
-    $WhereSucursal   = 'AND CO.id_sucursal = '.$MyInformeFiltroSucursal;
+    $nombre_sucursal = $mysql->result($mysql->query("SELECT * FROM empresas_sucursales WHERE id = $id_sucursal",$link),0,"nombre");
 
-    $EstadoAct           = $MyInformeFiltro_2;
+    $EstadoAct           = $MyInformeFiltro_1;
     $EstadoActividadName = array("SIN FINALIZAR","FINALIZADOS");
     if($EstadoAct == ''){
         $EstadoActividad = 'TODOS';
-        $whereEstado     = "LIKE '%'";
+        $whereEstado     = "LIKE '%%'";
     }else{
         $EstadoActividad = $EstadoActividadName[$EstadoAct];
         $whereEstado     = '= '.$EstadoAct;
@@ -44,7 +42,7 @@
 
     if($cliente == ''){
         $nombreCliente = 'TODOS';
-        $whereCliente  = "LIKE '%'";
+        $whereCliente  = "";
     }else{
         $nombreCliente = $mysql->result($mysql->query("SELECT nombre FROM terceros WHERE id = $cliente"),0,"nombre");
         if($nombreCliente == ''){
@@ -169,7 +167,7 @@
 <?php
     
     /*--------------------------------------------------CUERPO DEL INFORME---------------------------------------------------*/
-    $consul = $mysql->query("SELECT 
+    $sqlCRM = "SELECT 
                                 CO.id,
                                 CO.estado,
                                 CO.prioridad,
@@ -191,9 +189,11 @@
                              AND CO.id_usuario $whereFuncionario
                              AND CO.activo = 1                             
                              AND CO.estado $whereEstado
-                             $WhereEmpresa
-                             $WhereSucursal
-                             ORDER BY CO.id",$link);
+                             AND CO.id_empresa = $id_empresa
+                             AND CO.id_sucursal = $id_sucursal
+                             ORDER BY CO.id";
+
+    $consul = $mysql->query($sqlCRM,$link);
 
     while($row = $mysql->fetch_array($consul)){
 
@@ -228,7 +228,7 @@
             <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Usuario: <b><span style="color:#333"><?php echo $row['usuario'] ?></span></b></div>    
             <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Ultim. Actualizaci&oacute;n: <b><span style="color:#333"><?php echo $fecha_actualizacion; ?></span></b></div>    
 
-            <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Valor: <b><span style="color:#333"><?php echo $row['valor'] ?></span></b></div>        
+            <div style="float:left; width:400; margin: 2px 0 0 0; color:#777 ">Valor: <b><span style="color:#333"><?php echo number_format($row['valor'], 0, ',', '.') ?></span></b></div>        
             <div class="RedondeadoSombra" style="float:right; width:300; margin: 2px 2px 0 0; padding: 0 3px 0 0; text-align:right;"><span style="color:#777">Vencimiento.</span> <b><?php echo fecha_larga_hora_m($row['vencimiento']) ?></b></div>
             <div style="float:left; width:740px; margin: 2px 0 0 0px"><?php echo $row['observacion'] ?></div>
         </div>

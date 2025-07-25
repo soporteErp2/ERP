@@ -874,7 +874,7 @@
 		$estado     = mysql_result($queryCheck,0,'estado');
 		$autorizado = mysql_result($queryCheck,0,'autorizado');
 
-		if ( ( $aut_precio>0 || $aut_area>0 ) && $autorizado=='true' ) {
+		if ( (( $aut_precio>0 || $aut_area>0 ) && $autorizado=='true') && user_permisos(301,'false') == 'false' ) {
 			echo '<script>
 						alert("La Orden de compra esta autorizada! por lo tanto no se puede alterar, deben quitar las autorizaciones para poder modificarla");
 						if(document.getElementById("modal")){
@@ -1085,7 +1085,7 @@
 		$estado     = mysql_result($queryCheck,0,'estado');
 		$autorizado = mysql_result($queryCheck,0,'autorizado');
 
-		if ( ( $aut_precio>0 || $aut_area>0 ) && $autorizado=='true' ) {
+		if ( (( $aut_precio>0 || $aut_area>0 ) && $autorizado=='true') && user_permisos(301,'false') == 'false' ) {
 			echo '<script>
 						alert("La Orden de compra esta autorizada! por lo tanto no se puede alterar, deben quitar las autorizaciones para poder modificarla");
 						if(document.getElementById("modal")){

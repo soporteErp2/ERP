@@ -63,7 +63,6 @@
 						AND VP.fecha_documento = '$this->fecha'
 						AND VPP.activo = 1
 						$where
-						GROUP BY VP.id
 						ORDER BY VP.consecutivo ASC";
 			$query = $this->mysql->query($sql);
 			// $arrayConsIni = '';

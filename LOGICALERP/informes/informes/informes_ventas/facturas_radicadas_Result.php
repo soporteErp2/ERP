@@ -11,6 +11,7 @@
     public $IMPRIME_PDF                 = '';
     public $MyInformeFiltroFechaInicio  = '';
     public $MyInformeFiltroFechaFinal   = '';
+    public $MyInformeIncluirAnuladasNC  = '';
     public $sucursal                    = '';
     public $cliente                     = '';
     public $arrayccosJSON               = '';
@@ -18,6 +19,7 @@
     public $mysql                       = '';
     public $id_empresa                  = '';
     public $customWhere                 = '';
+    public $leftJoinAnuladasNC          = '';
     public $arrayDoc                    = array();
 
     /**
@@ -30,18 +32,19 @@
      * @param int $cliente                      Filtro por cliente
      * @param obj $mysql                        Objeto de conexion a la base de datos
      */
-    function __construct($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$GUARDAR_PDF,$mysql){
-      $this->IMPRIME_HTML               = $IMPRIME_HTML;
-      $this->IMPRIME_PDF                = $IMPRIME_PDF;
-      $this->MyInformeFiltroFechaInicio = $MyInformeFiltroFechaInicio;
-      $this->MyInformeFiltroFechaFinal  = $MyInformeFiltroFechaFinal;
-      $this->sucursal                   = $sucursal;
-      $this->cliente                    = $cliente;
-      $this->arrayccosJSON              = json_decode($arrayccosJSON);
-      $this->mysql                      = $mysql;
-      $this->GUARDAR_PDF                = $GUARDAR_PDF;
-      $this->id_empresa                 = $_SESSION['EMPRESA'];
-      $this->id_sucursal                = $_SESSION['SUCURSAL'];
+    function __construct($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$MyInformeIncluirAnuladasNC,$GUARDAR_PDF,$mysql){
+      $this->IMPRIME_HTML                 = $IMPRIME_HTML;
+      $this->IMPRIME_PDF                  = $IMPRIME_PDF;
+      $this->MyInformeFiltroFechaInicio   = $MyInformeFiltroFechaInicio;
+      $this->MyInformeFiltroFechaFinal    = $MyInformeFiltroFechaFinal;
+      $this->MyInformeIncluirAnuladasNC   = $MyInformeIncluirAnuladasNC;
+      $this->sucursal                     = $sucursal;
+      $this->cliente                      = $cliente;
+      $this->arrayccosJSON                = json_decode($arrayccosJSON);
+      $this->mysql                        = $mysql;
+      $this->GUARDAR_PDF                  = $GUARDAR_PDF;
+      $this->id_empresa                   = $_SESSION['EMPRESA'];
+      $this->id_sucursal                  = $_SESSION['SUCURSAL'];
     }
 
     /**
@@ -78,7 +81,12 @@
         $this->whereCcos .= " AND ($ccos)";
       }
 
-      $this->customWhere = $whereFechas.$whereTercero.$whereSucursal.$this->whereCcos;
+      if($this->MyInformeIncluirAnuladasNC == "No"){
+        $this->leftJoinAnuladasNC = " LEFT JOIN devoluciones_venta AS DFV ON VF.id = DFV.id_documento_venta AND DFV.documento_venta = 'Factura'";
+        $whereAnuladasNC = "AND DFV.id_documento_venta IS NULL";
+      }
+
+      $this->customWhere = $whereFechas.$whereTercero.$whereSucursal.$this->whereCcos.$whereAnuladasNC;
     }
 
     /**
@@ -99,17 +107,18 @@
                 VF.codigo_centro_costo
               FROM
                 ventas_facturas AS VF
+                $this->leftJoinAnuladasNC
               WHERE
                 VF.activo = 1
               AND
-                (VF.estado = 1 OR VF.estado = 2 OR VF.estado = 3)
+                (VF.estado = 1 OR VF.estado = 2)
               AND
                 VF.id_empresa = $this->id_empresa
                 $this->customWhere
               GROUP BY
                 VF.id
               ORDER BY
-                VF.centro_costo ASC";
+                VF.id ASC";
 
       $this->query_facturas_radicadas = $this->mysql->query($sql_facturas_radicadas,$this->mysql->link);
       while($row = $this->mysql->fetch_array($this->query_facturas_radicadas)){
@@ -150,16 +159,14 @@
                       </tr>';
 
           foreach($result1 as $id_fc => $result2){
-            $styleCancel = ($result2['estado'] == 3)? "color:red;" : "";
-
             //CUERPO DEL INFORME
             $table .=  '<tr class="detail" style="color: #0a0318">
-                          <td style="border-left:1px solid #999;text-align:center; ' . $styleCancel . '">' . $result2['numero_factura_completo'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['codigo_centro_costo'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['nit'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['cliente'] . '</td>
-                          <td style="text-align:center; ' . $styleCancel . '">' . $result2['fecha_creacion'] . '</td>
-                          <td style="border-right:1px solid #999;text-align:right; ' . $styleCancel . '">' . number_format($result2['total_factura'], 0, "", ",") . '</td>
+                          <td style="border-left:1px solid #999;text-align:center; ">' . $result2['numero_factura_completo'] . '</td>
+                          <td style="text-align:center; ">' . $result2['codigo_centro_costo'] . '</td>
+                          <td style="text-align:center; ">' . $result2['nit'] . '</td>
+                          <td style="text-align:center; ">' . $result2['cliente'] . '</td>
+                          <td style="text-align:center; ">' . $result2['fecha_creacion'] . '</td>
+                          <td style="border-right:1px solid #999;text-align:right; ">' . number_format($result2['total_factura'], 0, "", ",") . '</td>
                         </tr>';
           }
 
@@ -337,6 +344,6 @@
     }
   }
 
-  $objectInform = new InformeFacturaRadicada($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$GUARDAR_PDF,$mysql);
+  $objectInform = new InformeFacturaRadicada($IMPRIME_HTML,$IMPRIME_PDF,$MyInformeFiltroFechaInicio,$MyInformeFiltroFechaFinal,$sucursal,$cliente,$arrayccosJSON,$MyInformeIncluirAnuladasNC,$GUARDAR_PDF,$mysql);
   $objectInform->generate();
 ?>

@@ -101,9 +101,7 @@
       <select data-width="input" id="autorizado">
         <option value="todo">Todo</option>
         <option value="autorizadas">Autorizadas</option>
-        <option value="porautorizar">Por Autorizar</option>
-        <option value="aplazadas">Aplazadas</option>
-        <option value="rechazadas">Rechazadas</option>
+        <option value="noautorizada">No Autorizadas</option>
       </select>
     </p>
   </div>

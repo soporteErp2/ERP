@@ -977,7 +977,7 @@
 						                    items   :
 						                    [
 								                {
-								                    xtype       : 'button',
+								                    xtype       : 'splitbutton',
 								                    id			: 'btnExportarRemisionesVenta',
 								                    width		: 60,
 													height		: 56,
@@ -987,14 +987,14 @@
 								                    iconCls     : 'pdf32_new',
 								                    iconAlign   : 'top',
 								                    handler     : function(){ BloqBtn(this); imprimirRemisionesVenta(); },
-												    // menu		:
-												    // [
-													// 	{
-													// 		text	: '<b>Imprimir en Excel</b>',
-													// 		iconCls	: 'xls16',
-													// 		handler	: function(){ BloqBtn(this); imprimirRemisionesVentaExcel(); }
-													// 	}
-													// ]
+												    menu		:
+												    [
+														{
+															text	: '<b>Imprimir en Excel</b>',
+															iconCls	: 'xls32',
+															handler	: function(){ BloqBtn(this); ventanaConfigurarInformeRemisionVenta(); }
+														}
+													]
 								                },
 								                {
 								                    xtype       : 'button',

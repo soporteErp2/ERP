@@ -146,10 +146,13 @@
     $cont=1;
     while ($row=mysql_fetch_array($query)) {
         $response = $row['response_NE'];
-        if((strpos($response, 'Comprobante fue generado') !== FALSE) || (strpos($response, 'procesado anteriormente') !== FALSE)){
+        if((strpos($response, 'Comprobante fue generado') !== FALSE) || (strpos($response, 'Documento no enviado, Ya cuenta con') !== FALSE)){
 
             $sendBtn = '<div title="Planilla enviada a la dian no se puede realizar ninguna accion" class="iconBuscar" style="margin-left: -1px;">
                         <img src="img/estado_doc/2.png">
+                        </div>
+                        <div onclick="exportar_json('.$row['id_contrato'].','.$row['id_empleado'].')" title="Exportar Json" class="iconBuscar" style="margin-left: -1px;">
+                                <img src="../../../temas/clasico/images/BotonesTabs/page_gear.png">
                         </div>';
             
         }

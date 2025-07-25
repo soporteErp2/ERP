@@ -300,8 +300,6 @@
 	}
 
 	function eliminarItemGrupo(id) {
-		if (!confirm("Aviso\nQuitar el item del grupo?")) { return; }
-
 		MyLoading2('on');
 		Ext.get('loadForm').load({
 			url     : 'facturacion/bd/bd.php',

@@ -618,13 +618,13 @@
 			$numero_factura          = $arrayResoluciones['resolucion'][$id_configuracion_resolucion]['consecutivo_factura'];
 
 			//VERIFICAMOS QUE EL CONSECUTIVO NO EXISTA EN EL ERP
-			//$sqlVerificacionConsecutivo =  "SELECT numero_factura FROM ventas_facturas 
-			//								WHERE numero_factura = '$numero_factura' AND id_empresa = $this->id_empresa LIMIT 0,1";
-			//$queryVerificacionConsecutivo = $this->mysql->query($sqlVerificacionConsecutivo,$this->mysql->link);
-			//$verificacionConsecutivo = $this->mysql->result($queryVerificacionConsecutivo,0,'numero_factura');
-			//if($verificacionConsecutivo != ""){
-			//	$arrayError[] = "El consecutivo ya existe en el ERP. Por favor verificar la configuracion de resoluciones.";
-			//}
+			$sqlVerificacionConsecutivo =  "SELECT numero_factura FROM ventas_facturas 
+											WHERE numero_factura = '$numero_factura' AND id_empresa = $this->id_empresa AND id_configuracion_resolucion = $id_configuracion_resolucion AND estado != 3 LIMIT 0,1";
+			$queryVerificacionConsecutivo = $this->mysql->query($sqlVerificacionConsecutivo,$this->mysql->link);
+			$verificacionConsecutivo = $this->mysql->result($queryVerificacionConsecutivo,0,'numero_factura');
+			if($verificacionConsecutivo != ""){
+				$arrayError[] = "El consecutivo $numero_factura ya existe en el ERP intentelo nuevamente, si el problema persiste revise la configuracion de la resolucion.";
+			}
 
 			$numero_factura_completo = (!empty($prefijo) && $prefijo<>' ')? "$prefijo $numero_factura" : $numero_factura ;
 			$this->consecuivo_factura = $numero_factura_completo;
@@ -981,14 +981,13 @@
 
 		public function sendInvoice($idFactura){
 			include("../../../LOGICALERP/ventas/facturacion/bd/ClassFacturaJSON_V2.php");
-
+			$found = array();
 			$facturaJSON = new ClassFacturaJSON_V2($this->mysql); //Objeto classFacturaJson
 			$facturaJSON->obtenerDatos($idFactura,$this->id_empresa); //Obtener todos los datos de la factura
 		  	$facturaJSON->construirJSON(); //Armar JSON de envio
 			$result = $facturaJSON->enviarJSON(); //Enviar a la DIAN
 			
-			$result['validar'] = "Procesado Correctamente"; //Quitar backslashes de la respuesta de FACSE
-			
+			$result['validar'] = trim(str_replace("\\", "", $result['validar']));
 			/*
 			Para comprobar si la factura fue enviada
 			Filtramos $invoiceValidationStrings que contiene
@@ -1012,7 +1011,6 @@
 			}
 			else{//Si $found no está vacío, la factura fue enviada con éxito
 				$response_FE = "Ejemplar recibido exitosamente pasara a verificacion";
-				$result['validar'] = str_replace("'", "-", $result['validar']);
 
 				//Si no tenemos el UUID ($result["id_factura"]) hay un error en el PDF pero la factura fue enviada
 				$detalleEnvio = ($result["id_factura"] == "" || $result["id_factura"] == null)? 
@@ -1627,7 +1625,11 @@
 					tipo,
 					consecutivo_factura,
 					digitos
-					FROM ventas_facturas_configuracion WHERE activo=1 AND id_empresa=$this->id_empresa AND consecutivo_factura<=numero_final_resolucion";
+					FROM ventas_facturas_configuracion 
+					WHERE activo=1 
+					AND id_empresa=$this->id_empresa 
+					AND consecutivo_factura<=numero_final_resolucion 
+					AND fecha_final_resolucion >= '".date("Y-m-d")."'";
 			$query=$this->mysql->query($sql,$this->mysql->link);
 			$whereIdResolucion = '';
 			while($row=$this->mysql->fetch_assoc($query)){
@@ -1947,7 +1949,7 @@
 							VF.codigo_centro_costos,
 							VF.centro_costos,
 							I.cuenta_venta AS cuenta_iva,
-							I.valor as tipo_impuesto
+							I.codigo_impuesto_dian as tipo_impuesto
 						FROM ventas_facturas_inventario AS VF LEFT JOIN impuestos AS I ON(
 								I.activo=1
 								AND I.id=VF.id_impuesto

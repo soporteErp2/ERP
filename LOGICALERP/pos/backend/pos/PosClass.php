@@ -240,11 +240,11 @@
 
 		public function generateTiquet($params){
 
-			$arrayResolucion = $this->validateResolucion();
+			$arrayResolucion = $this->validateResolucion($params['id']);
 			if ($arrayResolucion['status']==false) {
 				$arrayResult = array('status' => 'failed', 'message'=>$arrayResolucion['message'], "debug" =>$arrayResolucion['debug'] );
 				echo json_encode($arrayResult);
-				return;
+				exit;
 		 	}
 
 			$this->documentInfo($params['id'],$arrayResolucion);
@@ -400,7 +400,7 @@
 						WHERE id = ".$this->id_documento;
 				$query=$this->mysql->query($sql);
 				$this->set_accounts();
-				$this->generate_remission();
+				$this->generate_remission($respuesta["id"]);
 			}
 			else{
 				$params["nivel"]          = 1;
@@ -411,7 +411,7 @@
 
 		}
 
-		public function generate_remission()
+		public function generate_remission($id_FV = '')
 		{
 			global $SERVER; // from configuracion/configuration
 			$query_auth = base64_encode($this->username.":".$this->token.":".$this->datosEmpresa['documento'] );
@@ -443,7 +443,7 @@
 						WHERE id = ".$this->id_documento;
 				$query=$this->mysql->query($sql);
 
-				echo json_encode(array('status' => true,"consecutivo"=>$this->consecutivo,"cuentas"=>$this->arrayCuentas) );
+				echo json_encode(array('status' => true,"consecutivo"=>$this->consecutivo,"cuentas"=>$this->arrayCuentas,"id_remision"=>$respuesta["id"],"id_FV"=>$id_FV));
 			}
 			else{
 				$error = json_encode($respuesta['detalle']);
@@ -845,9 +845,18 @@
 				$sql = "SELECT id, nombre, email FROM terceros  WHERE numero_identificacion = '$documento_cliente';";
 				$queryT=$this->mysql->query($sql);
 				$id_cliente = $this->mysql->result($queryT,0,'id');
+				
+				//Si No es cliente POS (es un huesped) y no existe el tercero en el ERP deben sincronizarlo primero desde hotels
+				if (!$params['huespedesSelect'][0]['clientePos'] && $this->mysql->num_rows($queryT) == 0) {
+						$arrayResult = array('status'=>'failed','message'=>"No existe el huesped en ERP - debe sincronizarlo desde HOTELS");
+						echo json_encode($arrayResult);
+						return;
+				}
+
+				// Si es un cliente POS (escribireorn los datos en la interfaz)
 				if($params['huespedesSelect'][0]['clientePos']){
 					$datosEmpresa = $this->getInfoEmpresa();
-					//Si el tercero existe
+					//Si el tercero existe actualizar la info si es necesario
 					if($this->mysql->num_rows($queryT) > 0){
 						
 						$cliente = $this->mysql->result($queryT,0,'nombre');
@@ -929,7 +938,7 @@
 								return;
 							}
 						}
-					}else{
+					}else{//Si el tercero no existe, crearlo con el API
 							$query_auth = base64_encode(
 								$params['user']['username'].":"
 								.$params['user']['token'].":"
@@ -977,9 +986,9 @@
 								return;
 							}
 					}
-					
 				}
 			}
+			//Si es un cliente ERP
 			else if(count($params['clienteErp'])>0){
 				$id_cliente 		= $params['clienteErp'];
 				$documento_cliente  = $params['documento_cliente_erp'];

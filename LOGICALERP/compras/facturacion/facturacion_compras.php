@@ -880,9 +880,9 @@
                     <div class="labelTop" style="float:left; width:100%;">Factura #</div>
                     <div id="renderNumeroFactura" style="float:left; margin-left:-20px; width:20px; height:19px; overflow:hidden;"></div>
                     <div class="campoTop">
-                        <input type="text" id="prefijoFactura" style="width:30% !important; float:left;" onKeyup="convertirMayusculas(this);" onchange="validarNumeroFactura();">
+                        <input type="text" id="prefijoFactura" style="width:30% !important; float:left;" onchange="validarNumeroFactura(this);">
                         <div style="width:10% !important; float:left;background-color:#F3F3F3; height:100%; text-align:center;">-</div>
-                        <input type="text" id="numeroFactura" style="width:60% !important; float:left;" onchange="validarNumeroFactura();">
+                        <input type="text" id="numeroFactura" style="width:60% !important; float:left;" onchange="validarNumeroFactura(this);">
                     </div>
                 </div>
                 <div class="renglonTop">
@@ -963,8 +963,6 @@
             // document.getElementById('content_support_document_pay_type').style.display   ='none';
             document.getElementById('content_support_document_pay_method').style.display ='none';         
             document.getElementById('prefijoFactura').disabled=false;
-            document.getElementById('prefijoFactura').title="";
-            document.getElementById('prefijoFactura').value="";
         }
         else{
             document.getElementById('content_support_document').style.display            ='';
@@ -1026,13 +1024,14 @@
     function convertirMayusculas(input){ input.value=input.value.toUpperCase(); }
 
     function validarNumeroFactura(input){
+      input.value=input.value.toUpperCase();
       if(document.getElementById('nombreProveedorFactura').value == ""){
         alert("Por favor añadir primero un proveedor a la factura.");
         return;
       }
 
       nitProveedor = document.getElementById('nitProveedorFactura').value;
-      prefijo      = document.getElementById('prefijoFactura').value;
+      prefijo      = document.getElementById('prefijoFactura').value.toUpperCase();
       numero       = document.getElementById('numeroFactura').value;
 
       if(numero == "" || numero == null || numero == "undefined"){

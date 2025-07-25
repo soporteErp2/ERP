@@ -19,7 +19,7 @@
 		$grilla->Name       = 'AnularFacturas';
 		$grilla->Table      = 'ventas_pos';
 		$grilla->SqlLimit   = '0,100';
-		$grilla->SqlWhere   = "T1.activo=1 $whereGrilla AND estado<>0";
+		$grilla->SqlWhere   = "T1.activo=1 $whereGrilla";
 		$grilla->SqlOrder   = 'id DESC';
 		// $grilla->SqlDebug = 'true';
 		// $grilla->SqlJoin("INNER JOIN ventas_pos_mesas_cuenta AS CM ON(CM.id = T1.id_cuenta)");

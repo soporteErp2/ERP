@@ -127,7 +127,6 @@
  			$grilla->MenuContext		= 'true';
 	 		$grilla->MenuContextEliminar= 'true';
 		//OPCIONES ADICIONALES EN EL MENU CONTEXTUAL
- 			$grilla->AddMenuContext('CRM - Gestion de la Relacion con el Cliente','crm16','CRMobjetivos([id])');
  			$grilla->AddMenuContext('Enviar Email','enviaremail16','VentanaEnviarEmail([id])');
 
 		//CAMPOS OCULTOS
@@ -147,13 +146,24 @@
 			$grilla->AddTextField('Identificacion','numero_identificacion',150,'true','false','false','true');
 
 			$grilla->AddValidation('numero_identificacion','unico_global','id_empresa="'.$id_empresa.'"');
+			$grilla->AddValidation("numero_identificacion", "trim");
+			$grilla->AddValidation("numero_identificacion", "blankspaces");
+
 			// $grilla->AddValidation('numero_identificacion','numero');
 
 			$grilla->AddTextField('Ciudad de Identificacion','ciudad_identificacion',200,'false','false');
 			$grilla->AddTextField('Nombre o Razon Social','nombre',200,'true','false');
 			$grilla->AddTextField('Nombre Comercial','nombre_comercial',200,'true','false');
             $grilla->AddValidation('nombre','mayuscula');
-            $grilla->AddValidation('nombre_comercial','mayuscula');
+
+			// Eliminar ñ y Ñ
+            $grilla->AddValidation('nombre_comercial','nombres');
+            $grilla->AddValidation('nombre','nombres');
+            $grilla->AddValidation('nombre1','nombres');
+            $grilla->AddValidation('nombre2','nombres');
+            $grilla->AddValidation('apellido1','nombres');
+            $grilla->AddValidation('apellido2','nombres');
+
 
 		///DIRECCION PRINCIPAL
 			$grilla->AddSeparator('Direccion Principal');

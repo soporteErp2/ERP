@@ -61,7 +61,7 @@
 
 	}
 	//======================= CARGAR ARTICULOS GUARDADOS =======================//
-	function cargaArticulosSave($id,$observacion,$estado,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$tablaCarga,$idTablaCarga,$link){
+	function cargaArticulosSave($id,$observacion,$estado,$opcGrillaContable,$tablaInventario,$idTablaPrincipal,$tablaCarga,$idTablaCarga,$link,$documentoEnviado=FALSE){
 		$cont                    = 0;					//VARIABLE GUARDA DATOS DE REMISION CUANDO SE FACTURA
 		$eventoObservacionGrilla = '';
 		$tablaCarga             .='_inventario';
@@ -108,6 +108,7 @@
 								</div>
 							</div>
 							<div class="DivArticulos" id="DivArticulos'.$opcGrillaContable.'" onscroll="resizeHeadMyGrilla(this,\'head'.$opcGrillaContable.'\')">';
+		$deshabilita = ($documentoEnviado)? 'readonly' : '';
 
 		if($estado == 0){
 			while($row = mysql_fetch_array($query)){
@@ -117,17 +118,54 @@
 
 				$querySaldo     = mysql_query($sqlSaldo,$link);
 				$saldo_cantidad = mysql_result($querySaldo,0,'saldo_cantidad');
+				$divUnidades = ($documentoEnviado)?
+				cargaDivsUnidadesBloqueadas($cont,
+					$opcGrillaContable,
+					$row['id'],
+					$row['id_inventario'],
+					$row['codigo'],
+					$row['nombre'],
+					$row['cantidad'],
+					$row['costo_unitario'],
+					$row['tipo_descuento'],
+					$row['descuento'],
+					$row['id_impuesto'],
+					$row['impuesto'],
+					$row['valor_impuesto'],
+					$estado,
+					$row['nombre_unidad_medida'],
+					$row['cantidad_unidad_medida'],
+					$row['id_fila_cargada'])
+				:
+				cargaDivsUnidadesSave($cont,
+					$opcGrillaContable,
+					$row['id'],
+					$row['id_inventario'],
+					$row['codigo'],
+					$row['nombre'],
+					$row['cantidad'],
+					$row['costo_unitario'],
+					$row['tipo_descuento'],
+					$row['descuento'],
+					$row['id_impuesto'],
+					$row['impuesto'],
+					$row['valor_impuesto'],
+					$estado,
+					$row['nombre_unidad_medida'],
+					$row['cantidad_unidad_medida'],
+					$row['id_fila_cargada'],
+					$saldo_cantidad);
 
 				$body .= '<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
-							    '.cargaDivsUnidadesSave($cont,$opcGrillaContable,$row['id'],$row['id_inventario'],$row['codigo'],$row['nombre'],$row['cantidad'],$row['costo_unitario'],$row['tipo_descuento'],$row['descuento'],$row['id_impuesto'],$row['impuesto'],$row['valor_impuesto'],$estado,$row['nombre_unidad_medida'],$row['cantidad_unidad_medida'],$row['id_fila_cargada'],$saldo_cantidad).'
+							    '.$divUnidades.'
 						      </div>';
 			}
 			$cont++;
-			$body .='<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
+			$bodyAdd = ($documentoEnviado)? '' : '<div class="bodyDivArticulos'.$opcGrillaContable.'" id="bodyDivArticulos'.$opcGrillaContable.'_'.$cont.'">
 						'.cargaDivsUnidadesSave($cont,$opcGrillaContable).'
 					</div>';
+			$body .= $bodyAdd;
 			$mostarBoton = 'enable()';
-			$deshabilita = '';
 			$eventoObservacionGrilla="onKeydown=inputObservacion".$opcGrillaContable."(event,this)";
 
 		}

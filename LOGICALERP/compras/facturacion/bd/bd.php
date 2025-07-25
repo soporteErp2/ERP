@@ -3268,6 +3268,8 @@
 			return true;
 		}
 		else{
+			$sqlUpdate = "UPDATE compras_facturas SET prefijo_factura = '$prefijoFactura',numero_factura='$numeroFactura' WHERE id = $idFactura";
+			$queryFactura = mysql_query($sqlUpdate, $link);
 			return false;
 		}
 	}

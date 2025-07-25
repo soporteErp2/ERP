@@ -340,14 +340,14 @@ function MyLoading2(estado,opciones){
 		icono        = iconos[opciones.icono] || iconos['sucess'];
 		evento_icono = opciones.evento_icono || '';
 		texto        = opciones.texto || 'Informacion Almacenada';
-		duracion     = opciones.duracion || '2000';
+		duracion     = opciones.duracion || '500';
 		estilo_texto = opciones.estilo_texto || 'padding-top: 10px;font-size: 12px;color:#FFF;';
 	}
 	else{
 		icono        = iconos.sucess;
 		evento_icono = '';
 		texto        = 'Informacion Almacenada';
-		duracion     = '2000';
+		duracion     = '500';
 		estilo_texto = 'padding-top: 10px;font-size: 12px;color:#FFF;';
 	}
 

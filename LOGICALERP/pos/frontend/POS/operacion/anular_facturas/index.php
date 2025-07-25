@@ -19,7 +19,7 @@
 
 ?>
 <div id="tbarAnularComandas" style="width:100%;height:68px;"></div>
-<div id="contentAnularFacturas" style="width:100%;height:calc(100% - 68px);"></div>
+<div id="contentAnularFacturas" style="width:100%;height:calc(100% - 100px);"></div>
 
 <script>
 	"use strict";
